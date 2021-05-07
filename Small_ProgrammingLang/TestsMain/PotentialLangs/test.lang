@@ -1,0 +1,190 @@
+/**
+ * Example Lang file.
+ *
+ * BNF grammar is in: examples/lang.bnf
+ * Lex grammar is in: examples/lang.lex
+ */
+
+// Variable declaration.
+let x = 10, y = PI * 2;
+
+/**
+ * Function declaration.
+ */
+fn square(x) {
+  return x * x;
+}
+
+/**
+ * Lambda function.
+ */
+let square = (x) -> {
+  return x * x;
+};
+
+/**
+ * Function call.
+ */
+square(2);
+
+/**
+ * do-while loop.
+ */
+do {
+  foo += x;
+  x -= 1;
+} while (x > 0);
+
+/**
+ * while-loop.
+ */
+while (x < 10) {
+  foo -= x;
+  x += 1;
+}
+
+/**
+ * for-loop.
+ */
+for (let i = 0; i < 10; i += 1) {
+  foo += i;
+}
+
+/**
+ * break/continue.
+ */
+for (;;) {
+  x += 1;
+  if (x < 10) {
+    continue;
+  }
+  x = 0;
+  break;
+}
+
+/**
+ * for-prop loop.
+ */
+for (let prop : data) {
+  print(prop);
+}
+
+/**
+ * for-prop loop.
+ */
+for (v : data);
+
+/**
+ * Array literals.
+ */
+let data = [1, 2, 3];
+
+/**
+ * Object literals.
+ */
+let config = {
+  ip: "127.0.0.1",
+  port: 3306,
+  user: {
+    name: "John Doe",
+    alias: "jdoe",
+  },
+  0: index,
+  "value scores": [1, 2],
+};
+
+/**
+ * Simple block.
+ */
+{
+  let x = 10;
+  let y = 0.5;
+
+  fn Point(x, y) {
+    return {
+      "x": x,
+      "y": y,
+    };
+  }
+}
+
+/**
+ * Object literal.
+ */
+({
+  "x": x,
+  "y": y,
+});
+
+/**
+ * Two nested empty blocks.
+ */
+
+{
+  {
+
+  }
+}
+
+/**
+ * Keywords as property names (object followed by keyword `if`).
+ */
+({
+  if: 10,
+  while: 20,
+});
+
+/**
+ * Block followed by keyword `if`.
+ */
+{
+  if (x) {
+    print(1);
+  }
+}
+
+/**
+ * Member expressions.
+ */
+
+foo.bar = 10;
+foo["bar"] = 20;
+foo["bar"].baz = 30;
+
+root.action(10);
+
+/**
+ * Class declaration.
+ */
+
+class Point {
+  fn constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  fn getX() {
+    return this.x;
+  }
+
+  fn getY() {
+    return this.y;
+  }
+}
+
+class Point3D extends Point {
+  fn constructor(x, y, z) {
+    super(x, y);
+    this.z = z;
+  }
+
+  fn getZ() {
+    return this.z;
+  }
+}
+
+new Point.Other();
+
+let p = new Point3D(10, 20, 30);
+
+

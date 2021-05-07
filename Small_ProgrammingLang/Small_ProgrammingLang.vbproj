@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AAD6B3A4-2D2A-4EF7-AA67-DDFC62ADC6B9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>SDK.My.MyApplication</StartupObject>
+    <RootNamespace>SDK</RootNamespace>
+    <AssemblyName>Small_Programming_Language</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Small_Programming_Language.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Small_Programming_Language.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>COM.ICO</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UI\AST_TREE.designer.vb">
+      <DependentUpon>AST_TREE.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AST_TREE.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Multi_REPL.Designer.vb">
+      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Multi_REPL.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\REPL\Sal_Repl.Designer.vb">
+      <DependentUpon>Sal_Repl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\REPL\Sal_Repl.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.designer.vb">
+      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_UnaryExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_VariableDeclarationExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\SAL\Abstract\Ast_SAL_Literal.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\SAL\Abstract\Ast_SalExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\Interpretor\EnvironmentalMemory.vb" />
+    <Compile Include="SourceCode\SAL_VM\SAL\SalCode_Helpers.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Abstract\AstBinaryExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\ABSTRACT\AstNode.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\ABSTRACT\AstProgram.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_AssignmentExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Abstract\Ast_BlockExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Abstract\Ast_ExpressionStatement.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Abstract\Ast_Identifier.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Abstract\Ast_Literal.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_ParenthesizedExpresion.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_VariableExpressionStatement.vb" />
+    <Compile Include="SourceCode\SmallProgLang\Interpretor\S_Expression_Evaluator.vb" />
+    <Compile Include="SourceCode\SmallProgLang\Transpiler\Sal_Transpiler.vb" />
+    <Compile Include="SourceCode\SmallProgLang\EXT.vb" />
+    <Compile Include="SourceCode\SmallProgLang\Compiler\Lexer.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\ABSTRACT\AstExpression.vb" />
+    <Compile Include="UI\REPL\ReplErrorSystem.vb" />
+    <Compile Include="SourceCode\SmallProgLang\GrammarFactory\Token.vb" />
+    <Compile Include="SourceCode\SmallProgLang\Compiler\Parser.vb" />
+    <Compile Include="UI\REPL\PL_REPL.designer.vb">
+      <DependentUpon>PL_REPL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\REPL\PL_REPL.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SmallProgLang\GrammarFactory\Grammar.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\SAL\X86API.vb" />
+    <Compile Include="SourceCode\SAL_VM\SAL\Ext.vb" />
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.designer.vb">
+      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.designer.vb">
+      <DependentUpon>VM_MachineUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\SAL\StackMemoryFrame.vb" />
+    <Compile Include="SourceCode\SAL_VM\SAL\ZX81_CPU.vb" />
+    <Compile Include="SourceCode\SAL_VM\SAL\ZX81_GPU.vb" />
+    <Compile Include="SourceCode\SAL_VM\SAL\ZX81_RAM.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\AST_TREE.resx">
+      <DependentUpon>AST_TREE.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Multi_REPL.resx">
+      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\REPL\Sal_Repl.resx">
+      <DependentUpon>Sal_Repl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\REPL\PL_REPL.resx">
+      <DependentUpon>PL_REPL.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.resx">
+      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.resx">
+      <DependentUpon>VM_MachineUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.resx">
+      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Help\SpydazWeb AI _Emulators.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="README.md" />
+    <None Include="Resources\Script_Code_Html_.png" />
+    <Content Include="TestsMain\Basic Tests.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\Basic Tests.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\IF.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\MaxFunct.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\RegEx.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\SampleCmds.txt" />
+    <Content Include="TestsMain\DevelopmentPrimers\While.txt" />
+    <Content Include="TestsMain\Pl_Tests\call-test.js" />
+    <Content Include="TestsMain\Pl_Tests\class-test.js" />
+    <Content Include="TestsMain\Pl_Tests\do-while-test.js" />
+    <Content Include="TestsMain\Pl_Tests\equality-test.js" />
+    <Content Include="TestsMain\Pl_Tests\for-test.js" />
+    <Content Include="TestsMain\Pl_Tests\function-declaration-test.js" />
+    <Content Include="TestsMain\Pl_Tests\if-test.js" />
+    <Content Include="TestsMain\Pl_Tests\logical-test.js" />
+    <Content Include="TestsMain\Pl_Tests\member-test.js" />
+    <Content Include="TestsMain\Pl_Tests\unary-test.js" />
+    <Content Include="TestsMain\Pl_Tests\while-test.js" />
+    <Content Include="TestsMain\PotentialLangs\json.ast.js" />
+    <Content Include="TestsMain\S_ExpressionTests\block-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\built-in-function-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\class-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\dec-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\dec-val-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\for-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\if-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\import-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\inc-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\inc-val-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\lambda-function-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\math-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\module-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\run.js" />
+    <Content Include="TestsMain\S_ExpressionTests\self-eval-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\switch-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\test-util.js" />
+    <Content Include="TestsMain\S_ExpressionTests\user-defined-function-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\variables-test.js" />
+    <Content Include="TestsMain\S_ExpressionTests\while-test.js" />
+    <Content Include="TestsMain\TestProgs\Simple - Countdown.txt" />
+    <Content Include="TestsMain\TestProgs\Simple - Miles &amp; Kilometers.txt" />
+    <Content Include="TestsMain\TestProgs\Simple - Secret Number.txt" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <None Include="TestsMain\PotentialLangs\lang.bnf" />
+    <None Include="TestsMain\PotentialLangs\lang.lex" />
+    <None Include="TestsMain\PotentialLangs\test.lang" />
+    <None Include="TestsMain\PotentialLangs\vbnet.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Resources\Arrow_Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Complier_RUN.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="COM.ICO" />
+    <Content Include="Help\SPL.txt" />
+    <None Include="Resources\ipad-mockup-hands.png" />
+    <None Include="Resources\Console A.jpg" />
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+    <None Include="Resources\X SERIES AL 9000s.jpg" />
+    <None Include="Resources\EYE BLUE .gif" />
+    <Content Include="Help\SAL.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Dell UltraSharp 27.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+</Project>
