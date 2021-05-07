@@ -1,26 +1,26 @@
-﻿Imports SDK.SAL
+﻿
 Imports SDK.SmallProgLang.Evaluator
 
 Namespace SmallProgLang
-
+    'if (x>7) then { x = 1; } else { x = 2; }
     Namespace Ast_ExpressionFactory
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
-        Public Class Ast_UnaryExpression
+        Public Class Ast_IfExpression
             Inherits AstExpression
-            Public _Value As Ast_Literal
-            Public _name As Ast_Identifier
-            ' Public _Value As AstExpression
-            Public Sub New(ByRef nName As Ast_Identifier, ByRef nValue As Ast_Literal)
-                MyBase.New(AST_NODE._ExpressionStatement)
-                Me._Value = nValue
+            Public Test As AstExpression
+            Public Consequent As Ast_BlockExpression
+            Public Alternate As Ast_BlockExpression
+
+            Public Sub New(ByRef ntype As AST_NODE)
+                MyBase.New(ntype)
             End Sub
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return GetValue(ParentEnv)
+                Throw New NotImplementedException()
             End Function
 
             Public Overrides Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return ParentEnv
+                Throw New NotImplementedException()
             End Function
 
             Private Function GetDebuggerDisplay() As String
@@ -28,5 +28,6 @@ Namespace SmallProgLang
             End Function
         End Class
     End Namespace
-
 End Namespace
+
+

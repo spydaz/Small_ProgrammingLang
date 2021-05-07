@@ -1,5 +1,6 @@
 ﻿Namespace SmallProgLang
     Namespace Evaluator
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public Class EnvironmentalMemory
             ''' <summary>
             ''' Structure for variable
@@ -145,6 +146,10 @@
                     End If
                 Next
                 CheckVar = False
+            End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToJson
             End Function
         End Class
     End Namespace

@@ -30,7 +30,7 @@
                 LineNumber += 1
             End Sub
             Private Function GetDebuggerDisplay() As String
-                Return ToString()
+                Return ToJson
             End Function
             ''' <summary>
             ''' Used for imediate Evaluations

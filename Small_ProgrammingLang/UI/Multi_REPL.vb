@@ -9,7 +9,7 @@ Public Class Multi_REPL
     Dim PSER As New Parser
     Private Sub ToolStripButtonCompile_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonCompileCode.Click
         Dim InputCode As String = Small_PL_TextBoxCodeInput.Text
-
+        PSER = New Parser
 
         Dim outputStr = PSER.ParseFactory(InputCode)
         Small_PL_AstTreeView.Nodes.Clear()
@@ -39,7 +39,6 @@ Public Class Multi_REPL
         End If
 
     End Sub
-
     Public Sub loadTree(ByRef Prog As AstProgram)
         Small_PL_AstTreeView.Nodes.Clear()
         Dim root As New TreeNode
@@ -48,7 +47,6 @@ Public Class Multi_REPL
         Else
             root.ForeColor = Color.GreenYellow
         End If
-
         root.Text = Prog._TypeStr & vbNewLine
         root.Tag = FormatJsonOutput(Prog.ToJson)
         Dim Body As New TreeNode
@@ -84,17 +82,12 @@ Public Class Multi_REPL
             _TypeNode.Text = "_Type :" & item._TypeStr
             _TypeNode.Tag = "_Type"
             MainNode.Nodes.Add(_TypeNode)
-
-
-
-
-
             Body.Nodes.Add(MainNode)
         Next
         root.Nodes.Add(Body)
         Small_PL_AstTreeView.Nodes.Add(root)
+        Small_PL_AstTreeView.ExpandAll()
     End Sub
-
     Private Sub OpenToolStripButton_Click(sender As Object, e As EventArgs) Handles Small_PL_OpenToolStripButton.Click
         Dim sr As StreamReader
 
@@ -115,7 +108,6 @@ Public Class Multi_REPL
             End Try
         End If
     End Sub
-
     Private Sub SaveToolStripButton_Click(sender As Object, e As EventArgs) Handles Small_PL_SaveToolStripButton.Click
         Dim sr As StreamWriter
 
@@ -136,18 +128,13 @@ Public Class Multi_REPL
             End Try
         End If
     End Sub
-
     Private Sub NewToolStripButton_Click(sender As Object, e As EventArgs) Handles Small_PL_NewToolStripButton.Click
         Small_PL_TextBoxCodeInput.Text = ""
         Small_PL_TextBoxREPL_OUTPUT.Clear()
         Small_PL_TextBoxCodeInput.Clear()
         Small_PL_AstTreeView.Nodes.Clear()
     End Sub
-
-
     Public VM As VM_MachineUI
-
-
 #End Region
 #Region "SAL REPL"
     Private Sub ToolStripButtonCompileCode_Click(sender As Object, e As EventArgs) Handles SAL_ToolStripButtonCompileCode.Click
@@ -241,6 +228,12 @@ Public Class Multi_REPL
         VM = New VM_MachineUI
         VM.Show()
     End Sub
+
+    Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles Small_PL_AstTreeView.AfterSelect
+        Small_PL_TextBoxREPL_OUTPUT.Text = Small_PL_AstTreeView.SelectedNode.Tag
+    End Sub
+
+
 
 #End Region
 

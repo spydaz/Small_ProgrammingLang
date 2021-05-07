@@ -19,7 +19,7 @@ Namespace SmallProgLang
                 Body = iBody
                 Me._Start = iBody(0)._Start
                 For Each item In iBody
-                    Me._Raw &= item._Raw
+                    Me._Raw &= "," & item._Raw
                 Next
                 Me._End = iBody(iBody.Count - 1)._End
                 _ReturnValues = New List(Of AstExpression)
@@ -71,7 +71,7 @@ Namespace SmallProgLang
             End Function
 
             Private Function GetDebuggerDisplay() As String
-                Return ToString()
+                Return ToJson
             End Function
         End Class
     End Namespace

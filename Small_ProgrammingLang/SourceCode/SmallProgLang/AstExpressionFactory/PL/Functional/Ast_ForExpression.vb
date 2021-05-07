@@ -1,17 +1,27 @@
-﻿Imports SDK.SAL
+﻿
 Imports SDK.SmallProgLang.Evaluator
 
 Namespace SmallProgLang
 
     Namespace Ast_ExpressionFactory
+
+        'for (dim i = 0); (i < 10); (i += 1) {      x += i;    }
+        'for (Init); (Test); (Increment) { <BODY >    x += i;    }
+        ''' <summary>
+        ''' 
+        ''' </summary>
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
-        Public Class Ast_SalExpression
+        Public Class Ast_ForExpression
             Inherits AstExpression
-            Public Program As List(Of Ast_Literal)
-            Public Sub New(ByRef nProgram As List(Of Ast_Literal))
-                MyBase.New(AST_NODE._SAL_Expression)
-                Me._TypeStr = "_SAL_Expression"
-                Me.Program = nProgram
+
+
+            Public Init As Ast_VariableDeclarationExpression
+            Public Test As AstBinaryExpression
+            Public Increment As AstExpression
+            Public Body As Ast_BlockExpression
+
+            Public Sub New(ByRef ntype As AST_NODE)
+                MyBase.New(ntype)
             End Sub
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
@@ -23,8 +33,9 @@ Namespace SmallProgLang
             End Function
 
             Private Function GetDebuggerDisplay() As String
-                Return ToJson
+                Return ToString()
             End Function
         End Class
     End Namespace
 End Namespace
+

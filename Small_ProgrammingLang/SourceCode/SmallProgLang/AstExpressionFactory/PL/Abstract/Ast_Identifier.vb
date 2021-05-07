@@ -42,7 +42,7 @@ Namespace SmallProgLang
             End Function
 
             Private Function GetDebuggerDisplay() As String
-                Return ToString()
+                Return ToJson
             End Function
         End Class
     End Namespace

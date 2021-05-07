@@ -19,7 +19,7 @@ Namespace SmallProgLang
                 LineNumber += 1
             End Sub
             Private Function GetDebuggerDisplay() As String
-                Return ToString()
+                Return ToJson
             End Function
             ''' <summary>
             ''' As Each Expression is consumed an program will be returned 

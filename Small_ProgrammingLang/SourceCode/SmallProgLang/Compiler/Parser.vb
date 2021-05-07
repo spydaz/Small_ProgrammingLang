@@ -67,7 +67,7 @@ Namespace SmallProgLang
             Public Function _Parse(ByRef nScript As String) As AstProgram
                 Dim Body As New List(Of Ast_ExpressionStatement)
                 Me.ParserErrors = New List(Of String)
-                iScript = nScript.Replace(vbNewLine, " ")
+                iScript = nScript.Replace(vbNewLine, ";")
                 iScript = RTrim(iScript)
                 iScript = LTrim(iScript)
 
@@ -114,7 +114,9 @@ Namespace SmallProgLang
             Public Function _Parse(ByRef nScript As String, ByRef nGrammar As List(Of GrammarFactory.Grammar)) As AstProgram
                 Dim Body As New List(Of Ast_ExpressionStatement)
                 Me.ParserErrors = New List(Of String)
-                iScript = nScript.Replace(vbNewLine, " ")
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
                 Tokenizer = New Lexer(iScript, nGrammar)
                 'Dim TokType As GrammarFactory.Grammar.Type_Id
                 ' uses the first token to determine the program type
@@ -145,6 +147,11 @@ Namespace SmallProgLang
                 Return iProgram
             End Function
             Public Function ParseFactory(ByRef nScript As String, Optional PL As ProgramLangs = Nothing) As AstProgram
+                Dim Body As New List(Of Ast_ExpressionStatement)
+                Me.ParserErrors = New List(Of String)
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
                 Select Case PL
                     Case ProgramLangs.SAL
                         'Get title
@@ -171,9 +178,9 @@ Namespace SmallProgLang
             Public Function _ParsePL(ByRef nScript As String) As AstProgram
                 Dim Body As New List(Of Ast_ExpressionStatement)
                 Me.ParserErrors = New List(Of String)
-                iScript = nScript.Replace(vbNewLine, " ")
-                'iScript = nScript.Replace(" ", "")
-                'iScript = nScript.Replace(";", "")
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
                 Tokenizer = New Lexer(iScript)
                 'Dim TokType As GrammarFactory.Grammar.Type_Id
                 Lookahead = Tokenizer.ViewNext
@@ -189,9 +196,9 @@ Namespace SmallProgLang
             Public Function _ParseSAL(ByRef nScript As String) As AstProgram
                 Dim Body As New List(Of Ast_ExpressionStatement)
                 Me.ParserErrors = New List(Of String)
-                iScript = nScript.Replace(vbNewLine, " ")
-                'iScript = nScript.Replace(" ", "")
-                'iScript = nScript.Replace(";", "")
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
                 Tokenizer = New Lexer(iScript)
                 'Dim TokType As GrammarFactory.Grammar.Type_Id
                 Lookahead = Tokenizer.ViewNext
@@ -828,7 +835,15 @@ Namespace SmallProgLang
             Public Function _LeftHandExpression() As AstExpression
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
+                If toktype = Grammar.Type_Id._WHITESPACE Then
+                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                        _WhitespaceNode()
+                        Lookahead = Tokenizer.ViewNext
+                        toktype = Tokenizer.IdentifiyToken(Lookahead)
+                    Loop
+                Else
 
+                End If
                 Select Case toktype
                     Case Grammar.Type_Id._VARIABLE
                         'Check if misIdentified
@@ -1492,8 +1507,13 @@ Namespace SmallProgLang
             Public Function _VariableInitializer(ByRef _left As Ast_Identifier) As AstBinaryExpression
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
+                Try
+                    Return _BinaryExpression(New Ast_VariableExpressionStatement(_left))
+                Catch ex As Exception
+                    Me.ParserErrors.Add(ex.ToString)
+                    Return Nothing
+                End Try
 
-                Return _BinaryExpression(New Ast_VariableExpressionStatement(_left))
 
             End Function
             Public Function _VariableInitializer(ByRef _left As Ast_VariableDeclarationExpression) As AstExpression
@@ -1516,6 +1536,7 @@ Namespace SmallProgLang
                 _WhitespaceNode()
                 Lookahead = Tokenizer.ViewNext
                 Dim Tok = Tokenizer.CheckIdentifiedToken(Lookahead)
+
                 'SELECT lITERAL TYPE
                 Select Case UCase(Tok.Value)
                     Case = UCase("string")
@@ -1616,6 +1637,15 @@ Namespace SmallProgLang
             Public Function _AssignmentExpression(ByRef _left As AstExpression) As AstExpression
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
+                If toktype = Grammar.Type_Id._WHITESPACE Then
+                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                        _WhitespaceNode()
+                        Lookahead = Tokenizer.ViewNext
+                        toktype = Tokenizer.IdentifiyToken(Lookahead)
+                    Loop
+                Else
+
+                End If
                 Select Case toktype
 
 
@@ -2065,6 +2095,10 @@ Namespace SmallProgLang
                             lst.Add(DecNode)
                             Dim Empt = New Ast_ExpressionStatement(New Ast_Literal(AST_NODE._emptyStatement))
                             Empt._TypeStr = "_emptyStatement"
+                            Empt._iLiteral._Raw = ";"
+                            Empt._iLiteral.iLiteral = ""
+
+                            Empt._iLiteral.iLiteral = ";"
                             lst.Add(Empt)
                             lst.Add(_BinaryExpression(New Ast_VariableExpressionStatement(_left)))
                             '   Return 

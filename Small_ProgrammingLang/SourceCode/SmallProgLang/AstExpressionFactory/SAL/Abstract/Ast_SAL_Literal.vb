@@ -4,8 +4,7 @@
 Namespace SmallProgLang
 
     Namespace Ast_ExpressionFactory
-
-
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public Class Ast_SAL_Literal
             Inherits Ast_Literal
 
@@ -17,6 +16,9 @@ Namespace SmallProgLang
                 MyBase.New(ntype, nValue)
             End Sub
 
+            Private Function GetDebuggerDisplay() As String
+                Return ToJson
+            End Function
         End Class
     End Namespace
 End Namespace

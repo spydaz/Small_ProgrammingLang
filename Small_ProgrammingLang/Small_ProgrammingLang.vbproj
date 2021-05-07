@@ -79,6 +79,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_DoExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_ForExpression.vb" />
+    <Compile Include="SourceCode\SmallProgLang\AstExpressionFactory\PL\Functional\Ast_IfExpression.vb" />
     <Compile Include="UI\AST_TREE.designer.vb">
       <DependentUpon>AST_TREE.vb</DependentUpon>
     </Compile>
@@ -213,15 +216,11 @@
     <Content Include="TestsMain\DevelopmentPrimers\While.txt" />
     <Content Include="TestsMain\Pl_Tests\call-test.js" />
     <Content Include="TestsMain\Pl_Tests\class-test.js" />
-    <Content Include="TestsMain\Pl_Tests\do-while-test.js" />
     <Content Include="TestsMain\Pl_Tests\equality-test.js" />
-    <Content Include="TestsMain\Pl_Tests\for-test.js" />
     <Content Include="TestsMain\Pl_Tests\function-declaration-test.js" />
-    <Content Include="TestsMain\Pl_Tests\if-test.js" />
     <Content Include="TestsMain\Pl_Tests\logical-test.js" />
     <Content Include="TestsMain\Pl_Tests\member-test.js" />
     <Content Include="TestsMain\Pl_Tests\unary-test.js" />
-    <Content Include="TestsMain\Pl_Tests\while-test.js" />
     <Content Include="TestsMain\PotentialLangs\json.ast.js" />
     <Content Include="TestsMain\S_ExpressionTests\block-test.js" />
     <Content Include="TestsMain\S_ExpressionTests\built-in-function-test.js" />
