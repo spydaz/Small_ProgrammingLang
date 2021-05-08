@@ -1,5 +1,5 @@
 # LexParseEval
-SpydazWeb Program languges and virtual machines, Parser/Compiler/Interpretor. AST Creator... Experiments in developing compilers and programing langugages . Using Mini Basic language to Tokenizer to AST to Assembly code 
+SpydazWeb Program languages and virtual machines, Parser/Compiler/Interpretor. AST Creator... Experiments in developing compilers and programing langugages . Using Mini Basic language to Tokenizer to AST to Assembly code 
 
 https://spydaz.github.io/SpydazWeb-AI-_Emulators/
 

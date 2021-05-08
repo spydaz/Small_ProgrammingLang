@@ -111,7 +111,7 @@ Partial Class EMU_MachineUI
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.Black
-        Me.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
+        Me.BackgroundImage = Global.SAL_VM.My.Resources.Resources.Dell_UltraSharp_27
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(731, 575)
         Me.Controls.Add(Me.GroupBox2)

@@ -116,6 +116,13 @@
     <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SourceCode\VM\Multi_REPL.Designer.vb">
+      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\VM\Multi_REPL.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\VM\ZX81_COMPILER.vb" />
     <Compile Include="SourceCode\VM\ZX81_CacheMemory.vb" />
     <Compile Include="SourceCode\VM\ZX81_CPU.vb" />
     <Compile Include="SourceCode\VM\ZX81_GPU.vb" />
@@ -137,6 +144,9 @@
     <EmbeddedResource Include="SourceCode\MachineUI\VM_MachineUI.resx">
       <DependentUpon>VM_MachineUI.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\VM\Multi_REPL.resx">
+      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -156,6 +166,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="IconUFP.ico" />
+    <None Include="Resources\X SERIES AL 9000s.jpg" />
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+    <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\ipad-mockup-hands.png" />
+    <None Include="Resources\EYE BLUE .gif" />
+    <None Include="Resources\Console A.jpg" />
+    <None Include="Resources\Complier_RUN.png" />
+    <None Include="Resources\Arrow_Right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
