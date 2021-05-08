@@ -1,0 +1,3271 @@
+<html DIR="LTR" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddue="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+  <head>
+ <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=windows-1252" />
+    <META NAME="save" CONTENT="history" />
+    <title>SAL_ZX21_VDU Events</title>
+    <xml>
+      <MSHelp:TOCTitle Title="SAL_ZX21_VDU Events" />
+      <MSHelp:RLTitle Title="SAL_ZX21_VDU Events" />
+      <MSHelp:Keyword Index="K" Term="SAL_ZX21_VDU Class, Events" />
+      <MSHelp:Keyword Index="A" Term="Events.T:SAL_VM.SAL_ZX21_VDU" />
+      <MSHelp:Attr Name="AssetID" Value="Events.T:SAL_VM.SAL_ZX21_VDU" />
+      <MSHelp:Attr Name="HelpPriority" Value="1" />
+      <MSHelp:Attr Name="DocSet" Value="WindowsForms" />
+      <MSHelp:Attr Name="TopicType" Value="kbSyntax" />
+      <MSHelp:Attr Name="DocSet" Value="NETFramework" />
+      <MSHelp:Attr Name="DocSet" Value="NETFrameworkXpr" />
+      <MSHelp:Attr Name="DocSet" Value="ExpressLibVS" />
+      <MSHelp:Attr Name="Technology" Value="ManagedCode" />
+      <MSHelp:Attr Name="TechnologyVers" Value="netframework20" />
+      <MSHelp:Attr Name="DevLang" Value="VJ#" />
+      <MSHelp:Attr Name="TargetOS" Value="Windows" />
+      <MSHelp:Attr Name="TopicVersion" Value="02.00.00000.10000" />
+      <MSHelp:Attr Name="TargetOS" Value="Windows" />
+      <MSHelp:Attr Name="DevLang" Value="CSharp" />
+      <MSHelp:Attr Name="DevLang" Value="VB" />
+      <MSHelp:Attr Name="DevLang" Value="C++" />
+      <MSHelp:Attr Name="DevLang" Value="jsharp" />
+      <MSHelp:Attr Name="DevLang" Value="JScript" />
+      <MSHelp:Attr Name="DocSet" Value="NetCompactFramework" />
+      <MSHelp:Attr Name="Technology" Value="kbNetFramewk" />
+      <MSHelp:Attr Name="Technology" Value="kbNetCompactFramewk" />
+      <MSHelp:Attr Name="Locale" Value="en-us" />
+    </xml>
+
+		<link rel="stylesheet" type="text/css" href="ms-help://MS.VSCC.v80/dv_vscccommon/local/Classic.css" DISABLED="true">
+		</link>
+		<link rel="stylesheet" type="text/css" href="ms-help://Hx/HxRuntime/HxLink.css">
+		</link>
+
+		<link rel="stylesheet" type="text/css" href="msdn2/msdn2.css"></link>
+		<script src="msdn2/msdn2.js"></script>
+		<script src="SyntaxHighlighter/scripts/shCore_helixoft.js"></script>
+		<script src="SyntaxHighlighter/scripts/shBrushVb.js"></script>
+		<script src="SyntaxHighlighter/scripts/shBrushCSharp.js"></script>
+		<script src="SyntaxHighlighter/scripts/shBrushCpp.js"></script>
+		<script src="SyntaxHighlighter/scripts/shBrushJScript.js"></script>
+		<link href="SyntaxHighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+		<link href="SyntaxHighlighter/styles/shThemeVS.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript">
+			SyntaxHighlighter.all()
+		</script>				
+
+		<link rel="stylesheet" type="text/css" href="ms-help://MS.VSCC.v90/dv_vscccommon/styles/presentation.css">
+		</link>
+		<link rel="stylesheet" type="text/css" href="ms-help://Hx/HxRuntime/HxLink.css">
+		</link>
+		<script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/EventUtilities.js">
+		</script>
+		<script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/SplitScreen.js">
+		</script>
+		<script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/Dropdown.js">
+		</script>
+    <script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/script_loc.js"> </script>
+    <script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/script_manifold.js"> </script>
+    <script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/CheckboxMenu.js"> </script>
+    <script src="ms-help://MS.VSCC.v90/dv_vscccommon/scripts/CommonUtilities.js"> </script>
+  
+ <link rel="stylesheet" type="text/css" href="vsdocman_overrides.css"></link> 
+</head>
+
+  <body style="direction: ltr;">
+    <input type="hidden" id="userDataCache" class="userDataStyle"></input>
+    <input type="hidden" id="hiddenScrollOffset"></input>
+    <img id="dropDownImage" style="display:none; height:0; width:0;" alt="DropDown image" src="msdn9/dropdown.gif"></img>
+    <img id="dropDownHoverImage" style="display:none; height:0; width:0;" alt="DropDownHover image" src="msdn9/dropdownHover.gif"></img>
+    <img id="collapseImage" style="display:none; height:0; width:0;" alt="Collapse image" src="msdn2/collapse_all.gif"></img>
+    <img id="expandImage" style="display:none; height:0; width:0;" alt="Expand image" src="msdn2/expand_all.gif"></img>
+    <img id="collapseAllImage" style="display:none; height:0; width:0;" alt="CollapseAll image" src="msdn2/collall.gif"></img>
+    <img id="expandAllImage" style="display:none; height:0; width:0;" alt="ExpandAll image" src="msdn2/expall.gif"></img>
+    <img id="copyImage" style="display:none; height:0; width:0;" alt="Copy image" src="msdn2/copycode.gif"></img>
+    <img id="copyHoverImage" style="display:none; height:0; width:0;" alt="CopyHover image" src="msdn2/copycodeHighlight.gif"></img>
+    
+    <div id="header">
+      <table id="bottomTable" cellspacing="0" cellpadding="0">
+        <tr>
+          <td>
+            <span onclick="ExpandCollapseAll(toggleAllImage)" style="cursor:default;" onkeypress="ExpandCollapseAll_CheckKey(toggleAllImage, event)" tabindex="0">
+              <img ID="toggleAllImage" class="toggleAll" src="msdn2/collall.gif" />
+              <label id="collapseAllLabel" for="toggleAllImage" style="display: none;">Collapse All</label>
+              <label id="expandAllLabel" for="toggleAllImage" style="display: none;">Expand All</label>
+            </span>
+            <span>    </span>
+            <span id="devlangsDropdown" class="filter" tabindex="0">
+              <img id="devlangsDropdownImage" src="msdn9/dropdown.gif" />
+              <label id="devlangsMenuAllLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: All </nobr></label><label id="devlangsMenuMultipleLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Multiple </nobr></label><label id="devlangsMenuVisualBasicLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Visual Basic </nobr></label><label id="devlangsMenuCSharpLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: C# </nobr></label><label id="devlangsMenuManagedCPlusPlusLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: Visual C++ </nobr></label><label id="devlangsMenuJSharpLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: J# </nobr></label><label id="devlangsMenuJScriptLabel" for="devlangsDropdownImage" style="display: none;"><nobr>Code: JScript </nobr></label>
+            </span>
+            <span>    </span>
+            <span id="memberOptionsDropdown" class="filter" tabindex="0" style="display: none;">
+              <img id="memberOptionsDropdownImage" src="msdn9/dropdown.gif" />
+              <label id="memberOptionsMenuAllLabel" for="memberOptionsDropdownImage" style="display: none;"><nobr>Members Options: Show All </nobr></label>
+              <label id="memberOptionsMenuMultipleLabel" for="memberOptionsDropdownImage" style="display: none;"><nobr>Members Options: Filtered </nobr></label>
+              <label id="memberOptionsMenuProtectedLabel" for="memberOptionsDropdownImage" style="display: none;"><nobr>Members Options: Filtered </nobr></label>
+              <label id="memberOptionsMenuInheritedLabel" for="memberOptionsDropdownImage" style="display: none;"><nobr>Members Options: Filtered </nobr></label>
+            </span>
+            <span>    </span>
+            <span id="memberFrameworksDropdown" class="filter" tabindex="0" style="display: none;">
+              <img id="memberFrameworksDropdownImage" src="msdn9/dropdown.gif" /> 
+              <label id="memberFrameworksMenuAllLabel" for="memberFrameworksDropdownImage" style="display: none;"><nobr>Frameworks: Show All </nobr></label>
+              <label id="memberFrameworksMenuMultipleLabel" for="memberFrameworksDropdownImage" style="display: none;"><nobr>Frameworks: Multiple </nobr></label>
+              <label id="memberFrameworksMenunetfwLabel" for="memberFrameworksDropdownImage" style="display: none;"><nobr>Frameworks: .NET Framework Only </nobr></label>
+              <label id="memberFrameworksMenunetcfwLabel" for="memberFrameworksDropdownImage" style="display: none;"><nobr>Frameworks: .NET Compact Framework Only </nobr></label>
+              <label id="memberFrameworksMenuxnafwLabel" for="memberFrameworksDropdownImage" style="display: none;"><nobr>Frameworks: XNA Framework Only </nobr></label></span>
+          </td>
+        </tr>
+      </table>
+      <div id="devlangsMenu">
+        <input id="VisualBasicCheckbox" type="checkbox" data="VisualBasic,vb,'persist'" value="on" onClick="SetLanguageEx(this)" />
+        <label class="checkboxLabel" for="VisualBasicCheckbox">Visual Basic</label>
+        <br />
+
+        <input id="CSharpCheckbox" type="checkbox" data="CSharp,cs,'persist'" value="on" onClick="SetLanguageEx(this)" />
+        <label class="checkboxLabel" for="CSharpCheckbox">C#</label>
+        <br />
+
+        <input id="ManagedCPlusPlusCheckbox" type="checkbox" data="ManagedCPlusPlus,cpp,'persist'" value="on" onClick="SetLanguageEx(this)" />
+        <label class="checkboxLabel" for="ManagedCPlusPlusCheckbox">Visual C++</label>
+        <br />
+
+        <input id="JScriptCheckbox" type="checkbox" data="JScript,cs,'persist'" value="on" onClick="SetLanguageEx(this)" />
+        <label class="checkboxLabel" for="JScriptCheckbox">JScript</label>
+        <br />
+        
+      </div>
+      <div id="memberOptionsMenu">
+        <input id="ProtectedCheckbox" type="checkbox" data="Protected" value="on" onClick="SetMemberOptions(this, 'vis')" />
+        <label class="checkboxLabel" for="ProtectedCheckbox">Include Protected Members</label>
+        <br />
+        <input id="InheritedCheckbox" type="checkbox" data="Inherited" value="on" onClick="SetMemberOptions(this, 'decl')" />
+        <label class="checkboxLabel" for="InheritedCheckbox">Include Inherited Members</label>
+        <br />
+      </div>
+      <div id="memberFrameworksMenu">
+        <input id="netfwCheckbox" type="checkbox" data="netfw,'persist'" value="on" onClick="SetMemberFrameworks(this)" />
+        <label class="checkboxLabel" for="netfwCheckbox">Include .NET Framework Members</label>
+        <br />
+        <input id="netcfwCheckbox" type="checkbox" data="netcfw,'persist'" value="on" onClick="SetMemberFrameworks(this)" />
+        <label class="checkboxLabel" for="netcfwCheckbox">Include .NET Compact Framework Members</label>
+        <br />
+        <input id="xnafwCheckbox" type="checkbox" data="xnafw,'persist'" value="on" onClick="SetMemberFrameworks(this)" />
+        <label class="checkboxLabel" for="xnafwCheckbox">Include XNA Framework Members</label>
+        <br />
+      </div>
+      <table id="topTable" cellpadding="0" cellspacing="0">
+        <tr id="headerTableRow1">
+          <td align="left">
+            <span id="runningHeaderText">SAL_VM Reference</span>
+          </td>
+        </tr>
+        <tr id="headerTableRow2">
+          <td align="left">
+            <span id="nsrTitle">SAL_ZX21_VDU Events</span>
+          </td>
+        </tr>
+        <tr id="headerTableRow3">
+          <td align="left">
+            <a href="topic_0000000000000294.html">SAL_ZX21_VDU Class</a>
+            &nbsp;<a href="#seeAlsoToggle" onclick="OpenSection(seeAlsoToggle)">See Also</a>
+            </td>
+        </tr>
+      </table>
+      <table id="gradientTable">
+        <tr>
+          <td class="nsrBottom" background="msdn9/gradient.gif" />
+        </tr>
+      </table>
+    </div>
+
+    <div id="mainSection">
+      <div id="mainBody">
+        <div id="allHistory" class="saveHistory" onsave="saveAll()" onload="loadAll()">
+        </div>
+        <p />
+
+
+<!-- Public -->
+
+<h1 class="heading">
+  <span onclick="ExpandCollapse(PublicEventsToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(PublicEventsToggle)" tabindex="0">
+    <img id="PublicEventsToggle" onload="OnLoadImage(event)" class="toggle" name="toggleSwitch" alt="Expand image" src="msdn2/expand_all.gif">
+    </img>
+    Public Events
+  </span>
+</h1>
+<div id="PublicEventsSection" class="section" name="collapseableSection" style="display: none;">
+  <table width="100%" class="memberListTable" cellspacing="2" cellpadding="5">
+    <col width="10%" />
+    <col width="30%" />
+    <col width="60%" />
+    <tr>
+      <th style="border-right-style: none;">&nbsp;</th>
+      <th align="left" style="border-left-style: none; border-right-style: none;">
+        Name
+      </th>
+      <th align="left" style="border-left-style: none;">
+        Description
+      </th>
+    </tr>
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Activated&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Activated</a>
+
+
+  </td>
+  <td>
+
+Occurs when the form is activated in code or by the user.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.AutoSizeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">AutoSizeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.AutoSize&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">AutoSize</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.AutoValidateChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">AutoValidateChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.AutoValidate&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">AutoValidate</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.BackColorChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackColorChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.BackColor&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackColor</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.BackgroundImageChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackgroundImageChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.BackgroundImage&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackgroundImage</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.BackgroundImageLayoutChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackgroundImageLayoutChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.BackgroundImageLayout&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BackgroundImageLayout</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.BindingContextChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BindingContextChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.BindingContext&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">BindingContext</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.CausesValidationChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">CausesValidationChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.CausesValidation&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">CausesValidation</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ChangeUICues&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ChangeUICues</a>
+
+
+  </td>
+  <td>
+
+Occurs when the focus or keyboard user interface (UI) cues change.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Click&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Click</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is clicked.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ClientSizeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ClientSizeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.ClientSize&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ClientSize</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Closed&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Closed</a>
+
+
+  </td>
+  <td>
+
+Occurs when the form is closed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Closing&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Closing</a>
+
+
+  </td>
+  <td>
+
+Occurs when the form is closing.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ContextMenuChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ContextMenuChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.ContextMenu&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ContextMenu</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ContextMenuStripChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ContextMenuStripChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.ContextMenuStrip&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ContextMenuStrip</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ControlAdded&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ControlAdded</a>
+
+
+  </td>
+  <td>
+
+Occurs when a new control is added to the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control.ControlCollection&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ControlCollection</a>.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ControlRemoved&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ControlRemoved</a>
+
+
+  </td>
+  <td>
+
+Occurs when a control is removed from the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control.ControlCollection&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ControlCollection</a>.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.CursorChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">CursorChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Cursor&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Cursor</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Deactivate&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Deactivate</a>
+
+
+  </td>
+  <td>
+
+Occurs when the form loses focus and is no longer the active form.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.ComponentModel.Component.Disposed&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Disposed</a>
+
+
+  </td>
+  <td>
+
+Occurs when the component is disposed by a call to the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;Overload:System.ComponentModel.Component.Dispose&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Dispose</a> method.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.ComponentModel.Component&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Component</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DockChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DockChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Dock&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Dock</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DoubleClick&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DoubleClick</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is double-clicked.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.DpiChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DpiChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the DPI setting changes on the display device where the form is currently displayed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DpiChangedAfterParent&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DpiChangedAfterParent</a>
+
+
+  </td>
+  <td>
+
+Occurs when the DPI setting for a control is changed programmatically after the DPI of its parent control or form has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DpiChangedBeforeParent&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DpiChangedBeforeParent</a>
+
+
+  </td>
+  <td>
+
+Occurs when the DPI setting for a control is changed programmatically before a DPI change event for its parent control or form has occurred.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DragDrop&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DragDrop</a>
+
+
+  </td>
+  <td>
+
+Occurs when a drag-and-drop operation is completed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DragEnter&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DragEnter</a>
+
+
+  </td>
+  <td>
+
+Occurs when an object is dragged into the control's bounds.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DragLeave&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DragLeave</a>
+
+
+  </td>
+  <td>
+
+Occurs when an object is dragged out of the control's bounds.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.DragOver&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">DragOver</a>
+
+
+  </td>
+  <td>
+
+Occurs when an object is dragged over the control's bounds.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.EnabledChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">EnabledChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Enabled&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Enabled</a> property value has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Enter&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Enter</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is entered.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.FontChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">FontChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Font&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Font</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ForeColorChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ForeColorChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.ForeColor&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ForeColor</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.FormClosed&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">FormClosed</a>
+
+
+  </td>
+  <td>
+
+Occurs after the form is closed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.FormClosing&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">FormClosing</a>
+
+
+  </td>
+  <td>
+
+Occurs before the form is closed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.GiveFeedback&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">GiveFeedback</a>
+
+
+  </td>
+  <td>
+
+Occurs during a drag operation.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.GotFocus&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">GotFocus</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control receives focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.HandleCreated&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">HandleCreated</a>
+
+
+  </td>
+  <td>
+
+Occurs when a handle is created for the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.HandleDestroyed&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">HandleDestroyed</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control's handle is in the process of being destroyed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.HelpButtonClicked&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">HelpButtonClicked</a>
+
+
+  </td>
+  <td>
+
+Occurs when the Help button is clicked.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.HelpRequested&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">HelpRequested</a>
+
+
+  </td>
+  <td>
+
+Occurs when the user requests help for a control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ImeModeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ImeModeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.ImeMode&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ImeMode</a> property has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.InputLanguageChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">InputLanguageChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs after the input language of the form has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.InputLanguageChanging&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">InputLanguageChanging</a>
+
+
+  </td>
+  <td>
+
+Occurs when the user attempts to change the input language for the form.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Invalidated&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Invalidated</a>
+
+
+  </td>
+  <td>
+
+Occurs when a control's display requires redrawing.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.KeyDown&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">KeyDown</a>
+
+
+  </td>
+  <td>
+
+Occurs when a key is pressed while the control has focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.KeyPress&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">KeyPress</a>
+
+
+  </td>
+  <td>
+
+Occurs when a character. space or backspace key is pressed while the control has focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.KeyUp&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">KeyUp</a>
+
+
+  </td>
+  <td>
+
+Occurs when a key is released while the control has focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Layout&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Layout</a>
+
+
+  </td>
+  <td>
+
+Occurs when a control should reposition its child controls.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Leave&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Leave</a>
+
+
+  </td>
+  <td>
+
+Occurs when the input focus leaves the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Load&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Load</a>
+
+
+  </td>
+  <td>
+
+Occurs before a form is displayed for the first time.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.LocationChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">LocationChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Location&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Location</a> property value has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.LostFocus&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">LostFocus</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control loses focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MarginChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MarginChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.Margin&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Margin</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MaximizedBoundsChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MaximizedBoundsChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.MaximizedBounds&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MaximizedBounds</a> property has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MaximumSizeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MaximumSizeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.MaximumSize&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MaximumSize</a> property has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MdiChildActivate&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MdiChildActivate</a>
+
+
+  </td>
+  <td>
+
+Occurs when a multiple-document interface (MDI) child form is activated or closed within an MDI application.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MenuComplete&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MenuComplete</a>
+
+
+  </td>
+  <td>
+
+Occurs when the menu of a form loses focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MenuStart&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MenuStart</a>
+
+
+  </td>
+  <td>
+
+Occurs when the menu of a form receives focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.MinimumSizeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MinimumSizeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.MinimumSize&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MinimumSize</a> property has changed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseCaptureChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseCaptureChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control loses mouse capture.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseClick&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseClick</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is clicked by the mouse.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseDoubleClick&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseDoubleClick</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is double clicked by the mouse.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseDown&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseDown</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer is over the control and a mouse button is pressed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseEnter&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseEnter</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer enters the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseHover&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseHover</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer rests on the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseLeave&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseLeave</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer leaves the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseMove&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseMove</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer is moved over the control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseUp&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseUp</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse pointer is over the control and a mouse button is released.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.MouseWheel&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">MouseWheel</a>
+
+
+  </td>
+  <td>
+
+Occurs when the mouse wheel moves while the control has focus.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Move&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Move</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is moved.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.PaddingChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">PaddingChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control's padding changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Paint&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Paint</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is redrawn.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.ParentChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ParentChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Parent&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Parent</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.PreviewKeyDown&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">PreviewKeyDown</a>
+
+
+  </td>
+  <td>
+
+Occurs before the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.KeyDown&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">KeyDown</a> event when a key is pressed while focus is on this control.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.QueryAccessibilityHelp&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">QueryAccessibilityHelp</a>
+
+
+  </td>
+  <td>
+
+Occurs when <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.AccessibleObject&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">AccessibleObject</a> is providing help to accessibility applications.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.QueryContinueDrag&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">QueryContinueDrag</a>
+
+
+  </td>
+  <td>
+
+Occurs during a drag-and-drop operation and enables the drag source to determine whether the drag-and-drop operation should be canceled.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.RegionChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">RegionChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Region&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Region</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Resize&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Resize</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is resized.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.ResizeBegin&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ResizeBegin</a>
+
+
+  </td>
+  <td>
+
+Occurs when a form enters resizing mode.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.ResizeEnd&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ResizeEnd</a>
+
+
+  </td>
+  <td>
+
+Occurs when a form exits resizing mode.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.RightToLeftChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">RightToLeftChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.RightToLeft&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">RightToLeft</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.RightToLeftLayoutChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">RightToLeftLayoutChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs after the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.RightToLeftLayout&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">RightToLeftLayout</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.ScrollableControl.Scroll&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Scroll</a>
+
+
+  </td>
+  <td>
+
+Occurs when the user or code scrolls through the client area.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.ScrollableControl&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">ScrollableControl</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.Shown&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Shown</a>
+
+
+  </td>
+  <td>
+
+Occurs whenever the form is first displayed.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.SizeChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">SizeChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Size&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Size</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.StyleChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">StyleChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control style changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.SystemColorsChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">SystemColorsChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the system colors change.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.TabIndexChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">TabIndexChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the value of the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.TabIndex&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">TabIndex</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Form.TabStopChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">TabStopChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Form.TabStop&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">TabStop</a> property changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Form&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Form</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.TextChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">TextChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Text&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Text</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Validated&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Validated</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is finished validating.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.Validating&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Validating</a>
+
+
+  </td>
+  <td>
+
+Occurs when the control is validating.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+<tr valign="top"
+name="inheritedMember"
+
+
+notSupportedOn="netcf"
+
+>
+  <td class="imageCell">
+    <img alt="Public event" src="msdn2/pubevent.gif"></img>
+
+    
+  </td>
+  <td>
+
+    <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;E:System.Windows.Forms.Control.VisibleChanged&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">VisibleChanged</a>
+
+
+  </td>
+  <td>
+
+Occurs when the <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;P:System.Windows.Forms.Control.Visible&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Visible</a> property value changes.
+(inherited from <a href="ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?keyword=&quot;T:System.Windows.Forms.Control&quot;;?index=&quot;!DefaultAssociativeIndex&quot;">Control</a>).
+
+	</td>
+</tr>
+
+
+
+
+  </table>
+  <a href="#mainBody">
+    Top
+  </a>
+</div>
+
+<!-- Public End-->
+
+<!-- Protected -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Protected End-->
+
+<!-- Private and rest -->
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+
+
+<!-- Private and rest End-->
+
+
+
+<h1 class="heading">
+	<span onclick="ExpandCollapse(seeAlsoToggle)" style="cursor:default;" onkeypress="ExpandCollapse_CheckKey(seeAlsoToggle)" tabindex="0">
+		<img id="seeAlsoToggle" onload="OnLoadImage(event)" class="toggle" name="toggleSwitch" alt="Expand image" src="msdn2/expand_all.gif">
+		</img>
+		See Also
+	</span></h1>
+<div id="seeAlsoSection" class="section" name="collapseableSection" style="display: none;">
+	<div>
+		<h4 class="subHeading">
+			Reference</h4>
+		<A HREF="topic_0000000000000294.html">SAL_ZX21_VDU Class</A><br />
+<a href="topic_00000000000002AE.html">SAL_VM Namespace</a><br />
+
+
+		
+
+	</div>
+</div>
+			</div>
+      <div id="footer">
+        <div class="footerLine">
+          <img alt="Footer image" width="100%" height="3px" src="msdn2/footer.gif">
+          </img>
+        </div>
+          TOPIC-FOOTER
+      </div>
+    </div>
+  </body>
+</html>
+
