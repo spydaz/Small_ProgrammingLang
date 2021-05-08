@@ -145,7 +145,7 @@
     <Content Include="Help\SpydazWeb AI _Emulators.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Small Programming Language.md" />
+    <None Include="Help\Small Programming Language.md" />
     <None Include="Resources\Script_Code_Html_.png" />
     <Content Include="TestsMain\Basic Tests.txt" />
     <Content Include="TestsMain\DevelopmentPrimers\Basic Tests.txt" />
