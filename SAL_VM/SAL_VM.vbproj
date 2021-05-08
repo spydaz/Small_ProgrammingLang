@@ -82,6 +82,12 @@
   <ItemGroup>
     <Compile Include="API.vb" />
     <Compile Include="Ext.vb" />
+    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.designer.vb">
+      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SourceCode\MachineUI\FormDisplayConsole.designer.vb">
       <DependentUpon>FormDisplayConsole.vb</DependentUpon>
     </Compile>
@@ -116,6 +122,9 @@
     <Compile Include="SourceCode\VM\ZX81_RAM.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SourceCode\MachineUI\EMU_MachineUI.resx">
+      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayConsole.resx">
       <DependentUpon>FormDisplayConsole.vb</DependentUpon>
     </EmbeddedResource>
