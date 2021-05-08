@@ -1,6 +1,6 @@
 ﻿
 
-Public Class FormDisplayConsole
+Public Class SAL_ZX21_VDU
 
 
     Public Sub Print(ByRef Userinput As String)

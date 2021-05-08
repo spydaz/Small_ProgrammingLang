@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FormDisplayConsole
+Partial Class SAL_ZX21_VDU
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class FormDisplayConsole
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormDisplayConsole))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SAL_ZX21_VDU))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Zx81_DisplayScreen = New System.Windows.Forms.RichTextBox()
         Me.GroupBox1.SuspendLayout()

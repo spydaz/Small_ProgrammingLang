@@ -1,9 +1,9 @@
 ﻿Namespace STACK_VM
     Public Class ZX81_GPU
-        Private iMonitorConsole As FormDisplayConsole
+        Private iMonitorConsole As SAL_ZX21_VDU
 
         Public Sub New()
-            iMonitorConsole = New FormDisplayConsole
+            iMonitorConsole = New SAL_ZX21_VDU
         End Sub
 
         Public Sub ConsolePrint(ByRef Str As String)

@@ -80,18 +80,18 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API.vb" />
-    <Compile Include="Ext.vb" />
-    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.designer.vb">
-      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    <Compile Include="SourceCode\SDK\ZX21_API.vb" />
+    <Compile Include="SourceCode\SDK\ZX21_Ext.vb" />
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.designer.vb">
+      <DependentUpon>SAL_ZX21 WebUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.designer.vb">
-      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.designer.vb">
+      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -110,30 +110,30 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\VM_MachineUI.designer.vb">
-      <DependentUpon>VM_MachineUI.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
+      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\Multi_REPL.Designer.vb">
-      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\Multi_REPL.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\VM\ZX81_COMPILER.vb" />
-    <Compile Include="SourceCode\VM\ZX81_CacheMemory.vb" />
-    <Compile Include="SourceCode\VM\ZX81_CPU.vb" />
-    <Compile Include="SourceCode\VM\ZX81_GPU.vb" />
-    <Compile Include="SourceCode\VM\ZX81_RAM.vb" />
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\ZX21_COMPILER.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_CacheMemory.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_CPU.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_GPU.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_RAM.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SourceCode\MachineUI\EMU_MachineUI.resx">
-      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.resx">
+      <DependentUpon>SAL_ZX21 WebUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayConsole.resx">
-      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
+      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -141,11 +141,11 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\VM_MachineUI.resx">
-      <DependentUpon>VM_MachineUI.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
+      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\Multi_REPL.resx">
-      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.resx">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -159,9 +159,10 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="Small Programming Language.md" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.md" />
+    <None Include="Spydaz Virtual Machine Code Language.md" />
     <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <ItemGroup>

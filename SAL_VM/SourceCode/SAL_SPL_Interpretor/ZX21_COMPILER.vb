@@ -6454,7 +6454,7 @@ Namespace SAL
         End Class
         Public Class VM_ERR
             Private ErrorStr As String = ""
-            Private frm As New FormDisplayConsole
+            Private frm As New SAL_ZX21_VDU
             Private CpuCurrentState As ZX81_CPU
 
             Public Sub New(ByRef Err As String, ByVal CPUSTATE As ZX81_CPU)
@@ -6463,7 +6463,7 @@ Namespace SAL
             End Sub
             Public Sub RaiseErr()
                 If frm Is Nothing Then
-                    frm = New FormDisplayConsole
+                    frm = New SAL_ZX21_VDU
                     frm.Show()
                     frm.Print(ErrorStr & vbNewLine & CpuCurrentState.GetStackData())
                 Else
@@ -6530,10 +6530,10 @@ End Namespace
 '
 Namespace SAL
     Public Class ZX81_GPU
-        Private iMonitorConsole As FormDisplayConsole
+        Private iMonitorConsole As SAL_ZX21_VDU
 
         Public Sub New()
-            iMonitorConsole = New FormDisplayConsole
+            iMonitorConsole = New SAL_ZX21_VDU
         End Sub
 
         Public Sub ConsolePrint(ByRef Str As String)

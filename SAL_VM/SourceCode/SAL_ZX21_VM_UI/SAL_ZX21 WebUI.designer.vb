@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class EMU_MachineUI
+Partial Class SAL_MachineUI
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,7 +22,7 @@ Partial Class EMU_MachineUI
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(EMU_MachineUI))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SAL_MachineUI))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ButtonRunCode = New System.Windows.Forms.Button()
         Me.ButtonNewScrn = New System.Windows.Forms.Button()

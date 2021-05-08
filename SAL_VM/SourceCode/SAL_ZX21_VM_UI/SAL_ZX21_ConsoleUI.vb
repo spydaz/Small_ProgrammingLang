@@ -1,6 +1,6 @@
 ﻿Imports SAL_VM.STACK_VM
 
-Public Class VM_MachineUI
+Public Class SAL_ZX21_ConsoleUI
 
     Public Function ExecuteCode(ByRef Code As String) As String
         Return X86API.RunMachineCode(Code)
@@ -12,7 +12,7 @@ Public Class VM_MachineUI
     End Sub
 
     Private Sub ButtonNewScrn_Click(sender As Object, e As EventArgs) Handles ButtonNewScrn.Click
-        Dim frm As New VM_MachineUI
+        Dim frm As New SAL_ZX21_ConsoleUI
         frm.Show()
     End Sub
 

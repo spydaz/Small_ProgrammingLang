@@ -1,7 +1,7 @@
 ﻿Imports System.Web
 Imports SDK.SmallProgLang.Compiler
 
-Public Class EMU_MachineUI
+Public Class SAL_MachineUI
 
 
     Public Sub GoUrl(ByRef Url As String)
@@ -68,7 +68,7 @@ Public Class EMU_MachineUI
     End Sub
 
     Private Sub ButtonNewScrn_Click(sender As Object, e As EventArgs) Handles ButtonNewScrn.Click
-        Dim FrmEmu As New EMU_MachineUI
+        Dim FrmEmu As New SAL_MachineUI
         FrmEmu.Show()
         FrmEmu.GoUrl(GetUrl(Me.ComboBoxURL.Text))
 

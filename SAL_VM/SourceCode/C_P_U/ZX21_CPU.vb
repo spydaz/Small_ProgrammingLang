@@ -990,7 +990,7 @@ Namespace STACK_VM
         End Class
         Public Class VM_ERR
             Private ErrorStr As String = ""
-            Private frm As New FormDisplayConsole
+            Private frm As New SAL_ZX21_VDU
             Private CpuCurrentState As ZX81_CPU
 
             Public Sub New(ByRef Err As String, ByVal CPUSTATE As ZX81_CPU)
@@ -999,7 +999,7 @@ Namespace STACK_VM
             End Sub
             Public Sub RaiseErr()
                 If frm Is Nothing Then
-                    frm = New FormDisplayConsole
+                    frm = New SAL_ZX21_VDU
                     frm.Show()
                     frm.Print(ErrorStr & vbNewLine & CpuCurrentState.GetStackData())
                 Else

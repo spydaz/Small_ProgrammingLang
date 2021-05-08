@@ -134,7 +134,7 @@ Public Class ZX81_REPL
         Small_PL_TextBoxCodeInput.Clear()
         Small_PL_AstTreeView.Nodes.Clear()
     End Sub
-    Public VM As VM_MachineUI
+    Public VM As SAL_ZX21_ConsoleUI
 #End Region
 #Region "SAL REPL"
     Private Sub ToolStripButtonCompileCode_Click(sender As Object, e As EventArgs) Handles SAL_ToolStripButtonCompileCode.Click
@@ -225,7 +225,7 @@ Public Class ZX81_REPL
 
 
     Private Sub ButtonOpenVM_Click(sender As Object, e As EventArgs) Handles SAL_ButtonOpenVM.Click, Small_PL_ButtonOpenVM.Click
-        VM = New VM_MachineUI
+        VM = New SAL_ZX21_ConsoleUI
         VM.Show()
     End Sub
 
