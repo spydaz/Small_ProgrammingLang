@@ -116,10 +116,10 @@
     <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\VM\Multi_REPL.Designer.vb">
+    <Compile Include="SourceCode\MachineUI\Multi_REPL.Designer.vb">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\VM\Multi_REPL.vb">
+    <Compile Include="SourceCode\MachineUI\Multi_REPL.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SourceCode\VM\ZX81_COMPILER.vb" />
@@ -144,7 +144,7 @@
     <EmbeddedResource Include="SourceCode\MachineUI\VM_MachineUI.resx">
       <DependentUpon>VM_MachineUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\VM\Multi_REPL.resx">
+    <EmbeddedResource Include="SourceCode\MachineUI\Multi_REPL.resx">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
