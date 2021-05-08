@@ -31,10 +31,6 @@
   <string>externalFilesFolder</string>
   <string>templateLocale</string>
   <string>fileNamingConvention</string>
-  <string>generateVbSyntax</string>
-  <string>generateCsharpSyntax</string>
-  <string>generateCppSyntax</string>
-  <string>generateJscriptSyntax</string>
   <string>helpTitle</string>
   <string>customTopics</string>
   <string>ListNamespacesWithShortNames</string>
@@ -42,7 +38,7 @@
 </ArrayOfString>]]></add>
       <add key="VBdocman_comProtected"><![CDATA[-1]]></add>
       <add key="VBdocman_supportedNetFrameworkClientProfile"><![CDATA[]]></add>
-      <add key="VBdocman_comPrivate"><![CDATA[0]]></add>
+      <add key="VBdocman_comPrivate"><![CDATA[-1]]></add>
       <add key="VBdocman_comWriteDescription"><![CDATA[0]]></add>
       <add key="VBdocman_comProtectedFriend"><![CDATA[-1]]></add>
       <add key="VBdocman_comObject"><![CDATA[-1]]></add>
@@ -66,7 +62,7 @@
       <add key="VBdocman_customVar3"><![CDATA[]]></add>
       <add key="VBdocman_unbreakSourceLines"><![CDATA[0]]></add>
       <add key="VBdocman_supportedNetFramework"><![CDATA[4.5, 4.5.1, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1]]></add>
-      <add key="VBdocman_pageFooterText"><![CDATA[Generated with <see href="http://www.helixoft.com/vsdocman/overview.html">VSdocman</see>]]></add>
+      <add key="VBdocman_pageFooterText"><![CDATA[Generated with <see href="http://www.spydazweb.co.uk"</see>]]></add>
       <add key="VBdocman_comConstant"><![CDATA[-1]]></add>
       <add key="VBdocman_supportedOthers"><![CDATA[]]></add>
       <add key="VBdocman_comForm"><![CDATA[-1]]></add>
@@ -74,12 +70,12 @@
       <add key="VBdocman_dontSortSeeAlsoList"><![CDATA[0]]></add>
       <add key="VBdocman_templateFolder"><![CDATA[$(VSdocmanDir)Templates]]></add>
       <add key="VBdocman_ConstantValueDisplay"><![CDATA[1]]></add>
-      <add key="VBdocman_helpTitle"><![CDATA[SOLUTION-WIDE PROPERTIES Reference]]></add>
-      <add key="VBdocman_insertSourceGlobal"><![CDATA[0]]></add>
+      <add key="VBdocman_helpTitle"><![CDATA[SpydazWeb AI Virtual Environment]]></add>
+      <add key="VBdocman_insertSourceGlobal"><![CDATA[1]]></add>
       <add key="VBdocman_SupportedNetStandard"><![CDATA[]]></add>
       <add key="VBdocman_SupportedXamarinMac"><![CDATA[]]></add>
-      <add key="VBdocman_comFriend"><![CDATA[0]]></add>
-      <add key="VBdocman_templatePath"><![CDATA[html_msdn2017.vbdt]]></add>
+      <add key="VBdocman_comFriend"><![CDATA[-1]]></add>
+      <add key="VBdocman_templatePath"><![CDATA[chm_msdn2.vbdt]]></add>
       <add key="VBdocman_comDeclare"><![CDATA[-1]]></add>
       <add key="VBdocman_conditionalConstants"><![CDATA[]]></add>
       <add key="VBdocman_SupportedXamarinAndroid"><![CDATA[]]></add>
@@ -92,8 +88,8 @@
   <topic>
     <type>normal</type>
     <is-default>yes</is-default>
-    <name>SOLUTION-WIDE PROPERTIES Reference</name>
-    <id>solutionwide_properties_reference</id>
+    <name>SpydazWeb AI Virtual Environment</name>
+    <id>spydazweb_ai_virtual_environment_reference</id>
     <comment><![CDATA[<summary></summary>vsdocman_escaped_]_]_></comment>
     <namespaces />
     <topics>
@@ -110,7 +106,7 @@
   </topic>
 </topics>]]></add>
       <add key="VBdocman_generateVbSyntax"><![CDATA[-1]]></add>
-      <add key="VBdocman_generateFsharpSyntax"><![CDATA[0]]></add>
+      <add key="VBdocman_generateFsharpSyntax"><![CDATA[-1]]></add>
       <add key="VBdocman_comEventDecl"><![CDATA[-1]]></add>
       <add key="VBdocman_comEvent"><![CDATA[-1]]></add>
       <add key="VBdocman_rootNamespaceText"><![CDATA[]]></add>

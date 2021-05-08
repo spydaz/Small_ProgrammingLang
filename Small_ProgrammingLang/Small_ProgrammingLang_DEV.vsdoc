@@ -20,8 +20,8 @@
     <add key="VBdocman_supportedPlatforms"><![CDATA[]]></add>
     <add key="VBdocman_comProtected"><![CDATA[-1]]></add>
     <add key="VBdocman_supportedNetFrameworkClientProfile"><![CDATA[]]></add>
-    <add key="VBdocman_comPrivate"><![CDATA[-1]]></add>
-    <add key="VBdocman_comWriteDescription"><![CDATA[-1]]></add>
+    <add key="VBdocman_comPrivate"><![CDATA[0]]></add>
+    <add key="VBdocman_comWriteDescription"><![CDATA[0]]></add>
     <add key="VBdocman_comProtectedFriend"><![CDATA[-1]]></add>
     <add key="VBdocman_comObject"><![CDATA[-1]]></add>
     <add key="VBdocman_comDelegate"><![CDATA[-1]]></add>
@@ -45,7 +45,7 @@
     <add key="VBdocman_customVar3"><![CDATA[]]></add>
     <add key="VBdocman_unbreakSourceLines"><![CDATA[0]]></add>
     <add key="VBdocman_supportedNetFramework"><![CDATA[4.5, 4.5.1, 4.5.2, 4.6, 4.6.1, 4.6.2, 4.7, 4.7.1]]></add>
-    <add key="VBdocman_pageFooterText"><![CDATA[<see href="http://www.spydazweb.co.uk"</see>]]></add>
+    <add key="VBdocman_pageFooterText"><![CDATA[Generated with <see href="http://www.spydazweb.co.uk</see>]]></add>
     <add key="VBdocman_comConstant"><![CDATA[-1]]></add>
     <add key="VBdocman_supportedOthers"><![CDATA[]]></add>
     <add key="VBdocman_comForm"><![CDATA[-1]]></add>
@@ -53,11 +53,11 @@
     <add key="VBdocman_dontSortSeeAlsoList"><![CDATA[0]]></add>
     <add key="VBdocman_templateFolder"><![CDATA[$(VSdocmanDir)Templates]]></add>
     <add key="VBdocman_ConstantValueDisplay"><![CDATA[1]]></add>
-    <add key="VBdocman_helpTitle"><![CDATA[Spydaz Web Virtual machine ZX21]]></add>
+    <add key="VBdocman_helpTitle"><![CDATA[Small_ProgrammingLang Reference]]></add>
     <add key="VBdocman_insertSourceGlobal"><![CDATA[1]]></add>
     <add key="VBdocman_SupportedNetStandard"><![CDATA[]]></add>
     <add key="VBdocman_SupportedXamarinMac"><![CDATA[]]></add>
-    <add key="VBdocman_comFriend"><![CDATA[-1]]></add>
+    <add key="VBdocman_comFriend"><![CDATA[0]]></add>
     <add key="VBdocman_templatePath"><![CDATA[chm_msdn2.vbdt]]></add>
     <add key="VBdocman_comDeclare"><![CDATA[-1]]></add>
     <add key="VBdocman_conditionalConstants"><![CDATA[]]></add>
@@ -71,8 +71,8 @@
   <topic>
     <type>normal</type>
     <is-default>yes</is-default>
-    <name>SAL_VM Reference</name>
-    <id>sal_vm_reference</id>
+    <name>Small_ProgrammingLang_DEV Reference</name>
+    <id>small_programminglang_dev_reference</id>
     <comment><![CDATA[<summary></summary>vsdocman_escaped_]_]_></comment>
     <namespaces />
     <topics>
@@ -80,7 +80,7 @@
         <type>placeholder</type>
         <is-default>no</is-default>
         <name />
-        <id>dd30f6882ddd4e378334a906bf224f0d</id>
+        <id>a1b1bf84b2fd44e49a969dfd80598dcd</id>
         <comment><![CDATA[vsdocman_escaped_]_]_></comment>
         <namespaces />
         <topics />

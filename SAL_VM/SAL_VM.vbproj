@@ -152,6 +152,12 @@
     <Content Include="Help\SpydazWeb AI _Emulators.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Help\SAL_VM.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\Small_ProgrammingLang.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -162,17 +168,23 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="Help\Small Programming Language.md" />
+    <Content Include="Help\Small Programming Language.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Help\Spydaz Virtual Machine Code Language.md" />
+    <Content Include="Help\Spydaz Virtual Machine Code Language.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\SAL.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\SPL.txt" />
+    <Content Include="Help\SPL.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="IconUFP.ico" />
     <None Include="Resources\X SERIES AL 9000s.jpg" />
     <None Include="Resources\SERIES 1 sal9000.bmp" />
