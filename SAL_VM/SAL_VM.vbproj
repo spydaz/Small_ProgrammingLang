@@ -149,6 +149,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Help\SpydazWeb AI _Emulators.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -159,13 +162,17 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="Small Programming Language.md" />
+    <None Include="Help\Small Programming Language.md" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Spydaz Virtual Machine Code Language.md" />
+    <None Include="Help\Spydaz Virtual Machine Code Language.md" />
     <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Help\SAL.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\SPL.txt" />
     <Content Include="IconUFP.ico" />
     <None Include="Resources\X SERIES AL 9000s.jpg" />
     <None Include="Resources\SERIES 1 sal9000.bmp" />
