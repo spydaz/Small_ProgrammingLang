@@ -19,7 +19,8 @@ Namespace SmallProgLang
         Public Enum ProgramLangs
             SAL = 1
             Small_PL = 2
-            Unknown = 3
+            LOGO = 3
+            Unknown = 4
         End Enum
         ''' <summary>
         ''' Programming Language Parser to AST
@@ -2225,6 +2226,1173 @@ Namespace SmallProgLang
 
         End Class
 
+
+
+
+        Public Class BaseParser
+
+            Public Function _Parse(ByRef nScript As String) As AstProgram
+                Dim Body As New List(Of Ast_ExpressionStatement)
+                Me.ParserErrors = New List(Of String)
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
+                Tokenizer = New Lexer(iScript)
+                'Dim TokType As GrammarFactory.Grammar.Type_Id
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+
+                'GetProgram
+                iProgram = _ProgramNode()
+
+
+                'Preserve InClass
+                Return iProgram
+            End Function
+            ''' <summary>
+            ''' Main Entry Point. 
+            ''' Syntax:
+            ''' 
+            ''' Program:
+            ''' -Literals
+            ''' 
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _ProgramNode() As AstProgram
+                Dim nde = New AstProgram(_StatementList)
+                nde._Raw = iScript
+                nde._Start = 0
+                nde._End = iScript.Length
+                nde._TypeStr = "PL PROGRAM"
+                Return nde
+            End Function
+            Private Function _StatementList() As List(Of AstExpression)
+                Throw New NotImplementedException()
+            End Function
+
+#Region "Propertys"
+            Public ParserErrors As New List(Of String)
+            ''' <summary>
+            ''' Currently held script
+            ''' </summary>
+            Public iScript As String = ""
+            ''' <summary>
+            ''' To hold the look ahead value without consuming the value
+            ''' </summary>
+            Public Lookahead As String
+            ''' <summary>
+            ''' Tokenizer !
+            ''' </summary>
+            Dim Tokenizer As Lexer
+            Private iProgram As AstProgram
+            Public ReadOnly Property Program As AstProgram
+                Get
+                    Return iProgram
+                End Get
+            End Property
+#End Region
+
+#Region "Basic Nodes"
+            ''' <summary>
+            ''' Syntax:
+            ''' 
+            ''' Numeric Literal:
+            '''  -Number
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _NumericLiteralNode() As Ast_Literal
+                Dim Str As Integer = 0
+                ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                If Integer.TryParse(tok.Value, Str) = True Then
+                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                Else
+                    'Unable to parse default 0 to preserve node listeral as integer
+                    Dim nde = New Ast_Literal(AST_NODE._integer, 0)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                End If
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' 
+            ''' Nullable Literal:
+            '''  -Null
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _NullableNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._null, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_null"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' "hjk"
+            ''' String Literal:
+            '''  -String
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _StringLiteralNode() As Ast_Literal
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim str As String = ""
+                If tok.Value.Contains("'") Then
+                    str = tok.Value.Replace("'", "")
+                Else
+                End If
+                If tok.Value.Contains(Chr(34)) Then
+                    str = tok.Value.Replace(Chr(34), "")
+                End If
+
+                Dim nde = New Ast_Literal(AST_NODE._string, str)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_string"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function _IdentifierLiteralNode() As Ast_Identifier
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim nde = New Ast_Identifier(tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_variable"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function _GetAssignmentOperator() As String
+                Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
+                str = str.Replace("\u003c", " Less than")
+                str = str.Replace("\u003e", " Greater Than ")
+                ' \U003c < Less-than sign
+                ' \U003e > Greater-than sign
+                str = str.Replace("<=", " Less than equals ")
+                str = str.Replace(">=", " Greater Than equals ")
+                str = str.Replace("<", " Less than ")
+                str = str.Replace(">", " Greater Than ")
+
+                Return UCase(str)
+            End Function
+            ''' <summary>
+            ''' Collects bad token
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used when data has already been collected
+            ''' </summary>
+            ''' <param name="ErrorTok"></param>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode(ByRef ErrorTok As Token) As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = ErrorTok
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used to denote white space as it is often important later
+            ''' Some Parsers ignore this token ; 
+            ''' It is thought also; to be prudent to collect all tokens to let the Evaluator deal with this later
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _WhitespaceNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._WhiteSpace, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_whitespace"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+#End Region
+
+        End Class
+        Public Class SalParser
+#Region "Propertys"
+            Public ParserErrors As New List(Of String)
+            ''' <summary>
+            ''' Currently held script
+            ''' </summary>
+            Public iScript As String = ""
+            ''' <summary>
+            ''' To hold the look ahead value without consuming the value
+            ''' </summary>
+            Public Lookahead As String
+            ''' <summary>
+            ''' Tokenizer !
+            ''' </summary>
+            Dim Tokenizer As Lexer
+            Private iProgram As AstProgram
+            Public ReadOnly Property Program As AstProgram
+                Get
+                    Return iProgram
+                End Get
+            End Property
+#End Region
+#Region "Standard Nodes"
+            ''' <summary>
+            ''' Used to Eat Node
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _CodeBeginNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._Code_Begin, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_Code_Begin"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function _ConditionalBeginNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Lookahead = Tokenizer.ViewNext
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._OperationBegin, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_OperationBegin"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function _ListEndNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+                Dim x = Tokenizer.GetIdentifiedToken(Lookahead)
+                'Dim nde = New Ast_Literal(AST_NODE._Code_End, tok.Value)
+                'nde._Start = tok._start
+                'nde._End = tok._End
+                'nde._Raw = tok.Value
+                'nde._TypeStr = "_Code_End"
+                'Lookahead = Tokenizer.ViewNext
+                Dim xDC = New Ast_Literal(AST_NODE._ListEnd)
+                xDC._Start = x._start
+                xDC._End = x._End
+                xDC._Raw = x.Value
+                Lookahead = Tokenizer.ViewNext
+                Return xDC
+            End Function
+            Public Function _ListBeginNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+                Dim x = Tokenizer.GetIdentifiedToken(Lookahead)
+                'Dim nde = New Ast_Literal(AST_NODE._Code_End, tok.Value)
+                'nde._Start = tok._start
+                'nde._End = tok._End
+                'nde._Raw = tok.Value
+                'nde._TypeStr = "_Code_End"
+                'Lookahead = Tokenizer.ViewNext
+                Dim xDC = New Ast_Literal(AST_NODE._ListEnd)
+                xDC._Start = x._start
+                xDC._End = x._End
+                xDC._Raw = x.Value
+                Lookahead = Tokenizer.ViewNext
+                Return xDC
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' 
+            ''' Numeric Literal:
+            '''  -Number
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _NumericLiteralNode() As Ast_Literal
+                Dim Str As Integer = 0
+                ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                If Integer.TryParse(tok.Value, Str) = True Then
+                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                Else
+                    'Unable to parse default 0 to preserve node listeral as integer
+                    Dim nde = New Ast_Literal(AST_NODE._integer, 0)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                End If
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' 
+            ''' Nullable Literal:
+            '''  -Null
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _NullableNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._null, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_null"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used for end of statement
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function __EmptyStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._emptyStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_emptyStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function __EndStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._endStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_endStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Collects bad token
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used when data has already been collected
+            ''' </summary>
+            ''' <param name="ErrorTok"></param>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode(ByRef ErrorTok As Token) As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = ErrorTok
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used to denote white space as it is often important later
+            ''' Some Parsers ignore this token ; 
+            ''' It is thought also; to be prudent to collect all tokens to let the Evaluator deal with this later
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _WhitespaceNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._WhiteSpace, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_whitespace"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' "hjk"
+            ''' String Literal:
+            '''  -String
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _StringLiteralNode() As Ast_Literal
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim str As String = ""
+                If tok.Value.Contains("'") Then
+                    str = tok.Value.Replace("'", "")
+                Else
+                End If
+                If tok.Value.Contains(Chr(34)) Then
+                    str = tok.Value.Replace(Chr(34), "")
+                End If
+
+                Dim nde = New Ast_Literal(AST_NODE._string, str)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_string"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function _IdentifierLiteralNode() As Ast_Identifier
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim nde = New Ast_Identifier(tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_variable"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+#End Region
+#Region "SAL_LITERALS"
+            ''' <summary>
+            ''' Sal Literals 
+            ''' The SAL Assembly language is of Pure Literals;
+            ''' Operators Also need to be handled as literals ;
+            ''' Each Expresion Statement needs to be terminated with a HALT command
+            ''' Sal Expressions are Inititiated as Statring with a "SAL" ending in "HALT"
+            ''' All Captured between will be Directly by the SAL Virtual Machine Interpretor
+            ''' 
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _SAL_Expression() As Ast_SalExpression
+                Dim lst As New List(Of Ast_Literal)
+                'First token SAL BEGIN
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+                'End of Expression is "HALT"
+                Do Until tok = Grammar.Type_Id.SAL_HALT
+                    Lookahead = Tokenizer.ViewNext
+                    tok = Tokenizer.IdentifiyToken(Lookahead)
+                    Select Case tok
+                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                            _WhitespaceNode()
+                        Case GrammarFactory.Grammar.Type_Id._INTEGER
+                            Dim fnd = _NumericLiteralNode()
+                            fnd._TypeStr = "_Integer"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case GrammarFactory.Grammar.Type_Id._STRING
+                            Dim fnd = _StringLiteralNode()
+                            fnd._TypeStr = "_string"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case GrammarFactory.Grammar.Type_Id._STATEMENT_END
+                            lst.Add(__EmptyStatementNode())
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id._SAL_EXPRESSION_BEGIN
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_BeginStatement, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "_Sal_BeginStatement"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "_Sal_BeginStatement"
+                            '  lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_Program_title, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "_SAL_PROGRAM_BEGIN"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "_SAL_PROGRAM_BEGIN"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_ADD
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_ADD, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "ADD"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "ADD"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_AND
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_AND, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "AND"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "AND"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_CALL
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_CALL, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "CALL"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "CALL"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_DECR
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DECR, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "DECR"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "DECR"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_DIV
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DIV, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "DIV"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "DIV"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_DUP
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DUP, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "DUP"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "DUP"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_HALT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "HALT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "HALT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                            Exit Select
+                        Case Grammar.Type_Id.SAL_INCR
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_INCR, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "INCR"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "INCR"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_IS_EQ
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "IS_EQ"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "IS_EQ"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_IS_GT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "IS_GT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "IS_GT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_IS_GTE
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GTE, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "IS_GTE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "IS_GTE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_IS_LT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_LT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "IS_LT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "IS_LT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_IS_LTE
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "IS_LTE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "IS_LTE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JIF_EQ
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_EQ, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JIF_EQ"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JIF_EQ"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JIF_F
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_F, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JIF_F"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JIF_F"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JIF_GT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_GT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JIF_GT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JIF_GT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JIF_LT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_LT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JIF_LT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JIF_LT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JIF_T
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JIF_T"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JIF_T"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_JMP
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JMP, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "JMP"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "JMP"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_LOAD
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_LOAD, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "LOAD"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "LOAD"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_MUL
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_MUL, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "MUL"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "MUL"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_NOT
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NOT, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "NOT"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "NOT"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_NULL
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NULL, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "NULL"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "NULL"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_OR
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_OR, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "OR"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "OR"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PAUSE
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PAUSE, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PAUSE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PAUSE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PEEK
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PEEK, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PEEK"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PEEK"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PRINT_C
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_C, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PRINT_C"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PRINT_C"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PRINT_M
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_M, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PRINT_M"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PRINT_M"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PULL
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PULL, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PULL"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PULL"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_PUSH
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PUSH, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "PUSH"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "PUSH"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_REMOVE
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_REMOVE, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "REMOVE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "REMOVE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_RESUME
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RESUME, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "RESUME"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "RESUME"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_RET
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RET, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "RET"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "RET"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_STORE
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "STORE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "STORE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_SUB
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "STORE"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "STORE"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_TO_NEG
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_NEG, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "TO_NEG"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "TO_NEG"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id.SAL_TO_POS
+                            Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_POS, nTok.Value)
+                            fnd._End = nTok._End
+                            fnd._Raw = "TO_POS"
+                            fnd._Start = nTok._start
+                            fnd._TypeStr = "TO_POS"
+                            lst.Add(fnd)
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id._WHITESPACE
+                            _WhitespaceNode()
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                        Case Grammar.Type_Id._BAD_TOKEN
+                            'Technically badtoken try capture
+                            Dim etok = __UnknownStatementNode()
+                            ParserErrors.Add("Unknown Statement/Expression Uncountered" & vbNewLine & etok.ToJson.FormatJsonOutput & vbNewLine)
+                            lst.Add(etok)
+                            Lookahead = Tokenizer.ViewNext
+                            Lookahead = "EOF"
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                            'Set End of File
+                            Return New Ast_SalExpression(lst)
+                        Case Else
+                            Lookahead = Tokenizer.ViewNext
+                            tok = Tokenizer.IdentifiyToken(Lookahead)
+                            Return New Ast_SalExpression(lst)
+
+                    End Select
+                Loop
+                Lookahead = Tokenizer.ViewNext
+                tok = Tokenizer.IdentifiyToken(Lookahead)
+                If tok = Grammar.Type_Id.SAL_HALT Then
+                    Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                    Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
+                    fnd._End = nTok._End
+                    fnd._Raw = "HALT"
+                    fnd._Start = nTok._start
+                    fnd._TypeStr = "HALT"
+                    lst.Add(fnd)
+                    Lookahead = Tokenizer.ViewNext
+                    tok = Tokenizer.IdentifiyToken(Lookahead)
+                    Dim stat = New Ast_SalExpression(lst)
+                    For Each item In lst
+                        stat._Raw &= item._Raw & " "
+                    Next
+                    Return stat
+                Else
+                    'Technically badtoken try capture
+                    Dim etok = __UnknownStatementNode()
+                    ParserErrors.Add("Missing Halt maker" & vbNewLine & etok.ToJson.FormatJsonOutput)
+                    lst.Add(etok)
+                    Dim stat = New Ast_SalExpression(lst)
+                    For Each item In lst
+                        stat._Raw &= item._Raw & " "
+                    Next
+                    Return stat
+                End If
+            End Function
+            Public Function _SAL_StatementList() As List(Of AstExpression)
+                Dim lst As New List(Of AstExpression)
+                Do While (Tokenizer.ViewNext <> "EOF")
+                    Dim nde = _SAL_Expression()
+                    If nde IsNot Nothing Then
+                        lst.Add(nde)
+                    End If
+                Loop
+                Return lst
+            End Function
+#End Region
+
+            Public Function _GetAssignmentOperator() As String
+                Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
+                str = str.Replace("\u003c", "_IS_LT")
+                str = str.Replace("\u003e", "_IS_GT")
+                ' \U003c < Less-than sign
+                ' \U003e > Greater-than sign
+                str = str.Replace("<=", "_IS_LTE")
+                str = str.Replace("+=", "_INCR")
+                str = str.Replace("-=", "_DECR")
+                str = str.Replace(">=", "_IS_GTE")
+                str = str.Replace("<", "_IS_LT")
+                str = str.Replace(">", "_IS_GT")
+                str = str.Replace("==", "_IS_EQ")
+                str = str.Replace("+", "_ADD")
+                str = str.Replace("-", "_SUB")
+                str = str.Replace("/", "_DIV")
+                str = str.Replace("*", "_MUL")
+                str = str.Replace("=", "_ASSIGNS")
+                Return UCase(str)
+            End Function
+            Public Function _SAL_ProgramNode() As AstProgram
+                Dim nde = New AstProgram(_SAL_StatementList)
+                nde._Raw = iScript
+                nde._Start = 0
+                nde._End = iScript.Length
+                nde._TypeStr = "SAL PROGRAM"
+                Return nde
+            End Function
+        End Class
+        Public Class LogoParser
+#Region "Propertys"
+            Public ParserErrors As New List(Of String)
+            ''' <summary>
+            ''' Currently held script
+            ''' </summary>
+            Public iScript As String = ""
+            ''' <summary>
+            ''' To hold the look ahead value without consuming the value
+            ''' </summary>
+            Public Lookahead As String
+            ''' <summary>
+            ''' Tokenizer !
+            ''' </summary>
+            Dim Tokenizer As Lexer
+            Private iProgram As AstProgram
+            Public ReadOnly Property Program As AstProgram
+                Get
+                    Return iProgram
+                End Get
+            End Property
+#End Region
+            Public Function _LOGO_ProgramNode() As AstProgram
+                Dim nde = New AstProgram(_LOGO_StatementList)
+                nde._Raw = iScript
+                nde._Start = 0
+                nde._End = iScript.Length
+                nde._TypeStr = "LOGO PROGRAM"
+                Return nde
+            End Function
+
+            '
+            'Syntax;
+            '
+            '
+            Public Function _LOGO_StatementList() As List(Of AstExpression)
+                Return Nothing
+            End Function
+
+
+            Public Function _GetAssignmentOperator() As String
+                Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
+                str = str.Replace("\u003c", "<")
+                str = str.Replace("\u003e", ">")
+                ' \U003c < Less-than sign
+                ' \U003e > Greater-than sign
+
+
+                Return UCase(str)
+            End Function
+            Public Function _IdentifierLiteralNode() As Ast_Identifier
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim nde = New Ast_Identifier(tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_name"
+
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            Public Function __EndStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._endStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_endStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Collects bad token
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used when data has already been collected
+            ''' </summary>
+            ''' <param name="ErrorTok"></param>
+            ''' <returns></returns>
+            Public Function __UnknownStatementNode(ByRef ErrorTok As Token) As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
+                Dim tok As Token = ErrorTok
+                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_UnknownStatement"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Used to denote white space as it is often important later
+            ''' Some Parsers ignore this token ; 
+            ''' It is thought also; to be prudent to collect all tokens to let the Evaluator deal with this later
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _WhitespaceNode() As Ast_Literal
+                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                Dim nde = New Ast_Literal(AST_NODE._WhiteSpace, tok.Value)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_whitespace"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' "hjk"
+            ''' String Literal:
+            '''  -String
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _StringLiteralNode() As Ast_Literal
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+
+                Dim str As String = ""
+                If tok.Value.Contains("'") Then
+                    str = tok.Value.Replace("'", "")
+                Else
+                End If
+                If tok.Value.Contains(Chr(34)) Then
+                    str = tok.Value.Replace(Chr(34), "")
+                End If
+
+                Dim nde = New Ast_Literal(AST_NODE._string, str)
+                nde._Start = tok._start
+                nde._End = tok._End
+                nde._Raw = tok.Value
+                nde._TypeStr = "_string"
+                Lookahead = Tokenizer.ViewNext
+                Return nde
+            End Function
+            ''' <summary>
+            ''' Syntax:
+            ''' 
+            ''' Numeric Literal:
+            '''  -Number
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _NumericLiteralNode() As Ast_Literal
+                Dim Str As Integer = 0
+                ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
+                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
+                If Integer.TryParse(tok.Value, Str) = True Then
+                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                Else
+                    'Unable to parse default 0 to preserve node listeral as integer
+                    Dim nde = New Ast_Literal(AST_NODE._integer, 0)
+                    nde._Start = tok._start
+                    nde._End = tok._End
+                    nde._Raw = tok.Value
+                    nde._TypeStr = "_integer"
+                    Lookahead = Tokenizer.ViewNext
+                    Return nde
+                End If
+            End Function
+        End Class
     End Namespace
 End Namespace
 #End Region

@@ -79,7 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SourceCode\LOGO_LANG\LogoGrammar.vb" />
+    <Compile Include="SourceCode\Parser.vb" />
     <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.Designer.vb">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </Compile>
@@ -120,7 +120,6 @@
     <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\Parser.vb" />
     <Compile Include="SourceCode\SAL_VM\PL_COMPILER.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -209,7 +208,9 @@
   <ItemGroup>
     <None Include="Resources\Complier_RUN.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SourceCode\LOGO_LANG\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="COM.ICO" />
     <Content Include="Help\SPL.txt" />
