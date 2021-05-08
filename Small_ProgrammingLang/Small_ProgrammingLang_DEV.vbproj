@@ -79,6 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SourceCode\LOGO_LANG\LogoGrammar.vb" />
     <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.Designer.vb">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </Compile>

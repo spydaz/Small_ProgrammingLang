@@ -121,6 +121,34 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The section numbers are per the Berkeley Logo Reference Manual in Brian Harvey&apos;s Computer Science Logo Style volume 2: Advanced Techniques for ease of comparison.
+        '''
+        '''Data Types and Syntax
+        '''Data Structure Primitives
+        '''Communication
+        '''Arithmetic
+        '''Logical Operations
+        '''Graphics
+        '''Workspace Management
+        '''Control Structures
+        '''Data Types and Syntax
+        '''&quot;word
+        '''&apos;word
+        '''number
+        '''Word. (Quoted words are terminated by [](){} or whitespace, \ to escape.)
+        '''show &quot;hello
+        '''show &quot;hello\ logo
+        '''show 12.34
+        ''':variable
+        '''Input definition/varia [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property LOGO_QUICK_REF() As String
+            Get
+                Return ResourceManager.GetString("LOGO_QUICK_REF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized string similar to SpydazWeb Assembly Language : 
         '''	Description :
         '''		This assembly language is specific to this virtual processor 

@@ -1421,6 +1421,37 @@ Namespace SmallProgLang
                 _VARIABLE
                 _WHITESPACE
                 _COMMENTS
+                _repeat
+                _fd
+                _bk
+                _rt
+                _lt
+                _cs
+                _pu
+                _pd
+                _ht
+                _st
+                _deref
+                _home
+                _label
+                _setxy
+                _make
+                _procedureInvocation
+                _procedureDeclaration
+                _parameterDeclarations
+                _comparison
+                _comparisonOperator
+                _ife
+                _Stop
+                _fore
+                _LOGO_LANG
+                _COMMENT
+                _signExpression
+                _multiplyingExpression
+                _expression
+                EOL
+                _number
+                _name
             End Enum
             ''' <summary>
             ''' Identifier
@@ -1681,9 +1712,7 @@ Namespace SmallProgLang
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._EQUALITY
                 NewGram.Exp = "^(=|!)=\="
-
                 iSpec.Add(NewGram)
-
                 'Relational operators: >, >=, <, <=
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._RELATIONAL_OPERATOR
