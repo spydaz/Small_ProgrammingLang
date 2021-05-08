@@ -53,7 +53,12 @@ Public Class EMU_MachineUI
                 Return "https://esprima.org/demo/parse.html"
             Case ".NET"
                 Return "https://try.dot.net/"
-
+            Case "WASM Explorer"
+                Return "https://mbebenita.github.io/WasmExplorer/"
+            Case "Web Assembly Studio"
+                Return "https://webassembly.studio/"
+            Case "VB Online Compiler"
+                Return "https://rextester.com/l/visual_basic_online_compiler"
         End Select
         Return Nothing
     End Function

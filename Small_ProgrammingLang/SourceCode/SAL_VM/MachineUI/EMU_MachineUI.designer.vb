@@ -77,7 +77,7 @@ Partial Class EMU_MachineUI
         '
         Me.ComboBoxURL.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ComboBoxURL.FormattingEnabled = True
-        Me.ComboBoxURL.Items.AddRange(New Object() {"Amiga Workbench Simulator", "Windows 3.1", "Windows 3.1 with CD-ROM", "Macintosh System 7", "Windows 95", "OS/2", "Windows 93", "Atari ST", "Windows 1.0", "EmuOS", "Mac Oxs Lion 10", "PCDOS 5", "Mac os7", "Mermaid diagrams", "AST Explorer", "Visual basic", "Nearly Parser", "Code Script Prettier", ".NET"})
+        Me.ComboBoxURL.Items.AddRange(New Object() {"Amiga Workbench Simulator", "Windows 3.1", "Windows 3.1 with CD-ROM", "Macintosh System 7", "Windows 95", "OS/2", "Windows 93", "Atari ST", "Windows 1.0", "EmuOS", "Mac Oxs Lion 10", "PCDOS 5", "Mac os7", "Mermaid diagrams", "AST Explorer", "Visual basic", "Nearly Parser", "Code Script Prettier", ".NET", "Web Assembly Studio", "WASM Explorer", "VB Online Compiler"})
         Me.ComboBoxURL.Location = New System.Drawing.Point(7, 28)
         Me.ComboBoxURL.Name = "ComboBoxURL"
         Me.ComboBoxURL.Size = New System.Drawing.Size(261, 28)

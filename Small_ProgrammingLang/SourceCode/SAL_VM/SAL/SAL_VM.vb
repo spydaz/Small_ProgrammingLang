@@ -1,5 +1,281 @@
-﻿Imports System
-Imports System.Web.Script.Serialization
+﻿Imports System.Web.Script.Serialization
+
+'EXTENSIONS
+'
+Namespace SAL
+    Public Module Ext
+        <System.Runtime.CompilerServices.Extension()>
+        Public Function SplitAtNewLine(input As String) As IEnumerable(Of String)
+            Return input.Split({Environment.NewLine}, StringSplitOptions.None)
+        End Function
+        <System.Runtime.CompilerServices.Extension()>
+        Public Function ExtractLastChar(ByRef InputStr As String) As String
+            ExtractLastChar = Right(InputStr, 1)
+        End Function
+        <System.Runtime.CompilerServices.Extension()>
+        Public Function ExtractFirstChar(ByRef InputStr As String) As String
+            ExtractFirstChar = Left(InputStr, 1)
+        End Function
+
+    End Module
+End Namespace
+'HELPER FUNCTIONS
+'
+Namespace SAL
+    Public Module SalCode_Helpers
+        Private Function _Binary_op(ByRef Left As Integer, ByRef Right As Integer, ByRef iOperator As String) As List(Of String)
+
+            Dim PROGRAM As New List(Of String)
+            Select Case iOperator
+                Case "-"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("SUB")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "+"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("ADD")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "/"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("DIV")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "*"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("MUL")
+                    PROGRAM.Add("PRINT_M")
+                Case ">"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("IS_GT")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "<"
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("IS_LT")
+                    PROGRAM.Add("PRINT_M")
+
+                Case ">="
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("IS_GTE")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "<="
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("IS_LTE")
+                    PROGRAM.Add("PRINT_M")
+
+                Case "="
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Left.ToString)
+                    PROGRAM.Add("PUSH")
+                    PROGRAM.Add(Right.ToString)
+                    PROGRAM.Add("IS_EQ")
+                    PROGRAM.Add("PRINT_M")
+
+            End Select
+            Return PROGRAM
+        End Function
+        Private Function _CheckCondition(ByRef Left As Integer, ByRef Right As Integer, ByRef iOperator As String) As Boolean
+
+            Select Case iOperator
+
+                Case ">"
+                    If Left > Right Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+
+
+                Case "<"
+                    If Left < Right Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+
+                Case ">="
+                    If Left >= Right Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+
+                Case "<="
+                    If Left <= Right Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+
+                Case "="
+                    If Left = Right Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Case Else
+                    Return False
+            End Select
+
+        End Function
+        Private Function _print(ByRef Str As String) As List(Of String)
+
+            Dim PROGRAM As New List(Of String)
+            PROGRAM.Add("PUSH")
+            PROGRAM.Add(Str.Replace("'", ""))
+            PROGRAM.Add("PRINT_M")
+            Return PROGRAM
+
+        End Function
+#Region "IF"
+        ''' <summary>
+        '''       If ["condition"] Then ["If-True"]  End
+        ''' </summary>
+        ''' <param name="_If">If ["condition"]</param>
+        ''' <param name="_Then">Then ["If-True"]  End</param>
+        Private Function _if_then(ByRef _If As List(Of String), ByRef _Then As List(Of String)) As List(Of String)
+            Dim PROGRAM As New List(Of String)
+            'ADD CONDITION
+            PROGRAM.AddRange(_If)
+            'JUMP TO END - IF FALSE
+            PROGRAM.Add("JIF_F")
+            PROGRAM.Add(_Then.Count)
+            PROGRAM.AddRange(_Then)
+            'END
+
+            Return PROGRAM
+        End Function
+        ''' <summary>
+        '''     If ["condition"] Then ["If-True"] ELSE ["If-False"] End
+        ''' </summary>
+        ''' <param name="_If">If ["condition"]</param>
+        ''' <param name="_Then">Then ["If-True"]</param>
+        ''' <param name="_Else">ELSE ["If-False"]</param>
+        Private Function _if_then_else(ByRef _If As List(Of String), ByRef _Then As List(Of String), ByRef _Else As List(Of String)) As List(Of String)
+
+            Dim PROGRAM As New List(Of String)
+            'ADD CONDITION
+            PROGRAM.AddRange(_If)
+            'JUMP TO ELSE IF FALSE
+            PROGRAM.Add("JIF_F")
+            PROGRAM.Add(_If.Count + _Then.Count + 2)
+            'THEN PART
+            PROGRAM.AddRange(_Then)
+            'JUMP TO END
+            PROGRAM.Add("JMP")
+            PROGRAM.Add(_If.Count + _Then.Count + 4 + _Else.Count)
+            'ELSE PART
+            PROGRAM.AddRange(_Else)
+            'END
+            Return PROGRAM
+        End Function
+#End Region
+    End Module
+End Namespace
+'STACK-MEMORY-FRAME
+'
+Namespace SAL
+    ''' <summary>
+    ''' Memory frame for Variables 
+    ''' </summary>
+    Public Class StackMemoryFrame
+        Public Structure Var
+            Public Value As Integer
+            Public VarNumber As String
+        End Structure
+        Public ReturnAddress As Integer
+        Public Variables As List(Of Var)
+
+        Public Sub New(ByRef ReturnAddress As Integer)
+            ReturnAddress = ReturnAddress
+            Variables = New List(Of Var)
+        End Sub
+        Public Function GetReturnAddress() As Integer
+
+            Return ReturnAddress
+        End Function
+        Public Function GetVar(ByRef VarName As String) As Integer
+            For Each item In Variables
+                If item.VarNumber = VarName Then
+                    Return item.Value
+
+                End If
+            Next
+            Return 0
+        End Function
+        Public Sub SetVar(ByRef VarName As String, ByRef value As Object)
+            Dim item As New Var
+            item.VarNumber = VarName
+            item.Value = value
+
+            Variables.Add(item)
+        End Sub
+    End Class
+End Namespace
+'API
+'
+Namespace SAL
+    Public Class X86API
+        Public Shared Function RunMachineCode(ByRef Code As String) As String
+            Code = UCase(Code)
+            Dim PROG() As String = Split(Code.Replace(vbCrLf, " "), " ")
+            Dim InstructionLst As New List(Of String)
+            Dim ROOT As New TreeNode
+            ROOT.Text = "ASSEMBLY_CODE"
+            Dim Count As Integer = 0
+            For Each item In PROG
+                Count += 1
+                If item <> "" Then
+                    Dim NDE As New TreeNode
+                    NDE.Text = Count & ": " & item
+                    ROOT.Nodes.Add(NDE)
+                    InstructionLst.Add(item)
+                End If
+            Next
+            'cpu - START
+
+
+
+            Dim CPU As ZX81_CPU = New ZX81_CPU("Test", InstructionLst)
+            CPU.RUN()
+
+            Tree = ROOT
+            Return "CURRENT POINTER = " & CPU.Get_Instruction_Pointer_Position & vbCr & "CONTAINED DATA = " & CPU.Peek
+
+
+        End Function
+        Public Shared Tree As New TreeNode
+    End Class
+End Namespace
+'CPU
+'
 Namespace SAL
     ''' <summary>
     ''' SpydazWeb X86 Assembly language Virtual X86 Processor
@@ -1061,4 +1337,105 @@ Namespace SAL
     End Class
 
 
+End Namespace
+'GPU
+'
+Namespace SAL
+    Public Class ZX81_GPU
+        Private iMonitorConsole As FormDisplayConsole
+
+        Public Sub New()
+            iMonitorConsole = New FormDisplayConsole
+        End Sub
+
+        Public Sub ConsolePrint(ByRef Str As String)
+            If iMonitorConsole.Visible = False Then
+                iMonitorConsole.Show()
+            Else
+            End If
+            iMonitorConsole.Print(Str)
+        End Sub
+        Public Sub Console_CLS()
+            If iMonitorConsole.Visible = False Then
+                iMonitorConsole.Show()
+            Else
+            End If
+            iMonitorConsole.CLS()
+        End Sub
+    End Class
+End Namespace
+'RAM
+'
+Namespace SAL
+    Public Class ZX81_RAM
+        Public Structure Variable
+            Public iName As String
+            Public iValue As String
+            Public iType As String
+        End Structure
+        ''' <summary>
+        ''' Currently only Variables can be stored
+        ''' </summary>
+        Public CurrentVars As List(Of Variable)
+        Public Sub New()
+            CurrentVars = New List(Of Variable)
+        End Sub
+
+        'Variables
+
+        Public Sub UpdateVar(ByRef VarName As String, ByRef iVALUE As String)
+            For Each item In CurrentVars
+                If item.iName = VarName Then
+                    Dim NiTEM As Variable = item
+                    NiTEM.iValue = iVALUE
+                    CurrentVars.Remove(item)
+                    CurrentVars.Add(NiTEM)
+                    Exit For
+                Else
+                End If
+            Next
+        End Sub
+        Public Function RemoveVar(ByRef Var As Variable)
+            For Each item In CurrentVars
+                If item.iName = Var.iName Then
+                    CurrentVars.Remove(item)
+                End If
+            Next
+            Return Var
+        End Function
+        Public Sub AddVar(ByRef Var As Variable)
+            If CheckVar(Var.iName) = False Then
+                CurrentVars.Add(Var)
+            End If
+        End Sub
+        Public Function CheckVar(ByRef VarName As String) As Boolean
+            For Each item In CurrentVars
+                If item.iName = VarName Then
+                    Return True
+                End If
+            Next
+            CheckVar = False
+        End Function
+        Public Function GetVar(ByRef VarName As String) As String
+            For Each item In CurrentVars
+                If item.iName = VarName = True Then
+                    If item.iType = "BOOLEAN" Then
+                        Select Case item.iValue
+                            Case 0
+                                Return "False"
+                            Case 1
+                                Return "True"
+                            Case Else
+                                Return item.iValue
+                        End Select
+                    Else
+                        Return item.iValue
+                    End If
+
+                Else
+                End If
+            Next
+            Return VarName
+        End Function
+    End Class
 End Namespace
