@@ -91,7 +91,6 @@
     <Compile Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\PL_COMPILER.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -120,6 +119,8 @@
     <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SourceCode\SAL_VM\Parser.vb" />
+    <Compile Include="SourceCode\SAL_VM\PL_COMPILER.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.resx">
