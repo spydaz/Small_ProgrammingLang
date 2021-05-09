@@ -5,7 +5,6 @@ Namespace SmallProgLang
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public Class Ast_Logo_Value
             Inherits Ast_Literal
-
             Public Sub New(ByRef ntype As AST_NODE)
                 MyBase.New(ntype)
             End Sub

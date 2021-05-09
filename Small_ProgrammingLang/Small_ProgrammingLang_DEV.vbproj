@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SourceCode\LOGO_LANG\Ast_LogoExpression.vb" />
+    <Compile Include="SourceCode\LOGO_LANG\TURTLE.vb" />
     <Compile Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.Designer.vb">
       <DependentUpon>FormGraphicsDisplayConsole.vb</DependentUpon>
     </Compile>
