@@ -71,96 +71,125 @@ Namespace SmallProgLang
             '
             Public Function _StatementList() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
-                lst.AddRange(_LogoStatementList)
+                lst.AddRange(_LogoExpressionList)
                 Return lst
             End Function
-            Public Function _LogoStatementList() As List(Of AstExpression)
+            Public Function _LogoExpressionList() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
                 Lookahead = Tokenizer.ViewNext
                 Dim tok As Type_Id
                 tok = Tokenizer.IdentifiyToken(Lookahead)
+                Do Until tok = Type_Id._EOF
+                    'DetectNewline
+                    Select Case tok
+                        Case Type_Id._WHITESPACE
+                            _WhitespaceNode()
+                        Case Else
+                            lst.Add(_Expression)
+                    End Select
 
-
+                    tok = Tokenizer.IdentifiyToken(Lookahead)
+                Loop
+                Return lst
+            End Function
+            Public Function _Literal() As Ast_Literal
+                Lookahead = Tokenizer.ViewNext
+                Dim tok As Type_Id
+                tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
-                    Case Type_Id.LOGO_EOL
 
 
+                    Case Type_Id._STRING
+                        Return _StringLiteralNode()
+                    Case Type_Id.LOGO_number
+                        Return _NumericLiteralNode()
+                    Case Else
+                        Return New Ast_Logo_Value(AST_NODE._UnknownStatement, Lookahead)
+                End Select
+                Return Nothing
+            End Function
+            Public Function _Expression() As AstExpression
+                Lookahead = Tokenizer.ViewNext
+                Dim tok As Type_Id
+                tok = Tokenizer.IdentifiyToken(Lookahead)
+                Select Case tok
 
                     Case Type_Id.LOGO_name
                         Dim _Left = _IdentifierLiteralNode()
-                        'Check if it is a left hand cmd
-                        Select Case LCase(_Left._Name)
-                            Case "ht"
-                            Case "hideturtle"
-                            Case "fd"
-                            Case "forward"
-                            Case "bk"
-                            Case "backward"
-                            Case "bk"
-                            Case "backward"
-                            Case "rt"
-                            Case "right"
-                            Case "lt"
-                            Case "label"
-                            Case "if"
-                            Case "for"
-                            Case "deref"
-                            Case "setxy"
-                            Case "st"
-                            Case "stop"
-                            Case "pu"
-                            Case "pd"
-                            Case "make"
-                            Case Else
-                                'Must be a variable
-                                lst.Add(New Ast_Logo_Expression(_Left))
-                        End Select
-                       ' lst.Add(New Ast_Logo_Expression())
-                    Case Type_Id._STRING
-                        lst.Add(New Ast_Logo_Expression(_StringLiteralNode()))
-                    Case Type_Id.LOGO_number
-                        lst.Add(New Ast_Logo_Expression(_NumericLiteralNode()))
-
-                    Case Type_Id.LOGO_comparisonOperator
-
-                    Case Type_Id._WHITESPACE
-                        _WhitespaceNode()
+                        Return _ComandFunction(_Left)
+                    Case Else
+                        Return _PrimaryExpression()
                 End Select
-
-
-                Return lst
+                Return Nothing
             End Function
-            Public Function _ComandFunction(ByRef _Left As Ast_LogoIdentifer) As Ast_LogoCmdExpression
+            Public Function _PrimaryExpression() As AstExpression
+                Return New Ast_Logo_Expression(_Literal)
+            End Function
+            Public Function _ComandFunction(ByRef _Left As Ast_LogoIdentifer) As AstExpression
+                Lookahead = Tokenizer.ViewNext
+                Dim tok As Type_Id
+                tok = Tokenizer.IdentifiyToken(Lookahead)
+                If tok = Type_Id._WHITESPACE Then
+                    Do Until tok <> Type_Id._WHITESPACE
+                        _WhitespaceNode()
+                        tok = Tokenizer.IdentifiyToken(Lookahead)
+                    Loop
+                End If
+
                 Select Case LCase(_Left._Name)
                     Case "ht"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "hideturtle"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "fd"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "forward"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "bk"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "backward"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "bk"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "backward"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "rt"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "right"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "lt"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "label"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "if"
                     Case "for"
                     Case "deref"
                     Case "setxy"
+                        ' _Left, _
+                        Dim _right_X = _NumericLiteralNode()
+                        _WhitespaceNode()
+                        Dim _right_Y = _NumericLiteralNode()
+
                     Case "st"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "stop"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "pu"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "pd"
+                        Return New Ast_Logo_Expression(_Left)
                     Case "make"
+
                     Case Else
 
                 End Select
                 'Must be a variable
-                '  Return Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left)
-                Return Nothing
-            End Function
+                Dim x = New Ast_Logo_Expression(_Left)
+                x._Type = AST_NODE._UnknownStatement
+                x._TypeStr = "_UnknownFunction"
+                Return x
 
+            End Function
             Public Function _GetAssignmentOperator() As String
                 Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
                 str = str.Replace("\u003c", "<")

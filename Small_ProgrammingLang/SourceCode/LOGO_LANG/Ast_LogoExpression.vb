@@ -49,12 +49,12 @@ Namespace SmallProgLang
             ''' <param name="ParentEnv"></param>
             ''' <returns></returns>
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Return GetValue(ParentEnv)
             End Function
 
 
             Public Overrides Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Return _Left_Cmd._Name & " " & _Right_Value.GetValue(ParentEnv)
             End Function
 
             Public Overrides Function GenerateSalCode(ByRef ParentEnv As EnvironmentalMemory) As String
@@ -80,13 +80,13 @@ Namespace SmallProgLang
         Public Class Ast_Logo_Expression
             Inherits AstExpression
             Public _value As Ast_Literal
-            Public Sub New(ByRef ivalue As Ast_Literal)
+            Public Sub New(ByRef ivalue As AstNode)
                 MyBase.New(AST_NODE.Logo_Expression)
                 Me._TypeStr = "_Logo_Expression"
             End Sub
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Return GetValue(ParentEnv)
             End Function
 
             Public Overrides Function GenerateSalCode(ByRef ParentEnv As EnvironmentalMemory) As String
@@ -94,7 +94,7 @@ Namespace SmallProgLang
             End Function
 
             Public Overrides Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Return _value.iLiteral
             End Function
 
             Private Function GetDebuggerDisplay() As String
