@@ -106,6 +106,7 @@ Partial Class Multi_REPL
         Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.TabPageLOGO = New System.Windows.Forms.TabPage()
         Me.TabControl_ProgrammingLang_Repl.SuspendLayout()
         Me.TabPageSpydaz_PL.SuspendLayout()
         Me.TabControlRepl_Inner.SuspendLayout()
@@ -183,6 +184,7 @@ Partial Class Multi_REPL
         '
         Me.TabControlRepl_Inner.Controls.Add(Me.TabPageSmall_PL_repl)
         Me.TabControlRepl_Inner.Controls.Add(Me.TabPageSAL_REPL)
+        Me.TabControlRepl_Inner.Controls.Add(Me.TabPageLOGO)
         Me.TabControlRepl_Inner.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControlRepl_Inner.Location = New System.Drawing.Point(5, 6)
         Me.TabControlRepl_Inner.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
@@ -1043,6 +1045,16 @@ Partial Class Multi_REPL
         '
         Me.ToolTip1.IsBalloon = True
         '
+        'TabPageLOGO
+        '
+        Me.TabPageLOGO.Location = New System.Drawing.Point(4, 31)
+        Me.TabPageLOGO.Name = "TabPageLOGO"
+        Me.TabPageLOGO.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageLOGO.Size = New System.Drawing.Size(1551, 664)
+        Me.TabPageLOGO.TabIndex = 3
+        Me.TabPageLOGO.Text = "LOGO"
+        Me.TabPageLOGO.UseVisualStyleBackColor = True
+        '
         'Multi_REPL
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 22.0!)
@@ -1198,4 +1210,5 @@ Partial Class Multi_REPL
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents TabPagePl_Help As TabPage
     Friend WithEvents RichTextBoxPL_Help As RichTextBox
+    Friend WithEvents TabPageLOGO As TabPage
 End Class

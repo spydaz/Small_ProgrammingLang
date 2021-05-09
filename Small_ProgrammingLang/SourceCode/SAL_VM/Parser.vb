@@ -7,8 +7,7 @@ Imports SDK.SmallProgLang.GrammarFactory
 'Author : Leroy Samuel Dyer ("Spydaz")
 '-------------------------------------
 'NOTE: 
-'Loosly - Based on DIMTRY (Building a Parser from Scratch)
-'This is a test of that style of AST creation _  
+
 'MODEL_
 'LEX _ PARSE _ EVAL 
 Namespace SmallProgLang
@@ -1560,7 +1559,7 @@ Namespace SmallProgLang
                             Return X
                         End If
                     Case = UCase("bool")
-                        Dim temp = Tokenizer.GetIdentifiedToken(Lookahead)
+                        Tokenizer.GetIdentifiedToken(Lookahead)
                         Dim X = New Ast_VariableDeclarationExpression(_left, AST_NODE._boolean)
                         Lookahead = Tokenizer.ViewNext
                         If Lookahead = ";" = True Then
@@ -2225,10 +2224,6 @@ Namespace SmallProgLang
 #End Region
 
         End Class
-
-
-
-
         Public Class BaseParser
 
             Public Function _Parse(ByRef nScript As String) As AstProgram
@@ -2445,6 +2440,24 @@ Namespace SmallProgLang
 
         End Class
         Public Class SalParser
+            Public Function _Parse(ByRef nScript As String) As AstProgram
+                Dim Body As New List(Of Ast_ExpressionStatement)
+                Me.ParserErrors = New List(Of String)
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
+                Tokenizer = New Lexer(iScript)
+                'Dim TokType As GrammarFactory.Grammar.Type_Id
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+
+                'GetProgram
+                iProgram = _SAL_ProgramNode()
+
+
+                'Preserve InClass
+                Return iProgram
+            End Function
 #Region "Propertys"
             Public ParserErrors As New List(Of String)
             ''' <summary>
@@ -3235,8 +3248,26 @@ Namespace SmallProgLang
                 End Get
             End Property
 #End Region
+            Public Function _Parse(ByRef nScript As String) As AstProgram
+                Dim Body As New List(Of Ast_ExpressionStatement)
+                Me.ParserErrors = New List(Of String)
+                iScript = nScript.Replace(vbNewLine, ";")
+                iScript = RTrim(iScript)
+                iScript = LTrim(iScript)
+                Tokenizer = New Lexer(iScript)
+                'Dim TokType As GrammarFactory.Grammar.Type_Id
+                Lookahead = Tokenizer.ViewNext
+                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
+
+                'GetProgram
+                iProgram = _LOGO_ProgramNode()
+
+
+                'Preserve InClass
+                Return iProgram
+            End Function
             Public Function _LOGO_ProgramNode() As AstProgram
-                Dim nde = New AstProgram(_LOGO_StatementList)
+                Dim nde = New AstProgram(_StatementList)
                 nde._Raw = iScript
                 nde._Start = 0
                 nde._End = iScript.Length
@@ -3248,10 +3279,16 @@ Namespace SmallProgLang
             'Syntax;
             '
             '
-            Public Function _LOGO_StatementList() As List(Of AstExpression)
-                Return Nothing
+            Public Function _StatementList() As List(Of AstExpression)
+                Dim lst As New List(Of AstExpression)
+                lst.AddRange(_LogoStatementList)
+                Return lst
             End Function
+            Public Function _LogoStatementList() As List(Of AstExpression)
+                Dim lst As New List(Of AstExpression)
 
+                Return lst
+            End Function
 
             Public Function _GetAssignmentOperator() As String
                 Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value

@@ -203,6 +203,13 @@ Namespace SmallProgLang
             ''' Raw data of token
             ''' </summary>
             Public _Raw As String
+            ''' <summary>
+            ''' All Literals contain values 
+            ''' All node should be evaluated Except literals which should simply return thier value
+            ''' 
+            ''' </summary>
+            ''' <param name="ParentEnv"></param>
+            ''' <returns></returns>
             Public MustOverride Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
             ''' <summary>
             ''' Instanciate
@@ -245,17 +252,32 @@ Namespace SmallProgLang
                 MyBase.New(ntype)
             End Sub
             ''' <summary>
+            ''' All Expressions Return values but also need to be evaluted ; 
+            ''' Thier output results should be a value or the environment being return updated with its new values
+            ''' Expressions such as FOR/DIM/IF/WHILE 
+            ''' all return a value of true also to signify the completion of the evaluation; 
+            ''' If the node is not evaluated then it will simply return true but stay unevaluated 
+            ''' hence always evalating all expressions; 
+            ''' When designing expressions ; 
+            ''' thier evaluate function should use either evaluate or getvalue for its subordinate propertys
             ''' We shall attempt to evaluate every expression inside of itself to return the values within.
             ''' The expression uses the Environment delivered as its own global record;
             ''' the environment is returned to the sender 
             ''' with any values updated;
             ''' This function must be overridden
+            ''' All 
             ''' </summary>
             ''' <param name="ParentEnv">sets the environment for the expression; 
             ''' the environment contains the current record of variables in use by the global script </param>
             ''' <returns></returns>
             Public MustOverride Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-
+            ''' <summary>
+            ''' Generates a String to be run on the sal virtual machine
+            ''' The node should be evaluated first to return the values for the function 
+            ''' then produce the code with the values -Pluged in
+            ''' </summary>
+            ''' <param name="ParentEnv"></param>
+            ''' <returns></returns>
             Public MustOverride Function GenerateSalCode(ByRef ParentEnv As EnvironmentalMemory) As String
 
 
@@ -295,6 +317,7 @@ Namespace SmallProgLang
                 lst.Add(iLiteral.ToString)
                 Return lst
             End Function
+
             Public Overrides Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
 
                 Select Case Me._Type
