@@ -108,23 +108,7 @@ Partial Class Multi_REPL
         Me.TabControl4 = New System.Windows.Forms.TabControl()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
         Me.PROGRAM_TEXTBOX = New System.Windows.Forms.TextBox()
-        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.LOGO_ERRORS = New System.Windows.Forms.RichTextBox()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.LOGO_HELP = New System.Windows.Forms.RichTextBox()
-        Me.SplitContainer8 = New System.Windows.Forms.SplitContainer()
-        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
-        Me.LOGO_Screen = New System.Windows.Forms.PictureBox()
-        Me.SplitContainer9 = New System.Windows.Forms.SplitContainer()
-        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
-        Me.LOGO_TreeView = New System.Windows.Forms.TreeView()
-        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
-        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
-        Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.LOGO_ToolStrip = New System.Windows.Forms.ToolStrip()
         Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButtonLOGO_NEW = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
@@ -140,7 +124,23 @@ Partial Class Multi_REPL
         Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator26 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator()
-        Me.LOGO_ToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.LOGO_ERRORS = New System.Windows.Forms.RichTextBox()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.LOGO_HELP = New System.Windows.Forms.RichTextBox()
+        Me.SplitContainer8 = New System.Windows.Forms.SplitContainer()
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
+        Me.logo_display_panel = New System.Windows.Forms.Panel()
+        Me.SplitContainer9 = New System.Windows.Forms.SplitContainer()
+        Me.GroupBox13 = New System.Windows.Forms.GroupBox()
+        Me.LOGO_TreeView = New System.Windows.Forms.TreeView()
+        Me.GroupBox14 = New System.Windows.Forms.GroupBox()
+        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
+        Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.TabControl_ProgrammingLang_Repl.SuspendLayout()
         Me.TabPageSpydaz_PL.SuspendLayout()
         Me.TabControlRepl_Inner.SuspendLayout()
@@ -200,6 +200,7 @@ Partial Class Multi_REPL
         Me.GroupBox12.SuspendLayout()
         Me.TabControl4.SuspendLayout()
         Me.TabPage5.SuspendLayout()
+        Me.LOGO_ToolStrip.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -209,14 +210,12 @@ Partial Class Multi_REPL
         Me.SplitContainer8.Panel2.SuspendLayout()
         Me.SplitContainer8.SuspendLayout()
         Me.GroupBox15.SuspendLayout()
-        CType(Me.LOGO_Screen, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer9.Panel1.SuspendLayout()
         Me.SplitContainer9.Panel2.SuspendLayout()
         Me.SplitContainer9.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox14.SuspendLayout()
-        Me.LOGO_ToolStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl_ProgrammingLang_Repl
@@ -1173,209 +1172,17 @@ Partial Class Multi_REPL
         Me.PROGRAM_TEXTBOX.Size = New System.Drawing.Size(618, 185)
         Me.PROGRAM_TEXTBOX.TabIndex = 0
         '
-        'GroupBox11
+        'LOGO_ToolStrip
         '
-        Me.GroupBox11.BackColor = System.Drawing.Color.Black
-        Me.GroupBox11.Controls.Add(Me.TabControl1)
-        Me.GroupBox11.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox11.ForeColor = System.Drawing.Color.Lime
-        Me.GroupBox11.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox11.Margin = New System.Windows.Forms.Padding(8)
-        Me.GroupBox11.Name = "GroupBox11"
-        Me.GroupBox11.Padding = New System.Windows.Forms.Padding(8)
-        Me.GroupBox11.Size = New System.Drawing.Size(658, 322)
-        Me.GroupBox11.TabIndex = 2
-        Me.GroupBox11.TabStop = False
-        Me.GroupBox11.Text = "Errors"
-        '
-        'TabControl1
-        '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage4)
-        Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Location = New System.Drawing.Point(8, 31)
-        Me.TabControl1.Margin = New System.Windows.Forms.Padding(8)
-        Me.TabControl1.Name = "TabControl1"
-        Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(642, 283)
-        Me.TabControl1.TabIndex = 0
-        '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.LOGO_ERRORS)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 31)
-        Me.TabPage1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.TabPage1.Size = New System.Drawing.Size(634, 248)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "Errors"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'LOGO_ERRORS
-        '
-        Me.LOGO_ERRORS.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LOGO_ERRORS.Font = New System.Drawing.Font("Microsoft Tai Le", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LOGO_ERRORS.Location = New System.Drawing.Point(5, 6)
-        Me.LOGO_ERRORS.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.LOGO_ERRORS.Name = "LOGO_ERRORS"
-        Me.LOGO_ERRORS.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
-        Me.LOGO_ERRORS.Size = New System.Drawing.Size(624, 236)
-        Me.LOGO_ERRORS.TabIndex = 0
-        Me.LOGO_ERRORS.Text = ""
-        '
-        'TabPage4
-        '
-        Me.TabPage4.Controls.Add(Me.LOGO_HELP)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(634, 272)
-        Me.TabPage4.TabIndex = 1
-        Me.TabPage4.Text = "Syntax"
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'LOGO_HELP
-        '
-        Me.LOGO_HELP.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LOGO_HELP.Location = New System.Drawing.Point(3, 3)
-        Me.LOGO_HELP.Name = "LOGO_HELP"
-        Me.LOGO_HELP.Size = New System.Drawing.Size(628, 266)
-        Me.LOGO_HELP.TabIndex = 0
-        Me.LOGO_HELP.Text = resources.GetString("LOGO_HELP.Text")
-        '
-        'SplitContainer8
-        '
-        Me.SplitContainer8.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer8.Location = New System.Drawing.Point(0, 0)
-        Me.SplitContainer8.Name = "SplitContainer8"
-        Me.SplitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal
-        '
-        'SplitContainer8.Panel1
-        '
-        Me.SplitContainer8.Panel1.Controls.Add(Me.GroupBox15)
-        '
-        'SplitContainer8.Panel2
-        '
-        Me.SplitContainer8.Panel2.Controls.Add(Me.SplitContainer9)
-        Me.SplitContainer8.Size = New System.Drawing.Size(883, 658)
-        Me.SplitContainer8.SplitterDistance = 294
-        Me.SplitContainer8.TabIndex = 0
-        '
-        'GroupBox15
-        '
-        Me.GroupBox15.BackColor = System.Drawing.Color.Black
-        Me.GroupBox15.Controls.Add(Me.LOGO_Screen)
-        Me.GroupBox15.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox15.ForeColor = System.Drawing.Color.White
-        Me.GroupBox15.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(883, 294)
-        Me.GroupBox15.TabIndex = 0
-        Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "Image Output"
-        '
-        'LOGO_Screen
-        '
-        Me.LOGO_Screen.BackColor = System.Drawing.Color.AntiqueWhite
-        Me.LOGO_Screen.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.LOGO_Screen.Location = New System.Drawing.Point(3, 26)
-        Me.LOGO_Screen.Name = "LOGO_Screen"
-        Me.LOGO_Screen.Size = New System.Drawing.Size(877, 265)
-        Me.LOGO_Screen.TabIndex = 0
-        Me.LOGO_Screen.TabStop = False
-        '
-        'SplitContainer9
-        '
-        Me.SplitContainer9.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer9.Location = New System.Drawing.Point(0, 0)
-        Me.SplitContainer9.Name = "SplitContainer9"
-        '
-        'SplitContainer9.Panel1
-        '
-        Me.SplitContainer9.Panel1.Controls.Add(Me.GroupBox13)
-        '
-        'SplitContainer9.Panel2
-        '
-        Me.SplitContainer9.Panel2.Controls.Add(Me.GroupBox14)
-        Me.SplitContainer9.Size = New System.Drawing.Size(883, 360)
-        Me.SplitContainer9.SplitterDistance = 387
-        Me.SplitContainer9.TabIndex = 0
-        '
-        'GroupBox13
-        '
-        Me.GroupBox13.BackgroundImage = Global.SDK.My.Resources.Resources.Console_A
-        Me.GroupBox13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GroupBox13.Controls.Add(Me.LOGO_TreeView)
-        Me.GroupBox13.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox13.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox13.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.GroupBox13.Name = "GroupBox13"
-        Me.GroupBox13.Padding = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.GroupBox13.Size = New System.Drawing.Size(387, 360)
-        Me.GroupBox13.TabIndex = 1
-        Me.GroupBox13.TabStop = False
-        '
-        'LOGO_TreeView
-        '
-        Me.LOGO_TreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.LOGO_TreeView.BackColor = System.Drawing.SystemColors.InfoText
-        Me.LOGO_TreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LOGO_TreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LOGO_TreeView.ForeColor = System.Drawing.Color.MintCream
-        Me.LOGO_TreeView.HotTracking = True
-        Me.LOGO_TreeView.Location = New System.Drawing.Point(45, 20)
-        Me.LOGO_TreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.LOGO_TreeView.Name = "LOGO_TreeView"
-        Me.LOGO_TreeView.ShowNodeToolTips = True
-        Me.LOGO_TreeView.Size = New System.Drawing.Size(294, 328)
-        Me.LOGO_TreeView.TabIndex = 0
-        '
-        'GroupBox14
-        '
-        Me.GroupBox14.BackColor = System.Drawing.Color.Black
-        Me.GroupBox14.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
-        Me.GroupBox14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GroupBox14.Controls.Add(Me.RichTextBox3)
-        Me.GroupBox14.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox14.ForeColor = System.Drawing.Color.Lime
-        Me.GroupBox14.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox14.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.GroupBox14.Name = "GroupBox14"
-        Me.GroupBox14.Padding = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.GroupBox14.Size = New System.Drawing.Size(492, 360)
-        Me.GroupBox14.TabIndex = 3
-        Me.GroupBox14.TabStop = False
-        Me.GroupBox14.Text = "Program Output"
-        '
-        'RichTextBox3
-        '
-        Me.RichTextBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.RichTextBox3.BackColor = System.Drawing.Color.Gainsboro
-        Me.RichTextBox3.Font = New System.Drawing.Font("Consolas", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RichTextBox3.Location = New System.Drawing.Point(8, 30)
-        Me.RichTextBox3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.RichTextBox3.Name = "RichTextBox3"
-        Me.RichTextBox3.Size = New System.Drawing.Size(472, 251)
-        Me.RichTextBox3.TabIndex = 0
-        Me.RichTextBox3.Text = ""
-        '
-        'OpenTextFileDialog
-        '
-        Me.OpenTextFileDialog.Filter = "All Files|*.*"
-        Me.OpenTextFileDialog.Title = "Open Program"
-        '
-        'SaveTextFileDialog
-        '
-        Me.SaveTextFileDialog.Filter = "All Files|*.*"
-        '
-        'ToolTip1
-        '
-        Me.ToolTip1.IsBalloon = True
+        Me.LOGO_ToolStrip.BackColor = System.Drawing.Color.Black
+        Me.LOGO_ToolStrip.ImageScalingSize = New System.Drawing.Size(50, 50)
+        Me.LOGO_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator27, Me.ToolStripButtonLOGO_NEW, Me.ToolStripSeparator20, Me.ToolStripSeparator29, Me.ToolStripButtonLOGO_OPEN, Me.ToolStripSeparator21, Me.ToolStripSeparator25, Me.ToolStripButtonLOGO_SAVE, Me.ToolStripSeparator22, Me.ToolStripButton_RUN_LOGO, Me.ToolStripSeparator24, Me.ToolStripButtonEXECUTE_LOGO, Me.ToolStripSeparator23, Me.ToolStripSeparator26, Me.ToolStripSeparator28})
+        Me.LOGO_ToolStrip.Location = New System.Drawing.Point(8, 31)
+        Me.LOGO_ToolStrip.Name = "LOGO_ToolStrip"
+        Me.LOGO_ToolStrip.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
+        Me.LOGO_ToolStrip.Size = New System.Drawing.Size(642, 57)
+        Me.LOGO_ToolStrip.TabIndex = 0
+        Me.LOGO_ToolStrip.Text = "ToolStrip1"
         '
         'ToolStripSeparator27
         '
@@ -1484,17 +1291,208 @@ Partial Class Multi_REPL
         Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
         Me.ToolStripSeparator28.Size = New System.Drawing.Size(6, 57)
         '
-        'LOGO_ToolStrip
+        'GroupBox11
         '
-        Me.LOGO_ToolStrip.BackColor = System.Drawing.Color.Black
-        Me.LOGO_ToolStrip.ImageScalingSize = New System.Drawing.Size(50, 50)
-        Me.LOGO_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator27, Me.ToolStripButtonLOGO_NEW, Me.ToolStripSeparator20, Me.ToolStripSeparator29, Me.ToolStripButtonLOGO_OPEN, Me.ToolStripSeparator21, Me.ToolStripSeparator25, Me.ToolStripButtonLOGO_SAVE, Me.ToolStripSeparator22, Me.ToolStripButton_RUN_LOGO, Me.ToolStripSeparator24, Me.ToolStripButtonEXECUTE_LOGO, Me.ToolStripSeparator23, Me.ToolStripSeparator26, Me.ToolStripSeparator28})
-        Me.LOGO_ToolStrip.Location = New System.Drawing.Point(8, 31)
-        Me.LOGO_ToolStrip.Name = "LOGO_ToolStrip"
-        Me.LOGO_ToolStrip.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.LOGO_ToolStrip.Size = New System.Drawing.Size(642, 57)
-        Me.LOGO_ToolStrip.TabIndex = 0
-        Me.LOGO_ToolStrip.Text = "ToolStrip1"
+        Me.GroupBox11.BackColor = System.Drawing.Color.Black
+        Me.GroupBox11.Controls.Add(Me.TabControl1)
+        Me.GroupBox11.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox11.ForeColor = System.Drawing.Color.Lime
+        Me.GroupBox11.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox11.Margin = New System.Windows.Forms.Padding(8)
+        Me.GroupBox11.Name = "GroupBox11"
+        Me.GroupBox11.Padding = New System.Windows.Forms.Padding(8)
+        Me.GroupBox11.Size = New System.Drawing.Size(658, 322)
+        Me.GroupBox11.TabIndex = 2
+        Me.GroupBox11.TabStop = False
+        Me.GroupBox11.Text = "Errors"
+        '
+        'TabControl1
+        '
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControl1.Location = New System.Drawing.Point(8, 31)
+        Me.TabControl1.Margin = New System.Windows.Forms.Padding(8)
+        Me.TabControl1.Name = "TabControl1"
+        Me.TabControl1.SelectedIndex = 0
+        Me.TabControl1.Size = New System.Drawing.Size(642, 283)
+        Me.TabControl1.TabIndex = 0
+        '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.LOGO_ERRORS)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 31)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.TabPage1.Size = New System.Drawing.Size(634, 248)
+        Me.TabPage1.TabIndex = 0
+        Me.TabPage1.Text = "Errors"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'LOGO_ERRORS
+        '
+        Me.LOGO_ERRORS.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LOGO_ERRORS.Font = New System.Drawing.Font("Microsoft Tai Le", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LOGO_ERRORS.Location = New System.Drawing.Point(5, 6)
+        Me.LOGO_ERRORS.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.LOGO_ERRORS.Name = "LOGO_ERRORS"
+        Me.LOGO_ERRORS.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.LOGO_ERRORS.Size = New System.Drawing.Size(624, 236)
+        Me.LOGO_ERRORS.TabIndex = 0
+        Me.LOGO_ERRORS.Text = ""
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.LOGO_HELP)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(634, 272)
+        Me.TabPage4.TabIndex = 1
+        Me.TabPage4.Text = "Syntax"
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'LOGO_HELP
+        '
+        Me.LOGO_HELP.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LOGO_HELP.Location = New System.Drawing.Point(3, 3)
+        Me.LOGO_HELP.Name = "LOGO_HELP"
+        Me.LOGO_HELP.Size = New System.Drawing.Size(628, 266)
+        Me.LOGO_HELP.TabIndex = 0
+        Me.LOGO_HELP.Text = resources.GetString("LOGO_HELP.Text")
+        '
+        'SplitContainer8
+        '
+        Me.SplitContainer8.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer8.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer8.Name = "SplitContainer8"
+        Me.SplitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer8.Panel1
+        '
+        Me.SplitContainer8.Panel1.Controls.Add(Me.GroupBox15)
+        '
+        'SplitContainer8.Panel2
+        '
+        Me.SplitContainer8.Panel2.Controls.Add(Me.SplitContainer9)
+        Me.SplitContainer8.Size = New System.Drawing.Size(883, 658)
+        Me.SplitContainer8.SplitterDistance = 294
+        Me.SplitContainer8.TabIndex = 0
+        '
+        'GroupBox15
+        '
+        Me.GroupBox15.BackColor = System.Drawing.Color.Black
+        Me.GroupBox15.Controls.Add(Me.logo_display_panel)
+        Me.GroupBox15.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox15.ForeColor = System.Drawing.Color.White
+        Me.GroupBox15.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(883, 294)
+        Me.GroupBox15.TabIndex = 0
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "Image Output"
+        '
+        'logo_display_panel
+        '
+        Me.logo_display_panel.BackColor = System.Drawing.Color.White
+        Me.logo_display_panel.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.logo_display_panel.Location = New System.Drawing.Point(3, 26)
+        Me.logo_display_panel.Name = "logo_display_panel"
+        Me.logo_display_panel.Size = New System.Drawing.Size(877, 265)
+        Me.logo_display_panel.TabIndex = 0
+        '
+        'SplitContainer9
+        '
+        Me.SplitContainer9.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer9.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer9.Name = "SplitContainer9"
+        '
+        'SplitContainer9.Panel1
+        '
+        Me.SplitContainer9.Panel1.Controls.Add(Me.GroupBox13)
+        '
+        'SplitContainer9.Panel2
+        '
+        Me.SplitContainer9.Panel2.Controls.Add(Me.GroupBox14)
+        Me.SplitContainer9.Size = New System.Drawing.Size(883, 360)
+        Me.SplitContainer9.SplitterDistance = 387
+        Me.SplitContainer9.TabIndex = 0
+        '
+        'GroupBox13
+        '
+        Me.GroupBox13.BackgroundImage = Global.SDK.My.Resources.Resources.Console_A
+        Me.GroupBox13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.GroupBox13.Controls.Add(Me.LOGO_TreeView)
+        Me.GroupBox13.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox13.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox13.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.GroupBox13.Name = "GroupBox13"
+        Me.GroupBox13.Padding = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.GroupBox13.Size = New System.Drawing.Size(387, 360)
+        Me.GroupBox13.TabIndex = 1
+        Me.GroupBox13.TabStop = False
+        '
+        'LOGO_TreeView
+        '
+        Me.LOGO_TreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LOGO_TreeView.BackColor = System.Drawing.SystemColors.InfoText
+        Me.LOGO_TreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LOGO_TreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LOGO_TreeView.ForeColor = System.Drawing.Color.MintCream
+        Me.LOGO_TreeView.HotTracking = True
+        Me.LOGO_TreeView.Location = New System.Drawing.Point(45, 20)
+        Me.LOGO_TreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.LOGO_TreeView.Name = "LOGO_TreeView"
+        Me.LOGO_TreeView.ShowNodeToolTips = True
+        Me.LOGO_TreeView.Size = New System.Drawing.Size(294, 328)
+        Me.LOGO_TreeView.TabIndex = 0
+        '
+        'GroupBox14
+        '
+        Me.GroupBox14.BackColor = System.Drawing.Color.Black
+        Me.GroupBox14.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
+        Me.GroupBox14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.GroupBox14.Controls.Add(Me.RichTextBox3)
+        Me.GroupBox14.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox14.ForeColor = System.Drawing.Color.Lime
+        Me.GroupBox14.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox14.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.GroupBox14.Name = "GroupBox14"
+        Me.GroupBox14.Padding = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.GroupBox14.Size = New System.Drawing.Size(492, 360)
+        Me.GroupBox14.TabIndex = 3
+        Me.GroupBox14.TabStop = False
+        Me.GroupBox14.Text = "Program Output"
+        '
+        'RichTextBox3
+        '
+        Me.RichTextBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.RichTextBox3.BackColor = System.Drawing.Color.Gainsboro
+        Me.RichTextBox3.Font = New System.Drawing.Font("Consolas", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RichTextBox3.Location = New System.Drawing.Point(8, 30)
+        Me.RichTextBox3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.RichTextBox3.Name = "RichTextBox3"
+        Me.RichTextBox3.Size = New System.Drawing.Size(472, 251)
+        Me.RichTextBox3.TabIndex = 0
+        Me.RichTextBox3.Text = ""
+        '
+        'OpenTextFileDialog
+        '
+        Me.OpenTextFileDialog.Filter = "All Files|*.*"
+        Me.OpenTextFileDialog.Title = "Open Program"
+        '
+        'SaveTextFileDialog
+        '
+        Me.SaveTextFileDialog.Filter = "All Files|*.*"
+        '
+        'ToolTip1
+        '
+        Me.ToolTip1.IsBalloon = True
         '
         'Multi_REPL
         '
@@ -1579,6 +1577,8 @@ Partial Class Multi_REPL
         Me.TabControl4.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
+        Me.LOGO_ToolStrip.ResumeLayout(False)
+        Me.LOGO_ToolStrip.PerformLayout()
         Me.GroupBox11.ResumeLayout(False)
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
@@ -1588,15 +1588,12 @@ Partial Class Multi_REPL
         CType(Me.SplitContainer8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer8.ResumeLayout(False)
         Me.GroupBox15.ResumeLayout(False)
-        CType(Me.LOGO_Screen, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer9.Panel1.ResumeLayout(False)
         Me.SplitContainer9.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer9, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer9.ResumeLayout(False)
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox14.ResumeLayout(False)
-        Me.LOGO_ToolStrip.ResumeLayout(False)
-        Me.LOGO_ToolStrip.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1679,7 +1676,6 @@ Partial Class Multi_REPL
     Friend WithEvents LOGO_HELP As RichTextBox
     Friend WithEvents SplitContainer8 As SplitContainer
     Friend WithEvents GroupBox15 As GroupBox
-    Friend WithEvents LOGO_Screen As PictureBox
     Friend WithEvents SplitContainer9 As SplitContainer
     Friend WithEvents GroupBox13 As GroupBox
     Friend WithEvents LOGO_TreeView As TreeView
@@ -1718,4 +1714,5 @@ Partial Class Multi_REPL
     Friend WithEvents ToolStripSeparator23 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator26 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator28 As ToolStripSeparator
+    Friend WithEvents logo_display_panel As Panel
 End Class

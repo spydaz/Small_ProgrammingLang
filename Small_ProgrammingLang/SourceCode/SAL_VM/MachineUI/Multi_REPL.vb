@@ -3,6 +3,7 @@ Imports SDK.SmallProgLang
 Imports SDK.SmallProgLang.Ast_ExpressionFactory
 Imports SDK.SmallProgLang.Compiler
 Imports System.IO
+Imports System.Runtime.CompilerServices
 
 Public Class Multi_REPL
 #Region "SMALL_PL"
@@ -231,6 +232,20 @@ Public Class Multi_REPL
 
     Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles Small_PL_AstTreeView.AfterSelect
         Small_PL_TextBoxREPL_OUTPUT.Text = Small_PL_AstTreeView.SelectedNode.Tag
+    End Sub
+    Public Iturtle As TURTLE
+    Private Sub Multi_REPL_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'LOGO PANEL TEST
+        Iturtle = New TURTLE(logo_display_panel, My.Resources.Icon_UpVote)
+
+        Iturtle.SetPenWidth(2)
+        Iturtle._PenStatus = TURTLE.PenStatus.Down
+        Iturtle._Reset()
+
+        Iturtle._forward(45)
+        Iturtle._Right(45)
+        Iturtle._forward(45)
+        Iturtle._Reset()
     End Sub
 
 

@@ -23,9 +23,8 @@ Partial Class FormGraphicsDisplayConsole
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.DISPLAY_SCREEN = New System.Windows.Forms.PictureBox()
+        Me.DISPLAY_PANEL = New System.Windows.Forms.Panel()
         Me.GroupBox6.SuspendLayout()
-        CType(Me.DISPLAY_SCREEN, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'GroupBox6
@@ -33,7 +32,7 @@ Partial Class FormGraphicsDisplayConsole
         Me.GroupBox6.BackColor = System.Drawing.Color.Transparent
         Me.GroupBox6.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
         Me.GroupBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GroupBox6.Controls.Add(Me.DISPLAY_SCREEN)
+        Me.GroupBox6.Controls.Add(Me.DISPLAY_PANEL)
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox6.ForeColor = System.Drawing.Color.Lime
         Me.GroupBox6.Location = New System.Drawing.Point(0, 0)
@@ -44,18 +43,16 @@ Partial Class FormGraphicsDisplayConsole
         Me.GroupBox6.TabIndex = 3
         Me.GroupBox6.TabStop = False
         '
-        'DISPLAY_SCREEN
+        'DISPLAY_PANEL
         '
-        Me.DISPLAY_SCREEN.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.DISPLAY_PANEL.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DISPLAY_SCREEN.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
-        Me.DISPLAY_SCREEN.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.DISPLAY_SCREEN.Location = New System.Drawing.Point(3, 12)
-        Me.DISPLAY_SCREEN.Name = "DISPLAY_SCREEN"
-        Me.DISPLAY_SCREEN.Size = New System.Drawing.Size(989, 501)
-        Me.DISPLAY_SCREEN.TabIndex = 1
-        Me.DISPLAY_SCREEN.TabStop = False
+        Me.DISPLAY_PANEL.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.DISPLAY_PANEL.Location = New System.Drawing.Point(12, 20)
+        Me.DISPLAY_PANEL.Name = "DISPLAY_PANEL"
+        Me.DISPLAY_PANEL.Size = New System.Drawing.Size(974, 482)
+        Me.DISPLAY_PANEL.TabIndex = 0
         '
         'FormGraphicsDisplayConsole
         '
@@ -67,11 +64,10 @@ Partial Class FormGraphicsDisplayConsole
         Me.Name = "FormGraphicsDisplayConsole"
         Me.Text = "S.A.L2020© "
         Me.GroupBox6.ResumeLayout(False)
-        CType(Me.DISPLAY_SCREEN, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents GroupBox6 As GroupBox
-    Friend WithEvents DISPLAY_SCREEN As PictureBox
+    Friend WithEvents DISPLAY_PANEL As Panel
 End Class

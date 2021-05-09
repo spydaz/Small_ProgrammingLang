@@ -162,6 +162,8 @@
     </None>
     <None Include="Help\Small Programming Language.md" />
     <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\Icon_UpVote.png" />
     <Content Include="TestsMain\Basic Tests.txt" />
     <Content Include="TestsMain\DevelopmentPrimers\Basic Tests.txt" />
     <Content Include="TestsMain\DevelopmentPrimers\IF.txt" />
