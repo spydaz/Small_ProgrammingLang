@@ -80,6 +80,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SourceCode\LOGO_LANG\Ast_LogoExpression.vb" />
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.Designer.vb">
+      <DependentUpon>FormGraphicsDisplayConsole.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.Designer.vb">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </Compile>
@@ -124,6 +130,9 @@
     <Compile Include="SourceCode\SAL_VM\PL_COMPILER.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.resx">
+      <DependentUpon>FormGraphicsDisplayConsole.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.resx">
       <DependentUpon>Multi_REPL.vb</DependentUpon>
     </EmbeddedResource>
