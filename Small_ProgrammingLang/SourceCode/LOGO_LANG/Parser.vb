@@ -71,7 +71,7 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
-                    Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                    Case Type_Id._SAL_PROGRAM_BEGIN
                         'Get title
                         Dim Decl = Tokenizer.GetIdentifiedToken(Lookahead)
                         Lookahead = Tokenizer.ViewNext
@@ -82,7 +82,7 @@ Namespace SmallProgLang
                         Lookahead = Tokenizer.ViewNext
                         'GetProgram
                         iProgram = _SAL_ProgramNode()
-                    Case Grammar.Type_Id._PL_PROGRAM_BEGIN
+                    Case Type_Id._PL_PROGRAM_BEGIN
                         Dim Decl = Tokenizer.GetIdentifiedToken(Lookahead)
                         Lookahead = Tokenizer.ViewNext
                         Tokenizer.IdentifiyToken(Lookahead)
@@ -116,7 +116,7 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
-                    Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                    Case Type_Id._SAL_PROGRAM_BEGIN
                         'Get title
                         Dim Decl = Tokenizer.GetIdentifiedToken(Lookahead)
                         Lookahead = Tokenizer.ViewNext
@@ -127,7 +127,7 @@ Namespace SmallProgLang
                         Lookahead = Tokenizer.ViewNext
                         'GetProgram
                         iProgram = _SAL_ProgramNode()
-                    Case Grammar.Type_Id._PL_PROGRAM_BEGIN
+                    Case Type_Id._PL_PROGRAM_BEGIN
                         Dim Decl = Tokenizer.GetIdentifiedToken(Lookahead)
                         Lookahead = Tokenizer.ViewNext
                         Tokenizer.IdentifiyToken(Lookahead)
@@ -252,7 +252,7 @@ Namespace SmallProgLang
 
                 Do While (Lookahead <> "EOF")
                     'CHECK IF ITS A SAL STATMENT
-                    If Tokenizer.IdentifiyToken(Lookahead) = Grammar.Type_Id._SAL_EXPRESSION_BEGIN Then
+                    If Tokenizer.IdentifiyToken(Lookahead) = Type_Id._SAL_EXPRESSION_BEGIN Then
                         Dim nde = _SAL_Expression()
                         If nde IsNot Nothing Then
                             lst.Add(nde)
@@ -289,29 +289,29 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 'End of Expression is "HALT"
-                Do Until tok = Grammar.Type_Id.SAL_HALT
+                Do Until tok = Type_Id.SAL_HALT
                     Lookahead = Tokenizer.ViewNext
                     tok = Tokenizer.IdentifiyToken(Lookahead)
                     Select Case tok
-                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
-                        Case GrammarFactory.Grammar.Type_Id._INTEGER
+                        Case Type_Id._INTEGER
                             Dim fnd = _NumericLiteralNode()
                             fnd._TypeStr = "_Integer"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._STRING
+                        Case Type_Id._STRING
                             Dim fnd = _StringLiteralNode()
                             fnd._TypeStr = "_string"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._STATEMENT_END
+                        Case Type_Id._STATEMENT_END
                             lst.Add(__EmptyStatementNode())
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._SAL_EXPRESSION_BEGIN
+                        Case Type_Id._SAL_EXPRESSION_BEGIN
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_BeginStatement, nTok.Value)
                             fnd._End = nTok._End
@@ -321,7 +321,7 @@ Namespace SmallProgLang
                             '  lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                        Case Type_Id._SAL_PROGRAM_BEGIN
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_Program_title, nTok.Value)
                             fnd._End = nTok._End
@@ -331,7 +331,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_ADD
+                        Case Type_Id.SAL_ADD
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_ADD, nTok.Value)
                             fnd._End = nTok._End
@@ -341,7 +341,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_AND
+                        Case Type_Id.SAL_AND
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_AND, nTok.Value)
                             fnd._End = nTok._End
@@ -351,7 +351,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_CALL
+                        Case Type_Id.SAL_CALL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_CALL, nTok.Value)
                             fnd._End = nTok._End
@@ -361,7 +361,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DECR
+                        Case Type_Id.SAL_DECR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DECR, nTok.Value)
                             fnd._End = nTok._End
@@ -371,7 +371,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DIV
+                        Case Type_Id.SAL_DIV
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DIV, nTok.Value)
                             fnd._End = nTok._End
@@ -381,7 +381,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DUP
+                        Case Type_Id.SAL_DUP
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DUP, nTok.Value)
                             fnd._End = nTok._End
@@ -391,7 +391,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_HALT
+                        Case Type_Id.SAL_HALT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
                             fnd._End = nTok._End
@@ -401,8 +401,8 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                            Exit Select
-                        Case Grammar.Type_Id.SAL_INCR
+
+                        Case Type_Id.SAL_INCR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_INCR, nTok.Value)
                             fnd._End = nTok._End
@@ -412,7 +412,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_EQ
+                        Case Type_Id.SAL_IS_EQ
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -422,7 +422,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_GT
+                        Case Type_Id.SAL_IS_GT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GT, nTok.Value)
                             fnd._End = nTok._End
@@ -432,7 +432,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_GTE
+                        Case Type_Id.SAL_IS_GTE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GTE, nTok.Value)
                             fnd._End = nTok._End
@@ -442,7 +442,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_LT
+                        Case Type_Id.SAL_IS_LT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_LT, nTok.Value)
                             fnd._End = nTok._End
@@ -452,7 +452,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_LTE
+                        Case Type_Id.SAL_IS_LTE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -462,7 +462,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_EQ
+                        Case Type_Id.SAL_JIF_EQ
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -472,7 +472,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_F
+                        Case Type_Id.SAL_JIF_F
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_F, nTok.Value)
                             fnd._End = nTok._End
@@ -482,7 +482,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_GT
+                        Case Type_Id.SAL_JIF_GT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_GT, nTok.Value)
                             fnd._End = nTok._End
@@ -492,7 +492,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_LT
+                        Case Type_Id.SAL_JIF_LT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_LT, nTok.Value)
                             fnd._End = nTok._End
@@ -502,7 +502,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_T
+                        Case Type_Id.SAL_JIF_T
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
                             fnd._End = nTok._End
@@ -512,7 +512,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JMP
+                        Case Type_Id.SAL_JMP
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JMP, nTok.Value)
                             fnd._End = nTok._End
@@ -522,7 +522,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_LOAD
+                        Case Type_Id.SAL_LOAD
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_LOAD, nTok.Value)
                             fnd._End = nTok._End
@@ -532,7 +532,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_MUL
+                        Case Type_Id.SAL_MUL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_MUL, nTok.Value)
                             fnd._End = nTok._End
@@ -542,7 +542,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_NOT
+                        Case Type_Id.SAL_NOT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NOT, nTok.Value)
                             fnd._End = nTok._End
@@ -552,7 +552,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_NULL
+                        Case Type_Id.SAL_NULL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NULL, nTok.Value)
                             fnd._End = nTok._End
@@ -562,7 +562,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_OR
+                        Case Type_Id.SAL_OR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_OR, nTok.Value)
                             fnd._End = nTok._End
@@ -572,7 +572,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PAUSE
+                        Case Type_Id.SAL_PAUSE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PAUSE, nTok.Value)
                             fnd._End = nTok._End
@@ -582,7 +582,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PEEK
+                        Case Type_Id.SAL_PEEK
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PEEK, nTok.Value)
                             fnd._End = nTok._End
@@ -592,7 +592,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PRINT_C
+                        Case Type_Id.SAL_PRINT_C
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_C, nTok.Value)
                             fnd._End = nTok._End
@@ -602,7 +602,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PRINT_M
+                        Case Type_Id.SAL_PRINT_M
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_M, nTok.Value)
                             fnd._End = nTok._End
@@ -612,7 +612,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PULL
+                        Case Type_Id.SAL_PULL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PULL, nTok.Value)
                             fnd._End = nTok._End
@@ -622,7 +622,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PUSH
+                        Case Type_Id.SAL_PUSH
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PUSH, nTok.Value)
                             fnd._End = nTok._End
@@ -632,7 +632,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_REMOVE
+                        Case Type_Id.SAL_REMOVE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_REMOVE, nTok.Value)
                             fnd._End = nTok._End
@@ -642,7 +642,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_RESUME
+                        Case Type_Id.SAL_RESUME
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RESUME, nTok.Value)
                             fnd._End = nTok._End
@@ -652,7 +652,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_RET
+                        Case Type_Id.SAL_RET
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RET, nTok.Value)
                             fnd._End = nTok._End
@@ -662,7 +662,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_STORE
+                        Case Type_Id.SAL_STORE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
                             fnd._End = nTok._End
@@ -672,17 +672,17 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_SUB
+                        Case Type_Id.SAL_SUB
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_SUB, nTok.Value)
                             fnd._End = nTok._End
-                            fnd._Raw = "STORE"
+                            fnd._Raw = "SUB"
                             fnd._Start = nTok._start
                             fnd._TypeStr = "STORE"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_TO_NEG
+                        Case Type_Id.SAL_TO_NEG
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_NEG, nTok.Value)
                             fnd._End = nTok._End
@@ -692,7 +692,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_TO_POS
+                        Case Type_Id.SAL_TO_POS
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_POS, nTok.Value)
                             fnd._End = nTok._End
@@ -702,11 +702,11 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._BAD_TOKEN
+                        Case Type_Id._BAD_TOKEN
                             'Technically badtoken try capture
                             Dim etok = __UnknownStatementNode()
                             ParserErrors.Add("Unknown Statement/Expression Uncountered" & vbNewLine & etok.ToJson.FormatJsonOutput & vbNewLine)
@@ -725,7 +725,7 @@ Namespace SmallProgLang
                 Loop
                 Lookahead = Tokenizer.ViewNext
                 tok = Tokenizer.IdentifiyToken(Lookahead)
-                If tok = Grammar.Type_Id.SAL_HALT Then
+                If tok = Type_Id.SAL_HALT Then
                     Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                     Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
                     fnd._End = nTok._End
@@ -775,9 +775,9 @@ Namespace SmallProgLang
             Public Function _PrimaryExpression() As AstExpression
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case Type_Id._WHITESPACE
                         _WhitespaceNode()
-                    Case GrammarFactory.Grammar.Type_Id._STATEMENT_END
+                    Case Type_Id._STATEMENT_END
                         '  __EmptyStatementNode()
                         Dim temp = New Ast_ExpressionStatement(__EmptyStatementNode)
                         temp._TypeStr = "_PrimaryExpression"
@@ -828,8 +828,8 @@ Namespace SmallProgLang
             Public Function _LeftHandExpression() As AstExpression
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = Grammar.Type_Id._WHITESPACE Then
-                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do While toktype = Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -838,20 +838,20 @@ Namespace SmallProgLang
 
                 End If
                 Select Case toktype
-                    Case Grammar.Type_Id._VARIABLE
+                    Case Type_Id._VARIABLE
                         'Check if misIdentified
                         Dim iTok As Token = Tokenizer.CheckIdentifiedToken(Lookahead)
-                        If CheckFunction(iTok.Value) = True Then
+                        If CheckFunction(iTok.Value) Then
                             Return _CommandFunction()
                         Else
                             'Do Variable Expression
                             Return _BinaryExpression(_VariableExpression())
                         End If
-                    Case Grammar.Type_Id._COMMENTS
+                    Case Type_Id._COMMENTS
                         Return _CommentsListExpression()
-                    Case GrammarFactory.Grammar.Type_Id._SAL_EXPRESSION_BEGIN
+                    Case Type_Id._SAL_EXPRESSION_BEGIN
                         Return _SAL_Expression()
-                    Case GrammarFactory.Grammar.Type_Id._CONDITIONAL_BEGIN
+                    Case Type_Id._CONDITIONAL_BEGIN
                         Return _ParenthesizedExpression()
                     Case Else
                         'Must be a primaryExpression With binary
@@ -880,9 +880,9 @@ Namespace SmallProgLang
             Public Function _literalNode() As Ast_Literal
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
-                    Case GrammarFactory.Grammar.Type_Id._INTEGER
+                    Case Type_Id._INTEGER
                         Return _NumericLiteralNode()
-                    Case GrammarFactory.Grammar.Type_Id._STRING
+                    Case Type_Id._STRING
                         Return _StringLiteralNode()
 
                     'Case GrammarFactory.Grammar.Type_Id._VARIABLE
@@ -891,20 +891,20 @@ Namespace SmallProgLang
                     '    xc._Start = ntok._start
                     '    xc._End = ntok._End
                     '    xc._Raw = ntok.Value
-                    Case GrammarFactory.Grammar.Type_Id._LIST_BEGIN
+                    Case Type_Id._LIST_BEGIN
                         Return _ArrayListLiteral()
-                        Exit Select
-                    Case GrammarFactory.Grammar.Type_Id._NULL
+
+                    Case Type_Id._NULL
                         Return _NullableNode()
-                    Case GrammarFactory.Grammar.Type_Id._TRUE
+                    Case Type_Id._TRUE
                         Return _BooleanNode()
-                    Case GrammarFactory.Grammar.Type_Id._FALSE
+                    Case Type_Id._FALSE
                         Return _BooleanNode()
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case Type_Id._WHITESPACE
                         Return _WhitespaceNode()
-                    Case GrammarFactory.Grammar.Type_Id._STATEMENT_END
+                    Case Type_Id._STATEMENT_END
                         Return __EmptyStatementNode()
-                    Case Grammar.Type_Id.SAL_HALT
+                    Case Type_Id.SAL_HALT
                         Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                         Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
                         fnd._End = nTok._End
@@ -1196,7 +1196,7 @@ Namespace SmallProgLang
                 Dim Body As New List(Of Ast_Literal)
                 Lookahead = Tokenizer.ViewNext
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
-                Do While tok = Grammar.Type_Id._COMMENTS
+                Do While tok = Type_Id._COMMENTS
                     Body.Add(_CommentsNode)
                 Loop
                 Dim x = New Ast_ExpressionStatement(New Ast_Literal(AST_NODE._comments, Body))
@@ -1258,20 +1258,20 @@ Namespace SmallProgLang
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case tok
             'Begin Block
-                    Case GrammarFactory.Grammar.Type_Id._CODE_BEGIN
+                    Case Type_Id._CODE_BEGIN
                         Return _BlockStatement()
                         'due to most tokens detecting as variable (they can also be function names)
                         'we must check if is a fucntion command
 
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
-                        Do While tok = GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case Type_Id._WHITESPACE
+                        Do While tok = Type_Id._WHITESPACE
                             _WhitespaceNode()
                         Loop
                         'enable machine code in script;
                         ''when Evaluating can be executed on VM
-                    Case Grammar.Type_Id._SAL_EXPRESSION_BEGIN
+                    Case Type_Id._SAL_EXPRESSION_BEGIN
                         Return _SAL_Expression()
-                    Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                    Case Type_Id._SAL_PROGRAM_BEGIN
                         Return _SAL_Expression()
                         'Standard Expression
                     Case Else
@@ -1319,19 +1319,19 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _BlockStatement() As Ast_BlockExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim Body As New List(Of AstExpression)
                 _CodeBeginNode()
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Detect Empty List
-                If toktype = GrammarFactory.Grammar.Type_Id._CODE_END Then
+                If toktype = Type_Id._CODE_END Then
 
                     Body.Add(New Ast_ExpressionStatement(__EmptyStatementNode))
                     _CodeEndNode()
                     Return New Ast_BlockExpression(Body)
                 Else
-                    Do While ((toktype) <> GrammarFactory.Grammar.Type_Id._CODE_END)
+                    Do While ((toktype) <> Type_Id._CODE_END)
                         Body.Add(_LeftHandExpression)
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1343,24 +1343,24 @@ Namespace SmallProgLang
             End Function
             Public Function _ArrayListLiteral() As Ast_Literal
                 Lookahead = Tokenizer.ViewNext
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim Body As New List(Of AstNode)
                 _ListBeginNode()
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = GrammarFactory.Grammar.Type_Id._LIST_END = True Then Body.Add(__EmptyStatementNode)
+                If toktype = Type_Id._LIST_END = True Then Body.Add(__EmptyStatementNode)
 
-                Do Until toktype = GrammarFactory.Grammar.Type_Id._LIST_END
+                Do Until toktype = Type_Id._LIST_END
                     Select Case toktype
-                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._VARIABLE
+                        Case Type_Id._VARIABLE
                             Body.Add(_VariableInitializer(_IdentifierLiteralNode))
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._LIST_END
+                        Case Type_Id._LIST_END
                             _ListEndNode()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1368,7 +1368,7 @@ Namespace SmallProgLang
                             de._TypeStr = "_array"
                             Lookahead = Tokenizer.ViewNext
                             Return de
-                        Case GrammarFactory.Grammar.Type_Id._LIST_SEPERATOR
+                        Case Type_Id._LIST_SEPERATOR
                             _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1386,25 +1386,25 @@ Namespace SmallProgLang
             End Function
             Public Function _IdentifierList() As List(Of Ast_Identifier)
                 Lookahead = Tokenizer.ViewNext
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim Body As New List(Of Ast_Identifier)
                 _ListBeginNode()
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
 
-                Do Until toktype = GrammarFactory.Grammar.Type_Id._LIST_END
+                Do Until toktype = Type_Id._LIST_END
                     Select Case toktype
-                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._VARIABLE
+                        Case Type_Id._VARIABLE
                             Body.Add(_IdentifierLiteralNode())
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._LIST_END
+                        Case Type_Id._LIST_END
 
-                        Case GrammarFactory.Grammar.Type_Id._LIST_SEPERATOR
+                        Case Type_Id._LIST_SEPERATOR
                             _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1424,25 +1424,25 @@ Namespace SmallProgLang
             End Function
             Public Function _VariableDeclarationList() As List(Of Ast_VariableDeclarationExpression)
                 Lookahead = Tokenizer.ViewNext
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim Body As New List(Of Ast_VariableDeclarationExpression)
                 _ListBeginNode()
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
 
-                Do Until toktype = GrammarFactory.Grammar.Type_Id._LIST_END
+                Do Until toktype = Type_Id._LIST_END
                     Select Case toktype
-                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._VARIABLE
+                        Case Type_Id._VARIABLE
                             Body.Add(_VariableDeclaration(_IdentifierLiteralNode))
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._LIST_END
+                        Case Type_Id._LIST_END
 
-                        Case GrammarFactory.Grammar.Type_Id._LIST_SEPERATOR
+                        Case Type_Id._LIST_SEPERATOR
                             _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1469,7 +1469,7 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _VariableExpression() As AstExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim _left As Ast_Identifier = Nothing
                 'Token ID
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1479,8 +1479,8 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
 
-                If toktype = GrammarFactory.Grammar.Type_Id._WHITESPACE Then
-                    Do Until toktype <> GrammarFactory.Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do Until toktype <> Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1490,7 +1490,7 @@ Namespace SmallProgLang
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'if the next operation is here then do it
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN
+                    Case GrammarFactory.Type_Id._SIMPLE_ASSIGN
                         Return _VariableInitializer(_left)
                     Case Else
                         'Carry Variable forwards to binary function
@@ -1695,7 +1695,7 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN
+                    Case GrammarFactory.Type_Id._SIMPLE_ASSIGN
 
                         Return _VariableInitializer(_left)
 
@@ -1705,8 +1705,8 @@ Namespace SmallProgLang
             Public Function _AssignmentExpression(ByRef _left As AstExpression) As AstExpression
                 Lookahead = Tokenizer.ViewNext
                 Dim toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = Grammar.Type_Id._WHITESPACE Then
-                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do While toktype = Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1717,7 +1717,7 @@ Namespace SmallProgLang
                 Select Case toktype
 
 
-                    Case GrammarFactory.Grammar.Type_Id._COMPLEX_ASSIGN
+                    Case GrammarFactory.Type_Id._COMPLEX_ASSIGN
                         'Complex Assignments are 
                         Dim _operator = _GetAssignmentOperator()
 
@@ -1737,19 +1737,19 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _ParenthesizedExpression() As Ast_ParenthesizedExpresion
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 Dim Body As New List(Of AstExpression)
 
 
                 _ConditionalBeginNode()
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Detect Empty List
-                If toktype = GrammarFactory.Grammar.Type_Id._CONDITIONAL_END Then
+                If toktype = Type_Id._CONDITIONAL_END Then
 
                     Body.Add(New Ast_ExpressionStatement(__EmptyStatementNode))
                     _ConditionalEndNode()
                 Else
-                    Do Until ((toktype) = GrammarFactory.Grammar.Type_Id._CONDITIONAL_END)
+                    Do Until ((toktype) = GrammarFactory.Type_Id._CONDITIONAL_END)
                         Body.Add(_ExpressionStatement)
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1767,7 +1767,7 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _MultiplicativeExpression() As AstExpression
-                Return _BinaryExpression(GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR, AST_NODE._MultiplicativeExpression, "_MultiplicativeExpression")
+                Return _BinaryExpression(GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR, AST_NODE._MultiplicativeExpression, "_MultiplicativeExpression")
             End Function
             ''' <summary>
             ''' Syntax:
@@ -1776,7 +1776,7 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _AddativeExpression() As AstExpression
-                Return _BinaryExpression(GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR, AST_NODE._AddativeExpression, "_AddativeExpression")
+                Return _BinaryExpression(GrammarFactory.Type_Id._ADDITIVE_OPERATOR, AST_NODE._AddativeExpression, "_AddativeExpression")
             End Function
             ''' <summary>
             ''' Syntax: 
@@ -1786,7 +1786,7 @@ Namespace SmallProgLang
             ''' <returns></returns>
             Public Function _RelationalExpression()
 
-                Return _BinaryExpression(GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR, AST_NODE._ConditionalExpression, "_ConditionalExpression")
+                Return _BinaryExpression(Type_Id._RELATIONAL_OPERATOR, AST_NODE._ConditionalExpression, "_ConditionalExpression")
             End Function
             ''' <summary>
             ''' syntax:
@@ -1803,15 +1803,15 @@ Namespace SmallProgLang
             ''' <param name="AstType"></param>
             ''' <param name="AstTypeStr"></param>
             ''' <returns></returns>
-            Public Function _BinaryExpression(ByRef NType As GrammarFactory.Grammar.Type_Id, AstType As AST_NODE, AstTypeStr As String) As AstExpression
+            Public Function _BinaryExpression(ByRef NType As Type_Id, AstType As AST_NODE, AstTypeStr As String) As AstExpression
                 Dim _left As AstExpression
                 Dim _Operator As String = ""
                 Dim _Right As AstExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Remove Erronious WhiteSpaces
-                If toktype = Grammar.Type_Id._WHITESPACE Then
-                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do While toktype = Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1824,8 +1824,8 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN)
+                    Case GrammarFactory.Type_Id._SIMPLE_ASSIGN
+                        Do While ((toktype) = GrammarFactory.Type_Id._SIMPLE_ASSIGN)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1834,8 +1834,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "AssignmentExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._ADDITIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._ADDITIVE_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1845,8 +1845,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "BinaryExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR)
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                             _Operator = _GetAssignmentOperator()
 
@@ -1857,8 +1857,8 @@ Namespace SmallProgLang
                             _left = New AstBinaryExpression(AST_NODE._MultiplicativeExpression, _left, _Operator, _Right)
                             _left._TypeStr = "BinaryExpression"
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR)
+                    Case GrammarFactory.Type_Id._RELATIONAL_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._RELATIONAL_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1871,13 +1871,13 @@ Namespace SmallProgLang
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
 
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case GrammarFactory.Type_Id._WHITESPACE
                         _WhitespaceNode()
 
                 End Select
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = Grammar.Type_Id._STATEMENT_END Then
+                If toktype = Type_Id._STATEMENT_END Then
                     Dim x = __EmptyStatementNode()
                     Return _left
                 Else
@@ -1890,11 +1890,11 @@ Namespace SmallProgLang
                 Dim _left As AstExpression
                 Dim _Operator As String = ""
                 Dim _Right As AstExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As GrammarFactory.Type_Id
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Remove Erronious WhiteSpaces
-                If toktype = Grammar.Type_Id._WHITESPACE Then
-                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do While toktype = Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1908,8 +1908,8 @@ Namespace SmallProgLang
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
 
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN)
+                    Case GrammarFactory.Type_Id._SIMPLE_ASSIGN
+                        Do While ((toktype) = GrammarFactory.Type_Id._SIMPLE_ASSIGN)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1918,8 +1918,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "AssignmentExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._ADDITIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._ADDITIVE_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1929,8 +1929,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "BinaryExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -1942,8 +1942,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "BinaryExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR)
+                    Case GrammarFactory.Type_Id._RELATIONAL_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._RELATIONAL_OPERATOR)
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
                             'NOTE: When adding further binary expressions maybe trickle down with this side
@@ -1955,12 +1955,12 @@ Namespace SmallProgLang
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
 
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case GrammarFactory.Type_Id._WHITESPACE
                         _WhitespaceNode()
                 End Select
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = Grammar.Type_Id._STATEMENT_END Then
+                If toktype = Type_Id._STATEMENT_END Then
                     Dim x = __EmptyStatementNode()
                     Return _left
                 Else
@@ -1973,11 +1973,11 @@ Namespace SmallProgLang
 
                 Dim _Operator As String = ""
                 Dim _Right As AstExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As GrammarFactory.Type_Id
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Remove Erronious WhiteSpaces
-                If toktype = Grammar.Type_Id._WHITESPACE Then
-                    Do While toktype = Grammar.Type_Id._WHITESPACE
+                If toktype = Type_Id._WHITESPACE Then
+                    Do While toktype = Type_Id._WHITESPACE
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
@@ -1991,8 +1991,8 @@ Namespace SmallProgLang
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
 
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._COMPLEX_ASSIGN
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._COMPLEX_ASSIGN)
+                    Case GrammarFactory.Type_Id._COMPLEX_ASSIGN
+                        Do While ((toktype) = GrammarFactory.Type_Id._COMPLEX_ASSIGN)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -2001,8 +2001,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "AssignmentExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._SIMPLE_ASSIGN)
+                    Case GrammarFactory.Type_Id._SIMPLE_ASSIGN
+                        Do While ((toktype) = GrammarFactory.Type_Id._SIMPLE_ASSIGN)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -2011,8 +2011,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "AssignmentExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._ADDITIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._ADDITIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._ADDITIVE_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -2022,8 +2022,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "BinaryExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._MULTIPLICATIVE_OPERATOR)
+                    Case GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._MULTIPLICATIVE_OPERATOR)
 
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
@@ -2035,8 +2035,8 @@ Namespace SmallProgLang
                             _left._TypeStr = "BinaryExpression"
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
-                    Case GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR
-                        Do While ((toktype) = GrammarFactory.Grammar.Type_Id._RELATIONAL_OPERATOR)
+                    Case GrammarFactory.Type_Id._RELATIONAL_OPERATOR
+                        Do While ((toktype) = GrammarFactory.Type_Id._RELATIONAL_OPERATOR)
                             _Operator = _GetAssignmentOperator()
                             Lookahead = Tokenizer.ViewNext
                             'NOTE: When adding further binary expressions maybe trickle down with this side
@@ -2048,12 +2048,12 @@ Namespace SmallProgLang
                             toktype = Tokenizer.IdentifiyToken(Lookahead)
                         Loop
 
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case GrammarFactory.Type_Id._WHITESPACE
                         _WhitespaceNode()
                 End Select
                 Lookahead = Tokenizer.ViewNext
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
-                If toktype = Grammar.Type_Id._STATEMENT_END Then
+                If toktype = Type_Id._STATEMENT_END Then
                     Dim x = __EmptyStatementNode()
                     Return _left
                 Else
@@ -2152,12 +2152,12 @@ Namespace SmallProgLang
                     ' nde = _VariableInitializer(_left)
                     Lookahead = Tokenizer.ViewNext
                     tok = Tokenizer.CheckIdentifiedToken(Lookahead)
-                    If tok.ID = Grammar.Type_Id._WHITESPACE Then
+                    If tok.ID = Type_Id._WHITESPACE Then
 
                         _WhitespaceNode()
                         Lookahead = Tokenizer.ViewNext
                         tok = Tokenizer.CheckIdentifiedToken(Lookahead)
-                        If tok.ID = Grammar.Type_Id._SIMPLE_ASSIGN Then
+                        If tok.ID = Type_Id._SIMPLE_ASSIGN Then
 
                             Dim lst As New List(Of AstExpression)
                             lst.Add(DecNode)
@@ -2205,19 +2205,19 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <returns></returns>
             Public Function _IterationStatment() As AstExpression
-                Dim toktype As GrammarFactory.Grammar.Type_Id
+                Dim toktype As Type_Id
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case toktype
-                    Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                    Case Type_Id._WHITESPACE
                         _WhitespaceNode()
-                    Case GrammarFactory.Grammar.Type_Id._WHILE
-                        Exit Select
-                    Case GrammarFactory.Grammar.Type_Id._UNTIL
-                        Exit Select
-                    Case GrammarFactory.Grammar.Type_Id._FOR
-                        Exit Select
+                    Case Type_Id._WHILE
+
+                    Case Type_Id._UNTIL
+
+                    Case Type_Id._FOR
+
                     Case Else
-                        Exit Select
+
                 End Select
                 Return Nothing
             End Function
@@ -2722,29 +2722,29 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Dim tok = Tokenizer.IdentifiyToken(Lookahead)
                 'End of Expression is "HALT"
-                Do Until tok = Grammar.Type_Id.SAL_HALT
+                Do Until tok = Type_Id.SAL_HALT
                     Lookahead = Tokenizer.ViewNext
                     tok = Tokenizer.IdentifiyToken(Lookahead)
                     Select Case tok
-                        Case GrammarFactory.Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
-                        Case GrammarFactory.Grammar.Type_Id._INTEGER
+                        Case Type_Id._INTEGER
                             Dim fnd = _NumericLiteralNode()
                             fnd._TypeStr = "_Integer"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._STRING
+                        Case Type_Id._STRING
                             Dim fnd = _StringLiteralNode()
                             fnd._TypeStr = "_string"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case GrammarFactory.Grammar.Type_Id._STATEMENT_END
+                        Case Type_Id._STATEMENT_END
                             lst.Add(__EmptyStatementNode())
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._SAL_EXPRESSION_BEGIN
+                        Case Type_Id._SAL_EXPRESSION_BEGIN
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_BeginStatement, nTok.Value)
                             fnd._End = nTok._End
@@ -2754,7 +2754,7 @@ Namespace SmallProgLang
                             '  lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._SAL_PROGRAM_BEGIN
+                        Case Type_Id._SAL_PROGRAM_BEGIN
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE._Sal_Program_title, nTok.Value)
                             fnd._End = nTok._End
@@ -2764,7 +2764,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_ADD
+                        Case Type_Id.SAL_ADD
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_ADD, nTok.Value)
                             fnd._End = nTok._End
@@ -2774,7 +2774,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_AND
+                        Case Type_Id.SAL_AND
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_AND, nTok.Value)
                             fnd._End = nTok._End
@@ -2784,7 +2784,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_CALL
+                        Case Type_Id.SAL_CALL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_CALL, nTok.Value)
                             fnd._End = nTok._End
@@ -2794,7 +2794,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DECR
+                        Case Type_Id.SAL_DECR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DECR, nTok.Value)
                             fnd._End = nTok._End
@@ -2804,7 +2804,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DIV
+                        Case Type_Id.SAL_DIV
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DIV, nTok.Value)
                             fnd._End = nTok._End
@@ -2814,7 +2814,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_DUP
+                        Case Type_Id.SAL_DUP
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_DUP, nTok.Value)
                             fnd._End = nTok._End
@@ -2824,7 +2824,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_HALT
+                        Case Type_Id.SAL_HALT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
                             fnd._End = nTok._End
@@ -2834,8 +2834,8 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                            Exit Select
-                        Case Grammar.Type_Id.SAL_INCR
+
+                        Case Type_Id.SAL_INCR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_INCR, nTok.Value)
                             fnd._End = nTok._End
@@ -2845,7 +2845,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_EQ
+                        Case Type_Id.SAL_IS_EQ
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -2855,7 +2855,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_GT
+                        Case Type_Id.SAL_IS_GT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GT, nTok.Value)
                             fnd._End = nTok._End
@@ -2865,7 +2865,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_GTE
+                        Case Type_Id.SAL_IS_GTE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_GTE, nTok.Value)
                             fnd._End = nTok._End
@@ -2875,7 +2875,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_LT
+                        Case Type_Id.SAL_IS_LT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_LT, nTok.Value)
                             fnd._End = nTok._End
@@ -2885,7 +2885,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_IS_LTE
+                        Case Type_Id.SAL_IS_LTE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_IS_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -2895,7 +2895,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_EQ
+                        Case Type_Id.SAL_JIF_EQ
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_EQ, nTok.Value)
                             fnd._End = nTok._End
@@ -2905,7 +2905,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_F
+                        Case Type_Id.SAL_JIF_F
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_F, nTok.Value)
                             fnd._End = nTok._End
@@ -2915,7 +2915,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_GT
+                        Case Type_Id.SAL_JIF_GT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_GT, nTok.Value)
                             fnd._End = nTok._End
@@ -2925,7 +2925,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_LT
+                        Case Type_Id.SAL_JIF_LT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_LT, nTok.Value)
                             fnd._End = nTok._End
@@ -2935,7 +2935,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JIF_T
+                        Case Type_Id.SAL_JIF_T
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
                             fnd._End = nTok._End
@@ -2945,7 +2945,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_JMP
+                        Case Type_Id.SAL_JMP
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JMP, nTok.Value)
                             fnd._End = nTok._End
@@ -2955,7 +2955,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_LOAD
+                        Case Type_Id.SAL_LOAD
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_LOAD, nTok.Value)
                             fnd._End = nTok._End
@@ -2965,7 +2965,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_MUL
+                        Case Type_Id.SAL_MUL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_MUL, nTok.Value)
                             fnd._End = nTok._End
@@ -2975,7 +2975,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_NOT
+                        Case Type_Id.SAL_NOT
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NOT, nTok.Value)
                             fnd._End = nTok._End
@@ -2985,7 +2985,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_NULL
+                        Case Type_Id.SAL_NULL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_NULL, nTok.Value)
                             fnd._End = nTok._End
@@ -2995,7 +2995,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_OR
+                        Case Type_Id.SAL_OR
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_OR, nTok.Value)
                             fnd._End = nTok._End
@@ -3005,7 +3005,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PAUSE
+                        Case Type_Id.SAL_PAUSE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PAUSE, nTok.Value)
                             fnd._End = nTok._End
@@ -3015,7 +3015,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PEEK
+                        Case Type_Id.SAL_PEEK
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PEEK, nTok.Value)
                             fnd._End = nTok._End
@@ -3025,7 +3025,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PRINT_C
+                        Case Type_Id.SAL_PRINT_C
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_C, nTok.Value)
                             fnd._End = nTok._End
@@ -3035,7 +3035,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PRINT_M
+                        Case Type_Id.SAL_PRINT_M
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PRINT_M, nTok.Value)
                             fnd._End = nTok._End
@@ -3045,7 +3045,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PULL
+                        Case Type_Id.SAL_PULL
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PULL, nTok.Value)
                             fnd._End = nTok._End
@@ -3055,7 +3055,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_PUSH
+                        Case Type_Id.SAL_PUSH
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_PUSH, nTok.Value)
                             fnd._End = nTok._End
@@ -3065,7 +3065,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_REMOVE
+                        Case Type_Id.SAL_REMOVE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_REMOVE, nTok.Value)
                             fnd._End = nTok._End
@@ -3075,7 +3075,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_RESUME
+                        Case Type_Id.SAL_RESUME
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RESUME, nTok.Value)
                             fnd._End = nTok._End
@@ -3085,7 +3085,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_RET
+                        Case Type_Id.SAL_RET
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_RET, nTok.Value)
                             fnd._End = nTok._End
@@ -3095,7 +3095,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_STORE
+                        Case Type_Id.SAL_STORE
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
                             fnd._End = nTok._End
@@ -3105,17 +3105,17 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_SUB
+                        Case Type_Id.SAL_SUB
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_JIF_T, nTok.Value)
+                            Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_SUB, nTok.Value)
                             fnd._End = nTok._End
-                            fnd._Raw = "STORE"
+                            fnd._Raw = "SUB"
                             fnd._Start = nTok._start
-                            fnd._TypeStr = "STORE"
+                            fnd._TypeStr = "SUB"
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_TO_NEG
+                        Case Type_Id.SAL_TO_NEG
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_NEG, nTok.Value)
                             fnd._End = nTok._End
@@ -3125,7 +3125,7 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id.SAL_TO_POS
+                        Case Type_Id.SAL_TO_POS
                             Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                             Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_TO_POS, nTok.Value)
                             fnd._End = nTok._End
@@ -3135,11 +3135,11 @@ Namespace SmallProgLang
                             lst.Add(fnd)
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._WHITESPACE
+                        Case Type_Id._WHITESPACE
                             _WhitespaceNode()
                             Lookahead = Tokenizer.ViewNext
                             tok = Tokenizer.IdentifiyToken(Lookahead)
-                        Case Grammar.Type_Id._BAD_TOKEN
+                        Case Type_Id._BAD_TOKEN
                             'Technically badtoken try capture
                             Dim etok = __UnknownStatementNode()
                             ParserErrors.Add("Unknown Statement/Expression Uncountered" & vbNewLine & etok.ToJson.FormatJsonOutput & vbNewLine)
@@ -3158,7 +3158,7 @@ Namespace SmallProgLang
                 Loop
                 Lookahead = Tokenizer.ViewNext
                 tok = Tokenizer.IdentifiyToken(Lookahead)
-                If tok = Grammar.Type_Id.SAL_HALT Then
+                If tok = Type_Id.SAL_HALT Then
                     Dim nTok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                     Dim fnd = New Ast_SAL_Literal(AST_NODE.SAL_HALT, nTok.Value)
                     fnd._End = nTok._End
@@ -3224,210 +3224,6 @@ Namespace SmallProgLang
                 nde._End = iScript.Length
                 nde._TypeStr = "SAL PROGRAM"
                 Return nde
-            End Function
-        End Class
-        Public Class LogoParser
-#Region "Propertys"
-            Public ParserErrors As New List(Of String)
-            ''' <summary>
-            ''' Currently held script
-            ''' </summary>
-            Public iScript As String = ""
-            ''' <summary>
-            ''' To hold the look ahead value without consuming the value
-            ''' </summary>
-            Public Lookahead As String
-            ''' <summary>
-            ''' Tokenizer !
-            ''' </summary>
-            Dim Tokenizer As Lexer
-            Private iProgram As AstProgram
-            Public ReadOnly Property Program As AstProgram
-                Get
-                    Return iProgram
-                End Get
-            End Property
-#End Region
-            Public Function _Parse(ByRef nScript As String) As AstProgram
-                Dim Body As New List(Of Ast_ExpressionStatement)
-                Me.ParserErrors = New List(Of String)
-                iScript = nScript.Replace(vbNewLine, ";")
-                iScript = RTrim(iScript)
-                iScript = LTrim(iScript)
-                Tokenizer = New Lexer(iScript)
-                'Dim TokType As GrammarFactory.Grammar.Type_Id
-                Lookahead = Tokenizer.ViewNext
-                Dim tok = Tokenizer.IdentifiyToken(Lookahead)
-
-                'GetProgram
-                iProgram = _LOGO_ProgramNode()
-
-
-                'Preserve InClass
-                Return iProgram
-            End Function
-            Public Function _LOGO_ProgramNode() As AstProgram
-                Dim nde = New AstProgram(_StatementList)
-                nde._Raw = iScript
-                nde._Start = 0
-                nde._End = iScript.Length
-                nde._TypeStr = "LOGO PROGRAM"
-                Return nde
-            End Function
-
-            '
-            'Syntax;
-            '
-            '
-            Public Function _StatementList() As List(Of AstExpression)
-                Dim lst As New List(Of AstExpression)
-                lst.AddRange(_LogoStatementList)
-                Return lst
-            End Function
-            Public Function _LogoStatementList() As List(Of AstExpression)
-                Dim lst As New List(Of AstExpression)
-
-                Return lst
-            End Function
-
-            Public Function _GetAssignmentOperator() As String
-                Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
-                str = str.Replace("\u003c", "<")
-                str = str.Replace("\u003e", ">")
-                ' \U003c < Less-than sign
-                ' \U003e > Greater-than sign
-
-
-                Return UCase(str)
-            End Function
-            Public Function _IdentifierLiteralNode() As Ast_Identifier
-                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-
-                Dim nde = New Ast_Identifier(tok.Value)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_name"
-
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            Public Function __EndStatementNode() As Ast_Literal
-                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                Dim nde = New Ast_Literal(AST_NODE._endStatement, tok.Value)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_endStatement"
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            ''' <summary>
-            ''' Collects bad token
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function __UnknownStatementNode() As Ast_Literal
-                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_UnknownStatement"
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            ''' <summary>
-            ''' Used when data has already been collected
-            ''' </summary>
-            ''' <param name="ErrorTok"></param>
-            ''' <returns></returns>
-            Public Function __UnknownStatementNode(ByRef ErrorTok As Token) As Ast_Literal
-                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
-                Dim tok As Token = ErrorTok
-                Dim nde = New Ast_Literal(AST_NODE._UnknownStatement, tok.Value)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_UnknownStatement"
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            ''' <summary>
-            ''' Used to denote white space as it is often important later
-            ''' Some Parsers ignore this token ; 
-            ''' It is thought also; to be prudent to collect all tokens to let the Evaluator deal with this later
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function _WhitespaceNode() As Ast_Literal
-                '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                Dim nde = New Ast_Literal(AST_NODE._WhiteSpace, tok.Value)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_whitespace"
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            ''' <summary>
-            ''' Syntax:
-            ''' "hjk"
-            ''' String Literal:
-            '''  -String
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function _StringLiteralNode() As Ast_Literal
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-
-                Dim str As String = ""
-                If tok.Value.Contains("'") Then
-                    str = tok.Value.Replace("'", "")
-                Else
-                End If
-                If tok.Value.Contains(Chr(34)) Then
-                    str = tok.Value.Replace(Chr(34), "")
-                End If
-
-                Dim nde = New Ast_Literal(AST_NODE._string, str)
-                nde._Start = tok._start
-                nde._End = tok._End
-                nde._Raw = tok.Value
-                nde._TypeStr = "_string"
-                Lookahead = Tokenizer.ViewNext
-                Return nde
-            End Function
-            ''' <summary>
-            ''' Syntax:
-            ''' 
-            ''' Numeric Literal:
-            '''  -Number
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function _NumericLiteralNode() As Ast_Literal
-                Dim Str As Integer = 0
-                ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
-                Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
-                If Integer.TryParse(tok.Value, Str) = True Then
-                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
-                    nde._Start = tok._start
-                    nde._End = tok._End
-                    nde._Raw = tok.Value
-                    nde._TypeStr = "_integer"
-                    Lookahead = Tokenizer.ViewNext
-                    Return nde
-                Else
-                    'Unable to parse default 0 to preserve node listeral as integer
-                    Dim nde = New Ast_Literal(AST_NODE._integer, 0)
-                    nde._Start = tok._start
-                    nde._End = tok._End
-                    nde._Raw = tok.Value
-                    nde._TypeStr = "_integer"
-                    Lookahead = Tokenizer.ViewNext
-                    Return nde
-                End If
             End Function
         End Class
     End Namespace

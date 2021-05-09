@@ -1,4 +1,6 @@
-﻿Public Class FormGraphicsDisplayConsole
+﻿Imports SDK.SmallProgLang
+
+Public Class FormGraphicsDisplayConsole
     Public Iturtle As TURTLE
     Private Sub FormGraphicsDisplayConsole_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Iturtle = New TURTLE(DISPLAY_PANEL, My.Resources.Arrow_Right)

@@ -8,6 +8,8 @@ Imports SDK.SmallProgLang.Evaluator
 Imports SDK.SmallProgLang.GrammarFactory
 Imports SDK.SmallProgLang.GrammarFactory.Grammar
 
+
+
 'INTERPRETOR
 '
 #Region "INTERPRETATION"
@@ -174,6 +176,8 @@ Namespace SmallProgLang
             _ListEnd
             _DeclareVariable
             _TRUE
+            Logo_Expression
+            Logo_Function
         End Enum
         ''' <summary>
         ''' Syntax: 
@@ -1204,278 +1208,279 @@ Namespace SmallProgLang
     '
     Namespace GrammarFactory
         ''' <summary>
+        ''' GRAMMAR OBJECT ID
+        ''' </summary>
+        Public Enum Type_Id
+            ''' <summary>
+            ''' Literal
+            ''' </summary>
+            _INTEGER
+            ''' <summary>
+            ''' Literal
+            ''' </summary>
+            _STRING
+            ''' <summary>
+            ''' Print Literal/Value/String
+            ''' </summary>
+            _PRINT
+            ''' <summary>
+            ''' Declare Var
+            ''' </summary>
+            _DIM
+            ''' <summary>
+            ''' Begin Iteration of list
+            ''' For (Iterator = (Increment to Completion)
+            ''' </summary>
+            _FOR
+            ''' <summary>
+            ''' Additional = Step +1
+            ''' </summary>
+            _EACH
+            ''' <summary>
+            ''' From item in list
+            ''' </summary>
+            _IN
+            ''' <summary>
+            ''' End of iteration marker
+            ''' </summary>
+            _TO
+            ''' <summary>
+            ''' Increment Iterator
+            ''' </summary>
+            _NEXT
+            ''' <summary>
+            ''' If Condition = Outcome Then (code) Else (code)
+            ''' </summary>
+            _IF
+            ''' <summary>
+            ''' Then (block)
+            ''' </summary>
+            _THEN
+            ''' <summary>
+            ''' Else (Block)
+            ''' </summary>
+            _ELSE
+            ''' <summary>
+            ''' Until Condition = true
+            ''' </summary>
+            _UNTIL
+            ''' <summary>
+            ''' While Condition = true
+            ''' </summary>
+            _WHILE
+            ''' <summary>
+            ''' Signify begining of Do...While/Until
+            ''' </summary>
+            _DO
+            _RETURN
+            _FUNCTION
+            _SUB
+            _CLASS
+            _NEW
+            ''' <summary>
+            ''' Used in Declaration Assignment
+            ''' Left (var) assign as (LiteralType)
+            ''' </summary>
+            _AS
+            ''' <summary>
+            ''' End of While loop (marker)(check expression Condition)
+            ''' </summary>
+            _LOOP
+            ''' <summary>
+            ''' xLeft = output of right (9+4) (+= 9) (-=2) (3) (true)
+            ''' </summary>
+            _SIMPLE_ASSIGN
+            ''' <summary>
+            ''' xLeft assigns output of right -=(9+4) (+= 9) (-=2) (3) (true)
+            ''' Complex assign ... x=x+(ouput)x=x-(ouput) etc
+            ''' </summary>
+            _COMPLEX_ASSIGN
+            ''' <summary>
+            ''' Boolean Literal Env Variable
+            ''' </summary>
+            _TRUE
+            ''' <summary>
+            ''' Boolean Literal - Env Variable
+            ''' </summary>
+            _FALSE
+            ''' <summary>
+            ''' Boolean literal -Env Variable
+            ''' </summary>
+            _NULL
+            ''' <summary>
+            ''' Used for Args List (Lists) = Arrays
+            ''' Args are lists of Vars (function Environment Vars)
+            ''' </summary>
+            _LIST_BEGIN
+            ''' <summary>
+            ''' End of List
+            ''' </summary>
+            _LIST_END
+            ''' <summary>
+            ''' Used for Blocks of code
+            ''' </summary>
+            _CODE_BEGIN
+            ''' <summary>
+            ''' End of Code block
+            ''' </summary>
+            _CODE_END
+            ''' <summary>
+            ''' Used for operation blocks as well as 
+            ''' ordering prioritizing evals
+            ''' Begin
+            ''' </summary>
+            _CONDITIONAL_BEGIN
+            ''' <summary>
+            ''' End of Condition
+            ''' </summary>
+            _CONDITIONAL_END
+            ''' <summary>
+            '''  - AND
+            ''' </summary>
+            _LOGICAL_AND
+            ''' <summary>
+            '''  | OR
+            ''' </summary>
+            _LOGICAL_OR
+            ''' <summary>
+            ''' ! NOT
+            ''' </summary>
+            _LOGICAL_NOT
+            ''' <summary>
+            ''' Greater than / Less Than
+            ''' </summary>
+            _RELATIONAL_OPERATOR
+            ''' <summary>
+            ''' +-
+            ''' </summary>
+            _ADDITIVE_OPERATOR
+            ''' <summary>
+            ''' */
+            ''' </summary>
+            _MULTIPLICATIVE_OPERATOR
+            ''' <summary>
+            ''' ;
+            ''' </summary>
+            _STATEMENT_END
+            ''' <summary>
+            ''' end of file
+            ''' </summary>
+            _EOF
+            ''' <summary>
+            ''' Bad / Unrecognized token
+            ''' </summary>
+            _BAD_TOKEN
+            ''' <summary>
+            ''' Seperates items in list
+            ''' </summary>
+            _LIST_SEPERATOR
+            ''' <summary>
+            ''' !=
+            ''' </summary>
+            _NOT_EQUALS
+            ''' <summary>
+            ''' DECLARE VAR 
+            ''' </summary>
+            _VARIABLE_DECLARE
+            'Sal token_IDs
+            SAL_NULL
+            SAL_REMOVE
+            SAL_RESUME
+            SAL_PUSH
+            SAL_PULL
+            SAL_PEEK
+            SAL_WAIT
+            SAL_PAUSE
+            SAL_HALT
+            SAL_DUP
+            SAL_JMP
+            SAL_JIF_T
+            SAL_JIF_F
+            SAL_JIF_EQ
+            SAL_JIF_GT
+            SAL_JIF_LT
+            SAL_LOAD
+            SAL_STORE
+            SAL_CALL
+            SAL_RET
+            SAL_PRINT_M
+            SAL_PRINT_C
+            SAL_ADD
+            SAL_SUB
+            SAL_MUL
+            SAL_DIV
+            SAL_AND
+            SAL_OR
+            SAL_NOT
+            SAL_IS_EQ
+            SAL_IS_GT
+            SAL_IS_GTE
+            SAL_IS_LT
+            SAL_IS_LTE
+            SAL_TO_POS
+            SAL_TO_NEG
+            SAL_INCR
+            SAL_DECR
+            _SAL_PROGRAM_BEGIN
+            _SAL_EXPRESSION_BEGIN
+            _PL_PROGRAM_BEGIN
+            _Def
+            _EQUALITY
+            _JSON_digit
+            _JSON_esc
+            _JSON_int
+            _JSON_exp
+            _JSON_frac
+            _FUNCTION_DECLARE
+            _DOT
+            _OBJ_string
+            _OBJ_integer
+            _OBJ_boolean
+            _OBJ_array
+            _OBJ_null
+            ''' <summary>
+            ''' Literal
+            ''' </summary>
+            _VARIABLE
+            _WHITESPACE
+            _COMMENTS
+            'LOGO
+            _repeat
+            LOGO_fd
+            LOGO_bk
+            LOGO_rt
+            LOGO_lt
+            LOGO_cs
+            LOGO_pu
+            LOGO_pd
+            LOGO_ht
+            LOGO_st
+            LOGO_deref
+            LOGO_home
+            LOGO_label
+            LOGO_setxy
+            LOGO_make
+            LOGO_procedureInvocation
+            LOGO_procedureDeclaration
+            LOGO_parameterDeclarations
+            LOGO_comparison
+            LOGO_comparisonOperator
+            LOGO_ife
+            LOGO_Stop
+            LOGO_fore
+            LOGO_LANG
+            LOGO_signExpression
+            LOGO_multiplyingExpression
+            LOGO_expression
+            LOGO_EOL
+            LOGO_number
+            LOGO_name
+        End Enum
+        ''' <summary>
         ''' Simple Gramar object (Expected token Shape or from)
         ''' </summary>
         Public Class Grammar
-            ''' <summary>
-            ''' GRAMMAR OBJECT ID
-            ''' </summary>
-            Public Enum Type_Id
-                ''' <summary>
-                ''' Literal
-                ''' </summary>
-                _INTEGER
-                ''' <summary>
-                ''' Literal
-                ''' </summary>
-                _STRING
-                ''' <summary>
-                ''' Print Literal/Value/String
-                ''' </summary>
-                _PRINT
-                ''' <summary>
-                ''' Declare Var
-                ''' </summary>
-                _DIM
-                ''' <summary>
-                ''' Begin Iteration of list
-                ''' For (Iterator = (Increment to Completion)
-                ''' </summary>
-                _FOR
-                ''' <summary>
-                ''' Additional = Step +1
-                ''' </summary>
-                _EACH
-                ''' <summary>
-                ''' From item in list
-                ''' </summary>
-                _IN
-                ''' <summary>
-                ''' End of iteration marker
-                ''' </summary>
-                _TO
-                ''' <summary>
-                ''' Increment Iterator
-                ''' </summary>
-                _NEXT
-                ''' <summary>
-                ''' If Condition = Outcome Then (code) Else (code)
-                ''' </summary>
-                _IF
-                ''' <summary>
-                ''' Then (block)
-                ''' </summary>
-                _THEN
-                ''' <summary>
-                ''' Else (Block)
-                ''' </summary>
-                _ELSE
-                ''' <summary>
-                ''' Until Condition = true
-                ''' </summary>
-                _UNTIL
-                ''' <summary>
-                ''' While Condition = true
-                ''' </summary>
-                _WHILE
-                ''' <summary>
-                ''' Signify begining of Do...While/Until
-                ''' </summary>
-                _DO
-                _RETURN
-                _FUNCTION
-                _SUB
-                _CLASS
-                _NEW
-                ''' <summary>
-                ''' Used in Declaration Assignment
-                ''' Left (var) assign as (LiteralType)
-                ''' </summary>
-                _AS
-                ''' <summary>
-                ''' End of While loop (marker)(check expression Condition)
-                ''' </summary>
-                _LOOP
-                ''' <summary>
-                ''' xLeft = output of right (9+4) (+= 9) (-=2) (3) (true)
-                ''' </summary>
-                _SIMPLE_ASSIGN
-                ''' <summary>
-                ''' xLeft assigns output of right -=(9+4) (+= 9) (-=2) (3) (true)
-                ''' Complex assign ... x=x+(ouput)x=x-(ouput) etc
-                ''' </summary>
-                _COMPLEX_ASSIGN
-                ''' <summary>
-                ''' Boolean Literal Env Variable
-                ''' </summary>
-                _TRUE
-                ''' <summary>
-                ''' Boolean Literal - Env Variable
-                ''' </summary>
-                _FALSE
-                ''' <summary>
-                ''' Boolean literal -Env Variable
-                ''' </summary>
-                _NULL
-                ''' <summary>
-                ''' Used for Args List (Lists) = Arrays
-                ''' Args are lists of Vars (function Environment Vars)
-                ''' </summary>
-                _LIST_BEGIN
-                ''' <summary>
-                ''' End of List
-                ''' </summary>
-                _LIST_END
-                ''' <summary>
-                ''' Used for Blocks of code
-                ''' </summary>
-                _CODE_BEGIN
-                ''' <summary>
-                ''' End of Code block
-                ''' </summary>
-                _CODE_END
-                ''' <summary>
-                ''' Used for operation blocks as well as 
-                ''' ordering prioritizing evals
-                ''' Begin
-                ''' </summary>
-                _CONDITIONAL_BEGIN
-                ''' <summary>
-                ''' End of Condition
-                ''' </summary>
-                _CONDITIONAL_END
-                ''' <summary>
-                '''  - AND
-                ''' </summary>
-                _LOGICAL_AND
-                ''' <summary>
-                '''  | OR
-                ''' </summary>
-                _LOGICAL_OR
-                ''' <summary>
-                ''' ! NOT
-                ''' </summary>
-                _LOGICAL_NOT
-                ''' <summary>
-                ''' Greater than / Less Than
-                ''' </summary>
-                _RELATIONAL_OPERATOR
-                ''' <summary>
-                ''' +-
-                ''' </summary>
-                _ADDITIVE_OPERATOR
-                ''' <summary>
-                ''' */
-                ''' </summary>
-                _MULTIPLICATIVE_OPERATOR
-                ''' <summary>
-                ''' ;
-                ''' </summary>
-                _STATEMENT_END
-                ''' <summary>
-                ''' end of file
-                ''' </summary>
-                _EOF
-                ''' <summary>
-                ''' Bad / Unrecognized token
-                ''' </summary>
-                _BAD_TOKEN
-                ''' <summary>
-                ''' Seperates items in list
-                ''' </summary>
-                _LIST_SEPERATOR
-                ''' <summary>
-                ''' !=
-                ''' </summary>
-                _NOT_EQUALS
-                ''' <summary>
-                ''' DECLARE VAR 
-                ''' </summary>
-                _VARIABLE_DECLARE
-                'Sal token_IDs
-                SAL_NULL
-                SAL_REMOVE
-                SAL_RESUME
-                SAL_PUSH
-                SAL_PULL
-                SAL_PEEK
-                SAL_WAIT
-                SAL_PAUSE
-                SAL_HALT
-                SAL_DUP
-                SAL_JMP
-                SAL_JIF_T
-                SAL_JIF_F
-                SAL_JIF_EQ
-                SAL_JIF_GT
-                SAL_JIF_LT
-                SAL_LOAD
-                SAL_STORE
-                SAL_CALL
-                SAL_RET
-                SAL_PRINT_M
-                SAL_PRINT_C
-                SAL_ADD
-                SAL_SUB
-                SAL_MUL
-                SAL_DIV
-                SAL_AND
-                SAL_OR
-                SAL_NOT
-                SAL_IS_EQ
-                SAL_IS_GT
-                SAL_IS_GTE
-                SAL_IS_LT
-                SAL_IS_LTE
-                SAL_TO_POS
-                SAL_TO_NEG
-                SAL_INCR
-                SAL_DECR
-                _SAL_PROGRAM_BEGIN
-                _SAL_EXPRESSION_BEGIN
-                _PL_PROGRAM_BEGIN
-                _Def
-                _EQUALITY
-                _JSON_digit
-                _JSON_esc
-                _JSON_int
-                _JSON_exp
-                _JSON_frac
-                _FUNCTION_DECLARE
-                _DOT
-                _OBJ_string
-                _OBJ_integer
-                _OBJ_boolean
-                _OBJ_array
-                _OBJ_null
-                ''' <summary>
-                ''' Literal
-                ''' </summary>
-                _VARIABLE
-                _WHITESPACE
-                _COMMENTS
-                'LOGO
-                _repeat
-                _fd
-                _bk
-                _rt
-                _lt
-                _cs
-                _pu
-                _pd
-                _ht
-                _st
-                _deref
-                _home
-                _label
-                _setxy
-                _make
-                _procedureInvocation
-                _procedureDeclaration
-                _parameterDeclarations
-                _comparison
-                _comparisonOperator
-                _ife
-                _Stop
-                _fore
-                _LOGO_LANG
-                _signExpression
-                _multiplyingExpression
-                _expression
-                EOL
-                _number
-                _name
-            End Enum
+
             ''' <summary>
             ''' Identifier
             ''' </summary>
@@ -1484,6 +1489,322 @@ Namespace SmallProgLang
             ''' RegEx Expression to search
             ''' </summary>
             Public Exp As String
+            Public Shared Function GetExtendedGrammar() As List(Of Grammar)
+                Dim lst As New List(Of Grammar)
+                lst.AddRange(SALGrammar.GetSALGrammar)
+                lst.AddRange(PLGrammar.GetPLGrammar)
+                lst.AddRange(BaseGrammar.GetLogicGrammar)
+                lst.AddRange(BaseGrammar.GetSymbolsGrammar)
+                lst.AddRange(BaseGrammar.GetLiteralsGrammar)
+                lst.AddRange(LogoGrammar.GetLOGOGrammar)
+                Return lst
+            End Function
+            ''' <summary>
+            ''' Still Developing grammar:
+            ''' </summary>
+            ''' <returns></returns>
+            Public Shared Function GetJsonGrammar() As List(Of Grammar)
+                Dim iSpec As New List(Of Grammar)
+                Dim NewGram As New Grammar
+
+                '"tokens" "STRING NUMBER { } [ ] , : TRUE FALSE NULL",
+                '"start": "JSONText",
+
+                ''"JSONString" [[ "STRING", "$$ = yytext;" ]],
+
+                ''"JSONNumber" [[ "NUMBER", "$$ = Number(yytext);" ]],
+
+                ''"JSONNullLiteral" [[ "NULL", "$$ = null;" ]],
+
+                ''"JSONBooleanLiteral" [[ "TRUE", "$$ = true;" ],
+                ''                       [ "FALSE", "$$ = false;" ]],
+
+
+                ''"JSONText" [[ "JSONValue", "return $$ = $1;" ]],
+
+                ''"JSONValue" [[ "JSONNullLiteral",    "$$ = $1;" ],
+                ''              [ "JSONBooleanLiteral", "$$ = $1;" ],
+                ''              [ "JSONString",         "$$ = $1;" ],
+                ''              [ "JSONNumber",         "$$ = $1;" ],
+                ''              [ "JSONObject",         "$$ = $1;" ],
+                ''              [ "JSONArray",          "$$ = $1;" ]],
+
+                ''"JSONObject" [[ "{ }", "$$ = {};" ],
+                ''               [ "{ JSONMemberList }", "$$ = $2;" ]],
+
+                ''"JSONMember" [[ "JSONString : JSONValue", "$$ = [$1, $3];" ]],
+
+                ''"JSONMemberList" [[ "JSONMember", "$$ = {}; $$[$1[0]] = $1[1];" ],
+                ''                   [ "JSONMemberList , JSONMember", "$$ = $1; $1[$3[0]] = $3[1];" ]],
+
+                ''"JSONArray" [[ "[ ]", "$$ = [];" ],
+                ''              [ "[ JSONElementList ]", "$$ = $2;" ]],
+
+                ''"JSONElementList" [[ "JSONValue", "$$ = [$1];" ],
+                ''                    [ "JSONElementList , JSONValue", "$$ = $1; $1.push($3);" ]]
+
+
+                '["\\s+", "/* skip whitespace */"],
+                '["{int}{frac}?{exp}?\\b", "return 'NUMBER';"],
+                '["\"(?:{esc}[\"bfnrt/{esc}]|{esc}u[a-fA-F0-9]{4}|[^\"{esc}])*\"", "yytext = yytext.substr(1,yyleng-2); return 'STRING';"],
+                '["\\{", "return '{'"],
+                '["\\}", "return '}'"],
+                '["\\[", "return '['"],
+                '["\\]", "return ']'"],
+                '[",", "return ','"],
+                '[":", "return ':'"],
+                '["true\\b", "return 'TRUE'"],
+                '["false\\b", "return 'FALSE'"],
+                '["null\\b", "return 'NULL'"]
+
+
+                NewGram = New Grammar
+                NewGram.ID = Type_Id._JSON_digit
+                NewGram.Exp = "^[0-9]"
+                iSpec.Add(NewGram)
+                NewGram = New Grammar
+                NewGram.ID = Type_Id._JSON_esc
+                NewGram.Exp = "^\\\\"
+                iSpec.Add(NewGram)
+                NewGram = New Grammar
+                NewGram.ID = Type_Id._JSON_int
+                NewGram.Exp = "^-?(?:[0-9]|[1-9][0-9]+)"
+                iSpec.Add(NewGram)
+                NewGram = New Grammar
+                NewGram.ID = Type_Id._JSON_exp
+                NewGram.Exp = "(?:[eE][-+]?[0-9]+)"
+                iSpec.Add(NewGram)
+                NewGram = New Grammar
+                NewGram.ID = Type_Id._JSON_frac
+                NewGram.Exp = "(?:[eE][-+]?[0-9]+)"
+                iSpec.Add(NewGram)
+
+
+                Return iSpec
+            End Function
+
+        End Class
+    End Namespace
+    '
+    Public Class BaseGrammar
+
+        Public Shared Function GetSymbolsGrammar() As List(Of Grammar)
+            Dim iSpec As New List(Of Grammar)
+            Dim NewGram As New Grammar
+#Region "Seperators"
+            'BLOCK CODE: LEFT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._CODE_BEGIN
+            NewGram.Exp = "^\{"
+            iSpec.Add(NewGram)
+            'BLOCK CODE: RIGHT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._CODE_END
+            NewGram.Exp = "^\}"
+            iSpec.Add(NewGram)
+            'END STATEMENT or EMPTY STATEMENT
+            'EMPTY CODE BLOCKS CONTAIN (1 EMPTY STATEMENT)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._STATEMENT_END
+            NewGram.Exp = "^\;"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LIST_SEPERATOR
+            NewGram.Exp = "^\,"
+            iSpec.Add(NewGram)
+            'ARGS LIST : LEFT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LIST_BEGIN
+            NewGram.Exp = "^\["
+            iSpec.Add(NewGram)
+            'ARGS LIST: RIGHT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LIST_END
+            NewGram.Exp = "^\]"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._DOT
+            NewGram.Exp = "^\\."
+            iSpec.Add(NewGram)
+
+#End Region
+            Return iSpec
+        End Function
+        Public Shared Function GetLogicGrammar() As List(Of Grammar)
+            Dim iSpec As New List(Of Grammar)
+            Dim NewGram As New Grammar
+
+
+            'logical(boolean) - Literal
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._TRUE
+            NewGram.Exp = "^\btrue\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._FALSE
+            NewGram.Exp = "^\bfalse\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._NULL
+            NewGram.Exp = "^\bnull\b"
+            iSpec.Add(NewGram)
+
+            ''=
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._SIMPLE_ASSIGN
+            NewGram.Exp = "^\="
+            iSpec.Add(NewGram)
+
+            '*=, /=, +=, -=,
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._COMPLEX_ASSIGN
+            NewGram.Exp = "^(\*|\/|\+|\-)="
+            iSpec.Add(NewGram)
+
+
+            'Conditional BLOCK CODE: LEFT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._CONDITIONAL_BEGIN
+            NewGram.Exp = "^\("
+            iSpec.Add(NewGram)
+            'Conditional BLOCK CODE: RIGHT BOUNDRY
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._CONDITIONAL_END
+            NewGram.Exp = "^\)"
+            iSpec.Add(NewGram)
+
+            'Logical Operators:  &&, ||
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LOGICAL_AND
+            NewGram.Exp = "^\band\b"
+            iSpec.Add(NewGram)
+
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LOGICAL_OR
+            NewGram.Exp = "^\bor\b"
+            iSpec.Add(NewGram)
+
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._LOGICAL_NOT
+            NewGram.Exp = "^\bnot\b"
+            iSpec.Add(NewGram)
+
+            'Equality operators: ==, !=
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._EQUALITY
+            NewGram.Exp = "^(=|!)=\="
+
+            iSpec.Add(NewGram)
+
+            'Relational operators: >, >=, <, <=
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._RELATIONAL_OPERATOR
+            NewGram.Exp = "^[><]\=?"
+            iSpec.Add(NewGram)
+            'Math operators: +, -, *, /
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._ADDITIVE_OPERATOR
+            NewGram.Exp = "^[+\-]"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._MULTIPLICATIVE_OPERATOR
+            NewGram.Exp = "^[*/]"
+            iSpec.Add(NewGram)
+
+            Return iSpec
+        End Function
+        Public Shared Function GetLiteralsGrammar() As List(Of Grammar)
+            Dim iSpec As New List(Of Grammar)
+
+            Dim NewGram As New Grammar
+            'Literals
+            NewGram.ID = Type_Id._INTEGER
+            NewGram.Exp = "^\d+"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._STRING
+            NewGram.Exp = "^" & Chr(34) & "[^" & Chr(34) & "]*" & Chr(34)
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._STRING
+            NewGram.Exp = "^'[^']*'"
+            iSpec.Add(NewGram)
+
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._WHITESPACE
+            NewGram.Exp = "^\s"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._COMMENTS
+            NewGram.Exp = "^\/\/.*"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._COMMENTS
+            NewGram.Exp = "^\/\*[\s\S]*?\*\/"
+            iSpec.Add(NewGram)
+
+            'Variable
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._VARIABLE
+            NewGram.Exp = "^\b[a-z][a-z0-9]+\b"
+            iSpec.Add(NewGram)
+#Region "literal Object types"
+#Region "ARRAY"
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_array
+            NewGram.Exp = "\blist\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_array
+            NewGram.Exp = "\barray\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_array
+            NewGram.Exp = "\barraylist\b"
+            iSpec.Add(NewGram)
+#End Region
+#Region "boolean"
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_boolean
+            NewGram.Exp = "\bbool\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_boolean
+            NewGram.Exp = "\bboolean\b"
+            iSpec.Add(NewGram)
+#End Region
+#Region "NULL"
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_null
+            NewGram.Exp = "\bnothing\b"
+            iSpec.Add(NewGram)
+#End Region
+#Region "integer"
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_integer
+            NewGram.Exp = "\bint\b"
+            iSpec.Add(NewGram)
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_integer
+            NewGram.Exp = "\binteger\b"
+            iSpec.Add(NewGram)
+#End Region
+#Region "string"
+            NewGram = New Grammar
+            NewGram.ID = Type_Id._OBJ_string
+            NewGram.Exp = "\bstring\b"
+            iSpec.Add(NewGram)
+
+#End Region
+#End Region
+            Return iSpec
+        End Function
+    End Class
+    'PL GRAMMAR
+    '
+    '
+    Namespace GrammarFactory
+        Public Class PLGrammar
             ''' <summary>
             ''' Set OF KeyWords for Language with RegEx Search Expressions
             ''' Based on basic programming languge keywords and symbols /Literals
@@ -1619,9 +1940,9 @@ Namespace SmallProgLang
 
 
 
-                iSpec.AddRange(GetLogicGrammar)
-                iSpec.AddRange(GetSymbolsGrammar)
-                iSpec.AddRange(GetLiteralsGrammar)
+                iSpec.AddRange(BaseGrammar.GetLogicGrammar)
+                iSpec.AddRange(BaseGrammar.GetSymbolsGrammar)
+                iSpec.AddRange(BaseGrammar.GetLiteralsGrammar)
                 'ARGS LIST: RIGHT BOUNDRY
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._EOF
@@ -1630,217 +1951,43 @@ Namespace SmallProgLang
 
                 Return iSpec
             End Function
-            Public Shared Function GetSymbolsGrammar() As List(Of Grammar)
-                Dim iSpec As New List(Of Grammar)
-                Dim NewGram As New Grammar
-#Region "Seperators"
-                'BLOCK CODE: LEFT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._CODE_BEGIN
-                NewGram.Exp = "^\{"
-                iSpec.Add(NewGram)
-                'BLOCK CODE: RIGHT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._CODE_END
-                NewGram.Exp = "^\}"
-                iSpec.Add(NewGram)
-                'END STATEMENT or EMPTY STATEMENT
-                'EMPTY CODE BLOCKS CONTAIN (1 EMPTY STATEMENT)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._STATEMENT_END
-                NewGram.Exp = "^\;"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LIST_SEPERATOR
-                NewGram.Exp = "^\,"
-                iSpec.Add(NewGram)
-                'ARGS LIST : LEFT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LIST_BEGIN
-                NewGram.Exp = "^\["
-                iSpec.Add(NewGram)
-                'ARGS LIST: RIGHT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LIST_END
-                NewGram.Exp = "^\]"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._DOT
-                NewGram.Exp = "^\\."
-                iSpec.Add(NewGram)
+        End Class
+    End Namespace
+    'GRAMMAR-TOKEN
+    '
+    Namespace GrammarFactory
+        ''' <summary>
+        ''' Token to be returned 
+        ''' </summary>
+        Public Structure Token
+            ''' <summary>
+            ''' Simple identifier
+            ''' </summary>
+            Public ID As Type_Id
+            ''' <summary>
+            ''' Held Data
+            ''' </summary>
+            Public Value As String
+            ''' <summary>
+            ''' Start of token(Start position)
+            ''' </summary>
+            Public _start As Integer
+            ''' <summary>
+            ''' End of token (end Position)
+            ''' </summary>
+            Public _End As Integer
 
-#End Region
-                Return iSpec
+            Public Function ToJson() As String
+                Dim Converter As New JavaScriptSerializer
+                Return Converter.Serialize(Me)
+
             End Function
-            Public Shared Function GetLogicGrammar() As List(Of Grammar)
-                Dim iSpec As New List(Of Grammar)
-                Dim NewGram As New Grammar
-
-
-                'logical(boolean) - Literal
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._TRUE
-                NewGram.Exp = "^\btrue\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._FALSE
-                NewGram.Exp = "^\bfalse\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._NULL
-                NewGram.Exp = "^\bnull\b"
-                iSpec.Add(NewGram)
-
-                ''=
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._SIMPLE_ASSIGN
-                NewGram.Exp = "^\="
-                iSpec.Add(NewGram)
-
-                '*=, /=, +=, -=,
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._COMPLEX_ASSIGN
-                NewGram.Exp = "^(\*|\/|\+|\-)="
-                iSpec.Add(NewGram)
-
-
-                'Conditional BLOCK CODE: LEFT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._CONDITIONAL_BEGIN
-                NewGram.Exp = "^\("
-                iSpec.Add(NewGram)
-                'Conditional BLOCK CODE: RIGHT BOUNDRY
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._CONDITIONAL_END
-                NewGram.Exp = "^\)"
-                iSpec.Add(NewGram)
-
-                'Logical Operators:  &&, ||
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LOGICAL_AND
-                NewGram.Exp = "^\band\b"
-                iSpec.Add(NewGram)
-
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LOGICAL_OR
-                NewGram.Exp = "^\bor\b"
-                iSpec.Add(NewGram)
-
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._LOGICAL_NOT
-                NewGram.Exp = "^\bnot\b"
-                iSpec.Add(NewGram)
-
-                'Equality operators: ==, !=
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._EQUALITY
-                NewGram.Exp = "^(=|!)=\="
-
-                iSpec.Add(NewGram)
-
-                'Relational operators: >, >=, <, <=
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._RELATIONAL_OPERATOR
-                NewGram.Exp = "^[><]\=?"
-                iSpec.Add(NewGram)
-                'Math operators: +, -, *, /
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._ADDITIVE_OPERATOR
-                NewGram.Exp = "^[+\-]"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._MULTIPLICATIVE_OPERATOR
-                NewGram.Exp = "^[*/]"
-                iSpec.Add(NewGram)
-
-                Return iSpec
-            End Function
-            Public Shared Function GetLiteralsGrammar() As List(Of Grammar)
-                Dim iSpec As New List(Of Grammar)
-
-                Dim NewGram As New Grammar
-                'Literals
-                NewGram.ID = Type_Id._INTEGER
-                NewGram.Exp = "^\d+"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._STRING
-                NewGram.Exp = "^" & Chr(34) & "[^" & Chr(34) & "]*" & Chr(34)
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._STRING
-                NewGram.Exp = "^'[^']*'"
-                iSpec.Add(NewGram)
-
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._WHITESPACE
-                NewGram.Exp = "^\s"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._COMMENTS
-                NewGram.Exp = "^\/\/.*"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._COMMENTS
-                NewGram.Exp = "^\/\*[\s\S]*?\*\/"
-                iSpec.Add(NewGram)
-
-                'Variable
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._VARIABLE
-                NewGram.Exp = "^\b[a-z][a-z0-9]+\b"
-                iSpec.Add(NewGram)
-#Region "literal Object types"
-#Region "ARRAY"
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_array
-                NewGram.Exp = "\blist\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_array
-                NewGram.Exp = "\barray\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_array
-                NewGram.Exp = "\barraylist\b"
-                iSpec.Add(NewGram)
-#End Region
-#Region "boolean"
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_boolean
-                NewGram.Exp = "\bbool\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_boolean
-                NewGram.Exp = "\bboolean\b"
-                iSpec.Add(NewGram)
-#End Region
-#Region "NULL"
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_null
-                NewGram.Exp = "\bnothing\b"
-                iSpec.Add(NewGram)
-#End Region
-#Region "integer"
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_integer
-                NewGram.Exp = "\bint\b"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_integer
-                NewGram.Exp = "\binteger\b"
-                iSpec.Add(NewGram)
-#End Region
-#Region "string"
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._OBJ_string
-                NewGram.Exp = "\bstring\b"
-                iSpec.Add(NewGram)
-
-#End Region
-#End Region
-                Return iSpec
-            End Function
+        End Structure
+    End Namespace
+    'SAL GRAMMAR
+    '
+    Namespace GrammarFactory
+        Public Class SALGrammar
             Public Shared Function GetSALGrammar() As List(Of Grammar)
                 Dim iSpec As New List(Of Grammar)
                 Dim NewGram As New Grammar
@@ -2035,9 +2182,9 @@ Namespace SmallProgLang
 
 #End Region
 
-                iSpec.AddRange(GetLogicGrammar)
-                iSpec.AddRange(GetSymbolsGrammar)
-                iSpec.AddRange(GetLiteralsGrammar)
+                iSpec.AddRange(BaseGrammar.GetLogicGrammar)
+                iSpec.AddRange(BaseGrammar.GetSymbolsGrammar)
+                iSpec.AddRange(BaseGrammar.GetLiteralsGrammar)
 
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._EOF
@@ -2045,141 +2192,12 @@ Namespace SmallProgLang
                 iSpec.Add(NewGram)
                 Return iSpec
             End Function
-            Public Shared Function GetExtendedGrammar() As List(Of Grammar)
-                Dim lst As New List(Of Grammar)
-                lst.AddRange(GetSALGrammar)
-                lst.AddRange(GetPLGrammar)
-                lst.AddRange(GetLogicGrammar)
-                lst.AddRange(GetSymbolsGrammar)
-                lst.AddRange(GetLiteralsGrammar)
-                Return lst
-            End Function
-            ''' <summary>
-            ''' Still Developing grammar:
-            ''' </summary>
-            ''' <returns></returns>
-            Public Shared Function GetJsonGrammar() As List(Of Grammar)
-                Dim iSpec As New List(Of Grammar)
-                Dim NewGram As New Grammar
-
-                '"tokens" "STRING NUMBER { } [ ] , : TRUE FALSE NULL",
-                '"start": "JSONText",
-
-                ''"JSONString" [[ "STRING", "$$ = yytext;" ]],
-
-                ''"JSONNumber" [[ "NUMBER", "$$ = Number(yytext);" ]],
-
-                ''"JSONNullLiteral" [[ "NULL", "$$ = null;" ]],
-
-                ''"JSONBooleanLiteral" [[ "TRUE", "$$ = true;" ],
-                ''                       [ "FALSE", "$$ = false;" ]],
-
-
-                ''"JSONText" [[ "JSONValue", "return $$ = $1;" ]],
-
-                ''"JSONValue" [[ "JSONNullLiteral",    "$$ = $1;" ],
-                ''              [ "JSONBooleanLiteral", "$$ = $1;" ],
-                ''              [ "JSONString",         "$$ = $1;" ],
-                ''              [ "JSONNumber",         "$$ = $1;" ],
-                ''              [ "JSONObject",         "$$ = $1;" ],
-                ''              [ "JSONArray",          "$$ = $1;" ]],
-
-                ''"JSONObject" [[ "{ }", "$$ = {};" ],
-                ''               [ "{ JSONMemberList }", "$$ = $2;" ]],
-
-                ''"JSONMember" [[ "JSONString : JSONValue", "$$ = [$1, $3];" ]],
-
-                ''"JSONMemberList" [[ "JSONMember", "$$ = {}; $$[$1[0]] = $1[1];" ],
-                ''                   [ "JSONMemberList , JSONMember", "$$ = $1; $1[$3[0]] = $3[1];" ]],
-
-                ''"JSONArray" [[ "[ ]", "$$ = [];" ],
-                ''              [ "[ JSONElementList ]", "$$ = $2;" ]],
-
-                ''"JSONElementList" [[ "JSONValue", "$$ = [$1];" ],
-                ''                    [ "JSONElementList , JSONValue", "$$ = $1; $1.push($3);" ]]
-
-
-                '["\\s+", "/* skip whitespace */"],
-                '["{int}{frac}?{exp}?\\b", "return 'NUMBER';"],
-                '["\"(?:{esc}[\"bfnrt/{esc}]|{esc}u[a-fA-F0-9]{4}|[^\"{esc}])*\"", "yytext = yytext.substr(1,yyleng-2); return 'STRING';"],
-                '["\\{", "return '{'"],
-                '["\\}", "return '}'"],
-                '["\\[", "return '['"],
-                '["\\]", "return ']'"],
-                '[",", "return ','"],
-                '[":", "return ':'"],
-                '["true\\b", "return 'TRUE'"],
-                '["false\\b", "return 'FALSE'"],
-                '["null\\b", "return 'NULL'"]
-
-
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._JSON_digit
-                NewGram.Exp = "^[0-9]"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._JSON_esc
-                NewGram.Exp = "^\\\\"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._JSON_int
-                NewGram.Exp = "^-?(?:[0-9]|[1-9][0-9]+)"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._JSON_exp
-                NewGram.Exp = "(?:[eE][-+]?[0-9]+)"
-                iSpec.Add(NewGram)
-                NewGram = New Grammar
-                NewGram.ID = Type_Id._JSON_frac
-                NewGram.Exp = "(?:[eE][-+]?[0-9]+)"
-                iSpec.Add(NewGram)
-
-
-                Return iSpec
-            End Function
-
         End Class
     End Namespace
-    'GRAMMAR-TOKEN
-    '
-    Namespace GrammarFactory
-
-
-        ''' <summary>
-        ''' Token to be returned 
-        ''' </summary>
-        Public Structure Token
-            ''' <summary>
-            ''' Simple identifier
-            ''' </summary>
-            Public ID As Type_Id
-            ''' <summary>
-            ''' Held Data
-            ''' </summary>
-            Public Value As String
-            ''' <summary>
-            ''' Start of token(Start position)
-            ''' </summary>
-            Public _start As Integer
-            ''' <summary>
-            ''' End of token (end Position)
-            ''' </summary>
-            Public _End As Integer
-
-            Public Function ToJson() As String
-                Dim Converter As New JavaScriptSerializer
-                Return Converter.Serialize(Me)
-
-            End Function
-        End Structure
-    End Namespace
-    '
-    '
-    '
 
 End Namespace
 Namespace SmallProgLang
-    'GRAMMAR
+    'LOGO GRAMMAR
     '
     Namespace GrammarFactory
         'https://www.tutorialspoint.com/logo/logo_introduction.htm
@@ -2317,9 +2335,6 @@ Namespace SmallProgLang
         'comment
         '       : COMMENT
         '       :  ~ [\r\n]*';'
-
-
-
         ''' <summary>
         ''' Logo Programming Language
         ''' </summary>
@@ -2332,107 +2347,107 @@ Namespace SmallProgLang
                 NewGram.Exp = "^\~"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._LOGO_LANG
+                NewGram.ID = Type_Id.LOGO_LANG
                 NewGram.Exp = "\blogo_lang\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id.EOL
+                NewGram.ID = Type_Id.LOGO_EOL
                 NewGram.Exp = "^\;"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._deref
+                NewGram.ID = Type_Id.LOGO_deref
                 NewGram.Exp = "^\:"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._fd
+                NewGram.ID = Type_Id.LOGO_fd
                 NewGram.Exp = "\bfd\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._fd
+                NewGram.ID = Type_Id.LOGO_fd
                 NewGram.Exp = "\bforward\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._bk
+                NewGram.ID = Type_Id.LOGO_bk
                 NewGram.Exp = "\bbackward\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._bk
+                NewGram.ID = Type_Id.LOGO_bk
                 NewGram.Exp = "\bbk\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._rt
+                NewGram.ID = Type_Id.LOGO_rt
                 NewGram.Exp = "\brt\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._rt
+                NewGram.ID = Type_Id.LOGO_rt
                 NewGram.Exp = "\bright\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._lt
+                NewGram.ID = Type_Id.LOGO_lt
                 NewGram.Exp = "\blt\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._lt
+                NewGram.ID = Type_Id.LOGO_lt
                 NewGram.Exp = "\bleft\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._cs
+                NewGram.ID = Type_Id.LOGO_cs
                 NewGram.Exp = "\bcs\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._cs
+                NewGram.ID = Type_Id.LOGO_cs
                 NewGram.Exp = "\bclearscreen\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._pu
+                NewGram.ID = Type_Id.LOGO_pu
                 NewGram.Exp = "\bpu\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._pu
+                NewGram.ID = Type_Id.LOGO_pu
                 NewGram.Exp = "\bpenup\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._pd
+                NewGram.ID = Type_Id.LOGO_pd
                 NewGram.Exp = "\bpd\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._pd
+                NewGram.ID = Type_Id.LOGO_pd
                 NewGram.Exp = "\bpendown\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._ht
+                NewGram.ID = Type_Id.LOGO_ht
                 NewGram.Exp = "\bht\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._ht
+                NewGram.ID = Type_Id.LOGO_ht
                 NewGram.Exp = "\bhideturtle\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._st
+                NewGram.ID = Type_Id.LOGO_st
                 NewGram.Exp = "\bst\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._st
+                NewGram.ID = Type_Id.LOGO_st
                 NewGram.Exp = "\bshowturtle\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._label
+                NewGram.ID = Type_Id.LOGO_label
                 NewGram.Exp = "\blabel\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._setxy
+                NewGram.ID = Type_Id.LOGO_setxy
                 NewGram.Exp = "\bsetxy\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._make
+                NewGram.ID = Type_Id.LOGO_make
                 NewGram.Exp = "\bmake\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._ife
+                NewGram.ID = Type_Id.LOGO_ife
                 NewGram.Exp = "\bife\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._fore
+                NewGram.ID = Type_Id.LOGO_fore
                 NewGram.Exp = "\bfore\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
@@ -2462,11 +2477,11 @@ Namespace SmallProgLang
                 iSpec.Add(NewGram)
                 'Variable
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._name
+                NewGram.ID = Type_Id.LOGO_name
                 NewGram.Exp = "^\b[a-z][a-z0-9]+\b"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._number
+                NewGram.ID = Type_Id.LOGO_number
                 NewGram.Exp = "^\d+"
                 iSpec.Add(NewGram)
                 ''=
@@ -2477,27 +2492,27 @@ Namespace SmallProgLang
 
                 '*=, /=, +=, -=,
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._signExpression
+                NewGram.ID = Type_Id.LOGO_signExpression
                 NewGram.Exp = "^(\*|\/|\+|\-)="
                 iSpec.Add(NewGram)
 
                 'Equality operators: ==, !=
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._comparisonOperator
+                NewGram.ID = Type_Id.LOGO_comparisonOperator
                 NewGram.Exp = "^(=|!)=\="
                 iSpec.Add(NewGram)
                 'Relational operators: >, >=, <, <=
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._comparisonOperator
+                NewGram.ID = Type_Id.LOGO_comparisonOperator
                 NewGram.Exp = "^[><]\=?"
                 iSpec.Add(NewGram)
                 'Math operators: +, -, *, /
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._signExpression
+                NewGram.ID = Type_Id.LOGO_signExpression
                 NewGram.Exp = "^[+\-]"
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
-                NewGram.ID = Type_Id._multiplyingExpression
+                NewGram.ID = Type_Id.LOGO_multiplyingExpression
                 NewGram.Exp = "^[*/]"
                 iSpec.Add(NewGram)
 
@@ -2508,16 +2523,12 @@ Namespace SmallProgLang
                 Return iSpec
             End Function
 
-            Public Function GetLogoRef()
+            Public Function GetLogoRef() As String
                 Dim str As String = ""
                 str = My.Resources.LOGO_QUICK_REF
                 Return str
             End Function
         End Class
-
-
-        '
-
     End Namespace
 End Namespace
 #End Region
@@ -2693,7 +2704,7 @@ Namespace SmallProgLang
             ''' </summary>
             ''' <param name="CurrentTok"></param>
             ''' <returns></returns>
-            Public Function IdentifiyToken(ByRef CurrentTok As String) As GrammarFactory.Grammar.Type_Id
+            Public Function IdentifiyToken(ByRef CurrentTok As String) As GrammarFactory.Type_Id
 
                 For Each item In CurrentGrammar
                     Dim matches = RegExSearch(CurrentTok, item.Exp)
@@ -2955,7 +2966,6 @@ Namespace SmallProgLang
 End Namespace
 #End Region
 #End Region
-
 'EXECUTION
 '
 #Region "THE EVALUATOR"
@@ -3439,7 +3449,6 @@ Namespace SmallProgLang
     End Namespace
 End Namespace
 #End Region
-
 'HELPER EXTENSIONS
 '
 #Region "EXTENSIONS"
@@ -3518,7 +3527,6 @@ Namespace SmallProgLang
     End Module
 End Namespace
 #End Region
-
 'SPYDAZWEB AL VIRTUAL MACHINE
 '
 '

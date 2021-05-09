@@ -5,6 +5,7 @@ Namespace SmallProgLang
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public Class Ast_Logo_Value
             Inherits Ast_Literal
+
             Public Sub New(ByRef ntype As AST_NODE)
                 MyBase.New(ntype)
             End Sub
@@ -36,7 +37,7 @@ Namespace SmallProgLang
             Public _Left_Cmd As Ast_LogoIdentifer
             Public _Right_Value As Ast_Logo_Value
 
-            Public Sub New(ByRef ntype As AST_NODE)
+            Public Sub New(ByRef ntype As AST_NODE, ByRef _left As Ast_LogoIdentifer, _Right As Ast_Logo_Value)
                 MyBase.New(ntype)
                 Me._TypeStr = "_LogoCmdExpression"
             End Sub
@@ -74,6 +75,31 @@ Namespace SmallProgLang
             End Sub
 
 
+        End Class
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Public Class Ast_Logo_Expression
+            Inherits AstExpression
+            Public _value As Ast_Literal
+            Public Sub New(ByRef ivalue As Ast_Literal)
+                MyBase.New(AST_NODE.Logo_Expression)
+                Me._TypeStr = "_Logo_Expression"
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Throw New NotImplementedException()
+            End Function
+
+            Public Overrides Function GenerateSalCode(ByRef ParentEnv As EnvironmentalMemory) As String
+                Throw New NotImplementedException()
+            End Function
+
+            Public Overrides Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Throw New NotImplementedException()
+            End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
     End Namespace
 End Namespace
