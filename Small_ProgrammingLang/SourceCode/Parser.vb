@@ -1560,7 +1560,7 @@ Namespace SmallProgLang
                             Return X
                         End If
                     Case = UCase("bool")
-                        Tokenizer.GetIdentifiedToken(Lookahead)
+                        Dim temp = Tokenizer.GetIdentifiedToken(Lookahead)
                         Dim X = New Ast_VariableDeclarationExpression(_left, AST_NODE._boolean)
                         Lookahead = Tokenizer.ViewNext
                         If Lookahead = ";" = True Then

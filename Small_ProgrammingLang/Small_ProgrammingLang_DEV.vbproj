@@ -146,6 +146,9 @@
     <Content Include="Help\SpydazWeb AI _Emulators.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="Help\Small Programming Language.md" />
     <None Include="Resources\Script_Code_Html_.png" />
     <Content Include="TestsMain\Basic Tests.txt" />
@@ -223,6 +226,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Dell UltraSharp 27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SAL_VM\SAL_VM.vbproj">
+      <Project>{24601fc8-50ff-49db-8a7a-ad8ea8f48d57}</Project>
+      <Name>SAL_VM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
