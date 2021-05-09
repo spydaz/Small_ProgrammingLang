@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
-Partial Class FormGraphicsDisplayConsole
+Partial Class SAL_ZX21_GDU
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -31,7 +31,7 @@ Partial Class FormGraphicsDisplayConsole
         'GroupBox6
         '
         Me.GroupBox6.BackColor = System.Drawing.Color.Transparent
-        Me.GroupBox6.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
+        Me.GroupBox6.BackgroundImage = Global.SAL_VM.My.Resources.Resources.Dell_UltraSharp_27
         Me.GroupBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.GroupBox6.Controls.Add(Me.DISPLAY_SCREEN)
         Me.GroupBox6.Dock = System.Windows.Forms.DockStyle.Fill

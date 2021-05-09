@@ -34,19 +34,19 @@ Partial Class Multi_REPL
         Me.TabControl3 = New System.Windows.Forms.TabControl()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.Small_PL_TextBoxCodeInput = New System.Windows.Forms.TextBox()
-        Me.Small_PLToolStrip1 = New System.Windows.Forms.ToolStrip()
+        Me.Small_PL_ToolStrip = New System.Windows.Forms.ToolStrip()
+        Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_NewToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator10 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_OpenToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator11 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_SaveToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator15 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ToolStripButtonCompileCode = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ToolStripButtonRunCode = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator16 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ToolStripButtonCompilesTox86 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator17 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ButtonOpenVM = New System.Windows.Forms.ToolStripButton()
@@ -92,60 +92,55 @@ Partial Class Multi_REPL
         Me.SAL_SaveToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.SAL_ToolStripButtonCompileCode = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator9 = New System.Windows.Forms.ToolStripSeparator()
         Me.SAL_ToolStripButtonRunCode = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButtonCompilesTox86 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.SAL_ButtonOpenVM = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
-        Me.SAL_HelpToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.TabPageLOGO = New System.Windows.Forms.TabPage()
-        Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
-        Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SplitContainer6 = New System.Windows.Forms.SplitContainer()
         Me.SplitContainer7 = New System.Windows.Forms.SplitContainer()
-        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.RichTextBox2 = New System.Windows.Forms.RichTextBox()
         Me.GroupBox12 = New System.Windows.Forms.GroupBox()
         Me.TabControl4 = New System.Windows.Forms.TabControl()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator22 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator24 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripSeparator25 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton4 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripButton5 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator26 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton6 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton7 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripSeparator29 = New System.Windows.Forms.ToolStripSeparator()
+        Me.PROGRAM_TEXTBOX = New System.Windows.Forms.TextBox()
+        Me.GroupBox11 = New System.Windows.Forms.GroupBox()
+        Me.TabControl1 = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.LOGO_ERRORS = New System.Windows.Forms.RichTextBox()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.LOGO_HELP = New System.Windows.Forms.RichTextBox()
         Me.SplitContainer8 = New System.Windows.Forms.SplitContainer()
+        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
+        Me.LOGO_Screen = New System.Windows.Forms.PictureBox()
         Me.SplitContainer9 = New System.Windows.Forms.SplitContainer()
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
-        Me.TreeView1 = New System.Windows.Forms.TreeView()
+        Me.LOGO_TreeView = New System.Windows.Forms.TreeView()
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
         Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
-        Me.GroupBox15 = New System.Windows.Forms.GroupBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
+        Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ToolStripSeparator27 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButtonLOGO_NEW = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator20 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator29 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButtonLOGO_OPEN = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator21 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator25 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButtonLOGO_SAVE = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator22 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton_RUN_LOGO = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator24 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButtonEXECUTE_LOGO = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator23 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator26 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripSeparator28 = New System.Windows.Forms.ToolStripSeparator()
+        Me.LOGO_ToolStrip = New System.Windows.Forms.ToolStrip()
         Me.TabControl_ProgrammingLang_Repl.SuspendLayout()
         Me.TabPageSpydaz_PL.SuspendLayout()
         Me.TabControlRepl_Inner.SuspendLayout()
@@ -161,7 +156,7 @@ Partial Class Multi_REPL
         Me.GroupBox7.SuspendLayout()
         Me.TabControl3.SuspendLayout()
         Me.TabPage3.SuspendLayout()
-        Me.Small_PLToolStrip1.SuspendLayout()
+        Me.Small_PL_ToolStrip.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         CType(Me.SplitContainer5, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer5.Panel1.SuspendLayout()
@@ -202,26 +197,26 @@ Partial Class Multi_REPL
         Me.SplitContainer7.Panel1.SuspendLayout()
         Me.SplitContainer7.Panel2.SuspendLayout()
         Me.SplitContainer7.SuspendLayout()
+        Me.GroupBox12.SuspendLayout()
+        Me.TabControl4.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
         Me.GroupBox11.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.GroupBox12.SuspendLayout()
-        Me.TabControl4.SuspendLayout()
-        Me.TabPage5.SuspendLayout()
-        Me.ToolStrip1.SuspendLayout()
         CType(Me.SplitContainer8, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer8.Panel1.SuspendLayout()
         Me.SplitContainer8.Panel2.SuspendLayout()
         Me.SplitContainer8.SuspendLayout()
+        Me.GroupBox15.SuspendLayout()
+        CType(Me.LOGO_Screen, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitContainer9, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer9.Panel1.SuspendLayout()
         Me.SplitContainer9.Panel2.SuspendLayout()
         Me.SplitContainer9.SuspendLayout()
         Me.GroupBox13.SuspendLayout()
         Me.GroupBox14.SuspendLayout()
-        Me.GroupBox15.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.LOGO_ToolStrip.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl_ProgrammingLang_Repl
@@ -316,7 +311,7 @@ Partial Class Multi_REPL
         '
         Me.GroupBox7.BackColor = System.Drawing.SystemColors.ActiveCaptionText
         Me.GroupBox7.Controls.Add(Me.TabControl3)
-        Me.GroupBox7.Controls.Add(Me.Small_PLToolStrip1)
+        Me.GroupBox7.Controls.Add(Me.Small_PL_ToolStrip)
         Me.GroupBox7.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox7.ForeColor = System.Drawing.Color.Cyan
         Me.GroupBox7.Location = New System.Drawing.Point(0, 0)
@@ -364,17 +359,22 @@ Partial Class Multi_REPL
         Me.Small_PL_TextBoxCodeInput.Size = New System.Drawing.Size(516, 241)
         Me.Small_PL_TextBoxCodeInput.TabIndex = 0
         '
-        'Small_PLToolStrip1
+        'Small_PL_ToolStrip
         '
-        Me.Small_PLToolStrip1.BackColor = System.Drawing.Color.Black
-        Me.Small_PLToolStrip1.ImageScalingSize = New System.Drawing.Size(50, 50)
-        Me.Small_PLToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Small_PL_NewToolStripButton, Me.ToolStripSeparator10, Me.Small_PL_OpenToolStripButton, Me.ToolStripSeparator11, Me.Small_PL_SaveToolStripButton, Me.ToolStripSeparator12, Me.ToolStripSeparator13, Me.ToolStripSeparator14, Me.ToolStripSeparator15, Me.Small_PL_ToolStripButtonCompileCode, Me.Small_PL_ToolStripButtonRunCode, Me.ToolStripSeparator16, Me.Small_PL_ToolStripButtonCompilesTox86, Me.ToolStripSeparator17, Me.Small_PL_ButtonOpenVM, Me.ToolStripSeparator18, Me.Small_PL_HelpToolStripButton, Me.ToolStripSeparator19})
-        Me.Small_PLToolStrip1.Location = New System.Drawing.Point(8, 31)
-        Me.Small_PLToolStrip1.Name = "Small_PLToolStrip1"
-        Me.Small_PLToolStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.Small_PLToolStrip1.Size = New System.Drawing.Size(540, 57)
-        Me.Small_PLToolStrip1.TabIndex = 0
-        Me.Small_PLToolStrip1.Text = "ToolStrip1"
+        Me.Small_PL_ToolStrip.BackColor = System.Drawing.Color.Black
+        Me.Small_PL_ToolStrip.ImageScalingSize = New System.Drawing.Size(50, 50)
+        Me.Small_PL_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator15, Me.Small_PL_NewToolStripButton, Me.ToolStripSeparator10, Me.Small_PL_OpenToolStripButton, Me.ToolStripSeparator11, Me.Small_PL_SaveToolStripButton, Me.ToolStripSeparator12, Me.Small_PL_ToolStripButtonCompileCode, Me.ToolStripSeparator14, Me.Small_PL_ToolStripButtonRunCode, Me.ToolStripSeparator16, Me.ToolStripSeparator13, Me.Small_PL_ToolStripButtonCompilesTox86, Me.ToolStripSeparator17, Me.Small_PL_ButtonOpenVM, Me.ToolStripSeparator18, Me.Small_PL_HelpToolStripButton, Me.ToolStripSeparator19})
+        Me.Small_PL_ToolStrip.Location = New System.Drawing.Point(8, 31)
+        Me.Small_PL_ToolStrip.Name = "Small_PL_ToolStrip"
+        Me.Small_PL_ToolStrip.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
+        Me.Small_PL_ToolStrip.Size = New System.Drawing.Size(540, 57)
+        Me.Small_PL_ToolStrip.TabIndex = 0
+        Me.Small_PL_ToolStrip.Text = "ToolStrip1"
+        '
+        'ToolStripSeparator15
+        '
+        Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
+        Me.ToolStripSeparator15.Size = New System.Drawing.Size(6, 57)
         '
         'Small_PL_NewToolStripButton
         '
@@ -424,21 +424,6 @@ Partial Class Multi_REPL
         Me.ToolStripSeparator12.Name = "ToolStripSeparator12"
         Me.ToolStripSeparator12.Size = New System.Drawing.Size(6, 57)
         '
-        'ToolStripSeparator13
-        '
-        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
-        Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripSeparator14
-        '
-        Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
-        Me.ToolStripSeparator14.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripSeparator15
-        '
-        Me.ToolStripSeparator15.Name = "ToolStripSeparator15"
-        Me.ToolStripSeparator15.Size = New System.Drawing.Size(6, 57)
-        '
         'Small_PL_ToolStripButtonCompileCode
         '
         Me.Small_PL_ToolStripButtonCompileCode.BackColor = System.Drawing.Color.Black
@@ -450,6 +435,11 @@ Partial Class Multi_REPL
         Me.Small_PL_ToolStripButtonCompileCode.Tag = "Compiles to AST - If it compiles to AST then it will Evaluate or Generate SAL"
         Me.Small_PL_ToolStripButtonCompileCode.Text = "Compiles Code to AST"
         Me.Small_PL_ToolStripButtonCompileCode.ToolTipText = "Compile Code to AST"
+        '
+        'ToolStripSeparator14
+        '
+        Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
+        Me.ToolStripSeparator14.Size = New System.Drawing.Size(6, 57)
         '
         'Small_PL_ToolStripButtonRunCode
         '
@@ -467,6 +457,11 @@ Partial Class Multi_REPL
         '
         Me.ToolStripSeparator16.Name = "ToolStripSeparator16"
         Me.ToolStripSeparator16.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripSeparator13
+        '
+        Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
+        Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 57)
         '
         'Small_PL_ToolStripButtonCompilesTox86
         '
@@ -954,7 +949,7 @@ Partial Class Multi_REPL
         '
         Me.SAL_ToolStripRepl.BackColor = System.Drawing.Color.Black
         Me.SAL_ToolStripRepl.ImageScalingSize = New System.Drawing.Size(25, 25)
-        Me.SAL_ToolStripRepl.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SAL_NewToolStripButton, Me.ToolStripSeparator7, Me.SAL_OpenToolStripButton, Me.ToolStripSeparator6, Me.SAL_SaveToolStripButton, Me.toolStripSeparator, Me.ToolStripSeparator8, Me.ToolStripSeparator9, Me.toolStripSeparator1, Me.SAL_ToolStripButtonCompileCode, Me.SAL_ToolStripButtonRunCode, Me.ToolStripSeparator3, Me.ToolStripButtonCompilesTox86, Me.ToolStripSeparator2, Me.SAL_ButtonOpenVM, Me.ToolStripSeparator4, Me.SAL_HelpToolStripButton, Me.ToolStripSeparator5})
+        Me.SAL_ToolStripRepl.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SAL_NewToolStripButton, Me.ToolStripSeparator7, Me.SAL_OpenToolStripButton, Me.ToolStripSeparator6, Me.SAL_SaveToolStripButton, Me.toolStripSeparator, Me.ToolStripSeparator8, Me.toolStripSeparator1, Me.SAL_ToolStripButtonCompileCode, Me.ToolStripSeparator9, Me.SAL_ToolStripButtonRunCode, Me.ToolStripSeparator3, Me.ToolStripSeparator2, Me.SAL_ButtonOpenVM, Me.ToolStripSeparator4, Me.ToolStripSeparator5})
         Me.SAL_ToolStripRepl.Location = New System.Drawing.Point(8, 31)
         Me.SAL_ToolStripRepl.Name = "SAL_ToolStripRepl"
         Me.SAL_ToolStripRepl.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
@@ -1015,11 +1010,6 @@ Partial Class Multi_REPL
         Me.ToolStripSeparator8.Name = "ToolStripSeparator8"
         Me.ToolStripSeparator8.Size = New System.Drawing.Size(6, 32)
         '
-        'ToolStripSeparator9
-        '
-        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
-        Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 32)
-        '
         'toolStripSeparator1
         '
         Me.toolStripSeparator1.Name = "toolStripSeparator1"
@@ -1037,6 +1027,11 @@ Partial Class Multi_REPL
         Me.SAL_ToolStripButtonCompileCode.Text = "Compiles Code to AST"
         Me.SAL_ToolStripButtonCompileCode.ToolTipText = "Compile Code to AST"
         '
+        'ToolStripSeparator9
+        '
+        Me.ToolStripSeparator9.Name = "ToolStripSeparator9"
+        Me.ToolStripSeparator9.Size = New System.Drawing.Size(6, 32)
+        '
         'SAL_ToolStripButtonRunCode
         '
         Me.SAL_ToolStripButtonRunCode.BackColor = System.Drawing.Color.Black
@@ -1053,16 +1048,6 @@ Partial Class Multi_REPL
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
         Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 32)
-        '
-        'ToolStripButtonCompilesTox86
-        '
-        Me.ToolStripButtonCompilesTox86.BackColor = System.Drawing.Color.Silver
-        Me.ToolStripButtonCompilesTox86.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButtonCompilesTox86.Image = Global.SDK.My.Resources.Resources.Script
-        Me.ToolStripButtonCompilesTox86.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButtonCompilesTox86.Name = "ToolStripButtonCompilesTox86"
-        Me.ToolStripButtonCompilesTox86.Size = New System.Drawing.Size(29, 29)
-        Me.ToolStripButtonCompilesTox86.Text = "Transpile to X86 Code"
         '
         'ToolStripSeparator2
         '
@@ -1085,16 +1070,6 @@ Partial Class Multi_REPL
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
         Me.ToolStripSeparator4.Size = New System.Drawing.Size(6, 32)
         '
-        'SAL_HelpToolStripButton
-        '
-        Me.SAL_HelpToolStripButton.BackColor = System.Drawing.Color.Black
-        Me.SAL_HelpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.SAL_HelpToolStripButton.Image = CType(resources.GetObject("SAL_HelpToolStripButton.Image"), System.Drawing.Image)
-        Me.SAL_HelpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.SAL_HelpToolStripButton.Name = "SAL_HelpToolStripButton"
-        Me.SAL_HelpToolStripButton.Size = New System.Drawing.Size(29, 29)
-        Me.SAL_HelpToolStripButton.Text = "He&lp Refference"
-        '
         'ToolStripSeparator5
         '
         Me.ToolStripSeparator5.Name = "ToolStripSeparator5"
@@ -1110,19 +1085,6 @@ Partial Class Multi_REPL
         Me.TabPageLOGO.TabIndex = 3
         Me.TabPageLOGO.Text = "LOGO"
         Me.TabPageLOGO.UseVisualStyleBackColor = True
-        '
-        'OpenTextFileDialog
-        '
-        Me.OpenTextFileDialog.Filter = "All Files|*.*"
-        Me.OpenTextFileDialog.Title = "Open Program"
-        '
-        'SaveTextFileDialog
-        '
-        Me.SaveTextFileDialog.Filter = "All Files|*.*"
-        '
-        'ToolTip1
-        '
-        Me.ToolTip1.IsBalloon = True
         '
         'SplitContainer6
         '
@@ -1159,6 +1121,58 @@ Partial Class Multi_REPL
         Me.SplitContainer7.SplitterDistance = 332
         Me.SplitContainer7.TabIndex = 0
         '
+        'GroupBox12
+        '
+        Me.GroupBox12.BackColor = System.Drawing.SystemColors.ActiveCaptionText
+        Me.GroupBox12.Controls.Add(Me.TabControl4)
+        Me.GroupBox12.Controls.Add(Me.LOGO_ToolStrip)
+        Me.GroupBox12.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox12.ForeColor = System.Drawing.Color.Cyan
+        Me.GroupBox12.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox12.Margin = New System.Windows.Forms.Padding(8)
+        Me.GroupBox12.Name = "GroupBox12"
+        Me.GroupBox12.Padding = New System.Windows.Forms.Padding(8)
+        Me.GroupBox12.Size = New System.Drawing.Size(658, 332)
+        Me.GroupBox12.TabIndex = 2
+        Me.GroupBox12.TabStop = False
+        Me.GroupBox12.Text = "REPL"
+        '
+        'TabControl4
+        '
+        Me.TabControl4.Controls.Add(Me.TabPage5)
+        Me.TabControl4.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.TabControl4.Location = New System.Drawing.Point(8, 88)
+        Me.TabControl4.Margin = New System.Windows.Forms.Padding(8)
+        Me.TabControl4.Name = "TabControl4"
+        Me.TabControl4.SelectedIndex = 0
+        Me.TabControl4.Size = New System.Drawing.Size(642, 236)
+        Me.TabControl4.TabIndex = 1
+        '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.PROGRAM_TEXTBOX)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 31)
+        Me.TabPage5.Margin = New System.Windows.Forms.Padding(8)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Padding = New System.Windows.Forms.Padding(8)
+        Me.TabPage5.Size = New System.Drawing.Size(634, 201)
+        Me.TabPage5.TabIndex = 1
+        Me.TabPage5.Text = "Program"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'PROGRAM_TEXTBOX
+        '
+        Me.PROGRAM_TEXTBOX.BackColor = System.Drawing.SystemColors.InactiveBorder
+        Me.PROGRAM_TEXTBOX.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PROGRAM_TEXTBOX.Font = New System.Drawing.Font("Consolas", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PROGRAM_TEXTBOX.Location = New System.Drawing.Point(8, 8)
+        Me.PROGRAM_TEXTBOX.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.PROGRAM_TEXTBOX.Multiline = True
+        Me.PROGRAM_TEXTBOX.Name = "PROGRAM_TEXTBOX"
+        Me.PROGRAM_TEXTBOX.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.PROGRAM_TEXTBOX.Size = New System.Drawing.Size(618, 185)
+        Me.PROGRAM_TEXTBOX.TabIndex = 0
+        '
         'GroupBox11
         '
         Me.GroupBox11.BackColor = System.Drawing.Color.Black
@@ -1188,7 +1202,7 @@ Partial Class Multi_REPL
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.RichTextBox1)
+        Me.TabPage1.Controls.Add(Me.LOGO_ERRORS)
         Me.TabPage1.Location = New System.Drawing.Point(4, 31)
         Me.TabPage1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
         Me.TabPage1.Name = "TabPage1"
@@ -1198,239 +1212,37 @@ Partial Class Multi_REPL
         Me.TabPage1.Text = "Errors"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'RichTextBox1
+        'LOGO_ERRORS
         '
-        Me.RichTextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.RichTextBox1.Font = New System.Drawing.Font("Microsoft Tai Le", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RichTextBox1.Location = New System.Drawing.Point(5, 6)
-        Me.RichTextBox1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
-        Me.RichTextBox1.Size = New System.Drawing.Size(624, 236)
-        Me.RichTextBox1.TabIndex = 0
-        Me.RichTextBox1.Text = ""
+        Me.LOGO_ERRORS.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LOGO_ERRORS.Font = New System.Drawing.Font("Microsoft Tai Le", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LOGO_ERRORS.Location = New System.Drawing.Point(5, 6)
+        Me.LOGO_ERRORS.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.LOGO_ERRORS.Name = "LOGO_ERRORS"
+        Me.LOGO_ERRORS.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical
+        Me.LOGO_ERRORS.Size = New System.Drawing.Size(624, 236)
+        Me.LOGO_ERRORS.TabIndex = 0
+        Me.LOGO_ERRORS.Text = ""
         '
         'TabPage4
         '
-        Me.TabPage4.Controls.Add(Me.RichTextBox2)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 31)
+        Me.TabPage4.Controls.Add(Me.LOGO_HELP)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(529, 180)
+        Me.TabPage4.Size = New System.Drawing.Size(634, 272)
         Me.TabPage4.TabIndex = 1
         Me.TabPage4.Text = "Syntax"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
-        'RichTextBox2
+        'LOGO_HELP
         '
-        Me.RichTextBox2.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.RichTextBox2.Location = New System.Drawing.Point(3, 3)
-        Me.RichTextBox2.Name = "RichTextBox2"
-        Me.RichTextBox2.Size = New System.Drawing.Size(523, 174)
-        Me.RichTextBox2.TabIndex = 0
-        Me.RichTextBox2.Text = resources.GetString("RichTextBox2.Text")
-        '
-        'GroupBox12
-        '
-        Me.GroupBox12.BackColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.GroupBox12.Controls.Add(Me.TabControl4)
-        Me.GroupBox12.Controls.Add(Me.ToolStrip1)
-        Me.GroupBox12.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox12.ForeColor = System.Drawing.Color.Cyan
-        Me.GroupBox12.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox12.Margin = New System.Windows.Forms.Padding(8)
-        Me.GroupBox12.Name = "GroupBox12"
-        Me.GroupBox12.Padding = New System.Windows.Forms.Padding(8)
-        Me.GroupBox12.Size = New System.Drawing.Size(658, 332)
-        Me.GroupBox12.TabIndex = 2
-        Me.GroupBox12.TabStop = False
-        Me.GroupBox12.Text = "REPL"
-        '
-        'TabControl4
-        '
-        Me.TabControl4.Controls.Add(Me.TabPage5)
-        Me.TabControl4.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl4.Location = New System.Drawing.Point(8, 88)
-        Me.TabControl4.Margin = New System.Windows.Forms.Padding(8)
-        Me.TabControl4.Name = "TabControl4"
-        Me.TabControl4.SelectedIndex = 0
-        Me.TabControl4.Size = New System.Drawing.Size(642, 236)
-        Me.TabControl4.TabIndex = 1
-        '
-        'TabPage5
-        '
-        Me.TabPage5.Controls.Add(Me.TextBox1)
-        Me.TabPage5.Location = New System.Drawing.Point(4, 31)
-        Me.TabPage5.Margin = New System.Windows.Forms.Padding(8)
-        Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Padding = New System.Windows.Forms.Padding(8)
-        Me.TabPage5.Size = New System.Drawing.Size(634, 201)
-        Me.TabPage5.TabIndex = 1
-        Me.TabPage5.Text = "Program"
-        Me.TabPage5.UseVisualStyleBackColor = True
-        '
-        'TextBox1
-        '
-        Me.TextBox1.BackColor = System.Drawing.SystemColors.InactiveBorder
-        Me.TextBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TextBox1.Font = New System.Drawing.Font("Consolas", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(8, 8)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.TextBox1.Multiline = True
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.TextBox1.Size = New System.Drawing.Size(618, 185)
-        Me.TextBox1.TabIndex = 0
-        '
-        'ToolStrip1
-        '
-        Me.ToolStrip1.BackColor = System.Drawing.Color.Black
-        Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(50, 50)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripSeparator20, Me.ToolStripButton2, Me.ToolStripSeparator21, Me.ToolStripButton3, Me.ToolStripSeparator22, Me.ToolStripSeparator23, Me.ToolStripSeparator24, Me.ToolStripSeparator25, Me.ToolStripButton4, Me.ToolStripButton5, Me.ToolStripSeparator26, Me.ToolStripButton6, Me.ToolStripSeparator27, Me.ToolStripButton7, Me.ToolStripSeparator28, Me.ToolStripButton8, Me.ToolStripSeparator29})
-        Me.ToolStrip1.Location = New System.Drawing.Point(8, 31)
-        Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.ToolStrip1.Size = New System.Drawing.Size(642, 57)
-        Me.ToolStrip1.TabIndex = 0
-        Me.ToolStrip1.Text = "ToolStrip1"
-        '
-        'ToolStripButton1
-        '
-        Me.ToolStripButton1.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton1.Tag = "New Program"
-        Me.ToolStripButton1.Text = "&New"
-        '
-        'ToolStripSeparator20
-        '
-        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
-        Me.ToolStripSeparator20.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton2
-        '
-        Me.ToolStripButton2.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.ToolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), System.Drawing.Image)
-        Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton2.Name = "ToolStripButton2"
-        Me.ToolStripButton2.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton2.Tag = "Open Program"
-        Me.ToolStripButton2.Text = "&Open"
-        '
-        'ToolStripSeparator21
-        '
-        Me.ToolStripSeparator21.Name = "ToolStripSeparator21"
-        Me.ToolStripSeparator21.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton3
-        '
-        Me.ToolStripButton3.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.ToolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), System.Drawing.Image)
-        Me.ToolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton3.Name = "ToolStripButton3"
-        Me.ToolStripButton3.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton3.Tag = "Save Program"
-        Me.ToolStripButton3.Text = "&Save "
-        '
-        'ToolStripSeparator22
-        '
-        Me.ToolStripSeparator22.Name = "ToolStripSeparator22"
-        Me.ToolStripSeparator22.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripSeparator23
-        '
-        Me.ToolStripSeparator23.Name = "ToolStripSeparator23"
-        Me.ToolStripSeparator23.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripSeparator24
-        '
-        Me.ToolStripSeparator24.Name = "ToolStripSeparator24"
-        Me.ToolStripSeparator24.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripSeparator25
-        '
-        Me.ToolStripSeparator25.Name = "ToolStripSeparator25"
-        Me.ToolStripSeparator25.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton4
-        '
-        Me.ToolStripButton4.BackColor = System.Drawing.Color.Black
-        Me.ToolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton4.Image = Global.SDK.My.Resources.Resources.Complier_RUN
-        Me.ToolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton4.Name = "ToolStripButton4"
-        Me.ToolStripButton4.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton4.Tag = "Compiles to AST - If it compiles to AST then it will Evaluate or Generate SAL"
-        Me.ToolStripButton4.Text = "Compiles Code to AST"
-        Me.ToolStripButton4.ToolTipText = "Compile Code to AST"
-        '
-        'ToolStripButton5
-        '
-        Me.ToolStripButton5.BackColor = System.Drawing.Color.Black
-        Me.ToolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton5.Image = Global.SDK.My.Resources.Resources.Arrow_Right
-        Me.ToolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton5.Name = "ToolStripButton5"
-        Me.ToolStripButton5.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton5.Tag = "Evaluate Code (Uses S-Expression)"
-        Me.ToolStripButton5.Text = "Run"
-        Me.ToolStripButton5.ToolTipText = "Runs Code on VM"
-        '
-        'ToolStripSeparator26
-        '
-        Me.ToolStripSeparator26.Name = "ToolStripSeparator26"
-        Me.ToolStripSeparator26.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton6
-        '
-        Me.ToolStripButton6.BackColor = System.Drawing.Color.Silver
-        Me.ToolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton6.Image = Global.SDK.My.Resources.Resources.Script
-        Me.ToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton6.Name = "ToolStripButton6"
-        Me.ToolStripButton6.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton6.Text = "Transpile to X86 Code"
-        '
-        'ToolStripSeparator27
-        '
-        Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
-        Me.ToolStripSeparator27.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton7
-        '
-        Me.ToolStripButton7.BackColor = System.Drawing.Color.Black
-        Me.ToolStripButton7.BackgroundImage = Global.SDK.My.Resources.Resources.EYE_BLUE_
-        Me.ToolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton7.Image = Global.SDK.My.Resources.Resources.EYE_BLUE_
-        Me.ToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton7.Name = "ToolStripButton7"
-        Me.ToolStripButton7.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton7.Text = "Load SAL"
-        '
-        'ToolStripSeparator28
-        '
-        Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
-        Me.ToolStripSeparator28.Size = New System.Drawing.Size(6, 57)
-        '
-        'ToolStripButton8
-        '
-        Me.ToolStripButton8.BackColor = System.Drawing.Color.Black
-        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
-        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton8.Name = "ToolStripButton8"
-        Me.ToolStripButton8.Size = New System.Drawing.Size(54, 54)
-        Me.ToolStripButton8.Text = "He&lp Refference"
-        '
-        'ToolStripSeparator29
-        '
-        Me.ToolStripSeparator29.Name = "ToolStripSeparator29"
-        Me.ToolStripSeparator29.Size = New System.Drawing.Size(6, 57)
+        Me.LOGO_HELP.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LOGO_HELP.Location = New System.Drawing.Point(3, 3)
+        Me.LOGO_HELP.Name = "LOGO_HELP"
+        Me.LOGO_HELP.Size = New System.Drawing.Size(628, 266)
+        Me.LOGO_HELP.TabIndex = 0
+        Me.LOGO_HELP.Text = resources.GetString("LOGO_HELP.Text")
         '
         'SplitContainer8
         '
@@ -1449,6 +1261,29 @@ Partial Class Multi_REPL
         Me.SplitContainer8.Size = New System.Drawing.Size(883, 658)
         Me.SplitContainer8.SplitterDistance = 294
         Me.SplitContainer8.TabIndex = 0
+        '
+        'GroupBox15
+        '
+        Me.GroupBox15.BackColor = System.Drawing.Color.Black
+        Me.GroupBox15.Controls.Add(Me.LOGO_Screen)
+        Me.GroupBox15.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.GroupBox15.ForeColor = System.Drawing.Color.White
+        Me.GroupBox15.Location = New System.Drawing.Point(0, 0)
+        Me.GroupBox15.Name = "GroupBox15"
+        Me.GroupBox15.Size = New System.Drawing.Size(883, 294)
+        Me.GroupBox15.TabIndex = 0
+        Me.GroupBox15.TabStop = False
+        Me.GroupBox15.Text = "Image Output"
+        '
+        'LOGO_Screen
+        '
+        Me.LOGO_Screen.BackColor = System.Drawing.Color.AntiqueWhite
+        Me.LOGO_Screen.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.LOGO_Screen.Location = New System.Drawing.Point(3, 26)
+        Me.LOGO_Screen.Name = "LOGO_Screen"
+        Me.LOGO_Screen.Size = New System.Drawing.Size(877, 265)
+        Me.LOGO_Screen.TabIndex = 0
+        Me.LOGO_Screen.TabStop = False
         '
         'SplitContainer9
         '
@@ -1471,7 +1306,7 @@ Partial Class Multi_REPL
         '
         Me.GroupBox13.BackgroundImage = Global.SDK.My.Resources.Resources.Console_A
         Me.GroupBox13.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GroupBox13.Controls.Add(Me.TreeView1)
+        Me.GroupBox13.Controls.Add(Me.LOGO_TreeView)
         Me.GroupBox13.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox13.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox13.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
@@ -1481,22 +1316,22 @@ Partial Class Multi_REPL
         Me.GroupBox13.TabIndex = 1
         Me.GroupBox13.TabStop = False
         '
-        'TreeView1
+        'LOGO_TreeView
         '
-        Me.TreeView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.LOGO_TreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.TreeView1.BackColor = System.Drawing.SystemColors.InfoText
-        Me.TreeView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.TreeView1.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TreeView1.ForeColor = System.Drawing.Color.MintCream
-        Me.TreeView1.HotTracking = True
-        Me.TreeView1.Location = New System.Drawing.Point(45, 20)
-        Me.TreeView1.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.TreeView1.Name = "TreeView1"
-        Me.TreeView1.ShowNodeToolTips = True
-        Me.TreeView1.Size = New System.Drawing.Size(294, 328)
-        Me.TreeView1.TabIndex = 0
+        Me.LOGO_TreeView.BackColor = System.Drawing.SystemColors.InfoText
+        Me.LOGO_TreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.LOGO_TreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LOGO_TreeView.ForeColor = System.Drawing.Color.MintCream
+        Me.LOGO_TreeView.HotTracking = True
+        Me.LOGO_TreeView.Location = New System.Drawing.Point(45, 20)
+        Me.LOGO_TreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.LOGO_TreeView.Name = "LOGO_TreeView"
+        Me.LOGO_TreeView.ShowNodeToolTips = True
+        Me.LOGO_TreeView.Size = New System.Drawing.Size(294, 328)
+        Me.LOGO_TreeView.TabIndex = 0
         '
         'GroupBox14
         '
@@ -1529,28 +1364,137 @@ Partial Class Multi_REPL
         Me.RichTextBox3.TabIndex = 0
         Me.RichTextBox3.Text = ""
         '
-        'GroupBox15
+        'OpenTextFileDialog
         '
-        Me.GroupBox15.BackColor = System.Drawing.Color.Black
-        Me.GroupBox15.Controls.Add(Me.PictureBox1)
-        Me.GroupBox15.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.GroupBox15.ForeColor = System.Drawing.Color.White
-        Me.GroupBox15.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox15.Name = "GroupBox15"
-        Me.GroupBox15.Size = New System.Drawing.Size(883, 294)
-        Me.GroupBox15.TabIndex = 0
-        Me.GroupBox15.TabStop = False
-        Me.GroupBox15.Text = "Image Output"
+        Me.OpenTextFileDialog.Filter = "All Files|*.*"
+        Me.OpenTextFileDialog.Title = "Open Program"
         '
-        'PictureBox1
+        'SaveTextFileDialog
         '
-        Me.PictureBox1.BackColor = System.Drawing.Color.AntiqueWhite
-        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox1.Location = New System.Drawing.Point(3, 26)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(877, 265)
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.SaveTextFileDialog.Filter = "All Files|*.*"
+        '
+        'ToolTip1
+        '
+        Me.ToolTip1.IsBalloon = True
+        '
+        'ToolStripSeparator27
+        '
+        Me.ToolStripSeparator27.Name = "ToolStripSeparator27"
+        Me.ToolStripSeparator27.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripButtonLOGO_NEW
+        '
+        Me.ToolStripButtonLOGO_NEW.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.ToolStripButtonLOGO_NEW.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonLOGO_NEW.Image = CType(resources.GetObject("ToolStripButtonLOGO_NEW.Image"), System.Drawing.Image)
+        Me.ToolStripButtonLOGO_NEW.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonLOGO_NEW.Name = "ToolStripButtonLOGO_NEW"
+        Me.ToolStripButtonLOGO_NEW.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButtonLOGO_NEW.Tag = "New Program"
+        Me.ToolStripButtonLOGO_NEW.Text = "&New"
+        '
+        'ToolStripSeparator20
+        '
+        Me.ToolStripSeparator20.Name = "ToolStripSeparator20"
+        Me.ToolStripSeparator20.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripSeparator29
+        '
+        Me.ToolStripSeparator29.Name = "ToolStripSeparator29"
+        Me.ToolStripSeparator29.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripButtonLOGO_OPEN
+        '
+        Me.ToolStripButtonLOGO_OPEN.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.ToolStripButtonLOGO_OPEN.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonLOGO_OPEN.Image = CType(resources.GetObject("ToolStripButtonLOGO_OPEN.Image"), System.Drawing.Image)
+        Me.ToolStripButtonLOGO_OPEN.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonLOGO_OPEN.Name = "ToolStripButtonLOGO_OPEN"
+        Me.ToolStripButtonLOGO_OPEN.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButtonLOGO_OPEN.Tag = "Open Program"
+        Me.ToolStripButtonLOGO_OPEN.Text = "&Open"
+        '
+        'ToolStripSeparator21
+        '
+        Me.ToolStripSeparator21.Name = "ToolStripSeparator21"
+        Me.ToolStripSeparator21.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripSeparator25
+        '
+        Me.ToolStripSeparator25.Name = "ToolStripSeparator25"
+        Me.ToolStripSeparator25.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripButtonLOGO_SAVE
+        '
+        Me.ToolStripButtonLOGO_SAVE.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.ToolStripButtonLOGO_SAVE.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonLOGO_SAVE.Image = CType(resources.GetObject("ToolStripButtonLOGO_SAVE.Image"), System.Drawing.Image)
+        Me.ToolStripButtonLOGO_SAVE.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonLOGO_SAVE.Name = "ToolStripButtonLOGO_SAVE"
+        Me.ToolStripButtonLOGO_SAVE.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButtonLOGO_SAVE.Tag = "Save Program"
+        Me.ToolStripButtonLOGO_SAVE.Text = "&Save "
+        '
+        'ToolStripSeparator22
+        '
+        Me.ToolStripSeparator22.Name = "ToolStripSeparator22"
+        Me.ToolStripSeparator22.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripButton_RUN_LOGO
+        '
+        Me.ToolStripButton_RUN_LOGO.BackColor = System.Drawing.Color.Black
+        Me.ToolStripButton_RUN_LOGO.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton_RUN_LOGO.Image = Global.SDK.My.Resources.Resources.Complier_RUN
+        Me.ToolStripButton_RUN_LOGO.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton_RUN_LOGO.Name = "ToolStripButton_RUN_LOGO"
+        Me.ToolStripButton_RUN_LOGO.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButton_RUN_LOGO.Tag = "Compiles to AST - If it compiles to AST then it will Evaluate or Generate SAL"
+        Me.ToolStripButton_RUN_LOGO.Text = "Compiles Code to AST"
+        Me.ToolStripButton_RUN_LOGO.ToolTipText = "Compile Code to AST"
+        '
+        'ToolStripSeparator24
+        '
+        Me.ToolStripSeparator24.Name = "ToolStripSeparator24"
+        Me.ToolStripSeparator24.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripButtonEXECUTE_LOGO
+        '
+        Me.ToolStripButtonEXECUTE_LOGO.BackColor = System.Drawing.Color.Black
+        Me.ToolStripButtonEXECUTE_LOGO.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonEXECUTE_LOGO.Image = Global.SDK.My.Resources.Resources.EYE_BLUE_
+        Me.ToolStripButtonEXECUTE_LOGO.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonEXECUTE_LOGO.Name = "ToolStripButtonEXECUTE_LOGO"
+        Me.ToolStripButtonEXECUTE_LOGO.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButtonEXECUTE_LOGO.Tag = "Execute on SAL"
+        Me.ToolStripButtonEXECUTE_LOGO.Text = "Run"
+        Me.ToolStripButtonEXECUTE_LOGO.ToolTipText = "Runs Code on VM"
+        '
+        'ToolStripSeparator23
+        '
+        Me.ToolStripSeparator23.Name = "ToolStripSeparator23"
+        Me.ToolStripSeparator23.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripSeparator26
+        '
+        Me.ToolStripSeparator26.Name = "ToolStripSeparator26"
+        Me.ToolStripSeparator26.Size = New System.Drawing.Size(6, 57)
+        '
+        'ToolStripSeparator28
+        '
+        Me.ToolStripSeparator28.Name = "ToolStripSeparator28"
+        Me.ToolStripSeparator28.Size = New System.Drawing.Size(6, 57)
+        '
+        'LOGO_ToolStrip
+        '
+        Me.LOGO_ToolStrip.BackColor = System.Drawing.Color.Black
+        Me.LOGO_ToolStrip.ImageScalingSize = New System.Drawing.Size(50, 50)
+        Me.LOGO_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator27, Me.ToolStripButtonLOGO_NEW, Me.ToolStripSeparator20, Me.ToolStripSeparator29, Me.ToolStripButtonLOGO_OPEN, Me.ToolStripSeparator21, Me.ToolStripSeparator25, Me.ToolStripButtonLOGO_SAVE, Me.ToolStripSeparator22, Me.ToolStripButton_RUN_LOGO, Me.ToolStripSeparator24, Me.ToolStripButtonEXECUTE_LOGO, Me.ToolStripSeparator23, Me.ToolStripSeparator26, Me.ToolStripSeparator28})
+        Me.LOGO_ToolStrip.Location = New System.Drawing.Point(8, 31)
+        Me.LOGO_ToolStrip.Name = "LOGO_ToolStrip"
+        Me.LOGO_ToolStrip.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
+        Me.LOGO_ToolStrip.Size = New System.Drawing.Size(642, 57)
+        Me.LOGO_ToolStrip.TabIndex = 0
+        Me.LOGO_ToolStrip.Text = "ToolStrip1"
         '
         'Multi_REPL
         '
@@ -1582,8 +1526,8 @@ Partial Class Multi_REPL
         Me.TabControl3.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
-        Me.Small_PLToolStrip1.ResumeLayout(False)
-        Me.Small_PLToolStrip1.PerformLayout()
+        Me.Small_PL_ToolStrip.ResumeLayout(False)
+        Me.Small_PL_ToolStrip.PerformLayout()
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
         Me.SplitContainer5.Panel1.ResumeLayout(False)
@@ -1630,29 +1574,29 @@ Partial Class Multi_REPL
         Me.SplitContainer7.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer7, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer7.ResumeLayout(False)
-        Me.GroupBox11.ResumeLayout(False)
-        Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage4.ResumeLayout(False)
         Me.GroupBox12.ResumeLayout(False)
         Me.GroupBox12.PerformLayout()
         Me.TabControl4.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
-        Me.ToolStrip1.ResumeLayout(False)
-        Me.ToolStrip1.PerformLayout()
+        Me.GroupBox11.ResumeLayout(False)
+        Me.TabControl1.ResumeLayout(False)
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage4.ResumeLayout(False)
         Me.SplitContainer8.Panel1.ResumeLayout(False)
         Me.SplitContainer8.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer8, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer8.ResumeLayout(False)
+        Me.GroupBox15.ResumeLayout(False)
+        CType(Me.LOGO_Screen, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer9.Panel1.ResumeLayout(False)
         Me.SplitContainer9.Panel2.ResumeLayout(False)
         CType(Me.SplitContainer9, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer9.ResumeLayout(False)
         Me.GroupBox13.ResumeLayout(False)
         Me.GroupBox14.ResumeLayout(False)
-        Me.GroupBox15.ResumeLayout(False)
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.LOGO_ToolStrip.ResumeLayout(False)
+        Me.LOGO_ToolStrip.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1680,25 +1624,6 @@ Partial Class Multi_REPL
     Friend WithEvents TabControl_REPL_INPUT As TabControl
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents SAL_TextBoxCodeInput As TextBox
-    Friend WithEvents SAL_ToolStripRepl As ToolStrip
-    Friend WithEvents SAL_NewToolStripButton As ToolStripButton
-    Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
-    Friend WithEvents SAL_OpenToolStripButton As ToolStripButton
-    Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
-    Friend WithEvents SAL_SaveToolStripButton As ToolStripButton
-    Friend WithEvents toolStripSeparator As ToolStripSeparator
-    Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
-    Friend WithEvents ToolStripSeparator9 As ToolStripSeparator
-    Friend WithEvents toolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents SAL_ToolStripButtonCompileCode As ToolStripButton
-    Friend WithEvents SAL_ToolStripButtonRunCode As ToolStripButton
-    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
-    Friend WithEvents ToolStripButtonCompilesTox86 As ToolStripButton
-    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
-    Friend WithEvents SAL_ButtonOpenVM As ToolStripButton
-    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
-    Friend WithEvents SAL_HelpToolStripButton As ToolStripButton
-    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
     Friend WithEvents TabPageSmall_PL_repl As TabPage
     Friend WithEvents SplitContainer3 As SplitContainer
     Friend WithEvents SplitContainer4 As SplitContainer
@@ -1706,7 +1631,7 @@ Partial Class Multi_REPL
     Friend WithEvents TabControl3 As TabControl
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents Small_PL_TextBoxCodeInput As TextBox
-    Friend WithEvents Small_PLToolStrip1 As ToolStrip
+    Friend WithEvents Small_PL_ToolStrip As ToolStrip
     Friend WithEvents Small_PL_NewToolStripButton As ToolStripButton
     Friend WithEvents ToolStripSeparator10 As ToolStripSeparator
     Friend WithEvents Small_PL_OpenToolStripButton As ToolStripButton
@@ -1745,38 +1670,52 @@ Partial Class Multi_REPL
     Friend WithEvents GroupBox12 As GroupBox
     Friend WithEvents TabControl4 As TabControl
     Friend WithEvents TabPage5 As TabPage
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents ToolStrip1 As ToolStrip
-    Friend WithEvents ToolStripButton1 As ToolStripButton
-    Friend WithEvents ToolStripSeparator20 As ToolStripSeparator
-    Friend WithEvents ToolStripButton2 As ToolStripButton
-    Friend WithEvents ToolStripSeparator21 As ToolStripSeparator
-    Friend WithEvents ToolStripButton3 As ToolStripButton
-    Friend WithEvents ToolStripSeparator22 As ToolStripSeparator
-    Friend WithEvents ToolStripSeparator23 As ToolStripSeparator
-    Friend WithEvents ToolStripSeparator24 As ToolStripSeparator
-    Friend WithEvents ToolStripSeparator25 As ToolStripSeparator
-    Friend WithEvents ToolStripButton4 As ToolStripButton
-    Friend WithEvents ToolStripButton5 As ToolStripButton
-    Friend WithEvents ToolStripSeparator26 As ToolStripSeparator
-    Friend WithEvents ToolStripButton6 As ToolStripButton
-    Friend WithEvents ToolStripSeparator27 As ToolStripSeparator
-    Friend WithEvents ToolStripButton7 As ToolStripButton
-    Friend WithEvents ToolStripSeparator28 As ToolStripSeparator
-    Friend WithEvents ToolStripButton8 As ToolStripButton
-    Friend WithEvents ToolStripSeparator29 As ToolStripSeparator
+    Friend WithEvents PROGRAM_TEXTBOX As TextBox
     Friend WithEvents GroupBox11 As GroupBox
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents RichTextBox1 As RichTextBox
+    Friend WithEvents LOGO_ERRORS As RichTextBox
     Friend WithEvents TabPage4 As TabPage
-    Friend WithEvents RichTextBox2 As RichTextBox
+    Friend WithEvents LOGO_HELP As RichTextBox
     Friend WithEvents SplitContainer8 As SplitContainer
     Friend WithEvents GroupBox15 As GroupBox
-    Friend WithEvents PictureBox1 As PictureBox
+    Friend WithEvents LOGO_Screen As PictureBox
     Friend WithEvents SplitContainer9 As SplitContainer
     Friend WithEvents GroupBox13 As GroupBox
-    Friend WithEvents TreeView1 As TreeView
+    Friend WithEvents LOGO_TreeView As TreeView
     Friend WithEvents GroupBox14 As GroupBox
     Friend WithEvents RichTextBox3 As RichTextBox
+    Friend WithEvents SAL_ToolStripRepl As ToolStrip
+    Friend WithEvents SAL_NewToolStripButton As ToolStripButton
+    Friend WithEvents ToolStripSeparator7 As ToolStripSeparator
+    Friend WithEvents SAL_OpenToolStripButton As ToolStripButton
+    Friend WithEvents ToolStripSeparator6 As ToolStripSeparator
+    Friend WithEvents SAL_SaveToolStripButton As ToolStripButton
+    Friend WithEvents toolStripSeparator As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator8 As ToolStripSeparator
+    Friend WithEvents toolStripSeparator1 As ToolStripSeparator
+    Friend WithEvents SAL_ToolStripButtonCompileCode As ToolStripButton
+    Friend WithEvents ToolStripSeparator9 As ToolStripSeparator
+    Friend WithEvents SAL_ToolStripButtonRunCode As ToolStripButton
+    Friend WithEvents ToolStripSeparator3 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
+    Friend WithEvents SAL_ButtonOpenVM As ToolStripButton
+    Friend WithEvents ToolStripSeparator4 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator5 As ToolStripSeparator
+    Friend WithEvents LOGO_ToolStrip As ToolStrip
+    Friend WithEvents ToolStripSeparator27 As ToolStripSeparator
+    Friend WithEvents ToolStripButtonLOGO_NEW As ToolStripButton
+    Friend WithEvents ToolStripSeparator20 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator29 As ToolStripSeparator
+    Friend WithEvents ToolStripButtonLOGO_OPEN As ToolStripButton
+    Friend WithEvents ToolStripSeparator21 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator25 As ToolStripSeparator
+    Friend WithEvents ToolStripButtonLOGO_SAVE As ToolStripButton
+    Friend WithEvents ToolStripSeparator22 As ToolStripSeparator
+    Friend WithEvents ToolStripButton_RUN_LOGO As ToolStripButton
+    Friend WithEvents ToolStripSeparator24 As ToolStripSeparator
+    Friend WithEvents ToolStripButtonEXECUTE_LOGO As ToolStripButton
+    Friend WithEvents ToolStripSeparator23 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator26 As ToolStripSeparator
+    Friend WithEvents ToolStripSeparator28 As ToolStripSeparator
 End Class

@@ -138,7 +138,7 @@ Public Class Multi_REPL
 #End Region
 #Region "SAL REPL"
     Private Sub ToolStripButtonCompileCode_Click(sender As Object, e As EventArgs) Handles SAL_ToolStripButtonCompileCode.Click
-        Dim PROG() As String = Split(SAL_TextBoxCodeInput.Text.Replace(vbCrLf, " "), " ")
+        Dim PROG = Split(SAL_TextBoxCodeInput.Text.Replace(vbCrLf, " "), " ")
         SAL_RichTextBoxProgram.Text = PROG.ToJson
         Dim InstructionLst As New List(Of String)
         Dim ROOT As New TreeNode
@@ -215,7 +215,7 @@ Public Class Multi_REPL
         End If
     End Sub
 
-    Private Sub HelpToolStripButton_Click(sender As Object, e As EventArgs) Handles SAL_HelpToolStripButton.Click, Small_PL_HelpToolStripButton.Click
+    Private Sub HelpToolStripButton_Click(sender As Object, e As EventArgs) Handles Small_PL_HelpToolStripButton.Click
         Dim help As New Process
         help.StartInfo.UseShellExecute = True
         help.StartInfo.FileName = "c:\windows\hh.exe"
