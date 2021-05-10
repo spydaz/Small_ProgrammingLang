@@ -2,8 +2,6 @@
 Imports SDK.SmallProgLang.GrammarFactory
 
 
-
-
 'MAIN PARSER
 Namespace SmallProgLang
     Namespace Compiler
