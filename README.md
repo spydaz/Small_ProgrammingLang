@@ -1,7 +1,12 @@
-# LexParseEval
+# LexParseEval <<<< Thats the algorithm
+
+The focus is to be able to compile to web assembly!
+
 SpydazWeb Program languages and virtual machines, Parser/Compiler/Interpretor. AST Creator... Experiments in developing compilers and programing langugages . Using Mini Basic language to Tokenizer to AST to Assembly code 
 
-https://spydaz.github.io/SpydazWeb-AI-_Emulators/
+https://spydaz.github.io/Small_ProgrammingLang/
+
+Upgraded; To enable for multiu lamguge usage; Currently implementing a bit of LOGO for the SAL assemebly area.. 
 
 ##Insight
 	This Present source code has been changed due to leaning new ways in which to create the hierachy for the AST Tree as well as transpile to S-Expression form for Quick evaluation, prompting me to change my model to be more universal. 
