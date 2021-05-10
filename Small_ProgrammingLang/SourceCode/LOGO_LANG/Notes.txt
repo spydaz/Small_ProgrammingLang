@@ -1,8 +1,0 @@
-﻿'
-'NOTE: To do: Add BinaryFunction (from Number(PrimaryExpression(LEFT = _NumericLiteral_))
-'
-' - SALCODE(CreateSurface AS TURTLE_PANEL)
-'
-'AddSyntaxes
-'
-Parser will only parse to logo to be executed on surface

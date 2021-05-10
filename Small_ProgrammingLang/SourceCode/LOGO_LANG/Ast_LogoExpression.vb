@@ -68,6 +68,7 @@ Namespace SmallProgLang
                 Me._TypeStr = "_LogoCmdExpression"
                 Me._Left_Cmd = _left
                 Me._Right_Value = _Right
+                Me._Raw = _left._Raw & " " & _Right._Raw
             End Sub
 
             ''' <summary>

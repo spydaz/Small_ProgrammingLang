@@ -8,10 +8,10 @@ Imports System.Runtime.CompilerServices
 
 Public Class Multi_REPL
 #Region "SMALL_PL"
-    Dim PSER As New Parser
+    Dim PSER As New ParserFactory
     Private Sub ToolStripButtonCompile_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonCompileCode.Click
         Dim InputCode As String = Small_PL_TextBoxCodeInput.Text
-        PSER = New Parser
+        PSER = New ParserFactory
 
         Dim outputStr = PSER.ParseFactory(InputCode)
         Small_PL_AstTreeView.Nodes.Clear()
