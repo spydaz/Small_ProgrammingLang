@@ -941,7 +941,7 @@ Namespace SmallProgLang
                 ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
                 Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                 If Integer.TryParse(tok.Value, Str) = True Then
-                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
+                    Dim nde = New Ast_Literal(Str)
                     nde._Start = tok._start
                     nde._End = tok._End
                     nde._Raw = tok.Value
@@ -950,7 +950,7 @@ Namespace SmallProgLang
                     Return nde
                 Else
                     'Unable to parse default 0 to preserve node listeral as integer
-                    Dim nde = New Ast_Literal(AST_NODE._integer, 0)
+                    Dim nde = New Ast_Literal(0)
                     nde._Start = tok._start
                     nde._End = tok._End
                     nde._Raw = tok.Value
@@ -1156,7 +1156,7 @@ Namespace SmallProgLang
 
                 Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                 If Boolean.TryParse(tok.Value, Str) = True Then
-                    Dim nde = New Ast_Literal(AST_NODE._boolean, Str)
+                    Dim nde = New Ast_Literal(Str)
                     nde._Start = tok._start
                     nde._End = tok._End
                     nde._Raw = tok.Value
@@ -1165,7 +1165,7 @@ Namespace SmallProgLang
                     Return nde
                 Else
                     'Default to false
-                    Dim nde = New Ast_Literal(AST_NODE._boolean, False)
+                    Dim nde = New Ast_Literal(False)
                     nde._Start = tok._start
                     nde._End = tok._End
                     nde._Raw = tok.Value

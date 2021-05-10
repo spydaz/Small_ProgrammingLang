@@ -85,6 +85,7 @@ Namespace SmallProgLang
             Public Sub New(ByRef ivalue As AstNode)
                 MyBase.New(AST_NODE.Logo_Expression)
                 Me._TypeStr = "_Logo_Expression"
+                _value = ivalue
             End Sub
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object

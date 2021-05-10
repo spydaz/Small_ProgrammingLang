@@ -69,75 +69,82 @@ Namespace SmallProgLang
             '
             Public Function _StatementList() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
-                lst.AddRange(_LogoStatementList)
+                lst.AddRange(_LogoStatements)
                 Return lst
             End Function
-            Public Function _LogoStatementList() As List(Of AstExpression)
+            Public Function _LogoStatements() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
-                Lookahead = Tokenizer.ViewNext
+
                 Dim tok As Type_Id
+                Lookahead = Tokenizer.ViewNext
                 tok = Tokenizer.IdentifiyToken(Lookahead)
 
+                Do Until tok = Type_Id._EOF
 
-                Select Case tok
+
+                    Select Case tok
                     'End of line
-                    Case Type_Id.LOGO_EOL
-                        __EndStatementNode()
-                    Case Type_Id._VARIABLE
-                        Dim _Left = _IdentifierLiteralNode()
-                        'Check if it is a left hand cmd
-                        Select Case LCase(_Left._Name)
-                            Case "ht"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "hideturtle"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "fd"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "forward"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "bk"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "backward"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "rt"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "right"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "lt"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "label"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "if"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "for"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "deref"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "setxy"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "st"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "stop"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "pu"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "pd"
-                                lst.Add(_ComandFunction(_Left))
-                            Case "make"
-                                lst.Add(_ComandFunction(_Left))
-                            Case Else
-                                'Must be a variable
-                                lst.Add(New Ast_Logo_Expression(_Left))
-                        End Select
+                        Case Type_Id.LOGO_EOL
+                            __EndStatementNode()
+                        Case Type_Id._VARIABLE
+                            Dim _Left = _IdentifierLiteralNode()
+                            'Check if it is a left hand cmd
+                            Select Case LCase(_Left._Name)
+                                Case "ht"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "hideturtle"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "fd"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "forward"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "bk"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "backward"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "rt"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "right"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "lt"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "label"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "if"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "for"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "deref"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "setxy"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "st"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "stop"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "pu"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "pd"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case "make"
+                                    lst.Add(_ComandFunction(_Left))
+                                Case Else
+                                    'Must be a variable
+                                    lst.Add(New Ast_Logo_Expression(_Left))
+                            End Select
                        ' lst.Add(New Ast_Logo_Expression())
-                    Case Type_Id._STRING
-                        lst.Add(New Ast_Logo_Expression(_StringLiteralNode()))
-                    Case Type_Id.LOGO_number
-                        lst.Add(_EvaluationExpression)
-                    Case Type_Id._WHITESPACE
-                        _WhitespaceNode()
-                End Select
-
+                        Case Type_Id._STRING
+                            lst.Add(New Ast_Logo_Expression(_StringLiteralNode()))
+                        Case Type_Id._INTEGER
+                            lst.Add(_EvaluationExpression)
+                        Case Type_Id._WHITESPACE
+                            _WhitespaceNode()
+                        Case Type_Id._STATEMENT_END
+                            __EndStatementNode()
+                    End Select
+                    Lookahead = Tokenizer.ViewNext
+                    tok = Tokenizer.IdentifiyToken(Lookahead)
+                Loop
 
                 Return lst
             End Function
@@ -154,7 +161,8 @@ Namespace SmallProgLang
                         toktype = Tokenizer.IdentifiyToken(Lookahead)
                     Loop
                 End If
-
+                Lookahead = Tokenizer.ViewNext
+                toktype = Tokenizer.IdentifiyToken(Lookahead)
                 'Primary
                 _left = New Ast_Logo_Expression(_NumericLiteralNode())
 
@@ -162,11 +170,15 @@ Namespace SmallProgLang
                 toktype = Tokenizer.IdentifiyToken(Lookahead)
                 Select Case toktype
 
-                    Case Type_Id.LOGO_signExpression
+                    Case Type_Id._ADDITIVE_OPERATOR
 
                         Return _Evaluation(_left)
 
-                    Case Type_Id.LOGO_comparisonOperator
+                    Case Type_Id._MULTIPLICATIVE_OPERATOR
+
+                        Return _Evaluation(_left)
+
+                    Case Type_Id._RELATIONAL_OPERATOR
 
                         Return _Evaluation(_left)
                 End Select
@@ -355,7 +367,7 @@ Namespace SmallProgLang
                 ' Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._INTEGER)
                 Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
                 If Integer.TryParse(tok.Value, Str) = True Then
-                    Dim nde = New Ast_Literal(AST_NODE._integer, Str)
+                    Dim nde = New Ast_Literal(Str)
                     nde._Start = tok._start
                     nde._End = tok._End
                     nde._Raw = tok.Value

@@ -316,6 +316,31 @@ Namespace SmallProgLang
                 MyBase.New(ntype)
                 iLiteral = nValue
             End Sub
+            Public Sub New(ByRef nValue As Integer)
+                MyBase.New(AST_NODE._integer)
+                iLiteral = 0
+                iLiteral = nValue
+            End Sub
+            Public Sub New(ByRef nValue As Double)
+                MyBase.New(AST_NODE._integer)
+                iLiteral = 0.0
+                iLiteral = nValue
+            End Sub
+            Public Sub New(ByRef nValue As String)
+                MyBase.New(AST_NODE._string)
+                iLiteral = ""
+                iLiteral = nValue
+            End Sub
+            Public Sub New(ByRef nValue As Boolean)
+                MyBase.New(AST_NODE._boolean)
+                iLiteral = False
+                iLiteral = nValue
+            End Sub
+            Public Sub New(ByRef nValue As List(Of Object))
+                MyBase.New(AST_NODE._array)
+                iLiteral = New List(Of Object)
+                iLiteral = nValue
+            End Sub
             Public Overrides Function ToArraylist() As List(Of String)
                 Dim lst = MyBase.ToArraylist()
                 lst.Add(iLiteral.ToString)
