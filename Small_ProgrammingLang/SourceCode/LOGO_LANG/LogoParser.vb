@@ -41,6 +41,10 @@ Namespace SmallProgLang
                 End Get
             End Property
 #End Region
+            'Syntax
+            '
+            'Program : Body = StatementLists
+            '
             Public Function _Parse(ByRef nScript As String) As AstProgram
                 Dim Body As List(Of Ast_ExpressionStatement)
                 Body = New List(Of Ast_ExpressionStatement)
@@ -63,15 +67,70 @@ Namespace SmallProgLang
                 nde._TypeStr = "LOGO PROGRAM"
                 Return nde
             End Function
-            '
             'Syntax;
             '
+            'Logo Expression; Logo expression;
             '
             Public Function _StatementList() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
                 lst.AddRange(_LogoStatements)
                 Return lst
             End Function
+            Public Function CheckLogoStatement(ByRef _left As String) As Boolean
+                'Check if it is a left hand cmd
+                Select Case LCase(_left)
+                    Case "ht"
+                        Return True
+                    Case "hideturtle"
+                        Return True
+                    Case "fd"
+                        Return True
+                    Case "forward"
+                        Return True
+                    Case "bk"
+                        Return True
+                    Case "backward"
+                        Return True
+                    Case "rt"
+                        Return True
+                    Case "right"
+                        Return True
+                    Case "lt"
+                        Return True
+                    Case "label"
+                        Return True
+                    Case "if"
+                        Return True
+                    Case "for"
+                        Return True
+                    Case "deref"
+                        Return True
+                    Case "setxy"
+                        Return True
+                    Case "st"
+                        Return True
+                    Case "stop"
+                        Return True
+                    Case "pu"
+                        Return True
+                    Case "pd"
+                        Return True
+                    Case "make"
+                        Return True
+                    Case Else
+                        'Must be a variable
+                        Return False
+                End Select
+
+                Return Nothing
+            End Function
+            'Syntax
+            '
+            '
+            'Logo Expression; Logo expression;
+            'LogoEvaluation
+            'LogoFunction
+            'Literal
             Public Function _LogoStatements() As List(Of AstExpression)
                 Dim lst As New List(Of AstExpression)
 
@@ -89,50 +148,12 @@ Namespace SmallProgLang
                         Case Type_Id._VARIABLE
                             Dim _Left = _IdentifierLiteralNode()
                             'Check if it is a left hand cmd
-                            Select Case LCase(_Left._Name)
-                                Case "ht"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "hideturtle"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "fd"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "forward"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "bk"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "backward"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "rt"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "right"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "lt"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "label"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "if"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "for"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "deref"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "setxy"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "st"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "stop"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "pu"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "pd"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case "make"
-                                    lst.Add(_ComandFunction(_Left))
-                                Case Else
-                                    'Must be a variable
-                                    lst.Add(New Ast_Logo_Expression(_Left))
-                            End Select
-                       ' lst.Add(New Ast_Logo_Expression())
+                            If CheckLogoStatement(_Left._Name) = True Then
+                                lst.Add(_ComandFunction(_Left))
+                            Else
+                                lst.Add(New Ast_Logo_Expression(_Left))
+                            End If
+
                         Case Type_Id._STRING
                             lst.Add(New Ast_Logo_Expression(_StringLiteralNode()))
                         Case Type_Id._INTEGER
@@ -148,6 +169,11 @@ Namespace SmallProgLang
 
                 Return lst
             End Function
+            'syntax
+            '
+            '
+            'literal +-*/<>= Literal 
+            '
             Public Function _EvaluationExpression() As AstExpression
                 Dim _left As AstExpression
                 Dim toktype As Type_Id
@@ -185,6 +211,11 @@ Namespace SmallProgLang
                 'Simple Number
                 Return _left
             End Function
+            'syntax
+            '
+            '
+            'literal +-*/<>= Literal 
+            'Literal
             Public Function _Evaluation(ByRef _left As AstExpression)
 
                 Dim _Operator As String = ""
@@ -201,6 +232,12 @@ Namespace SmallProgLang
 
                 Return _left
             End Function
+            'syntax
+            '
+            'identifier Value
+            '
+            '
+            '
             Public Function _ComandFunction(ByRef _Left As Ast_Identifier) As Ast_LogoCmdExpression
                 _WhitespaceNode()
 
@@ -246,6 +283,11 @@ Namespace SmallProgLang
                 '  Return Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left)
                 Return Nothing
             End Function
+            'syntax
+            '
+            ' +-*/=<>
+            '
+            '
             Public Function _GetAssignmentOperator() As String
                 Dim str = Tokenizer.GetIdentifiedToken(Lookahead).Value
                 str = str.Replace("\u003c", "<")
@@ -256,6 +298,11 @@ Namespace SmallProgLang
 
                 Return UCase(str)
             End Function
+            'syntax
+            '
+            'Identifier
+            '
+            '
             Public Function _IdentifierLiteralNode() As Ast_Identifier
                 '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._NULL)
                 Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
@@ -269,6 +316,10 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Return nde
             End Function
+            'syntax
+            '
+            ';
+            '
             Public Function __EndStatementNode() As Ast_Literal
                 '   Dim tok As Token = Tokenizer.Eat(GrammarFactory.Grammar.Type_Id._EMPTY_STATEMENT)
                 Dim tok As Token = Tokenizer.GetIdentifiedToken(Lookahead)
@@ -280,6 +331,10 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Return nde
             End Function
+            'syntax:
+            '
+            'Unknown
+            '
             ''' <summary>
             ''' Collects bad token
             ''' </summary>
@@ -311,6 +366,9 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Return nde
             End Function
+            'syntax
+            '
+            '" "
             ''' <summary>
             ''' Used to denote white space as it is often important later
             ''' Some Parsers ignore this token ; 
@@ -328,6 +386,10 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Return nde
             End Function
+            'Syntax:
+            '
+            'String Literal
+            '
             ''' <summary>
             ''' Syntax:
             ''' "hjk"
@@ -355,6 +417,9 @@ Namespace SmallProgLang
                 Lookahead = Tokenizer.ViewNext
                 Return nde
             End Function
+            'syntax
+            '
+            'numeric integer
             ''' <summary>
             ''' Syntax:
             ''' 
@@ -385,9 +450,8 @@ Namespace SmallProgLang
                     Return nde
                 End If
             End Function
-
             Private Function GetDebuggerDisplay() As String
-                Return ToString()
+                Return ToJson
             End Function
         End Class
     End Namespace
