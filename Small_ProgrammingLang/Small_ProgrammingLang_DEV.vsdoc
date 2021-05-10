@@ -20,7 +20,7 @@
     <add key="VBdocman_supportedPlatforms"><![CDATA[]]></add>
     <add key="VBdocman_comProtected"><![CDATA[-1]]></add>
     <add key="VBdocman_supportedNetFrameworkClientProfile"><![CDATA[]]></add>
-    <add key="VBdocman_comPrivate"><![CDATA[0]]></add>
+    <add key="VBdocman_comPrivate"><![CDATA[-1]]></add>
     <add key="VBdocman_comWriteDescription"><![CDATA[0]]></add>
     <add key="VBdocman_comProtectedFriend"><![CDATA[-1]]></add>
     <add key="VBdocman_comObject"><![CDATA[-1]]></add>
@@ -57,7 +57,7 @@
     <add key="VBdocman_insertSourceGlobal"><![CDATA[1]]></add>
     <add key="VBdocman_SupportedNetStandard"><![CDATA[]]></add>
     <add key="VBdocman_SupportedXamarinMac"><![CDATA[]]></add>
-    <add key="VBdocman_comFriend"><![CDATA[0]]></add>
+    <add key="VBdocman_comFriend"><![CDATA[-1]]></add>
     <add key="VBdocman_templatePath"><![CDATA[chm_msdn2.vbdt]]></add>
     <add key="VBdocman_comDeclare"><![CDATA[-1]]></add>
     <add key="VBdocman_conditionalConstants"><![CDATA[]]></add>

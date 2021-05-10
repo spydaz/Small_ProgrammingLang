@@ -80,6 +80,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SourceCode\C_P_U\ZX21_GDU.designer.vb">
+      <DependentUpon>ZX21_GDU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\C_P_U\ZX21_GDU.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.Designer.vb">
       <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
     </Compile>

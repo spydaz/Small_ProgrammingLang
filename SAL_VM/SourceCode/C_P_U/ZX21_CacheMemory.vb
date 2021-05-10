@@ -10,8 +10,8 @@
         Public ReturnAddress As Integer
         Public Variables As List(Of Var)
 
-        Public Sub New(ByRef ReturnAddress As Integer)
-            ReturnAddress = ReturnAddress
+        Public Sub New(ByRef _ReturnAddress As Integer)
+            ReturnAddress = _ReturnAddress
             Variables = New List(Of Var)
         End Sub
         Public Function GetReturnAddress() As Integer

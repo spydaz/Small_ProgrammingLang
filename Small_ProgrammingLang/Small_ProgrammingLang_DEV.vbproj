@@ -84,10 +84,10 @@
     <Compile Include="SourceCode\LOGO_LANG\Parser.vb" />
     <Compile Include="SourceCode\LOGO_LANG\PL_COMPILER.vb" />
     <Compile Include="SourceCode\LOGO_LANG\TURTLE.vb" />
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.Designer.vb">
-      <DependentUpon>FormGraphicsDisplayConsole.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.Designer.vb">
+      <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.vb">
+    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.Designer.vb">
@@ -130,10 +130,16 @@
     <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\ZX21_GDU.designer.vb">
+      <DependentUpon>ZX21_GDU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_VM\MachineUI\ZX21_GDU.vb">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormGraphicsDisplayConsole.resx">
-      <DependentUpon>FormGraphicsDisplayConsole.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.resx">
+      <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.resx">
       <DependentUpon>Multi_REPL.vb</DependentUpon>

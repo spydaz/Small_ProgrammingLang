@@ -2611,6 +2611,18 @@ Disposes of the resources (other than memory) used by the $MSDNLS$T:System.Windo
     </member>
     <member name="M:SAL_VM.SAL_ZX21_ConsoleUI.InitializeComponent">
     </member>
+    <member name="T:SAL_VM.SAL_ZX21_GDU">
+    </member>
+    <member name="M:SAL_VM.SAL_ZX21_GDU.Dispose(System.Boolean)">
+      <summary>
+Disposes of the resources (other than memory) used by the $MSDNLS$T:System.Windows.Forms.Form$MSDNLE$Form$MSDNEL$.</summary>
+      <param name="disposing">
+</param>
+    </member>
+    <member name="F:SAL_VM.SAL_ZX21_GDU.components">
+    </member>
+    <member name="M:SAL_VM.SAL_ZX21_GDU.InitializeComponent">
+    </member>
     <member name="T:SAL_VM.ZX81_REPL">
     </member>
     <member name="F:SAL_VM.ZX81_REPL.PSER">

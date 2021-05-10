@@ -179,6 +179,9 @@ Namespace SmallProgLang
             _Angle -= Degrees
             _Rotate()
         End Sub
+
+
+
         Public Function RotateImage(ByVal bmp As Image, ByVal angleDegrees As Single) As Bitmap
             Dim rotatedImage = New Bitmap(bmp.Width, bmp.Height)
 
@@ -196,6 +199,9 @@ Namespace SmallProgLang
             turtlePicture.Width = turtlePicture.Image.Width
             turtlePicture.Height = turtlePicture.Image.Height
         End Sub
+
+
+
         Public Sub _Clear()
             drawingGraphics.Clear(Color.White)
             _Reset()

@@ -11,7 +11,7 @@ Imports SDK.SmallProgLang.GrammarFactory.Grammar
 
 
 'INTERPRETOR
-'
+' 
 #Region "INTERPRETATION"
 'THE AST CREATON FACTORY - ALL LANGUAGES
 '
