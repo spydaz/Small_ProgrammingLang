@@ -83,31 +83,48 @@ Namespace SmallProgLang
                     'End of line
                     Case Type_Id.LOGO_EOL
                         __EndStatementNode()
-                    Case Type_Id.LOGO_name
+                    Case Type_Id._VARIABLE
                         Dim _Left = _IdentifierLiteralNode()
                         'Check if it is a left hand cmd
                         Select Case LCase(_Left._Name)
                             Case "ht"
+                                lst.Add(_ComandFunction(_Left))
                             Case "hideturtle"
+                                lst.Add(_ComandFunction(_Left))
                             Case "fd"
+                                lst.Add(_ComandFunction(_Left))
                             Case "forward"
+                                lst.Add(_ComandFunction(_Left))
                             Case "bk"
+                                lst.Add(_ComandFunction(_Left))
                             Case "backward"
-                            Case "bk"
-                            Case "backward"
+                                lst.Add(_ComandFunction(_Left))
                             Case "rt"
+                                lst.Add(_ComandFunction(_Left))
                             Case "right"
+                                lst.Add(_ComandFunction(_Left))
                             Case "lt"
+                                lst.Add(_ComandFunction(_Left))
                             Case "label"
+                                lst.Add(_ComandFunction(_Left))
                             Case "if"
+                                lst.Add(_ComandFunction(_Left))
                             Case "for"
+                                lst.Add(_ComandFunction(_Left))
                             Case "deref"
+                                lst.Add(_ComandFunction(_Left))
                             Case "setxy"
+                                lst.Add(_ComandFunction(_Left))
                             Case "st"
+                                lst.Add(_ComandFunction(_Left))
                             Case "stop"
+                                lst.Add(_ComandFunction(_Left))
                             Case "pu"
+                                lst.Add(_ComandFunction(_Left))
                             Case "pd"
+                                lst.Add(_ComandFunction(_Left))
                             Case "make"
+                                lst.Add(_ComandFunction(_Left))
                             Case Else
                                 'Must be a variable
                                 lst.Add(New Ast_Logo_Expression(_Left))
@@ -172,28 +189,43 @@ Namespace SmallProgLang
 
                 Return _left
             End Function
-            Public Function _ComandFunction(ByRef _Left As Ast_LogoIdentifer) As Ast_LogoCmdExpression
+            Public Function _ComandFunction(ByRef _Left As Ast_Identifier) As Ast_LogoCmdExpression
+                _WhitespaceNode()
+
                 Select Case LCase(_Left._Name)
                     Case "ht"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "hideturtle"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "fd"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "forward"
+                        Dim xde = New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
+                        Return xde
+
                     Case "bk"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "backward"
-                    Case "bk"
-                    Case "backward"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "rt"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "right"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "lt"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, _NumericLiteralNode)
                     Case "label"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "if"
                     Case "for"
                     Case "deref"
                     Case "setxy"
                     Case "st"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "stop"
                     Case "pu"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "pd"
+                        Return New Ast_LogoCmdExpression(AST_NODE.Logo_Function, _Left, __EndStatementNode)
                     Case "make"
                     Case Else
 

@@ -104,7 +104,7 @@ Namespace SmallProgLang
             ''' <param name="nScript">Script to be compiled </param>
             ''' <param name="nGrammar">Uses Custom Grammar to create tokens based on Stored Grammar ID's</param>
             ''' <returns>AST PROGRAM</returns>
-            Public Function _Parse(ByRef nScript As String, ByRef nGrammar As List(Of GrammarFactory.Grammar)) As AstProgram
+            Public Function ParseGrammar(ByRef nScript As String, ByRef nGrammar As List(Of GrammarFactory.Grammar)) As AstProgram
                 Dim Body As New List(Of Ast_ExpressionStatement)
                 Me.ParserErrors = New List(Of String)
                 iScript = nScript.Replace(vbNewLine, ";")

@@ -137,7 +137,7 @@ Partial Class Multi_REPL
         Me.GroupBox13 = New System.Windows.Forms.GroupBox()
         Me.LOGO_TreeView = New System.Windows.Forms.TreeView()
         Me.GroupBox14 = New System.Windows.Forms.GroupBox()
-        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
+        Me.LogoTextOut = New System.Windows.Forms.RichTextBox()
         Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
@@ -1455,7 +1455,7 @@ Partial Class Multi_REPL
         Me.GroupBox14.BackColor = System.Drawing.Color.Black
         Me.GroupBox14.BackgroundImage = Global.SDK.My.Resources.Resources.Dell_UltraSharp_27
         Me.GroupBox14.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.GroupBox14.Controls.Add(Me.RichTextBox3)
+        Me.GroupBox14.Controls.Add(Me.LogoTextOut)
         Me.GroupBox14.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox14.ForeColor = System.Drawing.Color.Lime
         Me.GroupBox14.Location = New System.Drawing.Point(0, 0)
@@ -1467,19 +1467,19 @@ Partial Class Multi_REPL
         Me.GroupBox14.TabStop = False
         Me.GroupBox14.Text = "Program Output"
         '
-        'RichTextBox3
+        'LogoTextOut
         '
-        Me.RichTextBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.LogoTextOut.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.RichTextBox3.BackColor = System.Drawing.Color.Gainsboro
-        Me.RichTextBox3.Font = New System.Drawing.Font("Consolas", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RichTextBox3.Location = New System.Drawing.Point(8, 30)
-        Me.RichTextBox3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.RichTextBox3.Name = "RichTextBox3"
-        Me.RichTextBox3.Size = New System.Drawing.Size(472, 251)
-        Me.RichTextBox3.TabIndex = 0
-        Me.RichTextBox3.Text = ""
+        Me.LogoTextOut.BackColor = System.Drawing.Color.Gainsboro
+        Me.LogoTextOut.Font = New System.Drawing.Font("Consolas", 18.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LogoTextOut.Location = New System.Drawing.Point(8, 30)
+        Me.LogoTextOut.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.LogoTextOut.Name = "LogoTextOut"
+        Me.LogoTextOut.Size = New System.Drawing.Size(472, 251)
+        Me.LogoTextOut.TabIndex = 0
+        Me.LogoTextOut.Text = ""
         '
         'OpenTextFileDialog
         '
@@ -1680,7 +1680,7 @@ Partial Class Multi_REPL
     Friend WithEvents GroupBox13 As GroupBox
     Friend WithEvents LOGO_TreeView As TreeView
     Friend WithEvents GroupBox14 As GroupBox
-    Friend WithEvents RichTextBox3 As RichTextBox
+    Friend WithEvents LogoTextOut As RichTextBox
     Friend WithEvents SAL_ToolStripRepl As ToolStrip
     Friend WithEvents SAL_NewToolStripButton As ToolStripButton
     Friend WithEvents ToolStripSeparator7 As ToolStripSeparator

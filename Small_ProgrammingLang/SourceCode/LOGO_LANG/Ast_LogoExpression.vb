@@ -34,12 +34,14 @@ Namespace SmallProgLang
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public Class Ast_LogoCmdExpression
             Inherits AstExpression
-            Public _Left_Cmd As Ast_LogoIdentifer
-            Public _Right_Value As Ast_Logo_Value
+            Public _Left_Cmd As Ast_Identifier
+            Public _Right_Value As Ast_Literal
 
-            Public Sub New(ByRef ntype As AST_NODE, ByRef _left As Ast_LogoIdentifer, _Right As Ast_Logo_Value)
+            Public Sub New(ByRef ntype As AST_NODE, ByRef _left As Ast_Identifier, _Right As Ast_Literal)
                 MyBase.New(ntype)
                 Me._TypeStr = "_LogoCmdExpression"
+                Me._Left_Cmd = _left
+                Me._Right_Value = _Right
             End Sub
 
             ''' <summary>

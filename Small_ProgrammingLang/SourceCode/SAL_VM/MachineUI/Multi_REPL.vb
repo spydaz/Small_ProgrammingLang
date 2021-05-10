@@ -2,6 +2,7 @@
 Imports SDK.SmallProgLang
 Imports SDK.SmallProgLang.Ast_ExpressionFactory
 Imports SDK.SmallProgLang.Compiler
+Imports SDK.SmallProgLang.GrammarFactory
 Imports System.IO
 Imports System.Runtime.CompilerServices
 
@@ -246,6 +247,86 @@ Public Class Multi_REPL
         Iturtle._Right(45)
         Iturtle._forward(45)
         Iturtle._Reset()
+    End Sub
+    Public Sub loadLogoTree(ByRef Prog As AstProgram)
+        LOGO_TreeView.Nodes.Clear()
+        Dim root As New TreeNode
+        If PSER.ParserErrors.Count > 0 Then
+            root.ForeColor = Color.Red
+        Else
+            root.ForeColor = Color.GreenYellow
+        End If
+        root.Text = Prog._TypeStr & vbNewLine
+        root.Tag = FormatJsonOutput(Prog.ToJson)
+        Dim Body As New TreeNode
+        Body.Text = "Body"
+        Body.Tag = FormatJsonOutput(Prog.ToJson)
+        For Each item In Prog.Body
+            Dim MainNode As New TreeNode
+            MainNode.Text = FormatJsonOutput(item.ToJson)
+            MainNode.Tag = FormatJsonOutput(item.ToJson)
+            Dim RawNode As New TreeNode
+            If PSER.ParserErrors.Count > 0 Then
+                RawNode.ForeColor = Color.Red
+            Else
+                RawNode.ForeColor = Color.GreenYellow
+            End If
+            RawNode.Text = "_Raw :" & item._Raw
+            RawNode.Tag = "_raw"
+            MainNode.Nodes.Add(RawNode)
+            Dim _StartNode As New TreeNode
+            _StartNode.Text = "_Start :" & item._Start
+            _StartNode.Tag = "_Start"
+            MainNode.Nodes.Add(_StartNode)
+            Dim _EndNode As New TreeNode
+            _EndNode.Text = "_End :" & item._End
+            _EndNode.Tag = "_End"
+            MainNode.Nodes.Add(_EndNode)
+            Dim _TypeNode As New TreeNode
+            If PSER.ParserErrors.Count > 0 Then
+                _TypeNode.ForeColor = Color.Red
+            Else
+                _TypeNode.ForeColor = Color.GreenYellow
+            End If
+            _TypeNode.Text = "_Type :" & item._TypeStr
+            _TypeNode.Tag = "_Type"
+            MainNode.Nodes.Add(_TypeNode)
+            Body.Nodes.Add(MainNode)
+        Next
+        root.Nodes.Add(Body)
+        LOGO_TreeView.Nodes.Add(root)
+        LOGO_TreeView.ExpandAll()
+    End Sub
+    Private Sub ToolStripButton_RUN_LOGO_Click(sender As Object, e As EventArgs) Handles ToolStripButton_RUN_LOGO.Click
+        Dim InputCode As String = PROGRAM_TEXTBOX.Text
+        Dim logo_PSER = New LogoParser
+
+        Dim outputStr = logo_PSER._Parse(InputCode)
+        LOGO_TreeView.Nodes.Clear()
+        loadLogoTree(outputStr)
+
+        LogoTextOut.Text = FormatJsonOutput(outputStr.ToJson)
+        LOGO_ERRORS.Text = ""
+        If logo_PSER.ParserErrors IsNot Nothing Then
+            If logo_PSER.ParserErrors.Count > 0 Then
+                LOGO_ERRORS.Text = "Error in Syntax :" & vbNewLine
+                For Each item In logo_PSER.ParserErrors
+
+                    LOGO_ERRORS.Text &= vbNewLine & item & vbNewLine
+                Next
+                If outputStr.Body IsNot Nothing Then
+                    For Each item In outputStr.Body
+                        Small_PL_TextboxErrors.ForeColor = Color.Red
+
+                        LOGO_ERRORS.Text &= vbNewLine & item.ToJson & vbNewLine
+                    Next
+                Else
+                End If
+            Else
+                LOGO_ERRORS.ForeColor = Color.Green
+                LOGO_ERRORS.Text = "all Passed sucessfully" & vbNewLine
+            End If
+        End If
     End Sub
 
 
