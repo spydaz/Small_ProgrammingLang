@@ -10,6 +10,31 @@ Namespace SmallProgLang
                 MyBase.New(ntype)
             End Sub
 
+            Public Sub New(ByRef nValue As Integer)
+                MyBase.New(nValue)
+                '   _TypeStr = AST_NODE.Logo_Value
+            End Sub
+
+            Public Sub New(ByRef nValue As Double)
+                MyBase.New(nValue)
+                '    _TypeStr = AST_NODE.Logo_Value
+            End Sub
+
+            Public Sub New(ByRef nValue As String)
+                MyBase.New(nValue)
+                '       _TypeStr = AST_NODE.Logo_Value
+            End Sub
+
+            Public Sub New(ByRef nValue As Boolean)
+                MyBase.New(nValue)
+                '       _TypeStr = AST_NODE.Logo_Value
+            End Sub
+
+            Public Sub New(ByRef nValue As List(Of Object))
+                MyBase.New(nValue)
+                '         _TypeStr = AST_NODE.Logo_Value
+            End Sub
+
             Public Sub New(ByRef ntype As AST_NODE, ByRef nValue As Object)
                 MyBase.New(ntype, nValue)
             End Sub
@@ -25,6 +50,7 @@ Namespace SmallProgLang
             Public Sub New(ByRef nName As String)
                 MyBase.New(nName)
                 Me._TypeStr = "_LogoIdentifer"
+                Me._Type = AST_NODE.Logo_name
             End Sub
 
             Private Function GetDebuggerDisplay() As String

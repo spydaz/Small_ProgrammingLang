@@ -178,6 +178,8 @@ Namespace SmallProgLang
             _TRUE
             Logo_Expression
             Logo_Function
+            Logo_name
+            Logo_Value
         End Enum
         ''' <summary>
         ''' Syntax: 
