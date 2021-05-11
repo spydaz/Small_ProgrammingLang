@@ -19,7 +19,7 @@ Public Class GDU
     Private iX_ As Integer = 0
     Private iY_ As Integer = 0
     Private iTurtlePen As New System.Drawing.Pen(TurtleColor, TurtlePenSize)
-    Public CenterPoint = New PointF(Me.Left + Me.Width / 2.0F, Me.Top + Me.Height / 2.0F)
+    Public CenterPoint = New PointF(Me.Width - Me.Width / 2.0F, Me.Height - Me.Height / 2.0F)
     Public Sub New()
         ' Add any initialization after the InitializeComponent() call.
         TurtleGraphics = Me.CreateGraphics()
@@ -110,12 +110,14 @@ Public Class GDU
         TurtleGraphics.DrawLine(New Pen(TurtleColor, TurtlePenSize), TurtlePosition, NePosition)
         TurtleGraphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
         TurtlePosition = NePosition
+        Me.Invalidate()
     End Sub
     Public Sub _BK(ByRef Distance As Integer)
         Dim NePosition As New Point(TurtlePosition.X - Distance, TurtlePosition.Y)
         TurtleGraphics.DrawLine(New Pen(TurtleColor, TurtlePenSize), TurtlePosition, NePosition)
         TurtleGraphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
         TurtlePosition = NePosition
+        Me.Invalidate()
     End Sub
     Public Sub _RT(ByRef Degrees As Integer)
         Direction += Degrees
@@ -128,7 +130,6 @@ Public Class GDU
     End Sub
     Public Sub _CT()
         TurtlePosition = CenterPoint
-
     End Sub
     ''' <summary>
     ''' Pen Drawing

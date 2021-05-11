@@ -1,5 +1,5 @@
 ﻿Imports System.Web
-Imports SDK.SmallProgLang.Compiler
+Imports SAL_VM.SmallProgLang.Compiler
 
 Public Class SAL_MachineUI
 

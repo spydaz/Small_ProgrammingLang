@@ -6,7 +6,7 @@ Imports SDK.SmallProgLang.GrammarFactory
 Imports System.IO
 Imports System.Runtime.CompilerServices
 
-Public Class Multi_REPL
+Public Class SAL_ZX21_SPL_BASIC_REPL
 #Region "SMALL_PL"
     Dim PSER As New ParserFactory
     Private Sub ToolStripButtonCompile_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonCompileCode.Click
@@ -235,6 +235,9 @@ Public Class Multi_REPL
         Small_PL_TextBoxREPL_OUTPUT.Text = Small_PL_AstTreeView.SelectedNode.Tag
     End Sub
     Public Iturtle As TURTLE
+
+
+#End Region
     Private Sub Multi_REPL_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'LOGO PANEL TEST
         Iturtle = New TURTLE(logo_display_panel, My.Resources.Icon_UpVote)
@@ -329,9 +332,6 @@ Public Class Multi_REPL
         End If
     End Sub
 
-
-
-#End Region
 
 End Class
 'REPL_ERROR SYSTEM

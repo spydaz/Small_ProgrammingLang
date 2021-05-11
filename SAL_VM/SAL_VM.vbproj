@@ -86,18 +86,25 @@
     <Compile Include="SourceCode\C_P_U\ZX21_GDU.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\ZX21_COMPILER.vb" />
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.Designer.vb">
       <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
     </Compile>
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SourceCode\SDK\ZX21_API.vb" />
     <Compile Include="SourceCode\SDK\ZX21_Ext.vb" />
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.designer.vb">
-      <DependentUpon>SAL_ZX21 WebUI.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.designer.vb">
+      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.designer.vb">
@@ -128,13 +135,6 @@
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
-      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SourceCode\SAL_SPL_Interpretor\ZX21_COMPILER.vb" />
     <Compile Include="SourceCode\C_P_U\ZX21_CacheMemory.vb" />
     <Compile Include="SourceCode\C_P_U\ZX21_CPU.vb" />
     <Compile Include="SourceCode\C_P_U\ZX21_GPU.vb" />
@@ -144,8 +144,11 @@
     <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.resx">
       <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21 WebUI.resx">
-      <DependentUpon>SAL_ZX21 WebUI.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
+      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.resx">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
       <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
@@ -159,9 +162,6 @@
     <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
       <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.resx">
-      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\SpydazWeb AI _Emulators.chm">
@@ -173,6 +173,18 @@
     <Content Include="Help\Small_ProgrammingLang.chm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Resources\X SERIES AL 9000s.jpg" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+    <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\ipad-mockup-hands.png" />
+    <None Include="Resources\Icon_UpVote.png" />
+    <None Include="Resources\EYE BLUE .gif" />
+    <None Include="Resources\Dell UltraSharp 27.png" />
+    <None Include="Resources\Console A.jpg" />
+    <None Include="Resources\Complier_RUN.png" />
+    <None Include="Resources\Arrow_Right.png" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -183,32 +195,20 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <Content Include="Help\Small Programming Language.md">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="Help\Small Programming Language.md" />
+    <None Include="toDo.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\Spydaz Virtual Machine Code Language.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Help\SAL.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\SPL.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Help\SPL.txt" />
     <Content Include="IconUFP.ico" />
-    <None Include="Resources\X SERIES AL 9000s.jpg" />
-    <None Include="Resources\SERIES 1 sal9000.bmp" />
-    <None Include="Resources\Script_Code_Html_.png" />
-    <None Include="Resources\ipad-mockup-hands.png" />
-    <None Include="Resources\EYE BLUE .gif" />
-    <None Include="Resources\Console A.jpg" />
-    <None Include="Resources\Complier_RUN.png" />
-    <None Include="Resources\Arrow_Right.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

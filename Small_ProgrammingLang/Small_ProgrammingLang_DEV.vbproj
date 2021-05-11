@@ -79,26 +79,24 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SourceCode\LOGO_LANG\Ast_LogoExpression.vb" />
-    <Compile Include="SourceCode\LOGO_LANG\Parser.vb" />
     <Compile Include="SourceCode\LOGO_LANG\PL_COMPILER.vb" />
     <Compile Include="SourceCode\LOGO_LANG\TURTLE.vb" />
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.Designer.vb">
+    <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">
       <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.vb">
+    <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.Designer.vb">
-      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    <Compile Include="SourceCode\MachineUI\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.vb">
+    <Compile Include="SourceCode\MachineUI\SAL_ZX21_SPL_BASIC_REPL.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.designer.vb">
+    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.designer.vb">
       <DependentUpon>EMU_MachineUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.vb">
+    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -117,31 +115,31 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.designer.vb">
+    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.designer.vb">
       <DependentUpon>FormDisplayConsole.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.vb">
+    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.designer.vb">
+    <Compile Include="SourceCode\MachineUI\VM_MachineUI.designer.vb">
       <DependentUpon>VM_MachineUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.vb">
+    <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\ZX21_GDU.designer.vb">
+    <Compile Include="SourceCode\MachineUI\ZX21_GDU.designer.vb">
       <DependentUpon>ZX21_GDU.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_VM\MachineUI\ZX21_GDU.vb">
+    <Compile Include="SourceCode\MachineUI\ZX21_GDU.vb">
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormDisplayGraphics.resx">
+    <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayGraphics.resx">
       <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\Multi_REPL.resx">
-      <DependentUpon>Multi_REPL.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\MachineUI\SAL_ZX21_SPL_BASIC_REPL.resx">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -149,29 +147,23 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\FormDisplayConsole.resx">
+    <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayConsole.resx">
       <DependentUpon>FormDisplayConsole.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\VM_MachineUI.resx">
+    <EmbeddedResource Include="SourceCode\MachineUI\VM_MachineUI.resx">
       <DependentUpon>VM_MachineUI.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_VM\MachineUI\EMU_MachineUI.resx">
+    <EmbeddedResource Include="SourceCode\MachineUI\EMU_MachineUI.resx">
       <DependentUpon>EMU_MachineUI.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Help\SpydazWeb AI _Emulators.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="Help\Small Programming Language.md" />
     <None Include="Resources\Script_Code_Html_.png" />
     <None Include="Resources\up.png" />
     <None Include="Resources\Icon_UpVote.png" />
-    <None Include="SourceCode\LOGO_LANG\Readme.md" />
     <Content Include="TestsMain\Basic Tests.txt" />
     <Content Include="TestsMain\DevelopmentPrimers\Basic Tests.txt" />
     <Content Include="TestsMain\DevelopmentPrimers\IF.txt" />
@@ -235,15 +227,11 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="COM.ICO" />
-    <Content Include="Help\SPL.txt" />
     <None Include="Resources\ipad-mockup-hands.png" />
     <None Include="Resources\Console A.jpg" />
     <None Include="Resources\SERIES 1 sal9000.bmp" />
     <None Include="Resources\X SERIES AL 9000s.jpg" />
     <None Include="Resources\EYE BLUE .gif" />
-    <Content Include="Help\SAL.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <ItemGroup>

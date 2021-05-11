@@ -113,10 +113,69 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property Icon_UpVote() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Icon_UpVote", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property ipad_mockup_hands() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ipad_mockup_hands", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to The section numbers are per the Berkeley Logo Reference Manual in Brian Harvey&apos;s Computer Science Logo Style volume 2: Advanced Techniques for ease of comparison.
+        '''
+        '''Data Types and Syntax
+        '''Data Structure Primitives
+        '''Communication
+        '''Arithmetic
+        '''Logical Operations
+        '''Graphics
+        '''Workspace Management
+        '''Control Structures
+        '''Data Types and Syntax
+        '''&quot;word
+        '''&apos;word
+        '''number
+        '''Word. (Quoted words are terminated by [](){} or whitespace, \ to escape.)
+        '''show &quot;hello
+        '''show &quot;hello\ logo
+        '''show 12.34
+        ''':variable
+        '''Input definition/varia [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property LOGO_QUICK_REF() As String
+            Get
+                Return ResourceManager.GetString("LOGO_QUICK_REF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SpydazWeb Assembly Language : 
+        '''	Description :
+        '''		This assembly language is specific to this virtual processor 
+        '''		Enableing for the code to be executed on the cpu: 
+        '''		This is a Micro based instruction set (Misc)
+        '''	ZX81:
+        '''		_PUSH					: Pushes items on to the stack (top)
+        '''		_POP					: Pops items off the stack (top)
+        '''		_PEEK					: Views items on the stack (top)
+        '''		_WAIT					: Pauses execution of code
+        '''		_PAUSE					: Pauses execution of code
+        '''		_HALT					: HALT execution of code
+        '''		_RESUME					: Resumes execu [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property QuickRef_SAL() As String
+            Get
+                Return ResourceManager.GetString("QuickRef_SAL", resourceCulture)
             End Get
         End Property
         
@@ -136,6 +195,16 @@ Namespace My.Resources
         Friend ReadOnly Property SERIES_1_sal9000() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SERIES_1_sal9000", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property up() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("up", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Multi_REPL
+Partial Class SAL_ZX21_SPL_BASIC_REPL
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -23,7 +23,7 @@ Partial Class Multi_REPL
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Multi_REPL))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(SAL_ZX21_SPL_BASIC_REPL))
         Me.TabControl_ProgrammingLang_Repl = New System.Windows.Forms.TabControl()
         Me.TabPageSpydaz_PL = New System.Windows.Forms.TabPage()
         Me.TabControlRepl_Inner = New System.Windows.Forms.TabControl()

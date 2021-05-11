@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.SDK.Multi_REPL
+            Me.MainForm = Global.SDK.SAL_ZX21_SPL_BASIC_REPL
         End Sub
     End Class
 End Namespace
