@@ -164,16 +164,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Help\SpydazWeb AI _Emulators.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\SAL_VM.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\Small_ProgrammingLang.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Resources\X SERIES AL 9000s.jpg" />
     <None Include="Resources\up.png" />
     <None Include="Resources\SERIES 1 sal9000.bmp" />
@@ -195,19 +185,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="Help\Small Programming Language.md" />
     <None Include="toDo.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Help\Spydaz Virtual Machine Code Language.md">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Help\SAL.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Help\SPL.txt" />
     <Content Include="IconUFP.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

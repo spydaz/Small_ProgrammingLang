@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SourceCode\LOGO_LANG\PL_COMPILER.vb" />
-    <Compile Include="SourceCode\LOGO_LANG\TURTLE.vb" />
     <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">
       <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </Compile>
