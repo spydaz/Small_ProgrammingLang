@@ -1,4 +1,4 @@
-Small Programming Language
+## Small Programming Language
 
 My Personal choice is BASIC as it has always been a favorite of mine ; as the pseudo code is basically the same as the real code which makes it very readable without the flourishing of multiple brackets. Although there will be brackets for code boundary as well as semi colons as end markers when required. Currently My older versions seem to be a bit more advanced (still primitive) but the newest version (lexParseEval) will be a more correct model ; again only having the basics of the basic language; (not highly useful)- but still a learning tool(journey/Experience).
 
@@ -15,7 +15,7 @@ DESCRIPTION:
 The program has been designed in mini stages
 
 `
-The Lexer
+#The Lexer
 
 This is a tokenizer which basically takes each token by using a grammar model to be used by the RegEx Searcher; These token produced give the position and the string that they have defined. A lookAhead Function has been added to preview the token to be consumed next. A record of tokens collected is also stored enabling for look back as well as Stepping backwards if required.
 The Parser
@@ -25,8 +25,8 @@ The Interpreter
 
 This component Takes the Abstract Syntax tokens produced and evaluates(Executes) the Code. Here the decision is made to execute on the virtual hardware or evaluate in memory to produce a result.
 
-`
-Small Programming Language - SYNTAX
+
+### Small Programming Language - SYNTAX
 
 This is the Current Syntax (Valid)
 The parser may accept other complexed combinations Which may not be valid evaluation arguments.(yet) SemiColons are used to denote the end of a Expression Although they are not always needed by the compiler
@@ -108,11 +108,12 @@ _DECR 				: number is Decremented by 2
 The Current instruction Set Will Later include a memory register location system ; (after researching different models and implementations)( a vitual machine model based on this was created using a stack machine style. this will form the basis of my (Virtual Machine) - to be developed over time (maybe even format a virtual disk in the future)
 
 
-LOGO PROGRAMMING LANGUAGE
+# LOGO PROGRAMMING LANGUAGE
 
 'Used to be one of my first programmiong languges as a child in the 1070's 'It will parse and eval. And the virtual machine can use the surface to draw the images. This may for the part of the graphic system for the Small Programming language.
 
 I had previously begun a project simular to this ;
+
 ## Useful Links
 
     'https://www.tutorialspoint.com/logo/logo_introduction.htm
