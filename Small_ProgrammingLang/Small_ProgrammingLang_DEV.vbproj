@@ -79,7 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SourceCode\LOGO_LANG\PL_COMPILER.vb" />
+    <Compile Include="SourceCode\PL_COMPILER.vb" />
     <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">
       <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
     </Compile>
@@ -163,44 +163,6 @@
     <None Include="Resources\Script_Code_Html_.png" />
     <None Include="Resources\up.png" />
     <None Include="Resources\Icon_UpVote.png" />
-    <Content Include="TestsMain\Basic Tests.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\Basic Tests.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\IF.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\MaxFunct.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\RegEx.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\SampleCmds.txt" />
-    <Content Include="TestsMain\DevelopmentPrimers\While.txt" />
-    <Content Include="TestsMain\Pl_Tests\call-test.js" />
-    <Content Include="TestsMain\Pl_Tests\class-test.js" />
-    <Content Include="TestsMain\Pl_Tests\equality-test.js" />
-    <Content Include="TestsMain\Pl_Tests\function-declaration-test.js" />
-    <Content Include="TestsMain\Pl_Tests\logical-test.js" />
-    <Content Include="TestsMain\Pl_Tests\member-test.js" />
-    <Content Include="TestsMain\Pl_Tests\unary-test.js" />
-    <Content Include="TestsMain\PotentialLangs\json.ast.js" />
-    <Content Include="TestsMain\S_ExpressionTests\block-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\built-in-function-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\class-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\dec-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\dec-val-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\for-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\if-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\import-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\inc-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\inc-val-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\lambda-function-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\math-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\module-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\run.js" />
-    <Content Include="TestsMain\S_ExpressionTests\self-eval-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\switch-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\test-util.js" />
-    <Content Include="TestsMain\S_ExpressionTests\user-defined-function-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\variables-test.js" />
-    <Content Include="TestsMain\S_ExpressionTests\while-test.js" />
-    <Content Include="TestsMain\TestProgs\Simple - Countdown.txt" />
-    <Content Include="TestsMain\TestProgs\Simple - Miles &amp; Kilometers.txt" />
-    <Content Include="TestsMain\TestProgs\Simple - Secret Number.txt" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -211,10 +173,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <None Include="TestsMain\PotentialLangs\lang.bnf" />
-    <None Include="TestsMain\PotentialLangs\lang.lex" />
-    <None Include="TestsMain\PotentialLangs\test.lang" />
-    <None Include="TestsMain\PotentialLangs\vbnet.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
