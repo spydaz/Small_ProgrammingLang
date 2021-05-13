@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{96449EA3-9CA7-062A-0822-67F0CA63B9F7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>SAL_VM</RootNamespace>
+    <AssemblyName>SAL_VirtualMachine</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\SAL_VirtualMachine.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\SAL_VirtualMachine.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>IconUFP.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Web.Script.Serialization" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="My Project\MyNamespace.Static.1.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.2.Designer.cs" />
+    <Compile Include="My Project\MyNamespace.Static.3.Designer.cs" />
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_GDU.designer.cs">
+      <DependentUpon>ZX21_GDU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_GDU.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_SPL_Interpretor\ZX21_COMPILER.cs" />
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.Designer.cs">
+      <DependentUpon>SAL_ZX21_GDU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.Designer.cs">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="c_\SourceCode\SDK\ZX21_API.cs" />
+    <Compile Include="c_\SourceCode\SDK\ZX21_Ext.cs" />
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.designer.cs">
+      <DependentUpon>SAL_ZX21_Web.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.designer.cs">
+      <DependentUpon>SAL_ZX21_VDU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.cs" />
+    <Compile Include="My Project\Application.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.cs">
+      <DependentUpon>SAL_ZX21_ConsoleUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_CacheMemory.cs" />
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_CPU.cs" />
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_GPU.cs" />
+    <Compile Include="c_\SourceCode\C_P_U\ZX21_RAM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.resx">
+      <DependentUpon>SAL_ZX21_GDU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
+      <DependentUpon>SAL_ZX21_Web.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.resx">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
+      <DependentUpon>SAL_ZX21_VDU.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>SAL_VM.My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="c_\SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
+      <DependentUpon>SAL_ZX21_ConsoleUI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\X SERIES AL 9000s.jpg" />
+    <None Include="Resources\up.png" />
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+    <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\ipad-mockup-hands.png" />
+    <None Include="Resources\Icon_UpVote.png" />
+    <None Include="Resources\EYE BLUE .gif" />
+    <None Include="Resources\Dell UltraSharp 27.png" />
+    <None Include="Resources\Console A.jpg" />
+    <None Include="Resources\Complier_RUN.png" />
+    <None Include="Resources\Arrow_Right.png" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>SAL_VM.My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <None Include="toDo.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="IconUFP.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
