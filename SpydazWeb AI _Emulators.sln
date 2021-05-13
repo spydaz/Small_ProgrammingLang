@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C_", "C_", "{FD1E8E1F-2AF9-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VB", "VB", "{05438C23-32B3-4AE4-8BB9-AB8ACA7A82EA}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Small_ProgrammingLang_DEV", "Small_ProgrammingLang\Small_ProgrammingLang_DEV.vbproj", "{AAD6B3A4-2D2A-4EF7-AA67-DDFC62ADC6B9}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Small_ProgrammingLang_VB", "Small_ProgrammingLang\Small_ProgrammingLang_VB.vbproj", "{AAD6B3A4-2D2A-4EF7-AA67-DDFC62ADC6B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAL_VM", "SAL_VM\SAL_VM.csproj", "{96449EA3-9CA7-062A-0822-67F0CA63B9F7}"
 EndProject
