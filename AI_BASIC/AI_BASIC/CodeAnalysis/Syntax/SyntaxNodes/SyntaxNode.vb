@@ -1,10 +1,14 @@
 ﻿
 Imports System.Text
 Imports System.Web.Script.Serialization
+Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.Syntax
 
 Namespace Syntax
     Namespace SyntaxNodes
+#Region "Abstract Models"
+
+        'Abstract Models
         ''' <summary>
         ''' All nodes must use this model to Create SyntaxNodes
         ''' Defines the Syntax For the Language
@@ -46,7 +50,7 @@ Namespace Syntax
             '''        Evaluating the Correct values returned 
             ''' </summary>
             ''' <returns></returns>
-            Public MustOverride Function Evaluate()
+            Public MustOverride Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
 
 
 #Region "TOSTRING"
@@ -120,6 +124,10 @@ Namespace Syntax
                 MyBase.New(syntaxType, syntaxTypeStr)
             End Sub
         End Class
+#End Region
+
+#Region "Expressions"
+        'Concrete
         Public Class BinaryExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
@@ -182,12 +190,14 @@ Namespace Syntax
             ''' and the information held in the expression.
             ''' </summary>
             ''' <returns></returns>
-            Public Overrides Function Evaluate()
-                Dim Operation = GetChildren()
-
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Throw New NotImplementedException()
             End Function
         End Class
+#End Region
+
+#Region "Literals"
+        'Abstract
         Public MustInherit Class LiteralExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
@@ -205,6 +215,7 @@ Namespace Syntax
                 MyBase.New(syntaxType, syntaxTypeStr)
             End Sub
         End Class
+        'Concrete
         Public Class IntegerExpression
             Inherits LiteralExpression
             ''' <summary>
@@ -221,11 +232,10 @@ Namespace Syntax
                 Return Lst
             End Function
 
-            Public Overrides Function Evaluate()
-                Return Nothing
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Return _Literal.value
             End Function
-
-
         End Class
         Public Class IdentifierExpression
             Inherits LiteralExpression
@@ -243,11 +253,60 @@ Namespace Syntax
                 Return Lst
             End Function
 
-            Public Overrides Function Evaluate()
-                Return Nothing
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Return GetValue(ParentEnv)
+            End Function
+
+            Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
+                Return ParentEnv.CheckVar(_Literal)
+            End Function
+            Private Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
+                If ParentEnv.CheckVar(_Literal) = True Then
+                    Return ParentEnv.GetVar(_Literal)
+                Else
+                    Return Nothing
+                End If
+            End Function
+        End Class
+        Public Class BooleanLiteralExpression
+            Inherits LiteralExpression
+
+            Public Sub New(ByRef Value As Object)
+                MyBase.New(SyntaxType._Boolean, "_Boolean", Value)
+            End Sub
+
+            Public Overrides Function GetChildren() As List(Of SyntaxToken)
+                Dim Lst As New List(Of SyntaxToken)
+                Lst.Add(_Literal)
+                Return Lst
             End Function
 
 
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Return _Literal.value
+            End Function
         End Class
+        Public Class ArrayLiteralExpression
+            Inherits LiteralExpression
+
+            Public Sub New(ByRef Value As Object)
+                MyBase.New(SyntaxType._arrayList, "_arrayList", Value)
+            End Sub
+
+            Public Overrides Function GetChildren() As List(Of SyntaxToken)
+                Dim Lst As New List(Of SyntaxToken)
+                Lst.Add(_Literal)
+                Return Lst
+            End Function
+
+
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Return _Literal.value
+            End Function
+        End Class
+#End Region
+
     End Namespace
 End Namespace

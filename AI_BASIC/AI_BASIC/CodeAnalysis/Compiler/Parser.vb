@@ -4,6 +4,7 @@ Imports AI_BASIC.Syntax
 Namespace CodeAnalysis
     Namespace Compiler
         Public Class Parser
+#Region "Propertys"
             Private _Script As String
             Private _Tree As List(Of SyntaxToken)
             Private CursorPosition As Integer = 0
@@ -35,6 +36,8 @@ Namespace CodeAnalysis
                     Return _Peek(0)
                 End Get
             End Property
+#End Region
+
             Private Function _Peek(ByVal offset As Integer) As SyntaxToken
                 Dim index = CursorPosition + offset
                 If index >= _Tree.Count Then Return _Tree(_Tree.Count - 1)
@@ -75,10 +78,6 @@ Namespace CodeAnalysis
                     MyTok = Tokenizer._NextToken
                 Loop
             End Sub
-            Public Function ParseSyntaxTree() As SyntaxTree
-                '  Return New SyntaxTree(_Script, _Tree, _Diagnostics)
-                Return Nothing
-            End Function
             Public Function _GetNextToken() As SyntaxToken
                 Dim iCurrentToken = CurrentToken
                 CursorPosition += 1
@@ -107,6 +106,14 @@ Namespace CodeAnalysis
                 'MustbeNothing
                 Return Nothing
             End Function
+
+
+#Region "Parser"
+
+            Public Function ParseSyntaxTree() As SyntaxTree
+                '  Return New SyntaxTree(_Script, _Tree, _Diagnostics)
+                Return Nothing
+            End Function
             Public Function Parse(Optional Lang As LangTypes = LangTypes.Unknown) As SyntaxTree
                 Select Case Lang
                     Case LangTypes.BASIC
@@ -132,6 +139,9 @@ Namespace CodeAnalysis
 
                 Return Nothing
             End Function
+
+#End Region
+
         End Class
     End Namespace
 End Namespace
