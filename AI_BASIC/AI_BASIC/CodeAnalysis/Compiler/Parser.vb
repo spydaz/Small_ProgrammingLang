@@ -11,7 +11,21 @@ Namespace CodeAnalysis
             ''' <summary>
             ''' To hold the look ahead value without consuming the value
             ''' </summary>
-            Public Lookahead As String
+            Public ReadOnly Property Lookahead As String
+                Get
+                    Return Tokenizer.ViewNextSlice
+                End Get
+            End Property
+            Public ReadOnly Property LookaheadToken As SyntaxToken
+                Get
+                    Return Tokenizer.CheckIdentifiedToken(Lookahead)
+                End Get
+            End Property
+            Public ReadOnly Property LookaheadSyntaxType As SyntaxType
+                Get
+                    Return Tokenizer.CheckIdentifiedToken(Lookahead)._SyntaxType
+                End Get
+            End Property
             ''' <summary>
             ''' Tokenizer !
             ''' </summary>
@@ -61,12 +75,10 @@ Namespace CodeAnalysis
                     MyTok = Tokenizer._NextToken
                 Loop
             End Sub
-
             Public Function ParseSyntaxTree() As SyntaxTree
                 '  Return New SyntaxTree(_Script, _Tree, _Diagnostics)
                 Return Nothing
             End Function
-
             Public Function _GetNextToken() As SyntaxToken
                 Dim iCurrentToken = CurrentToken
                 CursorPosition += 1
@@ -93,6 +105,31 @@ Namespace CodeAnalysis
                 End Try
 
                 'MustbeNothing
+                Return Nothing
+            End Function
+            Public Function Parse(Optional Lang As LangTypes = LangTypes.Unknown) As SyntaxTree
+                Select Case Lang
+                    Case LangTypes.BASIC
+                        Return ParseBasic()
+                    Case LangTypes.LOGO
+                        Return ParseLogo()
+                    Case LangTypes.SAL
+                        Return ParseSal()
+                    Case LangTypes.Unknown
+                        Return ParseSyntaxTree()
+                End Select
+                Return Nothing
+            End Function
+            Public Function ParseLogo() As SyntaxTree
+
+                Return Nothing
+            End Function
+            Public Function ParseSal() As SyntaxTree
+
+                Return Nothing
+            End Function
+            Public Function ParseBasic() As SyntaxTree
+
                 Return Nothing
             End Function
         End Class

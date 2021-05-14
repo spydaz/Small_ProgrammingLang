@@ -263,7 +263,36 @@ Namespace CodeAnalysis
                 Loop
                 Return iMatches
             End Function
+            Public Shared Function LexTokens(ByRef Line As String) As List(Of SyntaxToken)
+                Dim Itok As SyntaxToken
+                'Original Tokenizer
+                Dim SAL_VB_LEXER As New Lexer(Line)
+                Dim lst As New List(Of SyntaxToken)
+                While True
+                    Itok = SAL_VB_LEXER._NextToken
+                    If Itok._SyntaxType = SyntaxType._EndOfFileToken Then
 
+                        Exit While
+
+                    Else
+                        ' Console.WriteLine(vbNewLine & "Tokens> " & vbNewLine & "Text: " & Itok._Text & vbNewLine & "Type: " & Itok._SyntaxStr & vbNewLine)
+                        lst.Add(Itok)
+                    End If
+                End While
+                'TOKENIZER DIAGNOSTICS
+                If SAL_VB_LEXER._Diagnostics.Count > 0 Then
+                    Console.ForegroundColor = ConsoleColor.Red
+                    Console.WriteLine("Tokenizer Error:" & vbNewLine)
+                    For Each item In SAL_VB_LEXER._Diagnostics
+
+                        Console.WriteLine(item & vbNewLine)
+
+                    Next
+                    'Enable wait
+                    Dim UserInput_LINE = Console.ReadLine()
+                End If
+                Return lst
+            End Function
         End Class
     End Namespace
 End Namespace

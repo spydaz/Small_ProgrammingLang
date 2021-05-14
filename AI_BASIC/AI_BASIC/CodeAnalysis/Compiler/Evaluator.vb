@@ -1,10 +1,16 @@
-﻿Imports AI_BASIC.Syntax
+﻿Imports System.Linq.Expressions
+Imports AI_BASIC.Syntax
 
 Namespace CodeAnalysis
     Namespace Compiler
 
         Public Class Evaluator
+            Public _Diagnostics As New List(Of String)
             Public _tree As SyntaxTree
+            ''' <summary>
+            ''' Check / Report Diagnostics
+            ''' </summary>
+            Private Evaluateable As Boolean
             Public Sub New(ByRef _itree As SyntaxTree)
                 _tree = _itree
             End Sub
@@ -47,7 +53,47 @@ Namespace CodeAnalysis
                 Throw New Exception("Unexpected Expression :" & iNode.SyntaxTypeStr)
                 Return 0
             End Function
+            Public Function RunScript(ByRef UserInput_LINE As String) As String
+                ':::_EVALUATE_::: 
+                If Evaluateable = True Then
+                    If DisplayDiagnostics(UserInput_LINE) = False Then
+                        'No Errors then Evaluate
+                        Console.ForegroundColor = ConsoleColor.Green
+                        Dim Eval As New Evaluator(_tree)
+                        Dim Result = Eval._Evaluate
+                        Return Result
+                    End If
 
+                Else
+                    'Already displayed diagnostics
+                End If
+                Return _Diagnostics.ToString
+            End Function
+
+            Private Function DisplayDiagnostics(ByRef UserInput_LINE As String) As Boolean
+                Console.ForegroundColor = ConsoleColor.Red
+                'Catch Errors
+                If _tree.Diagnostics.Count > 0 Then
+                    _Diagnostics = _tree.Diagnostics
+                    'Tokens
+                    Console.ForegroundColor = ConsoleColor.Red
+                    'PARSER DIAGNOSTICS
+                    Console.WriteLine("Compiler Errors: " & vbNewLine)
+                    For Each item In _tree.Diagnostics
+                        Console.ForegroundColor = ConsoleColor.DarkRed
+                        Console.WriteLine(item & vbNewLine)
+                    Next
+                    'Tokens
+                    Lexer.LexTokens(UserInput_LINE)
+                    Evaluateable = True
+                    Return True
+
+                Else
+                    Evaluateable = False
+                    Return False
+
+                End If
+            End Function
         End Class
     End Namespace
 End Namespace

@@ -2,6 +2,12 @@
 Imports System.Web.Script.Serialization
 
 Namespace Syntax
+    Public Enum LangTypes
+        SAL
+        BASIC
+        LOGO
+        Unknown
+    End Enum
     ''' <summary>
     ''' Token to be returned contain as much information required,
     ''' for the Parser to make a decision on how to handle the token.

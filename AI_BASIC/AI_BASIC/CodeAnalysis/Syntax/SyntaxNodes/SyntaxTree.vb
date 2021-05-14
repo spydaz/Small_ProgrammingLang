@@ -39,11 +39,22 @@ Public Class SyntaxTree
         Me.Diagnostics = diagnostics
     End Sub
 
+    Public Shared Function ParseBasic(ByRef _Script As String) As SyntaxTree
+        Dim MyParser As New Parser(_Script)
+        Return MyParser.Parse(LangTypes.BASIC)
+    End Function
+    Public Shared Function ParseSal(ByRef _Script As String) As SyntaxTree
+        Dim MyParser As New Parser(_Script)
+        Return MyParser.Parse(LangTypes.LOGO)
+    End Function
+    Public Shared Function ParseLogo(ByRef _Script As String) As SyntaxTree
+        Dim MyParser As New Parser(_Script)
+        Return MyParser.Parse(LangTypes.SAL)
+    End Function
     Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
         Dim MyParser As New Parser(_Script)
-        Return MyParser.ParseSyntaxTree
+        Return MyParser.ParseSyntaxTree()
     End Function
-
 #Region "TOSTRING"
     ''' <summary>
     ''' Serializes object to json
