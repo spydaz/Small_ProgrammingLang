@@ -51,6 +51,7 @@ Namespace SpydazWeb.AI.Basic
                 Dim _start As Integer = 0
                 Dim _length As Integer = 0
                 Dim _iText As String = ""
+
                 If _Position >= _Script.Length Then
                     Return New SyntaxToken(SyntaxType.EOF, "EOF", _Position - 1, "EOF", Nothing)
 

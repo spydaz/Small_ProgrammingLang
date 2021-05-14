@@ -2835,6 +2835,7 @@ Namespace SmallProgLang
 
 
             End Sub
+
             Public Function Eat(ByRef TokenType As Type_Id) As Token
                 Dim Strt As Integer = Cursor
                 If IdentifiyToken(ViewNext()) = TokenType Then

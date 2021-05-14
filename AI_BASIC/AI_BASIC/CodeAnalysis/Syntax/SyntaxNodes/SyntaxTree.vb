@@ -21,9 +21,27 @@ Public Class SyntaxTree
     ''' </summary>
     Public Diagnostics As List(Of String)
 
+    Public Sub New(programScript As String, body As List(Of SyntaxNode), diagnostics As List(Of String))
+        If programScript Is Nothing Then
+            Throw New ArgumentNullException(NameOf(programScript))
+        End If
+
+        If body Is Nothing Then
+            Throw New ArgumentNullException(NameOf(body))
+        End If
+
+        If diagnostics Is Nothing Then
+            Throw New ArgumentNullException(NameOf(diagnostics))
+        End If
+
+        _ProgramScript = programScript
+        Me.Body = body
+        Me.Diagnostics = diagnostics
+    End Sub
+
     Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
         Dim MyParser As New Parser(_Script)
-        Return MyParser.Parse
+        Return MyParser.ParseSyntaxTree
     End Function
 
 #Region "TOSTRING"

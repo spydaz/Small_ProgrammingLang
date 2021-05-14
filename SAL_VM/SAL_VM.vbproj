@@ -93,10 +93,10 @@
     <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
       <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.vb">
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SourceCode\SDK\ZX21_API.vb" />
@@ -147,7 +147,7 @@
     <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
       <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_SPL_BASIC_REPL.resx">
+    <EmbeddedResource Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.resx">
       <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
