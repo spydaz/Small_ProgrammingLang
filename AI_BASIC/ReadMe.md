@@ -17,5 +17,29 @@ The syntax should be Relative to Basic and C#; but will also contain the extra f
 # This is the MAIN MODEL
 So Previous models will be intergrated into this single language version; 
 Consisting of the low level assembly langauge for the VM and the Logo style language for the VM graphics; THe higher level languge will contain the basic commands that are normally incorperated into languages;
+ 
+# Current Progress
+Basic Framwork in place; 
+Parser expression syntaxes to be implemented ; 
+Main Model Designed ;
+Importing old nodes (Converting) to reach the same stage as before ; 
+This project has basically taken a single day to implement; From memory.... 
 
-  
+    1) I will probably implement the syntaxmodules tomorrow and test... 
+        the basic eval 
+        3+3*(45+5)
+
+    2) Then the Assignments 
+        x = 2+3-4(34+9)
+        x = "cat"
+        X = [2,3,4]
+        x = true/false
+        x +=3
+        x > 6
+        x >= 5
+
+    3) Variable Declarations 
+        Dim X as string / boolean / integer / double / list / date
+        Dim X as (string / boolean / integer / double) = true / "CAT" / 98 / [45,45.0] / [true,true] / [X,Y]
+
+

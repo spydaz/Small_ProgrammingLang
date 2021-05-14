@@ -169,8 +169,15 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _LiteralExpression() As ExpressionSyntaxNode
+                Select Case LookaheadSyntaxType
 
+                    Case SyntaxType._Integer
+                    Case SyntaxType._Boolean
+                    Case SyntaxType._String
+                    Case SyntaxType._arrayList
+                    Case SyntaxType._Date
 
+                End Select
             End Function
             ''' <summary>
             ''' (Identifer_KeyWord)
@@ -178,6 +185,9 @@ Namespace CodeAnalysis
             ''' <returns></returns>
             Public Function _PrimaryExpression() As ExpressionSyntaxNode
 
+
+            End Function
+            Public Function _LeftHandExpression()
 
             End Function
             ''' <summary>
@@ -194,6 +204,12 @@ Namespace CodeAnalysis
             ''' <returns></returns>
             Public Function _FactorExpression() As ExpressionSyntaxNode
 
+                Select Case LookaheadSyntaxType
+                    Case SyntaxType.Add_Operator
+                    Case SyntaxType.Add_Equals_Operator
+                    Case SyntaxType.Sub_Operator
+                    Case SyntaxType.Minus_Equals_Operator
+                End Select
 
             End Function
             ''' <summary>
@@ -201,7 +217,12 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _TermExpression() As ExpressionSyntaxNode
-
+                Select Case LookaheadSyntaxType
+                    Case SyntaxType.Multiply_Operator
+                    Case SyntaxType.Multiply_Equals_Operator
+                    Case SyntaxType.Divide_Operator
+                    Case SyntaxType.Divide_Equals_Operator
+                End Select
 
             End Function
             ''' <summary>
@@ -209,15 +230,22 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _ComparisionExpression() As ExpressionSyntaxNode
-
-
+                Select Case LookaheadSyntaxType
+                    Case SyntaxType.GreaterThan_Operator
+                    Case SyntaxType.Add_Equals_Operator
+                    Case SyntaxType.LessThanOperator
+                    Case SyntaxType.LessThanEquals
+                End Select
             End Function
             ''' <summary>
             ''' Identifier =
             ''' </summary>
             ''' <returns></returns>
             Public Function _AssignmentExpression() As ExpressionSyntaxNode
+                Select Case LookaheadSyntaxType
+                    Case SyntaxType._SIMPLE_ASSIGN
 
+                End Select
 
             End Function
             ''' <summary>
@@ -253,7 +281,6 @@ Namespace CodeAnalysis
 
             End Function
 #End Region
-
         End Class
     End Namespace
 End Namespace
