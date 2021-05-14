@@ -5,7 +5,7 @@ It is design to be intergrated in to the SpydazWeb artificial intelligence devel
 
 As a Goal it will be the prime programming languge for NLP/Machine learning and other logic problem solving;
 
-This model has been inspired by the Build a Compiler series by (Immo Landon) on the microsoft Language devlopment team;
+This model has been inspired by the Build a Compiler series by (Immo Landwerth) https://github.com/terrajobst on the microsoft Language devlopment team;
 And Also By Dimtry Building a parser from Scratch;
 Well done to both;
 
