@@ -3,8 +3,10 @@ Imports SDK.SmallProgLang
 Imports SDK.SmallProgLang.Ast_ExpressionFactory
 Imports SDK.SmallProgLang.Compiler
 Imports SDK.SmallProgLang.GrammarFactory
+Imports SDK.SpydazWeb.AI.Basic.CodeAnalysis.Syntax.SyntaxNodes
 Imports System.IO
 Imports System.Runtime.CompilerServices
+Imports SDK.SpydazWeb.AI.Basic.CodeAnalysis
 
 Public Class SAL_ZX21_SPL_BASIC_REPL
 #Region "SMALL_PL"
@@ -331,8 +333,66 @@ Public Class SAL_ZX21_SPL_BASIC_REPL
             End If
         End If
     End Sub
+    Public Sub loadBasicTree(ByRef Prog As Ast_SyntaxTree)
+        LOGO_TreeView.Nodes.Clear()
+        Dim root As New TreeNode
+        If Prog.Diagnostics.Count > 0 Then
+            root.ForeColor = Color.Red
+        Else
+            root.ForeColor = Color.GreenYellow
+        End If
+        root.Text = "Program" & vbNewLine
+        root.Tag = "SpydazWeb.SAL.Basic"
+        Dim Body As New TreeNode
+        Body.Text = "Body"
+        Body.Tag = FormatJsonOutput(Prog.ToJson)
+        For Each item In Prog.Syntax
+            Dim MainNode As New TreeNode
+            MainNode.Text = FormatJsonOutput(item.ToJson)
+            MainNode.Tag = FormatJsonOutput(item.ToJson)
+            Dim RawNode As New TreeNode
+            If Prog.Diagnostics.Count > 0 Then
+                RawNode.ForeColor = Color.Red
+            Else
+                RawNode.ForeColor = Color.GreenYellow
+            End If
+            RawNode.Text = "_Raw :" & item.SyntaxTypeStr
+            RawNode.Tag = "_raw"
+            MainNode.Nodes.Add(RawNode)
+
+            Dim _TypeNode As New TreeNode
+            If Prog.Diagnostics.Count > 0 Then
+                _TypeNode.ForeColor = Color.Red
+            Else
+                _TypeNode.ForeColor = Color.GreenYellow
+            End If
+            _TypeNode.Text = "_Type :" & item.SyntaxTypeStr
+            _TypeNode.Tag = "_Type"
+            MainNode.Nodes.Add(_TypeNode)
+            Body.Nodes.Add(MainNode)
+
+        Next
+        root.Nodes.Add(Body)
+        LOGO_TreeView.Nodes.Add(root)
+        LOGO_TreeView.ExpandAll()
+    End Sub
 
 
+
+    Private Sub Small_PL_ToolStripButtonRunCode_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonRunCode.Click
+        For Each line In Small_PL_TextBoxCodeInput.Lines
+            Dim ExpressionTree = Ast_SyntaxTree.Parse(Small_PL_TextBoxCodeInput.Text)
+            loadBasicTree(ExpressionTree)
+            Small_PL_TextBoxREPL_OUTPUT.Text = ExpressionTree.ToJson
+
+            Dim Eval As New Evaluator(ExpressionTree)
+            Dim Result = Eval._Evaluate
+            Small_PL_TextboxErrors.Text = vbNewLine & vbNewLine & vbNewLine &
+                vbNewLine & "RESULTS RETUNED : " & Result & vbNewLine
+        Next
+
+
+    End Sub
 End Class
 'REPL_ERROR SYSTEM
 '

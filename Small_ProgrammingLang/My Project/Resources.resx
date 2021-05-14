@@ -118,23 +118,35 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Arrow_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Arrow_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="SERIES 1 sal9000" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\SERIES 1 sal9000.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="ipad-mockup-hands" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ipad-mockup-hands.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Console A" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Console A.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Dell_UltraSharp_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Dell UltraSharp 27.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Arrow_Right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Arrow_Right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Complier_RUN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Complier_RUN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EYE BLUE " type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EYE BLUE .gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Console A" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Console A.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="X SERIES AL 9000s" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\X SERIES AL 9000s.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SERIES 1 sal9000" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SERIES 1 sal9000.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_UpVote" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_UpVote.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="QuickRef_SAL" xml:space="preserve">
     <value>SpydazWeb Assembly Language : 
@@ -180,12 +192,6 @@
 		_INCR					: number is incremented by 1
 		_DECR 					: number is Decremented by 2</value>
     <comment>Sal Ref</comment>
-  </data>
-  <data name="X SERIES AL 9000s" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\X SERIES AL 9000s.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="EYE BLUE " type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EYE BLUE .gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Script" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Script_Code_Html_.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -1016,10 +1022,7 @@ Call procname repeatedly with inputs from the lists, in all possible combination
 show crossmap "word [[a b] [x y]]
 show (crossmap "word [a b c] [1 2 3 4])</value>
   </data>
-  <data name="Icon_UpVote" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icon_UpVote.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="up" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\up.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="console-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\console-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

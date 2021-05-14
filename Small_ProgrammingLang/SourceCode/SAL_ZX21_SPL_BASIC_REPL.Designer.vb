@@ -44,15 +44,16 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.ToolStripSeparator12 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ToolStripButtonCompileCode = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator14 = New System.Windows.Forms.ToolStripSeparator()
+        Me.Small_PL_ToolStripButtonCompilesTox86 = New System.Windows.Forms.ToolStripButton()
         Me.Small_PL_ToolStripButtonRunCode = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator16 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripSeparator13 = New System.Windows.Forms.ToolStripSeparator()
-        Me.Small_PL_ToolStripButtonCompilesTox86 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator17 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_ButtonOpenVM = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator18 = New System.Windows.Forms.ToolStripSeparator()
         Me.Small_PL_HelpToolStripButton = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator19 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButtonSpydazWebBasicRepl = New System.Windows.Forms.ToolStripButton()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Small_PL_TextBoxREPL_OUTPUT = New System.Windows.Forms.TextBox()
         Me.SplitContainer5 = New System.Windows.Forms.SplitContainer()
@@ -302,7 +303,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         '
         Me.SplitContainer4.Panel2.Controls.Add(Me.GroupBox8)
         Me.SplitContainer4.Size = New System.Drawing.Size(1541, 388)
-        Me.SplitContainer4.SplitterDistance = 556
+        Me.SplitContainer4.SplitterDistance = 689
         Me.SplitContainer4.SplitterWidth = 12
         Me.SplitContainer4.TabIndex = 0
         '
@@ -317,7 +318,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.GroupBox7.Margin = New System.Windows.Forms.Padding(8)
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Padding = New System.Windows.Forms.Padding(8)
-        Me.GroupBox7.Size = New System.Drawing.Size(556, 388)
+        Me.GroupBox7.Size = New System.Drawing.Size(689, 388)
         Me.GroupBox7.TabIndex = 1
         Me.GroupBox7.TabStop = False
         Me.GroupBox7.Text = "REPL"
@@ -330,7 +331,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.TabControl3.Margin = New System.Windows.Forms.Padding(8)
         Me.TabControl3.Name = "TabControl3"
         Me.TabControl3.SelectedIndex = 0
-        Me.TabControl3.Size = New System.Drawing.Size(540, 292)
+        Me.TabControl3.Size = New System.Drawing.Size(673, 292)
         Me.TabControl3.TabIndex = 1
         '
         'TabPage3
@@ -340,7 +341,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.TabPage3.Margin = New System.Windows.Forms.Padding(8)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(8)
-        Me.TabPage3.Size = New System.Drawing.Size(532, 257)
+        Me.TabPage3.Size = New System.Drawing.Size(665, 257)
         Me.TabPage3.TabIndex = 1
         Me.TabPage3.Text = "Program"
         Me.TabPage3.UseVisualStyleBackColor = True
@@ -355,18 +356,18 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.Small_PL_TextBoxCodeInput.Multiline = True
         Me.Small_PL_TextBoxCodeInput.Name = "Small_PL_TextBoxCodeInput"
         Me.Small_PL_TextBoxCodeInput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.Small_PL_TextBoxCodeInput.Size = New System.Drawing.Size(516, 241)
+        Me.Small_PL_TextBoxCodeInput.Size = New System.Drawing.Size(649, 241)
         Me.Small_PL_TextBoxCodeInput.TabIndex = 0
         '
         'Small_PL_ToolStrip
         '
         Me.Small_PL_ToolStrip.BackColor = System.Drawing.Color.Black
         Me.Small_PL_ToolStrip.ImageScalingSize = New System.Drawing.Size(50, 50)
-        Me.Small_PL_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator15, Me.Small_PL_NewToolStripButton, Me.ToolStripSeparator10, Me.Small_PL_OpenToolStripButton, Me.ToolStripSeparator11, Me.Small_PL_SaveToolStripButton, Me.ToolStripSeparator12, Me.Small_PL_ToolStripButtonCompileCode, Me.ToolStripSeparator14, Me.Small_PL_ToolStripButtonRunCode, Me.ToolStripSeparator16, Me.ToolStripSeparator13, Me.Small_PL_ToolStripButtonCompilesTox86, Me.ToolStripSeparator17, Me.Small_PL_ButtonOpenVM, Me.ToolStripSeparator18, Me.Small_PL_HelpToolStripButton, Me.ToolStripSeparator19})
+        Me.Small_PL_ToolStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripSeparator15, Me.Small_PL_NewToolStripButton, Me.ToolStripSeparator10, Me.Small_PL_OpenToolStripButton, Me.ToolStripSeparator11, Me.Small_PL_SaveToolStripButton, Me.ToolStripSeparator12, Me.Small_PL_ToolStripButtonCompileCode, Me.ToolStripSeparator14, Me.Small_PL_ToolStripButtonCompilesTox86, Me.Small_PL_ToolStripButtonRunCode, Me.ToolStripSeparator16, Me.ToolStripSeparator13, Me.ToolStripSeparator17, Me.Small_PL_ButtonOpenVM, Me.ToolStripSeparator18, Me.Small_PL_HelpToolStripButton, Me.ToolStripSeparator19, Me.ToolStripButtonSpydazWebBasicRepl})
         Me.Small_PL_ToolStrip.Location = New System.Drawing.Point(8, 31)
         Me.Small_PL_ToolStrip.Name = "Small_PL_ToolStrip"
         Me.Small_PL_ToolStrip.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.Small_PL_ToolStrip.Size = New System.Drawing.Size(540, 57)
+        Me.Small_PL_ToolStrip.Size = New System.Drawing.Size(673, 57)
         Me.Small_PL_ToolStrip.TabIndex = 0
         Me.Small_PL_ToolStrip.Text = "ToolStrip1"
         '
@@ -440,6 +441,16 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.ToolStripSeparator14.Name = "ToolStripSeparator14"
         Me.ToolStripSeparator14.Size = New System.Drawing.Size(6, 57)
         '
+        'Small_PL_ToolStripButtonCompilesTox86
+        '
+        Me.Small_PL_ToolStripButtonCompilesTox86.BackColor = System.Drawing.Color.Silver
+        Me.Small_PL_ToolStripButtonCompilesTox86.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.Small_PL_ToolStripButtonCompilesTox86.Image = Global.SDK.My.Resources.Resources.Script
+        Me.Small_PL_ToolStripButtonCompilesTox86.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.Small_PL_ToolStripButtonCompilesTox86.Name = "Small_PL_ToolStripButtonCompilesTox86"
+        Me.Small_PL_ToolStripButtonCompilesTox86.Size = New System.Drawing.Size(54, 54)
+        Me.Small_PL_ToolStripButtonCompilesTox86.Text = "Transpile to X86 Code"
+        '
         'Small_PL_ToolStripButtonRunCode
         '
         Me.Small_PL_ToolStripButtonRunCode.BackColor = System.Drawing.Color.Black
@@ -461,16 +472,6 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         '
         Me.ToolStripSeparator13.Name = "ToolStripSeparator13"
         Me.ToolStripSeparator13.Size = New System.Drawing.Size(6, 57)
-        '
-        'Small_PL_ToolStripButtonCompilesTox86
-        '
-        Me.Small_PL_ToolStripButtonCompilesTox86.BackColor = System.Drawing.Color.Silver
-        Me.Small_PL_ToolStripButtonCompilesTox86.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.Small_PL_ToolStripButtonCompilesTox86.Image = Global.SDK.My.Resources.Resources.Script
-        Me.Small_PL_ToolStripButtonCompilesTox86.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.Small_PL_ToolStripButtonCompilesTox86.Name = "Small_PL_ToolStripButtonCompilesTox86"
-        Me.Small_PL_ToolStripButtonCompilesTox86.Size = New System.Drawing.Size(54, 54)
-        Me.Small_PL_ToolStripButtonCompilesTox86.Text = "Transpile to X86 Code"
         '
         'ToolStripSeparator17
         '
@@ -508,6 +509,15 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.ToolStripSeparator19.Name = "ToolStripSeparator19"
         Me.ToolStripSeparator19.Size = New System.Drawing.Size(6, 57)
         '
+        'ToolStripButtonSpydazWebBasicRepl
+        '
+        Me.ToolStripButtonSpydazWebBasicRepl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonSpydazWebBasicRepl.Image = Global.SDK.My.Resources.Resources.console_icon
+        Me.ToolStripButtonSpydazWebBasicRepl.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonSpydazWebBasicRepl.Name = "ToolStripButtonSpydazWebBasicRepl"
+        Me.ToolStripButtonSpydazWebBasicRepl.Size = New System.Drawing.Size(54, 54)
+        Me.ToolStripButtonSpydazWebBasicRepl.Text = "SpydazWebBasic REPL"
+        '
         'GroupBox8
         '
         Me.GroupBox8.BackColor = System.Drawing.Color.DarkGray
@@ -520,7 +530,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.GroupBox8.Margin = New System.Windows.Forms.Padding(8)
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Padding = New System.Windows.Forms.Padding(8)
-        Me.GroupBox8.Size = New System.Drawing.Size(973, 388)
+        Me.GroupBox8.Size = New System.Drawing.Size(840, 388)
         Me.GroupBox8.TabIndex = 0
         Me.GroupBox8.TabStop = False
         '
@@ -537,7 +547,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.Small_PL_TextBoxREPL_OUTPUT.Multiline = True
         Me.Small_PL_TextBoxREPL_OUTPUT.Name = "Small_PL_TextBoxREPL_OUTPUT"
         Me.Small_PL_TextBoxREPL_OUTPUT.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.Small_PL_TextBoxREPL_OUTPUT.Size = New System.Drawing.Size(979, 287)
+        Me.Small_PL_TextBoxREPL_OUTPUT.Size = New System.Drawing.Size(846, 287)
         Me.Small_PL_TextBoxREPL_OUTPUT.TabIndex = 1
         Me.Small_PL_TextBoxREPL_OUTPUT.Text = ">"
         '
@@ -1494,7 +1504,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         '
         Me.ToolTip1.IsBalloon = True
         '
-        'Multi_REPL
+        'SAL_ZX21_SPL_BASIC_REPL
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(10.0!, 22.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -1505,7 +1515,7 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.Name = "Multi_REPL"
+        Me.Name = "SAL_ZX21_SPL_BASIC_REPL"
         Me.Text = "SpydazWeb Programming Language REPL_ "
         Me.TabControl_ProgrammingLang_Repl.ResumeLayout(False)
         Me.TabPageSpydaz_PL.ResumeLayout(False)
@@ -1715,4 +1725,5 @@ Partial Class SAL_ZX21_SPL_BASIC_REPL
     Friend WithEvents ToolStripSeparator26 As ToolStripSeparator
     Friend WithEvents ToolStripSeparator28 As ToolStripSeparator
     Friend WithEvents logo_display_panel As Panel
+    Friend WithEvents ToolStripButtonSpydazWebBasicRepl As ToolStripButton
 End Class

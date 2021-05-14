@@ -79,6 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpydazWebAI.Basic_Repl.vb" />
     <Compile Include="SourceCode\PL_COMPILER.vb" />
     <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">
       <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
@@ -132,6 +133,7 @@
     <Compile Include="SourceCode\MachineUI\ZX21_GDU.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SourceCode\SpydazWebAI.Basic.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayGraphics.resx">
@@ -184,6 +186,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="COM.ICO" />
+    <None Include="Resources\console-icon.png" />
     <None Include="Resources\ipad-mockup-hands.png" />
     <None Include="Resources\Console A.jpg" />
     <None Include="Resources\SERIES 1 sal9000.bmp" />
