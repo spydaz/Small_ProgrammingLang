@@ -305,6 +305,7 @@ Namespace Syntax
         _Sal_Program_title = 760
         _Sal_BeginStatement = 770
         _SAL_PROGRAM_BEGIN = 771
+        BASIC_LANG = 772
 
 
 #End Region
@@ -944,6 +945,10 @@ Namespace Syntax
             NewGram.SearchPattern = "^\bfunction\b"
             Spec.Add(NewGram)
 #End Region
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType.BASIC_LANG
+            NewGram.SearchPattern = "\bbasic_lang\b"
+            Spec.Add(NewGram)
             Return Spec
         End Function
         Public Shared Function GetSALGrammar() As List(Of GrammarDefinintion)

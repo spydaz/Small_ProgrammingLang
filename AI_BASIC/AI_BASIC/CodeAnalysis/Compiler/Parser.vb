@@ -1,5 +1,6 @@
 ﻿Imports System.Web
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Syntax.SyntaxNodes
 
 Namespace CodeAnalysis
     Namespace Compiler
@@ -37,7 +38,7 @@ Namespace CodeAnalysis
                 End Get
             End Property
 #End Region
-
+#Region "Functions"
             Private Function _Peek(ByVal offset As Integer) As SyntaxToken
                 Dim index = CursorPosition + offset
                 If index >= _Tree.Count Then Return _Tree(_Tree.Count - 1)
@@ -106,13 +107,11 @@ Namespace CodeAnalysis
                 'MustbeNothing
                 Return Nothing
             End Function
-
-
+#End Region
 #Region "Parser"
 
             Public Function ParseSyntaxTree() As SyntaxTree
-                '  Return New SyntaxTree(_Script, _Tree, _Diagnostics)
-                Return Nothing
+                Return _ExpressionSyntaxTree()
             End Function
             Public Function Parse(Optional Lang As LangTypes = LangTypes.Unknown) As SyntaxTree
                 Select Case Lang
@@ -125,21 +124,134 @@ Namespace CodeAnalysis
                     Case LangTypes.Unknown
                         Return ParseSyntaxTree()
                 End Select
-                Return Nothing
+                Return ParseSyntaxTree()
             End Function
             Public Function ParseLogo() As SyntaxTree
-
-                Return Nothing
+                Return _LogoExpressionSyntaxTree()
             End Function
             Public Function ParseSal() As SyntaxTree
-
-                Return Nothing
+                Return _SalExpressionSyntaxTree()
             End Function
             Public Function ParseBasic() As SyntaxTree
-
-                Return Nothing
+                Return _BasicExpressionSyntaxTree()
             End Function
 
+#End Region
+#Region "Basic _ExpressionSyntaxTree"
+            Public Function _ExpressionSyntaxTree() As SyntaxTree
+                Select Case LookaheadSyntaxType
+                    Case SyntaxType._SAL_PROGRAM_BEGIN
+                        Return _SalExpressionSyntaxTree()
+                    Case SyntaxType.LOGO_LANG
+                        Return _LogoExpressionSyntaxTree()
+                    Case SyntaxType.BASIC_LANG
+                        Return _BasicExpressionSyntaxTree()
+                    Case Else
+                        Return _GeneralExpressionSyntaxTree()
+                End Select
+            End Function
+            Public Function _SalExpressionSyntaxTree() As SyntaxTree
+                Return Nothing
+            End Function
+            Public Function _BasicExpressionSyntaxTree() As SyntaxTree
+                Return Nothing
+            End Function
+            Public Function _LogoExpressionSyntaxTree() As SyntaxTree
+                Return Nothing
+            End Function
+            Public Function _GeneralExpressionSyntaxTree() As SyntaxTree
+                Return Nothing
+            End Function
+#End Region
+#Region "MAIN_EXPRESSIONS"
+            ''' <summary>
+            ''' Literal
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _LiteralExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' (Identifer_KeyWord)
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _PrimaryExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' Left Operator Right
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _BinaryExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' Addative +- Addative
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _FactorExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' Multiplicative */ Multiplicative
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _TermExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' Expression ComparesTo Expression
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _ComparisionExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' Identifier =
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _AssignmentExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' DIM/LET
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' {Expression;Expression;}
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _CodeBlockExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' (Expression)
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _ParenthesizedExpression() As ExpressionSyntaxNode
+
+
+            End Function
+            ''' <summary>
+            ''' [term,term] [identifer,identifer]
+            ''' </summary>
+            ''' <returns></returns>
+            Public Function _ListExpression() As ExpressionSyntaxNode
+
+
+            End Function
 #End Region
 
         End Class
