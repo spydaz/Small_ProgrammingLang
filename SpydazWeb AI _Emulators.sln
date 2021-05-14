@@ -20,6 +20,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Small_ProgrammingLang_VB", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAL_VM", "SAL_VM\SAL_VM.csproj", "{96449EA3-9CA7-062A-0822-67F0CA63B9F7}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AI_BASIC", "AI_BASIC\AI_BASIC.vbproj", "{4C3DB8A4-4555-438C-9FDC-8AE773629416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{96449EA3-9CA7-062A-0822-67F0CA63B9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96449EA3-9CA7-062A-0822-67F0CA63B9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96449EA3-9CA7-062A-0822-67F0CA63B9F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3DB8A4-4555-438C-9FDC-8AE773629416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3DB8A4-4555-438C-9FDC-8AE773629416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3DB8A4-4555-438C-9FDC-8AE773629416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3DB8A4-4555-438C-9FDC-8AE773629416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

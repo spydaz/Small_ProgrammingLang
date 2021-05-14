@@ -132,6 +132,7 @@ Namespace SmallProgLang
             _OperationBegin = 32
             _OperationEnd = 33
             _ConditionalExpression = 34
+
             'Sal token_IDs
             SAL_NULL
             SAL_REMOVE
@@ -174,6 +175,7 @@ Namespace SmallProgLang
             _SAL_Expression
             _Sal_Program_title
             _Sal_BeginStatement
+
             _ListBegin
             _ListEnd
             _DeclareVariable
