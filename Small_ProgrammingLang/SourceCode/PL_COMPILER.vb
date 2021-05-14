@@ -1860,7 +1860,7 @@ Namespace SmallProgLang
 
             iSpec.Add(NewGram)
 
-            'Relational operators: >, >=, <, <=
+            'Relational operators: >, >=, <, <=,<>
             NewGram = New Grammar
             NewGram.ID = Type_Id._RELATIONAL_OPERATOR
             NewGram.Exp = "^[><]\=?"
@@ -1999,7 +1999,6 @@ Namespace SmallProgLang
                 NewGram.Exp = "^\breturn\b"
                 iSpec.Add(NewGram)
 #End Region
-
 #Region "Declare Function"
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._FUNCTION_DECLARE
@@ -2031,7 +2030,7 @@ Namespace SmallProgLang
                 iSpec.Add(NewGram)
                 NewGram = New Grammar
                 NewGram.ID = Type_Id._VARIABLE_DECLARE
-                NewGram.Exp = "^\blet\s\b"
+                NewGram.Exp = "^\blet\b\s"
                 iSpec.Add(NewGram)
                 'Assignment operators: xLeft assigns output of right (9+4) (+= 9) (-=2) (3) (true)
 #End Region
