@@ -128,7 +128,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Main\CodeAnalysis\Compiler\Environment\ReadMe.md" />
+    <None Include="Main\CodeAnalysis\Compiler\ReadMe.md" />
+    <None Include="Main\CodeAnalysis\Syntax\ReadMe.md" />
+    <None Include="Main\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
+    <None Include="Main\VirtualMachine\C_P_U\readme.md" />
     <None Include="ReadMe.md" />
+    <None Include="Main\VirtualMachine\Spydaz Virtual Machine Code Language %3b.md" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Main\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
