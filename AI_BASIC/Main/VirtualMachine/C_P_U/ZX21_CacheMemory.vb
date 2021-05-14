@@ -1,4 +1,4 @@
-﻿Namespace STACK_VM
+﻿Namespace VirtualMachine
     ''' <summary>
     ''' Memory frame for Variables 
     ''' </summary>

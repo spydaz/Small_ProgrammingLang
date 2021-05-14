@@ -1,4 +1,4 @@
-﻿Imports AI_BASIC.STACK_VM
+﻿Imports AI_BASIC.VirtualMachine
 
 Public Class SAL_ZX21_ConsoleUI
 

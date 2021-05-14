@@ -1,6 +1,6 @@
 ﻿
 Imports System.Web.Script.Serialization
-Namespace STACK_VM
+Namespace VirtualMachine
     Public Module Ext
         <System.Runtime.CompilerServices.Extension()>
         Public Function SplitAtNewLine(input As String) As IEnumerable(Of String)

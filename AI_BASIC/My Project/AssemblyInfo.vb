@@ -8,12 +8,12 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("AI_BASIC")>
-<Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("AI_BASIC")>
-<Assembly: AssemblyCopyright("Copyright ©  2021")>
-<Assembly: AssemblyTrademark("")>
+<Assembly: AssemblyTitle("SpydazWeb AI BASIC")>
+<Assembly: AssemblyDescription("SpydazWeb AI BASIC programming language")>
+<Assembly: AssemblyCompany("SpydazWeb AI")>
+<Assembly: AssemblyProduct("AI SDK")>
+<Assembly: AssemblyCopyright("SpydazWeb AI Copyright ©  2021")>
+<Assembly: AssemblyTrademark("SpydazWeb AI Copyright ©  2021")>
 
 <Assembly: ComVisible(False)>
 

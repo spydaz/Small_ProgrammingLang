@@ -67,6 +67,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb" />
     <Compile Include="Main\CodeAnalysis\Compiler\Evaluator.vb" />
     <Compile Include="Main\CodeAnalysis\Compiler\Lexer.vb" />
     <Compile Include="Main\CodeAnalysis\Compiler\Parser.vb" />
@@ -74,6 +75,8 @@
     <Compile Include="Main\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="Main\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="Main\CodeAnalysis\Syntax\Typing.vb" />
+    <Compile Include="Main\Program.vb" />
+    <Compile Include="Main\REPL\REPL.vb" />
     <Compile Include="Main\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
       <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </Compile>

@@ -52,23 +52,23 @@ Partial Class SAL_ZX21_VDU
         Me.Zx81_DisplayScreen.Name = "Zx81_DisplayScreen"
         Me.Zx81_DisplayScreen.Size = New System.Drawing.Size(664, 455)
         Me.Zx81_DisplayScreen.TabIndex = 0
-        Me.Zx81_DisplayScreen.Text = "SpydazWeb AI ZX81 Copyright © 2020" & Global.Microsoft.VisualBasic.ChrW(10) & "Ready." & Global.Microsoft.VisualBasic.ChrW(10)
+        Me.Zx81_DisplayScreen.Text = "SpydazWeb AI ZX21 Copyright © 2021" & Global.Microsoft.VisualBasic.ChrW(10) & "Ready." & Global.Microsoft.VisualBasic.ChrW(10)
         '
-        'FormDisplayConsole
+        'SAL_ZX21_VDU
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.AI_BASIC.My.Resources.Resources.Dell_UltraSharp_27
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(670, 672)
+        Me.ClientSize = New System.Drawing.Size(670, 661)
         Me.Controls.Add(Me.GroupBox1)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximumSize = New System.Drawing.Size(938, 711)
         Me.MinimumSize = New System.Drawing.Size(680, 711)
-        Me.Name = "FormDisplayConsole"
-        Me.Text = "SpydazWeb AI ZX2020"
+        Me.Name = "SAL_ZX21_VDU"
+        Me.Text = "SpydazWeb AI ZX21"
         Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

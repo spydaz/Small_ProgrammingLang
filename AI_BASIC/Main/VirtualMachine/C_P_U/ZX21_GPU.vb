@@ -1,4 +1,4 @@
-﻿Namespace STACK_VM
+﻿Namespace VirtualMachine
     Public Class ZX81_GPU
         Private iMonitorConsole As SAL_ZX21_VDU
         Private IMonitorLogoGraphics As SAL_ZX21_GDU

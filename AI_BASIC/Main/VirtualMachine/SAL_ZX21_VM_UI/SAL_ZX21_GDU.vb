@@ -1,4 +1,4 @@
-﻿Imports AI_BASIC.STACK_VM.ZX81_GPU
+﻿Imports AI_BASIC.VirtualMachine.ZX81_GPU
 
 Public Class SAL_ZX21_GDU
 

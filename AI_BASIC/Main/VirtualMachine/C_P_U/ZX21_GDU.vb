@@ -2,7 +2,7 @@
 
 Imports System.Drawing
 Imports System.Windows.Forms
-Imports AI_BASIC.STACK_VM.ZX81_GPU
+Imports AI_BASIC.VirtualMachine.ZX81_GPU
 ''' <summary>
 ''' 
 ''' 

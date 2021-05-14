@@ -49,6 +49,7 @@ Module Repl
 
             'Get Expression/Tree
             Dim ExpressionTree = Ast_SyntaxTree.Parse(UserInput_LINE)
+
             If ShowTree = True Then
                 Console.ForegroundColor = ConsoleColor.Green
                 Console.WriteLine("Expression>" & vbNewLine & ExpressionTree.ToJson)

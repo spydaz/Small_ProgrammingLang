@@ -73,7 +73,7 @@ Partial Class SAL_ZX21_GDU
         Me.Controls.Add(Me.GroupBox6)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SAL_ZX21_GDU"
-        Me.Text = "S.A.L2020© "
+        Me.Text = "S.A.L 2021© LogoGraphics"
         Me.GroupBox6.ResumeLayout(False)
         CType(Me.GDU_DISPLAY, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)

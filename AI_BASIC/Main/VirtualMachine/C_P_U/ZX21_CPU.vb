@@ -1,6 +1,6 @@
 ﻿Imports System
 Imports System.Web.Script.Serialization
-Namespace STACK_VM
+Namespace VirtualMachine
     ''' <summary>
     ''' SpydazWeb X86 Assembly language Virtual X86 Processor
     ''' </summary>

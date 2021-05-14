@@ -38,7 +38,8 @@ Partial Class SAL_ZX21_ConsoleUI
         '
         Me.GroupBox1.Controls.Add(Me.RichTextBoxCodeEntry)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.GroupBox1.ForeColor = System.Drawing.Color.White
+        Me.GroupBox1.Font = New System.Drawing.Font("Comic Sans MS", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.ForeColor = System.Drawing.Color.Black
         Me.GroupBox1.Location = New System.Drawing.Point(0, 562)
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox1.Name = "GroupBox1"
@@ -64,7 +65,7 @@ Partial Class SAL_ZX21_ConsoleUI
         '
         Me.ButtonRunCode.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.ButtonRunCode.BackColor = System.Drawing.Color.DimGray
-        Me.ButtonRunCode.Location = New System.Drawing.Point(828, 522)
+        Me.ButtonRunCode.Location = New System.Drawing.Point(843, 530)
         Me.ButtonRunCode.Name = "ButtonRunCode"
         Me.ButtonRunCode.Size = New System.Drawing.Size(80, 32)
         Me.ButtonRunCode.TabIndex = 1
@@ -75,9 +76,9 @@ Partial Class SAL_ZX21_ConsoleUI
         '
         Me.RichTextBoxInfo.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.RichTextBoxInfo.Location = New System.Drawing.Point(12, 27)
+        Me.RichTextBoxInfo.Location = New System.Drawing.Point(12, 12)
         Me.RichTextBoxInfo.Name = "RichTextBoxInfo"
-        Me.RichTextBoxInfo.Size = New System.Drawing.Size(908, 445)
+        Me.RichTextBoxInfo.Size = New System.Drawing.Size(908, 512)
         Me.RichTextBoxInfo.TabIndex = 2
         Me.RichTextBoxInfo.Text = ""
         '
@@ -85,7 +86,7 @@ Partial Class SAL_ZX21_ConsoleUI
         '
         Me.ButtonClrScrn.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.ButtonClrScrn.BackColor = System.Drawing.Color.DimGray
-        Me.ButtonClrScrn.Location = New System.Drawing.Point(630, 522)
+        Me.ButtonClrScrn.Location = New System.Drawing.Point(645, 530)
         Me.ButtonClrScrn.Name = "ButtonClrScrn"
         Me.ButtonClrScrn.Size = New System.Drawing.Size(89, 32)
         Me.ButtonClrScrn.TabIndex = 1
@@ -96,34 +97,34 @@ Partial Class SAL_ZX21_ConsoleUI
         '
         Me.ButtonNewScrn.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.ButtonNewScrn.BackColor = System.Drawing.Color.DimGray
-        Me.ButtonNewScrn.Location = New System.Drawing.Point(725, 522)
+        Me.ButtonNewScrn.Location = New System.Drawing.Point(740, 530)
         Me.ButtonNewScrn.Name = "ButtonNewScrn"
         Me.ButtonNewScrn.Size = New System.Drawing.Size(97, 32)
         Me.ButtonNewScrn.TabIndex = 1
         Me.ButtonNewScrn.Text = "New Scrn"
         Me.ButtonNewScrn.UseVisualStyleBackColor = False
         '
-        'X86_MACHINE
+        'SAL_ZX21_ConsoleUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.Color.Black
+        Me.BackColor = System.Drawing.Color.Gainsboro
         Me.BackgroundImage = Global.AI_BASIC.My.Resources.Resources.Dell_UltraSharp_27
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(932, 730)
-        Me.Controls.Add(Me.RichTextBoxInfo)
         Me.Controls.Add(Me.ButtonNewScrn)
         Me.Controls.Add(Me.ButtonClrScrn)
         Me.Controls.Add(Me.ButtonRunCode)
+        Me.Controls.Add(Me.RichTextBoxInfo)
         Me.Controls.Add(Me.GroupBox1)
         Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("Comic Sans MS", 11.1!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ForeColor = System.Drawing.Color.White
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.Name = "X86_MACHINE"
-        Me.Text = "X86_MACHINE_CODE"
+        Me.Name = "SAL_ZX21_ConsoleUI"
+        Me.Text = "SpydazWeb ZX21 Assembler"
         Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 

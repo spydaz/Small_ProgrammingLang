@@ -1,7 +1,9 @@
 ﻿
 Imports System.Text
 Imports System.Web.Script.Serialization
+Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Syntax.SyntaxNodes
 ''' <summary>
 ''' Use to contain the 'Program'
 ''' </summary>
@@ -19,6 +21,10 @@ Public Class SyntaxTree
     ''' </summary>
     Public Diagnostics As List(Of String)
 
+    Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
+        Dim MyParser As New Parser(_Script)
+        Return MyParser.Parse
+    End Function
 
 #Region "TOSTRING"
     ''' <summary>

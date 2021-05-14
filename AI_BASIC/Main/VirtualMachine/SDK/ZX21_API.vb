@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
-Imports AI_BASIC.STACK_VM
+Imports AI_BASIC.VirtualMachine
 
-Namespace STACK_VM
+Namespace VirtualMachine
     Public Class X86API
         Public Shared Function RunMachineCode(ByRef Code As String) As String
             Code = UCase(Code)

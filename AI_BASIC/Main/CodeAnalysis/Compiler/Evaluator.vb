@@ -1,3 +1,10 @@
-﻿Public Class Evaluator
+﻿Namespace CodeAnalysis
+    Namespace Compiler
 
-End Class
+        Public Class Evaluator
+
+        End Class
+    End Namespace
+End Namespace
+
+

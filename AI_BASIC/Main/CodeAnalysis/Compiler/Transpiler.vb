@@ -1,3 +1,9 @@
-﻿Public Class Transpiler
+﻿Namespace CodeAnalysis
+    Namespace Compiler
 
-End Class
+        Public Class Transpiler
+
+        End Class
+    End Namespace
+End Namespace
+

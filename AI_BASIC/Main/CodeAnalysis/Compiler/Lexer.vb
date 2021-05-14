@@ -1,3 +1,9 @@
-﻿Public Class Lexer
+﻿
+Namespace CodeAnalysis
+    Namespace Compiler
+        Public Class Lexer
 
-End Class
+        End Class
+    End Namespace
+End Namespace
+
