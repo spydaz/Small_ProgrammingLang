@@ -132,6 +132,7 @@
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
+    <None Include="AI_BASIC\Readme.Md" />
     <None Include="AI_BASIC\VirtualMachine\C_P_U\readme.md" />
     <None Include="ReadMe.md" />
     <None Include="AI_BASIC\VirtualMachine\Spydaz Virtual Machine Code Language %3b.md" />

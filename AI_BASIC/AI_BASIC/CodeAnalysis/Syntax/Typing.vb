@@ -179,6 +179,11 @@ Namespace Syntax
         _Identifier = 43
         _String = 44
         _Boolean = 45
+        _Decimal = 46
+        _Date = 47
+        _TRUE = 48
+        _FALSE = 49
+
 
 #Region "Universal Expressions"
 
@@ -293,11 +298,69 @@ Namespace Syntax
             Dim NewGram As New GrammarDefinintion
 
             Spec.AddRange(GetMathOperatorList)
+            Spec.AddRange(GetLiteralPatternsList)
             Return Spec
         End Function
+        Public Shared Function GetLiteralPatternsList() As List(Of GrammarDefinintion)
+            Dim Spec As New List(Of GrammarDefinintion)
+            Dim NewGram As New GrammarDefinintion
+            'DATE
+            ' /(?<year>[0-9]{4})-(?<month>[0-9]{2})-(?<day>[0-9]{2})/
+
+            'Date Literal
+            'Day/Month/Year
+            'Month/Day/Year
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._Date
+            NewGram.SearchPattern = "^(?[0-9]{2})-(?[0-9]{2})-(?[0-9]{4})"
+            Spec.Add(NewGram)
+
+            '_Identifier
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._Identifier
+            NewGram.SearchPattern = "^\b[a-z][a-z0-9]+\b"
+            Spec.Add(NewGram)
+
+            '_INTEGER
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._Integer
+            NewGram.SearchPattern = "^\d+"
+            Spec.Add(NewGram)
+
+            '_Decimal
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._Decimal
+            NewGram.SearchPattern = "^\d+\.?\d+"
+            Spec.Add(NewGram)
 
 
+            '_String
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._String
+            NewGram.SearchPattern = "^" & Chr(34) & "[^" & Chr(34) & "]*" & Chr(34)
+            Spec.Add(NewGram)
 
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._String
+            NewGram.SearchPattern = "^'[^']*'"
+            Spec.Add(NewGram)
+
+            'logical(boolean) - Literal
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._TRUE
+            NewGram.SearchPattern = "^\btrue\b"
+            Spec.Add(NewGram)
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._FALSE
+            NewGram.SearchPattern = "^\bfalse\b"
+            Spec.Add(NewGram)
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._null
+            NewGram.SearchPattern = "^\bnull\b"
+            Spec.Add(NewGram)
+
+            Return Spec
+        End Function
         ''' <summary>
         ''' Known Search Patterns For maths Operations
         ''' </summary>
