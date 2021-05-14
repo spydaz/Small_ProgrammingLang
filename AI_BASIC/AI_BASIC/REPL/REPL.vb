@@ -132,23 +132,27 @@ Namespace REPL
         End Sub
         Private Function DisplayDiagnostics() As Boolean
             Console.ForegroundColor = ConsoleColor.Red
-            'Catch Errors
-            If ExpressionTree.Diagnostics.Count > 0 Then
-                'Tokens
-                Console.ForegroundColor = ConsoleColor.Red
-                'PARSER DIAGNOSTICS
-                Console.WriteLine("Compiler Errors: " & vbNewLine)
-                For Each item In ExpressionTree.Diagnostics
-                    Console.ForegroundColor = ConsoleColor.DarkRed
-                    Console.WriteLine(item & vbNewLine)
-                Next
-                'Tokens
-                LexTokens(UserInput_LINE)
-                Return True
+            If ExpressionTree IsNot Nothing Then
+                'Catch Errors
+                If ExpressionTree.Diagnostics.Count > 0 Then
+                    'Tokens
+                    Console.ForegroundColor = ConsoleColor.Red
+                    'PARSER DIAGNOSTICS
+                    Console.WriteLine("Compiler Errors: " & vbNewLine)
+                    For Each item In ExpressionTree.Diagnostics
+                        Console.ForegroundColor = ConsoleColor.DarkRed
+                        Console.WriteLine(item & vbNewLine)
+                    Next
+                    'Tokens
+                    LexTokens(UserInput_LINE)
+                    Return True
 
+                Else
+                    Return False
+
+                End If
             Else
                 Return False
-
             End If
         End Function
         Private Sub SetReplCode()

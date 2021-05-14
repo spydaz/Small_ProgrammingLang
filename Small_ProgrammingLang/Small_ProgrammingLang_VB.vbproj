@@ -79,6 +79,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.vb" />
     <Compile Include="SpydazWebAI.Basic_Repl.vb" />
     <Compile Include="SourceCode\PL_COMPILER.vb" />
     <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">

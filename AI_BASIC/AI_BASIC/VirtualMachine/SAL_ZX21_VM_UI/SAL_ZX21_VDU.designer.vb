@@ -37,7 +37,7 @@ Partial Class SAL_ZX21_VDU
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(670, 474)
+        Me.GroupBox1.Size = New System.Drawing.Size(758, 474)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         '
@@ -50,7 +50,7 @@ Partial Class SAL_ZX21_VDU
         Me.Zx81_DisplayScreen.Font = New System.Drawing.Font("Consolas", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Zx81_DisplayScreen.Location = New System.Drawing.Point(3, 16)
         Me.Zx81_DisplayScreen.Name = "Zx81_DisplayScreen"
-        Me.Zx81_DisplayScreen.Size = New System.Drawing.Size(664, 455)
+        Me.Zx81_DisplayScreen.Size = New System.Drawing.Size(752, 455)
         Me.Zx81_DisplayScreen.TabIndex = 0
         Me.Zx81_DisplayScreen.Text = "SpydazWeb AI ZX21 Copyright © 2021" & Global.Microsoft.VisualBasic.ChrW(10) & "Ready." & Global.Microsoft.VisualBasic.ChrW(10)
         '
@@ -60,7 +60,7 @@ Partial Class SAL_ZX21_VDU
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackgroundImage = Global.AI_BASIC.My.Resources.Resources.Dell_UltraSharp_27
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(670, 661)
+        Me.ClientSize = New System.Drawing.Size(758, 661)
         Me.Controls.Add(Me.GroupBox1)
         Me.DoubleBuffered = True
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow

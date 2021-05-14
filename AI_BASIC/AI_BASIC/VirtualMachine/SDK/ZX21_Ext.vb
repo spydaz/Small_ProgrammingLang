@@ -14,7 +14,6 @@ Namespace VirtualMachine
         Public Function ExtractFirstChar(ByRef InputStr As String) As String
             ExtractFirstChar = Left(InputStr, 1)
         End Function
-
     End Module
 End Namespace
 

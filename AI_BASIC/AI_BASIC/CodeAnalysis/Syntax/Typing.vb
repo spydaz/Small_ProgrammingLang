@@ -134,7 +134,6 @@ Namespace Syntax
         _EndOfFileToken = 3
         _EndOfLineToken = 4
 #End Region
-
 #Region "Operartors"
         'Maths Term Operators
         '
@@ -168,7 +167,6 @@ Namespace Syntax
         _LOGICAL_NOT = 28
 #End Region
 
-
         'Symbols
         '
         _leftParenthes = 30
@@ -194,7 +192,22 @@ Namespace Syntax
         _FALSE = 49
 
         _ASSIGN = 50
+#Region "Universal Expressions"
 
+        'ExpressionSyntax
+        'Single numeric
+        _NumericLiteralExpression = 100
+        'Left +/-*><= _Right
+        _BinaryExpression = 110
+        'Left=Right
+        _AssignmentExpression = 120
+        '(Expr)
+        _ParenthesizedExpresion = 130
+        'List pf (Expr)
+        _CodeBlock = 140
+        _VariableDeclaration
+#End Region
+#Region "MainLanguage"
 #Region "Functions"
         _IF = 60
         _ELSE = 61
@@ -211,22 +224,6 @@ Namespace Syntax
         _PRINT = 90
         _FUNCTION_DECLARE = 95
         _RETURN = 96
-#End Region
-
-#Region "Universal Expressions"
-
-        'ExpressionSyntax
-        'Single numeric
-        _NumericLiteralExpression = 100
-        'Left +/-*><= _Right
-        _BinaryExpression = 110
-        'Left=Right
-        _AssignmentExpression = 120
-        '(Expr)
-        _ParenthesizedExpresion = 130
-        'List pf (Expr)
-        _CodeBlock = 140
-        _VariableDeclaration
 #End Region
 #Region "Logo"
         'LOGO LANG
@@ -311,7 +308,7 @@ Namespace Syntax
 
 
 #End Region
-
+#End Region
     End Enum
     ''' <summary>
     ''' Defines Grammar items requireing a RegEx pattern to detect
@@ -319,8 +316,6 @@ Namespace Syntax
     Public Structure GrammarDefinintion
         Public Identifer As SyntaxType
         Public SearchPattern As String
-
-
 
         ''' <summary>
         ''' Known Search Pattrns
@@ -332,6 +327,16 @@ Namespace Syntax
 
             Spec.AddRange(GetMathOperatorList)
             Spec.AddRange(GetLiteralPatternsList)
+            Spec.AddRange(GetBasicFunctionsPatternList)
+            Spec.AddRange(GetBasicLANGS)
+            Return Spec
+        End Function
+        Public Shared Function GetBasicLANGS() As List(Of GrammarDefinintion)
+            Dim Spec As New List(Of GrammarDefinintion)
+            Dim NewGram As New GrammarDefinintion
+
+            Spec.AddRange(GetSALGrammar)
+            Spec.AddRange(GetLOGO_Grammar)
             Spec.AddRange(GetBasicFunctionsPatternList)
             Return Spec
         End Function
@@ -1113,10 +1118,7 @@ Namespace Syntax
 #End Region
             Return iSpec
         End Function
-        Public Class SALGrammar
 
-        End Class
     End Structure
-
 End Namespace
 

@@ -40,11 +40,11 @@ Partial Class SAL_MachineUI
         Me.GroupBox1.Controls.Add(Me.ComboBoxURL)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Bottom
         Me.GroupBox1.ForeColor = System.Drawing.Color.White
-        Me.GroupBox1.Location = New System.Drawing.Point(0, 508)
+        Me.GroupBox1.Location = New System.Drawing.Point(0, 544)
         Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
-        Me.GroupBox1.Size = New System.Drawing.Size(758, 67)
+        Me.GroupBox1.Size = New System.Drawing.Size(772, 67)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Select Online System"
@@ -53,7 +53,7 @@ Partial Class SAL_MachineUI
         '
         Me.ButtonRunCode.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.ButtonRunCode.BackColor = System.Drawing.Color.DimGray
-        Me.ButtonRunCode.Location = New System.Drawing.Point(429, 22)
+        Me.ButtonRunCode.Location = New System.Drawing.Point(443, 22)
         Me.ButtonRunCode.Name = "ButtonRunCode"
         Me.ButtonRunCode.Size = New System.Drawing.Size(105, 34)
         Me.ButtonRunCode.TabIndex = 3
@@ -65,7 +65,7 @@ Partial Class SAL_MachineUI
         '
         Me.ButtonNewScrn.Anchor = System.Windows.Forms.AnchorStyles.Right
         Me.ButtonNewScrn.BackColor = System.Drawing.Color.DimGray
-        Me.ButtonNewScrn.Location = New System.Drawing.Point(319, 21)
+        Me.ButtonNewScrn.Location = New System.Drawing.Point(333, 21)
         Me.ButtonNewScrn.Name = "ButtonNewScrn"
         Me.ButtonNewScrn.Size = New System.Drawing.Size(104, 35)
         Me.ButtonNewScrn.TabIndex = 2
@@ -80,7 +80,7 @@ Partial Class SAL_MachineUI
         Me.ComboBoxURL.Items.AddRange(New Object() {"Amiga Workbench Simulator", "Windows 3.1", "Windows 3.1 with CD-ROM", "Macintosh System 7", "Windows 95", "OS/2", "Windows 93", "Atari ST", "Windows 1.0", "EmuOS", "Mac Oxs Lion 10", "PCDOS 5", "Mac os7", "Mermaid diagrams", "AST Explorer", "Visual basic", "Nearly Parser", "Code Script Prettier", ".NET", "Web Assembly Studio", "WASM Explorer", "VB Online Compiler"})
         Me.ComboBoxURL.Location = New System.Drawing.Point(7, 28)
         Me.ComboBoxURL.Name = "ComboBoxURL"
-        Me.ComboBoxURL.Size = New System.Drawing.Size(288, 28)
+        Me.ComboBoxURL.Size = New System.Drawing.Size(302, 28)
         Me.ComboBoxURL.TabIndex = 0
         '
         'BrowserMain
@@ -92,7 +92,7 @@ Partial Class SAL_MachineUI
         Me.BrowserMain.MinimumSize = New System.Drawing.Size(20, 20)
         Me.BrowserMain.Name = "BrowserMain"
         Me.BrowserMain.ScriptErrorsSuppressed = True
-        Me.BrowserMain.Size = New System.Drawing.Size(735, 403)
+        Me.BrowserMain.Size = New System.Drawing.Size(749, 432)
         Me.BrowserMain.TabIndex = 1
         Me.BrowserMain.Url = New System.Uri("HTTP://www.spydazweb.co.uk", System.UriKind.Absolute)
         '
@@ -103,7 +103,7 @@ Partial Class SAL_MachineUI
         Me.BackColor = System.Drawing.Color.Gainsboro
         Me.BackgroundImage = Global.AI_BASIC.My.Resources.Resources.Dell_UltraSharp_27
         Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.ClientSize = New System.Drawing.Size(758, 575)
+        Me.ClientSize = New System.Drawing.Size(772, 611)
         Me.Controls.Add(Me.BrowserMain)
         Me.Controls.Add(Me.GroupBox1)
         Me.DoubleBuffered = True

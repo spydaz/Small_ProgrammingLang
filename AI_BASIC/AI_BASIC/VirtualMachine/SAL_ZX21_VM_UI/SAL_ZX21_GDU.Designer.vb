@@ -42,7 +42,7 @@ Partial Class SAL_ZX21_GDU
         Me.GroupBox6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Padding = New System.Windows.Forms.Padding(3, 4, 3, 4)
-        Me.GroupBox6.Size = New System.Drawing.Size(998, 698)
+        Me.GroupBox6.Size = New System.Drawing.Size(728, 666)
         Me.GroupBox6.TabIndex = 3
         Me.GroupBox6.TabStop = False
         '
@@ -56,7 +56,7 @@ Partial Class SAL_ZX21_GDU
         Me.GDU_DISPLAY.Direction = 0
         Me.GDU_DISPLAY.Location = New System.Drawing.Point(12, 20)
         Me.GDU_DISPLAY.Name = "GDU_DISPLAY"
-        Me.GDU_DISPLAY.Size = New System.Drawing.Size(980, 485)
+        Me.GDU_DISPLAY.Size = New System.Drawing.Size(710, 453)
         Me.GDU_DISPLAY.TabIndex = 0
         Me.GDU_DISPLAY.TabStop = False
         Me.GDU_DISPLAY.TurtleColor = System.Drawing.Color.Black
@@ -69,7 +69,7 @@ Partial Class SAL_ZX21_GDU
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(998, 698)
+        Me.ClientSize = New System.Drawing.Size(728, 666)
         Me.Controls.Add(Me.GroupBox6)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow
         Me.Name = "SAL_ZX21_GDU"

@@ -5,11 +5,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4C3DB8A4-4555-438C-9FDC-8AE773629416}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>AI_BASIC</RootNamespace>
     <AssemblyName>SpydazWebAI_BasicProgrammingLanguage</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Windows</MyType>
+    <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -43,9 +43,16 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>AI_BASIC.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>IconUFP.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -117,6 +124,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -128,12 +136,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SAL_ZX21_SPL_BASIC_REPL.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
     <None Include="AI_BASIC\Readme.Md" />
     <None Include="AI_BASIC\VirtualMachine\C_P_U\readme.md" />
+    <None Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\Readme.md" />
     <None Include="ReadMe.md" />
     <None Include="AI_BASIC\VirtualMachine\Spydaz Virtual Machine Code Language %3b.md" />
   </ItemGroup>
@@ -156,6 +171,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SAL_ZX21_SPL_BASIC_REPL.resx">
+      <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -173,6 +191,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Dell UltraSharp 27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Arrow_Right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Complier_RUN.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EYE BLUE .gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon_UpVote.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Script_Code_Html_.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\console-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="IconUFP.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -19,4 +19,6 @@ Public Class SAL_ZX21_ConsoleUI
     Private Sub ButtonClrScrn_Click(sender As Object, e As EventArgs) Handles ButtonClrScrn.Click
         RichTextBoxInfo.Clear()
     End Sub
+
+
 End Class
