@@ -11,6 +11,7 @@ Namespace CodeAnalysis
             Private CursorPosition As Integer = 0
             Public _Diagnostics As New List(Of String)
             Private EOT_CursorPosition As Integer = 0
+
             ''' <summary>
             ''' To hold the look ahead value without consuming the value
             ''' </summary>
