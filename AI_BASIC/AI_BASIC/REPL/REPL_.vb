@@ -60,9 +60,10 @@ Module REPL_
 #End Region
             _CreateLexer()
             _LexTokens()
-            If Evaluateable = True And EvaluateScript = True Then
-                DisplayDiagnostics()
-            End If
+
+
+            DisplayDiagnostics()
+
 
         End While
 
@@ -98,7 +99,7 @@ Module REPL_
         Console.ForegroundColor = ConsoleColor.Yellow
     End Sub
     Private Function DisplayDiagnostics() As Boolean
-
+        ExpressionTree = SyntaxTree.Parse(Line)
         If TokenTree IsNot Nothing Then
             'Catch Errors
             If ExpressionTree.Diagnostics.Count > 0 Then
@@ -116,6 +117,7 @@ Module REPL_
 
             Else
                 Console.ForegroundColor = ConsoleColor.Green
+                Console.WriteLine(ExpressionTree.ToJson)
                 Return True
 
             End If

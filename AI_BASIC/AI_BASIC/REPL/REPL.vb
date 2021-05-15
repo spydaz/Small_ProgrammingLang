@@ -56,7 +56,7 @@ Namespace REPL
                     LexTokens(UserInput_LINE)
                 End If
                 'Get Expression/Tree
-                '   ExpressionTree = SyntaxTree.Parse(UserInput_LINE)
+                ExpressionTree = SyntaxTree.Parse(UserInput_LINE)
 
                 'OutputAST
                 If ShowTree = True Then
