@@ -251,7 +251,7 @@ Namespace Syntax
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._Integer, SyntaxType._Integer.GetSyntaxTypeStr, Value)
-
+                Me._Literal = Value
                 'Enables for Change according to entry
                 Select Case Value._SyntaxType
                     Case SyntaxType._Integer

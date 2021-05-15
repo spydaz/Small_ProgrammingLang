@@ -7,10 +7,10 @@ Module REPL_
     Private SAL_VB_LEXER As Lexer
     Private TokenTree As List(Of SyntaxToken)
     Private ExpressionTree As SyntaxTree
-    Private EvaluateScript As Boolean = False
+    Private EvaluateScript As Boolean = True
     Private ShowTree As Boolean = True
     Private ShowTokens As Boolean = True
-    Private ReadOnly Evaluateable As Boolean = False
+
     Private Sub _Show_title()
         Console.ForegroundColor = ConsoleColor.Cyan
         Console.WriteLine("Welcome to SpydazWeb Basic")
@@ -60,14 +60,28 @@ Module REPL_
 #End Region
             _CreateLexer()
             _LexTokens()
-
-
-            DisplayDiagnostics()
+            RunScript()
 
 
         End While
 
 
+    End Sub
+    Public Sub RunScript()
+        ':::_EVALUATE_::: 
+        If DisplayDiagnostics() = True Then
+            If EvaluateScript = True Then
+                'No Errors then Evaluate
+                Console.ForegroundColor = ConsoleColor.Green
+                Dim Eval As New Evaluator(ExpressionTree)
+                Dim Result = Eval._Evaluate
+                Console.WriteLine(Result & vbNewLine)
+            End If
+
+        Else
+            'Already displayed diagnostics
+            Console.ReadLine()
+        End If
     End Sub
     Private Sub DisplayToken_Tree()
         Console.ForegroundColor = ConsoleColor.White

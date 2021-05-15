@@ -1,5 +1,6 @@
 ﻿Imports System.Linq.Expressions
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Syntax.SyntaxNodes
 
 Namespace CodeAnalysis
     Namespace Compiler
@@ -22,16 +23,22 @@ Namespace CodeAnalysis
             End Function
             Public Function _EvaluateExpresssion(ByRef iNode As Object) As Object
 
-                If iNode.SyntaxType = SyntaxType._NumericLiteralExpression Then
+                If iNode._SyntaxType = SyntaxType._Integer Then
 
-                    Return iNode.NumberToken._Value
+                    Return iNode._Literal._value
+                Else
+
+                End If
+                If iNode.SyntaxType = SyntaxType._Decimal Then
+                    Dim i As NumericalExpression = iNode
+                    Return i._Literal
                 Else
 
                 End If
                 If iNode.SyntaxType = SyntaxType._BinaryExpression Then
-
-                    Dim _Left As Integer = _EvaluateExpresssion(iNode._Left)
-                    Dim _Right As Integer = _EvaluateExpresssion(iNode._Right)
+                    Dim b As SyntaxNodes.BinaryExpression = iNode
+                    Dim _Left As Integer = _EvaluateExpresssion(b._Left)
+                    Dim _Right As Integer = _EvaluateExpresssion(b._Right)
 
                     Select Case iNode._Operator._SyntaxType
                         Case SyntaxType.Add_Operator
