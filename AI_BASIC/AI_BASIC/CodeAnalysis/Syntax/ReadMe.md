@@ -5,6 +5,9 @@ Defining the syntax for the language requires components to be unified, regardle
 Types and nodes can be collected in to the same namespace,
  as well as defined types being the correct way to iterate through nodes;
 
+Implemented 
+- NumericLiteralExpressions - Can be evaluated 
+- UnaryExpressions - Can be evaluated 
 
 
 
