@@ -32,7 +32,41 @@ Namespace REPL
             'Intro
             _Show_title()
             'GetInput (line by Line)
-            UserInput_LINE = Console.ReadLine()
+            While (True)
+                UserInput_LINE = Console.ReadLine()
+                'Handle WhiteSpace Early in repl
+                If String.IsNullOrWhiteSpace(UserInput_LINE) Then
+                    Return
+                Else
+                    'Save Statments
+                    History.Add(UserInput_LINE)
+                End If
+
+
+                'Evaluates and runs Script on console
+                'Returning a result unless there is an error
+                'Errors can be returned 
+                'If Executable the script will evaluate. 
+                'If Compile only then nothing will be evaluated
+                ''although Errors will still be returned (Compiler Errors)
+                RunScript()
+                'OutPutTokens
+                If ShowTokens = True Then
+                    DisplayToken_Tree()
+                    LexTokens(UserInput_LINE)
+                End If
+                'Get Expression/Tree
+                '   ExpressionTree = SyntaxTree.Parse(UserInput_LINE)
+
+                'OutputAST
+                If ShowTree = True Then
+                    DisplayAST_Tree()
+                End If
+                'ColorCode
+                SetReplCode()
+            End While
+
+
 #Region "REPL_CMDS"
             'ReplCmds
             If UserInput_LINE = "#ShowTree" Then
@@ -70,40 +104,19 @@ Namespace REPL
 #Region "Main Compiler"
 
 
-            'Handle WhiteSpace Early in repl
-            If String.IsNullOrWhiteSpace(UserInput_LINE) Then
-                Return
-            Else
-                'Save Statments
-                History.Add(UserInput_LINE)
-            End If
 
-            'OutPutTokens
-            If ShowTokens = True Then
-                DisplayToken_Tree()
-                LexTokens(UserInput_LINE)
-            End If
 
-            'Get Expression/Tree
-            ExpressionTree = SyntaxTree.Parse(UserInput_LINE)
 
-            'OutputAST
-            If ShowTree = True Then
-                DisplayAST_Tree()
-            End If
 
-            'Evaluates and runs Script on console
-            'Returning a result unless there is an error
-            'Errors can be returned 
-            'If Executable the script will evaluate. 
-            'If Compile only then nothing will be evaluated
-            ''although Errors will still be returned (Compiler Errors)
-            RunScript()
+
+
 
 #End Region
 
-            'ColorCode
-            SetReplCode()
+
+
+
+
         End Sub
         Public Sub RunScript()
             ':::_EVALUATE_::: 
@@ -118,10 +131,11 @@ Namespace REPL
 
             Else
                 'Already displayed diagnostics
+                Console.ReadLine()
             End If
         End Sub
         Private Sub DisplayAST_Tree()
-            Console.ForegroundColor = ConsoleColor.DarkYellow
+            Console.ForegroundColor = ConsoleColor.Green
         End Sub
         Private Sub DisplayToken_Tree()
             Console.ForegroundColor = ConsoleColor.White
@@ -145,10 +159,10 @@ Namespace REPL
                     Next
                     'Tokens
                     LexTokens(UserInput_LINE)
-                    Return True
+                    Return False
 
                 Else
-                    Return False
+                    Return True
 
                 End If
             Else

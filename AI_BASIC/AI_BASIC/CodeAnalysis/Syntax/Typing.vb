@@ -26,7 +26,8 @@ Namespace Syntax
                     Return SyntaxType.ReturnKeyword
                 Case "var"
                     Return SyntaxType.VarKeyword
-
+                Case "dim"
+                    Return SyntaxType.DimKeyword
                 Case "function"
                     Return SyntaxType.FunctionKeyword
                 Case "if"
@@ -43,17 +44,22 @@ Namespace Syntax
         '  Return SyntaxKind.ElseIfKeyword
         'Case "endif"
         '  Return SyntaxKind.ElseIfKeyword
-
+                Case "function"
+                    Return SyntaxType.WhileKeyword
                 Case "while"
                     Return SyntaxType.WhileKeyword
                 Case "do"
                     Return SyntaxType.DoKeyword
-
+                Case "until"
+                    Return SyntaxType.UntilKeword
                 Case "for"
                     Return SyntaxType.ForKeyword
                 Case "to"
                     Return SyntaxType.ToKeyword
-
+                Case "do"
+                    Return SyntaxType.DoKeyword
+                Case "then"
+                    Return SyntaxType.ThenKeyword
                 Case Else
                     Return SyntaxType._Identifier
             End Select
@@ -100,6 +106,101 @@ Namespace Syntax
                 Case Else
                     Return 0
             End Select
+        End Function
+        <Runtime.CompilerServices.Extension()>
+        Public Function GetSyntaxTypeStr(ByRef _Syntaxtype As SyntaxType) As String
+            Select Case _Syntaxtype
+'literals
+                Case SyntaxType._Integer
+                    Return "_Integer"
+                Case SyntaxType._Identifier
+                    Return "_Identifier"
+                Case SyntaxType.IfKeyword
+                    Return "IfKeyword"
+'keywords
+                Case SyntaxType.ForKeyword
+                    Return "ForKeyword"
+                Case SyntaxType.ToKeyword
+                    Return "ToKeyword"
+                Case SyntaxType.ReturnKeyword
+                    Return "ReturnKeyword"
+                Case SyntaxType.VarKeyword
+                    Return "VarKeyword"
+                Case SyntaxType.ContinueKeyword
+                    Return "ContinueKeyword"
+                Case SyntaxType.WhileKeyword
+                    Return "WhileKeyword"
+                Case SyntaxType.DoKeyword
+                    Return "DoKeyword"
+                Case SyntaxType.UntilKeword
+                    Return "UntilKeword"
+                Case SyntaxType.ThenKeyword
+                    Return "ThenKeyword"
+                Case SyntaxType.FunctionKeyword
+                    Return "FunctionKeyword"
+                Case SyntaxType.TrueKeyword
+                    Return "TrueKeyword"
+                Case SyntaxType.FalseKeyword
+                    Return "FalseKeyword"
+                Case SyntaxType.ElseKeyword
+                    Return "ElseKeyword"
+'maths
+                Case SyntaxType.Add_Operator
+                    Return "Add_Operator"
+                Case SyntaxType.Sub_Operator
+                    Return "Sub_Operator"
+                Case SyntaxType.Multiply_Operator
+                    Return "Multiply_Operator"
+                Case SyntaxType.Divide_Operator
+                    Return "Divide_Operator"
+'complex assign
+                Case SyntaxType.GreaterThan_Operator
+                    Return "GreaterThan_Operator"
+                Case SyntaxType.LessThanOperator
+                    Return "LessThanOperator"
+                Case SyntaxType.GreaterThanEquals
+                    Return "GreaterThanEquals"
+                Case SyntaxType.LessThanEquals
+                    Return "LessThanEquals"
+                Case SyntaxType.Add_Equals_Operator
+                    Return "Add_Equals_Operator"
+                Case SyntaxType.Minus_Equals_Operator
+                    Return "Minus_Equals_Operator"
+                Case SyntaxType.Divide_Equals_Operator
+                    Return "Divide_Equals_Operator"
+                Case SyntaxType.Multiply_Equals_Operator
+                    Return "Multiply_Equals_Operator"
+'expressions
+                Case SyntaxType._BinaryExpression
+                    Return "_BinaryExpression"
+                Case SyntaxType._UnaryExpression
+                    Return "_UnaryExpression"
+                Case SyntaxType._NumericLiteralExpression
+                    Return "_NumericLiteralExpression"
+                Case SyntaxType._AssignmentExpression
+                    Return "_AssignmentExpression"
+                Case SyntaxType._VariableDeclaration
+                    Return "_VariableDeclaration"
+                Case SyntaxType._ParenthesizedExpresion
+                    Return "_ParenthesizedExpresion"
+                Case SyntaxType._CodeBlock
+                    Return "_CodeBlock"
+'sys
+                Case SyntaxType._UnknownToken
+                    Return "_UnknownToken"
+                Case SyntaxType._WhitespaceToken
+                    Return "_WhitespaceToken"
+                Case SyntaxType._EndOfFileToken
+                    Return "_EndOfFileToken"
+
+'assign
+                Case SyntaxType.DimKeyword
+                    Return "DimKeyword"
+                Case SyntaxType.LetKeyword
+                    Return "LetKeyword"
+            End Select
+
+            Return "_UnknownToken"
         End Function
     End Module
     ''' <summary>
@@ -193,7 +294,7 @@ Namespace Syntax
             Return stringBuilder.ToString()
         End Function
 
-        Public Sub New(ByRef _sType As SyntaxType, syntaxTypeStr As String, raw As String, value As Object, start As Integer, _end As Integer)
+        Public Sub New(ByRef _sType As SyntaxType, syntaxTypeStr As String, raw As String, value As Object, start As Integer, iend As Integer)
             If syntaxTypeStr Is Nothing Then
                 Throw New ArgumentNullException(NameOf(syntaxTypeStr))
             End If
@@ -204,7 +305,7 @@ Namespace Syntax
             _Raw = raw
             _Value = value
             _start = start
-            _end = _end
+            _End = iend
         End Sub
     End Structure
     ''' <summary>
@@ -277,8 +378,7 @@ Namespace Syntax
         _Boolean = 45
         _Decimal = 46
         _Date = 47
-        _TRUE = 48
-        _FALSE = 49
+
 
         _ASSIGN = 50
 #Region "Universal Expressions"
@@ -300,22 +400,14 @@ Namespace Syntax
 #End Region
 #Region "MainLanguage"
 #Region "Functions - Used In Universal RegexSearches"
-        _IF = 60
-        _ELSE = 61
-        _THEN = 62
-        _DO = 65
-        _WHILE = 70
-        _UNTIL = 71
+
         _LOOP = 72
-        _FOR = 80
         _EACH = 81
-        _TO = 82
         _NEXT = 83
         _IN = 84
-        _DIM = 85
         _PRINT = 90
         _FUNCTION_DECLARE = 95
-        _RETURN = 96
+
 #End Region
 
 #Region "Logo"
@@ -341,13 +433,13 @@ Namespace Syntax
         LOGO_parameterDeclarations = 518
         LOGO_comparison = 519
         LOGO_comparisonOperator = 520
-        LOGO_ife = 521
+        '   LOGO_ife = 521
         LOGO_Stop = 522
-        LOGO_fore = 523
+        ' LOGO_fore = 523
         LOGO_LANG = 524
         LOGO_EOL = 525
-        LOGO_number = 526
-        LOGO_name = 527
+        ' LOGO_number = 526
+        '  LOGO_name = 527
         LOGO_signExpression = 528
         LOGO_multiplyingExpression = 529
         LOGO_expression = 530
@@ -419,6 +511,9 @@ Namespace Syntax
         ElseKeyword = 212
         WhileKeyword = 213
         DoKeyword = 214
+        UntilKeword = 215
+        ThenKeyword = 216
+        DimKeyword = 217
 #End Region
 #End Region
     End Enum
@@ -498,11 +593,11 @@ Namespace Syntax
 
             'logical(boolean) - Literal
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._TRUE
+            NewGram.Identifer = SyntaxType.TrueKeyword
             NewGram.SearchPattern = "^\btrue\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._FALSE
+            NewGram.Identifer = SyntaxType.FalseKeyword
             NewGram.SearchPattern = "^\bfalse\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -596,7 +691,20 @@ Namespace Syntax
             Spec.Add(NewGram)
 
             'Logical Operators
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._LOGICAL_AND
+            NewGram.SearchPattern = "^\bAND\b"
+            Spec.Add(NewGram)
 
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._LOGICAL_OR
+            NewGram.SearchPattern = "^\bOR\b"
+            Spec.Add(NewGram)
+
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType._LOGICAL_NOT
+            NewGram.SearchPattern = "^\bNOT\b"
+            Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
             NewGram.Identifer = SyntaxType._LOGICAL_AND
             NewGram.SearchPattern = "^\band\b"
@@ -877,14 +985,8 @@ Namespace Syntax
             NewGram.Identifer = SyntaxType.LOGO_make
             NewGram.SearchPattern = "\bmake\b"
             iSpec.Add(NewGram)
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_ife
-            NewGram.SearchPattern = "\bif\b"
-            iSpec.Add(NewGram)
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_fore
-            NewGram.SearchPattern = "\bfor\b"
-            iSpec.Add(NewGram)
+
+
             NewGram = New GrammarDefinintion
             NewGram.Identifer = SyntaxType._String
             NewGram.SearchPattern = "^" & Chr(34) & "[^" & Chr(34) & "]*" & Chr(34)
@@ -897,14 +999,7 @@ Namespace Syntax
             NewGram.Identifer = SyntaxType._WhitespaceToken
             NewGram.SearchPattern = "^\s"
             iSpec.Add(NewGram)
-            'logical(boolean) - Literal
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._TRUE
-            NewGram.SearchPattern = "^\btrue\b"
-            iSpec.Add(NewGram)
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._FALSE
-            NewGram.SearchPattern = "^\bfalse\b"
+
             iSpec.Add(NewGram)
             NewGram = New GrammarDefinintion
             NewGram.Identifer = SyntaxType._null
@@ -912,40 +1007,16 @@ Namespace Syntax
             iSpec.Add(NewGram)
             'Variable
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_name
+            NewGram.Identifer = SyntaxType._Integer
             NewGram.SearchPattern = "^\b[a-z][a-z0-9]+\b"
             iSpec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_number
+            NewGram.Identifer = SyntaxType._Integer
             NewGram.SearchPattern = "^\d+"
             iSpec.Add(NewGram)
 
 
-            '*=, /=, +=, -=,
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_signExpression
-            NewGram.SearchPattern = "^(\*|\/|\+|\-)="
-            iSpec.Add(NewGram)
 
-            'Equality operators: ==, !=
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_comparisonOperator
-            NewGram.SearchPattern = "^(=|!)=\="
-            iSpec.Add(NewGram)
-            'Relational operators: >, >=, <, <=
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_comparisonOperator
-            NewGram.SearchPattern = "^[><]\=?"
-            iSpec.Add(NewGram)
-            'Math operators: +, -, *, /
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_signExpression
-            NewGram.SearchPattern = "^[+\-]"
-            iSpec.Add(NewGram)
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.LOGO_multiplyingExpression
-            NewGram.SearchPattern = "^[*/]"
-            iSpec.Add(NewGram)
 
 
 
@@ -959,15 +1030,15 @@ Namespace Syntax
 #Region "IF/THEN"
             'IF/THEN
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._IF
+            NewGram.Identifer = SyntaxType.IfKeyword
             NewGram.SearchPattern = "^\bif\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._ELSE
+            NewGram.Identifer = SyntaxType.ElseKeyword
             NewGram.SearchPattern = "^\belse\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._THEN
+            NewGram.Identifer = SyntaxType.thenkeyword
             NewGram.SearchPattern = "^\bthen\b"
             Spec.Add(NewGram)
 
@@ -976,13 +1047,13 @@ Namespace Syntax
 #Region "DO WHILE/UNTIL"
             'DO WHILE/UNTIL
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._WHILE
+            NewGram.Identifer = SyntaxType.WhileKeyword
             NewGram.SearchPattern = "^\bwhile\b"
             Spec.Add(NewGram)
 
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._UNTIL
+            NewGram.Identifer = SyntaxType.UntilKeword
             NewGram.SearchPattern = "^\buntil\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -990,7 +1061,7 @@ Namespace Syntax
             NewGram.SearchPattern = "^\bloop\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._DO
+            NewGram.Identifer = SyntaxType.DoKeyword
             NewGram.SearchPattern = "^\bdo\b"
             Spec.Add(NewGram)
 #End Region
@@ -998,7 +1069,7 @@ Namespace Syntax
 
             'For/To  For/Each/in /Next
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._FOR
+            NewGram.Identifer = SyntaxType.ForKeyword
             NewGram.SearchPattern = "^\bfor\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -1006,7 +1077,7 @@ Namespace Syntax
             NewGram.SearchPattern = "^\beach\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._TO
+            NewGram.Identifer = SyntaxType.ToKeyword
             NewGram.SearchPattern = "^\bto\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -1023,12 +1094,16 @@ Namespace Syntax
             'ASSIGNMENT : Syntax  _Variable _AS 
             'Reconsidered Using Dim (Could Still Implement by changing Assignment handler/Generator)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._VariableDeclaration
+            NewGram.Identifer = SyntaxType.DimKeyword
             NewGram.SearchPattern = "^\bdim\b\s"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._VariableDeclaration
+            NewGram.Identifer = SyntaxType.LetKeyword
             NewGram.SearchPattern = "^\blet\b\s"
+            Spec.Add(NewGram)
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType.VarKeyword
+            NewGram.SearchPattern = "^\bvar\b\s"
             Spec.Add(NewGram)
             'Assignment operators: xLeft assigns output of right (9+4) (+= 9) (-=2) (3) (true)
 #End Region
@@ -1042,7 +1117,7 @@ Namespace Syntax
 #Region "Return Value"
             'Functions/Classes
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._RETURN
+            NewGram.Identifer = SyntaxType.ReturnKeyword
             NewGram.SearchPattern = "^\breturn\b"
             Spec.Add(NewGram)
 #End Region
@@ -1220,15 +1295,7 @@ Namespace Syntax
             NewGram.Identifer = SyntaxType.SAL_DECR
             NewGram.SearchPattern = "^\bdecr\b"
             iSpec.Add(NewGram)
-            'logical(boolean) - Literal
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._TRUE
-            NewGram.SearchPattern = "^\btrue\b"
-            iSpec.Add(NewGram)
-            NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._FALSE
-            NewGram.SearchPattern = "^\bfalse\b"
-            iSpec.Add(NewGram)
+
 
 
 #End Region

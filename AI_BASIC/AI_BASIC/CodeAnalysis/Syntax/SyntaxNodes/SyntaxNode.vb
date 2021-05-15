@@ -153,7 +153,7 @@ Namespace Syntax
             ''' <param name="right">Right Value or Identifier</param>
             ''' <param name="iOperator">Operator Token</param>
             Public Sub New(left As ExpressionSyntaxNode, right As ExpressionSyntaxNode, iOperator As SyntaxToken)
-                MyBase.New(SyntaxType._BinaryExpression, "_BinaryExpression")
+                MyBase.New(SyntaxType._BinaryExpression, SyntaxType._BinaryExpression.GetSyntaxTypeStr)
                 If left Is Nothing Then
                     Throw New ArgumentNullException(NameOf(left))
                 End If
@@ -200,7 +200,7 @@ Namespace Syntax
             Public OperatorToken As SyntaxToken
             Public NumericLiteral As NumericalExpression
             Public Sub New(ByRef _OperatorToken As SyntaxToken, ByRef _NumericLiteral As NumericalExpression)
-                MyBase.New(SyntaxType._UnaryExpression, "UnaryExpression")
+                MyBase.New(SyntaxType._UnaryExpression, SyntaxType._UnaryExpression.GetSyntaxTypeStr)
                 OperatorToken = _OperatorToken
                 NumericLiteral = _NumericLiteral
             End Sub
@@ -250,9 +250,9 @@ Namespace Syntax
             ''' </summary>
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
-                MyBase.New(SyntaxType._Integer, "_Integer", Value)
+                MyBase.New(SyntaxType._Integer, SyntaxType._Integer.GetSyntaxTypeStr, Value)
 
-
+                'Enables for Change according to entry
                 Select Case Value._SyntaxType
                     Case SyntaxType._Integer
                         Me._SyntaxType = SyntaxType._Integer
@@ -281,19 +281,16 @@ Namespace Syntax
             ''' </summary>
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
-                MyBase.New(SyntaxType._Identifier, "_Identifier", Value)
+                MyBase.New(SyntaxType._Identifier, SyntaxType._Identifier.GetSyntaxTypeStr, Value)
             End Sub
-
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
                 Dim Lst As New List(Of SyntaxToken)
                 Lst.Add(_Literal)
                 Return Lst
             End Function
-
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return GetValue(ParentEnv)
             End Function
-
             Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
                 Return ParentEnv.CheckVar(_Literal)
             End Function
@@ -309,7 +306,7 @@ Namespace Syntax
             Inherits LiteralExpression
 
             Public Sub New(ByRef Value As Object)
-                MyBase.New(SyntaxType._Boolean, "_Boolean", Value)
+                MyBase.New(SyntaxType._Boolean, SyntaxType._Boolean.GetSyntaxTypeStr, Value)
             End Sub
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
@@ -328,7 +325,7 @@ Namespace Syntax
             Inherits LiteralExpression
 
             Public Sub New(ByRef Value As Object)
-                MyBase.New(SyntaxType._arrayList, "_arrayList", Value)
+                MyBase.New(SyntaxType._arrayList, SyntaxType._arrayList.GetSyntaxTypeStr, Value)
             End Sub
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)

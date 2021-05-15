@@ -1,7 +1,7 @@
 ﻿Module Program
 
     Sub Main()
-        Repl.Main()
+        REPL_.main()
 
     End Sub
 

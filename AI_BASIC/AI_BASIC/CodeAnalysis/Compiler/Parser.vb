@@ -41,8 +41,18 @@ Namespace CodeAnalysis
 #Region "Functions"
             Private Function _Peek(ByVal offset As Integer) As SyntaxToken
                 Dim index = CursorPosition + offset
-                If index >= _Tree.Count Then Return _Tree(_Tree.Count - 1)
-                Return _Tree(index)
+                If _Tree.Count > 0 Then
+
+
+                    If index >= _Tree.Count Then
+                        Return _Tree(_Tree.Count - 1)
+                    Else
+                        Return _Tree(index)
+                    End If
+                Else
+
+                End If
+                Return Nothing
             End Function
             Public Sub New(ByRef Script As String)
                 _Tree = New List(Of SyntaxToken)
@@ -151,22 +161,29 @@ Namespace CodeAnalysis
                 End Select
             End Function
             Public Function _SalExpressionSyntaxTree() As SyntaxTree
-                Return Nothing
+                Return New SyntaxTree(_Script, ExpressionList, _Diagnostics)
             End Function
             Public Function _BasicExpressionSyntaxTree() As SyntaxTree
-                Return Nothing
+                Return New SyntaxTree(_Script, ExpressionList, _Diagnostics)
             End Function
             Public Function _LogoExpressionSyntaxTree() As SyntaxTree
-                Return Nothing
+                Return New SyntaxTree(_Script, ExpressionList, _Diagnostics)
             End Function
             Public Function _GeneralExpressionSyntaxTree() As SyntaxTree
-                Dim Lst As New List(Of SyntaxNode)
-                Lst.Add(_PrimaryExpression())
-
-                Return New SyntaxTree(_Script, Lst, _Diagnostics)
+                Return New SyntaxTree(_Script, ExpressionList, _Diagnostics)
             End Function
 #End Region
 #Region "MAIN_EXPRESSIONS"
+            Public Function ExpressionList() As List(Of SyntaxNode)
+                Dim Lst As New List(Of SyntaxNode)
+                Lst.Add(_Expression())
+
+                Return Lst
+            End Function
+            Public Function _Expression()
+                Return _PrimaryExpression()
+            End Function
+
             ''' <summary>
             ''' Literal
             ''' </summary>
@@ -313,7 +330,7 @@ Namespace CodeAnalysis
             Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
                 Select Case CurrentToken._SyntaxType
                     Case SyntaxType.LetKeyword
-                    Case SyntaxType._DIM
+                    Case SyntaxType.DimKeyword
                 End Select
 
             End Function

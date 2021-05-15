@@ -19,7 +19,7 @@ Namespace CodeAnalysis
             Private EoFCursor As Integer = 0
             Private ReadOnly Property CurrentChar As Char
                 Get
-                    If CursorPosition > EoFCursor Then
+                    If CursorPosition >= EoFCursor Then
                         Return "@"
                     Else
                         Return _Script(CursorPosition)
@@ -41,6 +41,7 @@ Namespace CodeAnalysis
             ''' </summary>
             Public Sub New(ByRef iScript As String)
                 _Script = iScript
+                EoFCursor = _Script.Length
             End Sub
             ''' <summary>
             ''' Next Char
@@ -62,6 +63,11 @@ Namespace CodeAnalysis
                 Dim _length As Integer = 0
                 Dim _iText As String = ""
 
+                'WhiteSpace
+                If Char.IsWhiteSpace(CurrentChar) Then
+                    ReadWhiteSpace()
+                End If
+                'End of file
                 If EndOfFile = True Then
                     ' Return New SyntaxToken(SyntaxType._EndOfFileToken, "EOF", CursorPosition - 1, "EOF", Nothing)
                     Return New SyntaxToken(SyntaxType._EndOfFileToken, "_EndOfFileToken", Nothing, Nothing, CursorPosition, CursorPosition)
@@ -69,57 +75,49 @@ Namespace CodeAnalysis
 
                 'Numerical
                 If Char.IsDigit(CurrentChar) Then
-
                     Return ReadNumberToken()
                 Else
-                    CursorPosition += 1
-                    _Diagnostics.Add("(Digit) Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
-                    Return New SyntaxToken(SyntaxType._UnknownToken, "_UnknownToken", _iText, _iText, _start, CursorPosition)
-                End If
-
-                'WhiteSpace
-                If Char.IsWhiteSpace(CurrentChar) Then
-                    'Capture StartPoint ForSlicer
-                    _start = CursorPosition
-                    'UseInternal Lexer PER (CHAR)
-                    While Char.IsWhiteSpace(CurrentChar)
-                        'Iterate Forwards until end of digits
-                        _NextChar()
-                    End While
-                    'get length 
-                    _length = CursorPosition - _start
-                    'Get Slice
-                    _iText = _Script.Substring(_start, _length)
-                    Return New SyntaxToken(SyntaxType._WhitespaceToken, "WhiteSpace", "", "", _start, CursorPosition)
                 End If
 
                 'Operators
                 Select Case CurrentChar
                     Case ChrW(10), ChrW(13)
-                        Return New SyntaxToken(SyntaxType._EndOfLineToken, "EOL", "", "", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType._EndOfLineToken, "EOL", "EOL", "EOL", _start, CursorPosition)
 
                     Case "+"
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Add_Operator, "Add_Operator", "+", "ADD", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType.Add_Operator, "Add_Operator", "+", "+", _start, _start + _length)
                     Case "-"
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Sub_Operator, "Sub_Operator", "-", "SUB", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType.Sub_Operator, "Sub_Operator", "-", "-", _start, _start + _length)
 
                     Case "*"
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Multiply_Operator, "Multiply_Operator", "*", "MUL", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType.Multiply_Operator, "Multiply_Operator", "*", "*", _start, _start + _length)
 
                     Case "/"
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Divide_Operator, "Divide_Operator", "/", "DIV", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType.Divide_Operator, "Divide_Operator", "/", "/", _start, _start + _length)
 
                     Case ")"
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType._RightParenthes, "_RightParenthes", ")", ")", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType._RightParenthes, "_RightParenthes", ")", ")", _start, _start + _length)
 
                     Case "("
+                        _start = CursorPosition
+                        _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType._leftParenthes, "_leftParenthes", "(", ")", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType._leftParenthes, "_leftParenthes", "(", ")", _start, _start + _length)
 
                 End Select
 
@@ -127,14 +125,30 @@ Namespace CodeAnalysis
                 If Char.IsLetter(CurrentChar) Then
                     Return ReadIdentifierOrKeyword()
                 Else
-                    CursorPosition += 1
-                    _Diagnostics.Add("(Identifer) Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
-                    Return New SyntaxToken(SyntaxType._UnknownToken, "_UnknownToken", _iText, _iText, _start, CursorPosition)
-
                 End If
 
+                CursorPosition += 1
+                _Diagnostics.Add("Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
+                Return New SyntaxToken(SyntaxType._UnknownToken, SyntaxType._UnknownToken.GetSyntaxTypeStr, _iText, _iText, _start, CursorPosition)
             End Function
-
+            Public Function ReadWhiteSpace() As SyntaxToken
+                '-Numerical
+                Dim _start As Integer = 0
+                Dim _length As Integer = 0
+                Dim _iText As String = ""
+                'Capture StartPoint ForSlicer
+                _start = CursorPosition
+                'UseInternal Lexer PER (CHAR)
+                While Char.IsWhiteSpace(CurrentChar)
+                    'Iterate Forwards until end of digits
+                    _NextChar()
+                End While
+                'get length 
+                _length = CursorPosition - _start
+                'Get Slice
+                _iText = _Script.Substring(_start, _length)
+                Return New SyntaxToken(SyntaxType._WhitespaceToken, SyntaxType._WhitespaceToken.GetSyntaxTypeStr, _iText, _iText, _start, _start - _length)
+            End Function
             Public Function ReadIdentifierOrKeyword() As SyntaxToken
                 '-Numerical
                 Dim _start As Integer = 0
@@ -155,7 +169,7 @@ Namespace CodeAnalysis
                     _iText = _Script.Substring(_start, _length)
 
                     _iText.GetKeywordSyntaxType()
-                    Return New SyntaxToken(_iText.GetKeywordSyntaxType(), "KeyWord", _iText, _iText, _start, CursorPosition)
+                    Return New SyntaxToken(_iText.GetKeywordSyntaxType(), _iText.GetKeywordSyntaxType.GetSyntaxTypeStr, _iText, _iText, _start, _start + _length)
 
                 End If
                 Return Nothing
@@ -173,20 +187,21 @@ Namespace CodeAnalysis
                         'Iterate Forwards until end of digits
                         _NextChar()
                     End While
+
                     'get length 
                     _length = CursorPosition - _start
                     'Get Slice
                     _iText = _Script.Substring(_start, _length)
+
                     Dim value As Integer = 0
                     If Integer.TryParse(_iText, value) = False Then
                         _Diagnostics.Add("The number is not recognized as integer:" & _iText)
                     End If
-                    Return New SyntaxToken(SyntaxType._Integer, "Numerical", _iText, value, _start, CursorPosition)
+                    Return New SyntaxToken(SyntaxType._Integer, SyntaxType._Integer.GetSyntaxTypeStr, _iText, value, _start, _start + _length)
 
                 End If
                 Return Nothing
             End Function
-
             ''' <summary>
             ''' Checks token without moving the cursor
             ''' </summary>

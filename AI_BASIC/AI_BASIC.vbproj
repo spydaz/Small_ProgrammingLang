@@ -85,6 +85,7 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
     <Compile Include="AI_BASIC\Program.vb" />
     <Compile Include="AI_BASIC\REPL\REPL.vb" />
+    <Compile Include="AI_BASIC\REPL\REPL_.vb" />
     <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
       <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </Compile>

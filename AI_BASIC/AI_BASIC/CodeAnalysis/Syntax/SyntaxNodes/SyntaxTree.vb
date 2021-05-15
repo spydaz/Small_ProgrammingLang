@@ -53,7 +53,7 @@ Public Class SyntaxTree
     End Function
     Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
         Dim MyParser As New Parser(_Script)
-        Return MyParser.ParseSyntaxTree()
+        Return MyParser.Parse()
     End Function
 #Region "TOSTRING"
     ''' <summary>
