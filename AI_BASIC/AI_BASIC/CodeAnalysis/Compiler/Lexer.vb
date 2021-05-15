@@ -18,6 +18,16 @@ Namespace CodeAnalysis
             ''' Cursor Position
             ''' </summary>
             Private EoFCursor As Integer = 0
+            Private ReadOnly Property Lookahead As String
+                Get
+                    If CursorPosition + 2 <= EoFCursor Then
+                        Return GetSlice(CursorPosition + 1, 1)
+                    Else
+                        Return Nothing
+                    End If
+
+                End Get
+            End Property
             Private ReadOnly Property CurrentChar As Char
                 Get
                     If CursorPosition >= EoFCursor Then
@@ -66,7 +76,7 @@ Namespace CodeAnalysis
 
                 'WhiteSpace
                 If Char.IsWhiteSpace(CurrentChar) Then
-                    ReadWhiteSpace()
+                    Return ReadWhiteSpace()
                 End If
                 'End of file
                 If EndOfFile = True Then
@@ -86,28 +96,65 @@ Namespace CodeAnalysis
                         Return New SyntaxToken(SyntaxType._EndOfLineToken, "EOL", "EOL", "EOL", _start, CursorPosition)
 
                     Case "+"
-                        _start = CursorPosition
-                        _length = 1
-                        CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Add_Operator, "Add_Operator", "+", "+", _start, _start + _length)
+                        If Lookahead = "=" Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.Add_Equals_Operator, SyntaxType.Add_Equals_Operator.GetSyntaxTypeStr, "+=", "+=", _start, _start + _length)
+
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+
+                            Return New SyntaxToken(SyntaxType.Add_Operator, SyntaxType.Add_Operator.GetSyntaxTypeStr, "+", "+", _start, _start + _length)
+
+                        End If
                     Case "-"
-                        _start = CursorPosition
-                        _length = 1
-                        CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Sub_Operator, "Sub_Operator", "-", "-", _start, _start + _length)
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.Minus_Equals_Operator, SyntaxType.Minus_Equals_Operator.GetSyntaxTypeStr, "-=", "-=", _start, _start + _length)
 
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+
+                            Return New SyntaxToken(SyntaxType.Sub_Operator, SyntaxType.Sub_Operator.GetSyntaxTypeStr, "-", "-", _start, _start + _length)
+
+                        End If
                     Case "*"
-                        _start = CursorPosition
-                        _length = 1
-                        CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Multiply_Operator, "Multiply_Operator", "*", "*", _start, _start + _length)
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.Multiply_Equals_Operator, SyntaxType.Multiply_Equals_Operator.GetSyntaxTypeStr, "*=", "*=", _start, _start + _length)
 
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+
+                            Return New SyntaxToken(SyntaxType.Multiply_Operator, SyntaxType.Multiply_Operator.GetSyntaxTypeStr, "*", "*", _start, _start + _length)
+
+                        End If
                     Case "/"
-                        _start = CursorPosition
-                        _length = 1
-                        CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType.Divide_Operator, "Divide_Operator", "/", "/", _start, _start + _length)
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.Divide_Equals_Operator, SyntaxType.Divide_Equals_Operator.GetSyntaxTypeStr, "/=", "/=", _start, _start + _length)
 
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+
+                            Return New SyntaxToken(SyntaxType.Divide_Operator, SyntaxType.Divide_Operator.GetSyntaxTypeStr, "/", "/", _start, _start + _length)
+
+                        End If
                     Case ")"
                         _start = CursorPosition
                         _length = 1
@@ -118,8 +165,63 @@ Namespace CodeAnalysis
                         _start = CursorPosition
                         _length = 1
                         CursorPosition += 1
-                        Return New SyntaxToken(SyntaxType._leftParenthes, "_leftParenthes", "(", ")", _start, _start + _length)
+                        Return New SyntaxToken(SyntaxType._leftParenthes, "_leftParenthes", "(", "(", _start, _start + _length)
+                    Case "="c
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.EquivelentTo, "EquivelentTo", "==", "==", _start, _start + _length)
 
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType._ASSIGN, "_ASSIGN", "=", "=", _start, _start + _length)
+
+                        End If
+                    Case "!"c
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.NotEqual, SyntaxType.NotEqual.GetSyntaxTypeStr, "!=", "!=", _start, _start + _length)
+
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType._Not, SyntaxType._Not.GetSyntaxTypeStr, "!", "!", _start, _start + _length)
+
+                        End If
+                    Case "<"c
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.LessThanEquals, SyntaxType.GreaterThanEquals.GetSyntaxTypeStr, "<=", "<=", _start, _start + _length)
+
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.LessThanOperator, SyntaxType.LessThanOperator.GetSyntaxTypeStr, "<", "<", _start, _start + _length)
+
+                        End If
+                    Case ">"c
+                        If Lookahead = "="c Then
+                            _start = CursorPosition
+                            _length = 2
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.GreaterThanEquals, SyntaxType.GreaterThanEquals.GetSyntaxTypeStr, ">=", ">=", _start, _start + _length)
+
+                        Else
+                            _start = CursorPosition
+                            _length = 1
+                            CursorPosition += _length
+                            Return New SyntaxToken(SyntaxType.GreaterThan_Operator, SyntaxType.GreaterThan_Operator.GetSyntaxTypeStr, ">", ">", _start, _start + _length)
+
+                        End If
                 End Select
 
                 'Identifers

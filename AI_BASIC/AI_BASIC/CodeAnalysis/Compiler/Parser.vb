@@ -296,7 +296,7 @@ Namespace CodeAnalysis
                         Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     Case SyntaxType.EquivelentTo
                         Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                    Case SyntaxType.NotEquivelentTo
+                    Case SyntaxType.NotEqual
                         Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     Case SyntaxType.LessThanOperator
                         Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)

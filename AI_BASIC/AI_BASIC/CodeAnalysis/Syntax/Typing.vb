@@ -349,9 +349,8 @@ Namespace Syntax
         Divide_Equals_Operator = 23
         Equals = 24
         NotEqual = 25
-        NotEquivelentTo = 26
         EquivelentTo = 27
-
+        _Not = 25
         'Logical Operators
         '
         _LOGICAL_AND = 26
@@ -724,7 +723,7 @@ Namespace Syntax
 
             'Equality operators: !=
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.NotEquivelentTo
+            NewGram.Identifer = SyntaxType.NotEqual
             NewGram.SearchPattern = "^(=\)=\="
             'Equality operators: ==
             NewGram = New GrammarDefinintion
