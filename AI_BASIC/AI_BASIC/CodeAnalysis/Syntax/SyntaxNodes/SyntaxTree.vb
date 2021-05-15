@@ -41,6 +41,7 @@ Public Class SyntaxTree
 
     Public Shared Function ParseBasic(ByRef _Script As String) As SyntaxTree
         Dim MyParser As New Parser(_Script)
+
         Return MyParser.Parse(LangTypes.BASIC)
     End Function
     Public Shared Function ParseSal(ByRef _Script As String) As SyntaxTree
@@ -53,6 +54,7 @@ Public Class SyntaxTree
     End Function
     Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
         Dim MyParser As New Parser(_Script)
+
         Return MyParser.Parse()
     End Function
 #Region "TOSTRING"

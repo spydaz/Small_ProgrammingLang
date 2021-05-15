@@ -10,22 +10,38 @@ Namespace CodeAnalysis
             Private _Tree As List(Of SyntaxToken)
             Private CursorPosition As Integer = 0
             Public _Diagnostics As New List(Of String)
+            Private EOT_CursorPosition As Integer = 0
             ''' <summary>
             ''' To hold the look ahead value without consuming the value
             ''' </summary>
             Public ReadOnly Property Lookahead As String
                 Get
-                    Return Tokenizer.ViewNextSlice
+                    If EOT_CursorPosition <= CursorPosition + 1 Then
+                        Return _Tree(CursorPosition + 1)._Value
+                    Else
+                        Return "EOF"
+                    End If
+
                 End Get
             End Property
             Public ReadOnly Property LookaheadToken As SyntaxToken
                 Get
-                    Return Tokenizer.CheckIdentifiedToken(Lookahead)
+                    If CursorPosition + 1 <= EOT_CursorPosition Then
+                        Return _Tree(CursorPosition + 1)
+                    Else
+                        Return _Tree(EOT_CursorPosition)
+                    End If
+
                 End Get
             End Property
             Public ReadOnly Property LookaheadSyntaxType As SyntaxType
                 Get
-                    Return Tokenizer.CheckIdentifiedToken(Lookahead)._SyntaxType
+                    If CursorPosition + 1 <= EOT_CursorPosition Then
+                        Return _Tree(CursorPosition + 1)._SyntaxType
+                    Else
+                        Return SyntaxType._EndOfFileToken
+                    End If
+
                 End Get
             End Property
             ''' <summary>
@@ -75,6 +91,7 @@ Namespace CodeAnalysis
                 Tokenizer = New Lexer(Script)
                 'LexWhole_Input
                 _LexTokens()
+                EOT_CursorPosition = _Tree.Count
             End Sub
             Public Sub _LexTokens()
                 Dim MyTok = Tokenizer._NextToken
@@ -176,7 +193,11 @@ Namespace CodeAnalysis
 #Region "MAIN_EXPRESSIONS"
             Public Function ExpressionList() As List(Of SyntaxNode)
                 Dim Lst As New List(Of SyntaxNode)
-                Lst.Add(_Expression())
+                Do While CursorPosition < EOT_CursorPosition
+                    Lst.Add(_Expression())
+                    CursorPosition += 1
+                Loop
+
 
                 Return Lst
             End Function
@@ -189,7 +210,7 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _LiteralExpression() As ExpressionSyntaxNode
-                Dim NewNode As SyntaxToken
+
                 Select Case CurrentToken._SyntaxType
                     Case SyntaxType._Integer
                         Return _NumericLiteralExpression()
@@ -197,9 +218,8 @@ Namespace CodeAnalysis
                         Return _NumericLiteralExpression()
                     Case SyntaxType._String
                     Case SyntaxType._arrayList
-                        NewNode = _MatchToken(SyntaxType._arrayList)
-                        Return New ArrayLiteralExpression(NewNode)
                 End Select
+                _Diagnostics.Add("unknown _Literal? " & vbNewLine & CurrentToken.ToJson)
                 Return Nothing
             End Function
             Public Function _NumericLiteralExpression()
@@ -214,22 +234,34 @@ Namespace CodeAnalysis
                         NewNode = _MatchToken(SyntaxType._Decimal)
                         Return New NumericalExpression(NewNode)
                 End Select
-
+                _Diagnostics.Add("unknown _NumericLiteralExpression? " & vbNewLine & CurrentToken.ToJson)
+                Return Nothing
             End Function
-            Public Function _UnaryExpression() As ExpressionSyntaxNode
-                Select Case CurrentToken._SyntaxType
-                    Case SyntaxType.Add_Operator
-                        Return New UnaryExpression(_MatchToken(SyntaxType.Add_Operator), _NumericLiteralExpression)
-                    Case SyntaxType.Sub_Operator
-                        Return New UnaryExpression(_MatchToken(SyntaxType.Sub_Operator), _NumericLiteralExpression)
-                End Select
+            Public Function _UnaryExpression(ByRef _Operator As SyntaxToken) As ExpressionSyntaxNode
+                Dim x = New UnaryExpression(_Operator, _NumericLiteralExpression)
+                CursorPosition += 2
+                Return x
             End Function
             ''' <summary>
             ''' (Identifer_KeyWord)
             ''' </summary>
             ''' <returns></returns>
             Public Function _PrimaryExpression() As ExpressionSyntaxNode
-                Return _LiteralExpression()
+
+                Select Case CurrentToken._SyntaxType
+                    Case SyntaxType.Add_Operator
+                        If LookaheadSyntaxType = SyntaxType._Integer Then
+                            Return _UnaryExpression(_MatchToken(SyntaxType.Add_Operator))
+                        End If
+                    Case SyntaxType.Sub_Operator
+                        If LookaheadSyntaxType = SyntaxType._Integer Then
+                            Return _UnaryExpression(_MatchToken(SyntaxType.Sub_Operator))
+                        End If
+                    Case SyntaxType._Integer, SyntaxType._Decimal, SyntaxType._arrayList, SyntaxType._String
+                        Return _LiteralExpression()
+                End Select
+                _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                Return Nothing
             End Function
             Public Function _LeftHandExpression()
 

@@ -207,18 +207,19 @@ Namespace Syntax
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
 
-                Select Case OperatorToken._SyntaxType
-                    Case SyntaxType.Sub_Operator
-                        Return -NumericLiteral._Literal
-                    Case SyntaxType.Add_Operator
-                        Return NumericLiteral._Literal
-                End Select
+
 
                 Throw New NotImplementedException()
             End Function
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Select Case OperatorToken._SyntaxType
+                    Case SyntaxType.Sub_Operator
+                        Return -NumericLiteral.Evaluate(ParentEnv)
+                    Case SyntaxType.Add_Operator
+                        Return NumericLiteral.Evaluate(ParentEnv)
+                End Select
+                Return Nothing
             End Function
         End Class
 #End Region
@@ -271,7 +272,7 @@ Namespace Syntax
 
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal.value
+                Return _Literal._value
             End Function
         End Class
         Public Class IdentifierExpression

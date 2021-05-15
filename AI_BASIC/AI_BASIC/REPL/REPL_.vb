@@ -10,7 +10,8 @@ Module REPL_
     Private EvaluateScript As Boolean = True
     Private ShowTree As Boolean = True
     Private ShowTokens As Boolean = True
-
+    Private _diagnostics As New List(Of String)
+    Private SAL_VB_PARSER As Parser
     Private Sub _Show_title()
         Console.ForegroundColor = ConsoleColor.Cyan
         Console.WriteLine("Welcome to SpydazWeb Basic")
@@ -64,21 +65,30 @@ Module REPL_
 
     End Sub
     Private Sub RunScript()
+
         ':::_EVALUATE_::: 
         If DisplayDiagnostics() = True Then
+            Dim Result = ""
             If EvaluateScript = True Then
                 'No Errors then Evaluate
                 Console.ForegroundColor = ConsoleColor.Green
                 Dim Eval As New Evaluator(ExpressionTree)
-                Dim Result = Eval._Evaluate
+
                 Console.ForegroundColor = ConsoleColor.DarkGray
-                Console.WriteLine(Result & vbNewLine)
+                Console.WriteLine(Eval._Evaluate & vbNewLine)
             End If
 
         Else
             'Already displayed diagnostics
-            Console.ReadLine()
+            Console.ForegroundColor = ConsoleColor.DarkGray
+            Console.WriteLine("Unable to Evaluate" & vbNewLine)
+            _diagnostics = New List(Of String)
         End If
+
+    End Sub
+    Private Sub GetDiagnostics()
+        _diagnostics.AddRange(SAL_VB_LEXER._Diagnostics)
+        _diagnostics.AddRange(ExpressionTree.Diagnostics)
     End Sub
     Private Sub DisplayToken_Tree()
         Console.ForegroundColor = ConsoleColor.White
@@ -112,15 +122,19 @@ Module REPL_
         Console.ForegroundColor = ConsoleColor.Yellow
     End Sub
     Private Function DisplayDiagnostics() As Boolean
-        ExpressionTree = SyntaxTree.Parse(Line)
+
+        SAL_VB_PARSER = New Parser(Line)
+        ExpressionTree = SAL_VB_PARSER.Parse()
+        GetDiagnostics()
+
         If ExpressionTree IsNot Nothing Then
             'Catch Errors
-            If ExpressionTree.Diagnostics.Count > 0 Then
+            If _diagnostics.Count > 0 Then
                 'Tokens
                 Console.ForegroundColor = ConsoleColor.Red
                 'PARSER DIAGNOSTICS
                 Console.WriteLine("Compiler Errors: " & vbNewLine)
-                For Each item In ExpressionTree.Diagnostics
+                For Each item In _diagnostics
                     Console.ForegroundColor = ConsoleColor.DarkRed
                     Console.WriteLine(item & vbNewLine)
                 Next

@@ -256,10 +256,12 @@ Namespace CodeAnalysis
 
                 Else
                 End If
-
+                Dim itext = CurrentChar
                 CursorPosition += 1
-                _Diagnostics.Add("Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
-                Return New SyntaxToken(SyntaxType._UnknownToken, SyntaxType._UnknownToken.GetSyntaxTypeStr, _iText, _iText, _start, CursorPosition)
+
+                Dim x = New SyntaxToken(SyntaxType._UnknownToken, SyntaxType._UnknownToken.GetSyntaxTypeStr, itext, itext, CursorPosition, CursorPosition)
+                _Diagnostics.Add("Unrecognized Character in input: '" & vbNewLine & x.ToJson)
+                Return x
             End Function
             Public Function ReadWhiteSpace() As SyntaxToken
                 '-Numerical
