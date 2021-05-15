@@ -4,7 +4,7 @@ Imports AI_BASIC.Syntax
 Namespace CodeAnalysis
     Namespace Compiler
 
-        Public Class Evaluator
+        Friend Class Evaluator
             Public _Diagnostics As New List(Of String)
             Public _tree As SyntaxTree
             ''' <summary>

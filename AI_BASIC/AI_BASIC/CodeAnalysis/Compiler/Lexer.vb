@@ -6,7 +6,7 @@ Imports AI_BASIC.Syntax
 
 Namespace CodeAnalysis
     Namespace Compiler
-        Public Class Lexer
+        Friend Class Lexer
             Public _Diagnostics As New List(Of String)
             Private _Script As String = ""
             ''' <summary>
@@ -69,23 +69,12 @@ Namespace CodeAnalysis
 
                 'Numerical
                 If Char.IsDigit(CurrentChar) Then
-                    'Capture StartPoint ForSlicer
-                    _start = CursorPosition
-                    'UseInternal Lexer PER (CHAR)
-                    While Char.IsDigit(CurrentChar)
-                        'Iterate Forwards until end of digits
-                        _NextChar()
-                    End While
-                    'get length 
-                    _length = CursorPosition - _start
-                    'Get Slice
-                    _iText = _Script.Substring(_start, _length)
-                    Dim value As Integer = 0
-                    If Integer.TryParse(_iText, value) = False Then
-                        _Diagnostics.Add("The number is not recognized as integer:" & _iText)
-                    End If
-                    Return New SyntaxToken(SyntaxType._Integer, "Numerical", _iText, value, _start, CursorPosition)
 
+                    Return ReadNumberToken()
+                Else
+                    CursorPosition += 1
+                    _Diagnostics.Add("(Digit) Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
+                    Return New SyntaxToken(SyntaxType._UnknownToken, "_UnknownToken", _iText, _iText, _start, CursorPosition)
                 End If
 
                 'WhiteSpace
@@ -134,12 +123,70 @@ Namespace CodeAnalysis
 
                 End Select
 
+                'Identifers
+                If Char.IsLetter(CurrentChar) Then
+                    Return ReadIdentifierOrKeyword()
+                Else
+                    CursorPosition += 1
+                    _Diagnostics.Add("(Identifer) Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
+                    Return New SyntaxToken(SyntaxType._UnknownToken, "_UnknownToken", _iText, _iText, _start, CursorPosition)
 
-                CursorPosition += 1
-                _Diagnostics.Add("Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
-                Return New SyntaxToken(SyntaxType._UnknownToken, "_UnknownToken", _iText, _iText, _start, CursorPosition)
+                End If
 
             End Function
+
+            Public Function ReadIdentifierOrKeyword() As SyntaxToken
+                '-Numerical
+                Dim _start As Integer = 0
+                Dim _length As Integer = 0
+                Dim _iText As String = ""
+                'Identifers
+                If Char.IsLetter(CurrentChar) Then
+                    'Capture StartPoint ForSlicer
+                    _start = CursorPosition
+                    'UseInternal Lexer PER (CHAR)
+                    While Char.IsLetter(CurrentChar)
+                        'Iterate Forwards until end of Letters
+                        _NextChar()
+                    End While
+                    'get length 
+                    _length = CursorPosition - _start
+                    'Get Slice
+                    _iText = _Script.Substring(_start, _length)
+
+                    _iText.GetKeywordSyntaxType()
+                    Return New SyntaxToken(_iText.GetKeywordSyntaxType(), "KeyWord", _iText, _iText, _start, CursorPosition)
+
+                End If
+                Return Nothing
+            End Function
+            Public Function ReadNumberToken()
+                '-Numerical
+                Dim _start As Integer = 0
+                Dim _length As Integer = 0
+                Dim _iText As String = ""
+                If Char.IsDigit(CurrentChar) Then
+                    'Capture StartPoint ForSlicer
+                    _start = CursorPosition
+                    'UseInternal Lexer PER (CHAR)
+                    While Char.IsDigit(CurrentChar)
+                        'Iterate Forwards until end of digits
+                        _NextChar()
+                    End While
+                    'get length 
+                    _length = CursorPosition - _start
+                    'Get Slice
+                    _iText = _Script.Substring(_start, _length)
+                    Dim value As Integer = 0
+                    If Integer.TryParse(_iText, value) = False Then
+                        _Diagnostics.Add("The number is not recognized as integer:" & _iText)
+                    End If
+                    Return New SyntaxToken(SyntaxType._Integer, "Numerical", _iText, value, _start, CursorPosition)
+
+                End If
+                Return Nothing
+            End Function
+
             ''' <summary>
             ''' Checks token without moving the cursor
             ''' </summary>

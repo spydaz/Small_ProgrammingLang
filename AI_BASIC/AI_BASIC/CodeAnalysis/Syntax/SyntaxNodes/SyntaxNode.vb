@@ -194,6 +194,33 @@ Namespace Syntax
                 Throw New NotImplementedException()
             End Function
         End Class
+
+        Public Class UnaryExpression
+            Inherits ExpressionSyntaxNode
+            Public OperatorToken As SyntaxToken
+            Public NumericLiteral As NumericalExpression
+            Public Sub New(ByRef _OperatorToken As SyntaxToken, ByRef _NumericLiteral As NumericalExpression)
+                MyBase.New(SyntaxType._UnaryExpression, "UnaryExpression")
+                OperatorToken = _OperatorToken
+                NumericLiteral = _NumericLiteral
+            End Sub
+
+            Public Overrides Function GetChildren() As List(Of SyntaxToken)
+
+                Select Case OperatorToken._SyntaxType
+                    Case SyntaxType.Sub_Operator
+                        Return -NumericLiteral._Literal
+                    Case SyntaxType.Add_Operator
+                        Return NumericLiteral._Literal
+                End Select
+
+                Throw New NotImplementedException()
+            End Function
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Throw New NotImplementedException()
+            End Function
+        End Class
 #End Region
 
 #Region "Literals"
@@ -216,7 +243,7 @@ Namespace Syntax
             End Sub
         End Class
         'Concrete
-        Public Class IntegerExpression
+        Public Class NumericalExpression
             Inherits LiteralExpression
             ''' <summary>
             ''' Initiates a Integer Expression
@@ -224,6 +251,16 @@ Namespace Syntax
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._Integer, "_Integer", Value)
+
+
+                Select Case Value._SyntaxType
+                    Case SyntaxType._Integer
+                        Me._SyntaxType = SyntaxType._Integer
+                        Me._SyntaxTypeStr = "_Integer"
+                    Case SyntaxType._Decimal
+                        Me._SyntaxType = SyntaxType._Decimal
+                        Me._SyntaxTypeStr = "_Decimal"
+                End Select
             End Sub
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
@@ -307,6 +344,8 @@ Namespace Syntax
             End Function
         End Class
 #End Region
+
+
 
     End Namespace
 End Namespace

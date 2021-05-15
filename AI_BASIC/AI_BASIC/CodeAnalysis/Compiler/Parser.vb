@@ -31,7 +31,7 @@ Namespace CodeAnalysis
             ''' <summary>
             ''' Tokenizer !
             ''' </summary>
-            Public Tokenizer As Lexer
+            Private Tokenizer As Lexer
             Private ReadOnly Property CurrentToken As SyntaxToken
                 Get
                     Return _Peek(0)
@@ -139,7 +139,7 @@ Namespace CodeAnalysis
 #End Region
 #Region "Basic _ExpressionSyntaxTree"
             Public Function _ExpressionSyntaxTree() As SyntaxTree
-                Select Case LookaheadSyntaxType
+                Select Case CurrentToken._SyntaxType
                     Case SyntaxType._SAL_PROGRAM_BEGIN
                         Return _SalExpressionSyntaxTree()
                     Case SyntaxType.LOGO_LANG
@@ -160,7 +160,10 @@ Namespace CodeAnalysis
                 Return Nothing
             End Function
             Public Function _GeneralExpressionSyntaxTree() As SyntaxTree
-                Return Nothing
+                Dim Lst As New List(Of SyntaxNode)
+                Lst.Add(_PrimaryExpression())
+
+                Return New SyntaxTree(_Script, Lst, _Diagnostics)
             End Function
 #End Region
 #Region "MAIN_EXPRESSIONS"
@@ -169,14 +172,39 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _LiteralExpression() As ExpressionSyntaxNode
-                Select Case LookaheadSyntaxType
-
+                Dim NewNode As SyntaxToken
+                Select Case CurrentToken._SyntaxType
                     Case SyntaxType._Integer
-                    Case SyntaxType._Boolean
+                        Return _NumericLiteralExpression()
+                    Case SyntaxType._Decimal
+                        Return _NumericLiteralExpression()
                     Case SyntaxType._String
                     Case SyntaxType._arrayList
-                    Case SyntaxType._Date
+                        NewNode = _MatchToken(SyntaxType._arrayList)
+                        Return New ArrayLiteralExpression(NewNode)
+                End Select
+                Return Nothing
+            End Function
+            Public Function _NumericLiteralExpression()
+                Dim NewNode As SyntaxToken
+                Select Case CurrentToken._SyntaxType
+                    Case SyntaxType._Integer
+                        'Consume Token
+                        NewNode = _MatchToken(SyntaxType._Integer)
+                        Return New NumericalExpression(NewNode)
+                    Case SyntaxType._Decimal
+                        'Consume Token
+                        NewNode = _MatchToken(SyntaxType._Decimal)
+                        Return New NumericalExpression(NewNode)
+                End Select
 
+            End Function
+            Public Function _UnaryExpression() As ExpressionSyntaxNode
+                Select Case CurrentToken._SyntaxType
+                    Case SyntaxType.Add_Operator
+                        Return New UnaryExpression(_MatchToken(SyntaxType.Add_Operator), _NumericLiteralExpression)
+                    Case SyntaxType.Sub_Operator
+                        Return New UnaryExpression(_MatchToken(SyntaxType.Sub_Operator), _NumericLiteralExpression)
                 End Select
             End Function
             ''' <summary>
@@ -184,8 +212,7 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _PrimaryExpression() As ExpressionSyntaxNode
-
-
+                Return _LiteralExpression()
             End Function
             Public Function _LeftHandExpression()
 
@@ -195,7 +222,22 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _BinaryExpression() As ExpressionSyntaxNode
+                Select Case CurrentToken._SyntaxType
 
+                    Case SyntaxType.Add_Operator
+                        Return _FactorExpression()
+                    Case SyntaxType.Sub_Operator
+                        Return _FactorExpression()
+                    Case SyntaxType.Divide_Operator
+                        Return _TermExpression()
+                    Case SyntaxType.Multiply_Operator
+                        Return _TermExpression()
+
+                End Select
+                Return Nothing
+            End Function
+            Public Function _BinaryExpression(ByRef Precedence As Integer) As ExpressionSyntaxNode
+                Precedence = 0
 
             End Function
             ''' <summary>
@@ -204,11 +246,11 @@ Namespace CodeAnalysis
             ''' <returns></returns>
             Public Function _FactorExpression() As ExpressionSyntaxNode
 
-                Select Case LookaheadSyntaxType
+                Select Case CurrentToken._SyntaxType
                     Case SyntaxType.Add_Operator
-                    Case SyntaxType.Add_Equals_Operator
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     Case SyntaxType.Sub_Operator
-                    Case SyntaxType.Minus_Equals_Operator
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                 End Select
 
             End Function
@@ -217,11 +259,12 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _TermExpression() As ExpressionSyntaxNode
-                Select Case LookaheadSyntaxType
+
+                Select Case CurrentToken._SyntaxType
                     Case SyntaxType.Multiply_Operator
-                    Case SyntaxType.Multiply_Equals_Operator
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     Case SyntaxType.Divide_Operator
-                    Case SyntaxType.Divide_Equals_Operator
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                 End Select
 
             End Function
@@ -230,20 +273,35 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _ComparisionExpression() As ExpressionSyntaxNode
-                Select Case LookaheadSyntaxType
+
+                Select Case CurrentToken._SyntaxType
                     Case SyntaxType.GreaterThan_Operator
-                    Case SyntaxType.Add_Equals_Operator
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                    Case SyntaxType.EquivelentTo
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                    Case SyntaxType.NotEquivelentTo
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     Case SyntaxType.LessThanOperator
-                    Case SyntaxType.LessThanEquals
+                        Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                 End Select
+
             End Function
             ''' <summary>
             ''' Identifier =
             ''' </summary>
             ''' <returns></returns>
             Public Function _AssignmentExpression() As ExpressionSyntaxNode
-                Select Case LookaheadSyntaxType
+
+                Select Case CurrentToken._SyntaxType
+
                     Case SyntaxType._SIMPLE_ASSIGN
+                    Case SyntaxType.LessThanEquals
+                    Case SyntaxType.GreaterThanEquals
+                    Case SyntaxType.Multiply_Equals_Operator
+                    Case SyntaxType.Divide_Equals_Operator
+                    Case SyntaxType.Add_Equals_Operator
+                    Case SyntaxType.Minus_Equals_Operator
+
 
                 End Select
 
@@ -253,7 +311,10 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <returns></returns>
             Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
-
+                Select Case CurrentToken._SyntaxType
+                    Case SyntaxType.LetKeyword
+                    Case SyntaxType._DIM
+                End Select
 
             End Function
             ''' <summary>

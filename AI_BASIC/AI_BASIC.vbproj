@@ -79,6 +79,7 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Lexer.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Parser.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Transpiler.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\Binder.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
@@ -215,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="IconUFP.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

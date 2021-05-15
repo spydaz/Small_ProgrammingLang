@@ -93,6 +93,25 @@ Namespace SpydazWeb.AI.Basic
 
                     Return New SyntaxToken(SyntaxType.WhiteSpace, "WhiteSpace", _start, _iText, _iText)
                 End If
+                'Identifers
+                If Char.IsLetter(CurrentChar) Then
+                    'Capture StartPoint ForSlicer
+                    _start = _Position
+                    'UseInternal Lexer PER (CHAR)
+                    While Char.IsLetter(CurrentChar)
+                        'Iterate Forwards until end of Letters
+                        _Next()
+                    End While
+                    'get length 
+                    _length = _Position - _start
+                    'Get Slice
+                    _iText = _Script.Substring(_start, _length)
+
+                    _iText.GetKeywordSyntaxType()
+                    Return New SyntaxToken(_iText.GetKeywordSyntaxType(), "KeyWord", _Position, _iText, _iText)
+
+                End If
+
                 'Operators
                 Select Case Current
                     Case ChrW(10), ChrW(13)
@@ -414,8 +433,77 @@ Namespace SpydazWeb.AI.Basic
                 NumericalExpression = 201
                 BinaryExpression = 202
                 EOF
+#Region "Keywords"
+                BreakKeyword = 201
+                ToKeyword = 202
+                ForKeyword = 203
+                TrueKeyword = 204
+                FalseKeyword = 205
+                LetKeyword = 206
+                ReturnKeyword = 207
+                VarKeyword = 208
+                FunctionKeyword = 209
+                IfKeyword = 210
+                ContinueKeyword = 211
+                ElseKeyword = 212
+                WhileKeyword = 213
+                DoKeyword = 214
+                _Identifier = 215
+#End Region
             End Enum
             Namespace SyntaxNodes
+                Public Module Facts
+                    <Runtime.CompilerServices.Extension()>
+                    Function GetKeywordSyntaxType(text As String) As SyntaxType
+
+                        Select Case text
+
+                            Case "true"
+                                Return SyntaxType.TrueKeyword
+                            Case "false"
+                                Return SyntaxType.FalseKeyword
+
+                            Case "let"
+                                Return SyntaxType.LetKeyword
+                            Case "return"
+                                Return SyntaxType.ReturnKeyword
+                            Case "var"
+                                Return SyntaxType.VarKeyword
+
+                            Case "function"
+                                Return SyntaxType.FunctionKeyword
+                            Case "if"
+                                Return SyntaxType.IfKeyword
+        'Case "then"
+        '  Return SyntaxKind.ThenKeyword
+                            Case "break"
+                                Return SyntaxType.BreakKeyword
+                            Case "continue"
+                                Return SyntaxType.ContinueKeyword
+                            Case "else"
+                                Return SyntaxType.ElseKeyword
+        'Case "elseif"
+        '  Return SyntaxKind.ElseIfKeyword
+        'Case "endif"
+        '  Return SyntaxKind.ElseIfKeyword
+
+                            Case "while"
+                                Return SyntaxType.WhileKeyword
+                            Case "do"
+                                Return SyntaxType.DoKeyword
+
+                            Case "for"
+                                Return SyntaxType.ForKeyword
+                            Case "to"
+                                Return SyntaxType.ToKeyword
+
+                            Case Else
+                                Return SyntaxType._Identifier
+                        End Select
+
+                    End Function
+                End Module
+
                 Public Class Ast_SyntaxTree
                     Public Syntax As List(Of Ast_ExpressionSyntaxNode)
                     Public Diagnostics As List(Of String)

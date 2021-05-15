@@ -1,4 +1,5 @@
-﻿Imports System.Text
+﻿Imports System.Runtime.CompilerServices
+Imports System.Text
 Imports System.Web.Script.Serialization
 
 Namespace Syntax
@@ -8,6 +9,99 @@ Namespace Syntax
         LOGO
         Unknown
     End Enum
+    Public Module SyntaxFacts
+        <Runtime.CompilerServices.Extension()>
+        Function GetKeywordSyntaxType(text As String) As SyntaxType
+
+            Select Case text
+
+                Case "true"
+                    Return SyntaxType.TrueKeyword
+                Case "false"
+                    Return SyntaxType.FalseKeyword
+
+                Case "let"
+                    Return SyntaxType.LetKeyword
+                Case "return"
+                    Return SyntaxType.ReturnKeyword
+                Case "var"
+                    Return SyntaxType.VarKeyword
+
+                Case "function"
+                    Return SyntaxType.FunctionKeyword
+                Case "if"
+                    Return SyntaxType.IfKeyword
+        'Case "then"
+        '  Return SyntaxKind.ThenKeyword
+                Case "break"
+                    Return SyntaxType.BreakKeyword
+                Case "continue"
+                    Return SyntaxType.ContinueKeyword
+                Case "else"
+                    Return SyntaxType.ElseKeyword
+        'Case "elseif"
+        '  Return SyntaxKind.ElseIfKeyword
+        'Case "endif"
+        '  Return SyntaxKind.ElseIfKeyword
+
+                Case "while"
+                    Return SyntaxType.WhileKeyword
+                Case "do"
+                    Return SyntaxType.DoKeyword
+
+                Case "for"
+                    Return SyntaxType.ForKeyword
+                Case "to"
+                    Return SyntaxType.ToKeyword
+
+                Case Else
+                    Return SyntaxType._Identifier
+            End Select
+
+        End Function
+        <Runtime.CompilerServices.Extension()>
+        Public Function GetUnaryOperatorPrecedence(kind As SyntaxType) As Integer
+            Select Case kind
+                Case SyntaxType.Add_Operator, SyntaxType.Sub_Operator
+                    ' SyntaxKind.BangToken,
+                    '   SyntaxKind.TildeToken
+                    Return 6
+
+                Case Else
+                    Return 0
+            End Select
+        End Function
+        <Runtime.CompilerServices.Extension()>
+        Public Function GetBinaryOperatorPrecedence(kind As SyntaxType) As Integer
+            Select Case kind
+
+                Case SyntaxType.Multiply_Operator, SyntaxType.Divide_Operator
+                    Return 5
+                Case SyntaxType.Add_Operator, SyntaxType.Sub_Operator
+                    Return 4
+
+                Case SyntaxType.EquivelentTo,
+                     SyntaxType.NotEqual,
+                     SyntaxType.LessThanOperator,
+                     SyntaxType.LessThanEquals,
+                     SyntaxType.GreaterThanEquals,
+                     SyntaxType.GreaterThan_Operator
+                    Return 3
+
+                Case SyntaxType._LOGICAL_AND
+                    'SyntaxType.AmpersandAmpersandToken
+                    Return 2
+
+                Case SyntaxType._LOGICAL_OR
+                    ' SyntaxType.PipePipeToken,
+                    ' SyntaxType.HatToken
+                    Return 1
+
+                Case Else
+                    Return 0
+            End Select
+        End Function
+    End Module
     ''' <summary>
     ''' Token to be returned contain as much information required,
     ''' for the Parser to make a decision on how to handle the token.
@@ -103,12 +197,7 @@ Namespace Syntax
             If syntaxTypeStr Is Nothing Then
                 Throw New ArgumentNullException(NameOf(syntaxTypeStr))
             End If
-            If raw Is Nothing Then
-                Throw New ArgumentNullException(NameOf(raw))
-            End If
-            If value Is Nothing Then
-                Throw New ArgumentNullException(NameOf(value))
-            End If
+
             'Intialize Token
             _SyntaxType = _sType
             _SyntaxTypeStr = syntaxTypeStr
@@ -197,6 +286,8 @@ Namespace Syntax
         'ExpressionSyntax
         'Single numeric
         _NumericLiteralExpression = 100
+        ' -3 +2
+        _UnaryExpression = 105
         'Left +/-*><= _Right
         _BinaryExpression = 110
         'Left=Right
@@ -208,7 +299,7 @@ Namespace Syntax
         _VariableDeclaration
 #End Region
 #Region "MainLanguage"
-#Region "Functions"
+#Region "Functions - Used In Universal RegexSearches"
         _IF = 60
         _ELSE = 61
         _THEN = 62
@@ -221,10 +312,12 @@ Namespace Syntax
         _TO = 82
         _NEXT = 83
         _IN = 84
+        _DIM = 85
         _PRINT = 90
         _FUNCTION_DECLARE = 95
         _RETURN = 96
 #End Region
+
 #Region "Logo"
         'LOGO LANG
         '
@@ -308,6 +401,24 @@ Namespace Syntax
         BASIC_LANG = 772
 
 
+
+
+#End Region
+#Region "Keywords"
+        BreakKeyword = 201
+        ToKeyword = 202
+        ForKeyword = 203
+        TrueKeyword = 204
+        FalseKeyword = 205
+        LetKeyword = 206
+        ReturnKeyword = 207
+        VarKeyword = 208
+        FunctionKeyword = 209
+        IfKeyword = 210
+        ContinueKeyword = 211
+        ElseKeyword = 212
+        WhileKeyword = 213
+        DoKeyword = 214
 #End Region
 #End Region
     End Enum

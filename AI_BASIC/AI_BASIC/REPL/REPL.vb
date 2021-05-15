@@ -19,7 +19,7 @@ Namespace REPL
         ''' <summary>
         ''' Check / Report Diagnostics
         ''' </summary>
-        Private Evaluateable As Boolean = DisplayDiagnostics()
+        Private ReadOnly Evaluateable As Boolean = DisplayDiagnostics()
         ''' <summary>
         ''' disable for Compile only
         ''' </summary>
