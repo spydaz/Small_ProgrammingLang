@@ -368,6 +368,7 @@ Namespace Syntax
         _LIST_SEPERATOR = 35
         _LIST_END = 36
         _LIST_BEGIN = 37
+        _STATEMENT_END = 38
 
         'Literals
         '

@@ -93,7 +93,24 @@ Namespace CodeAnalysis
                 'Operators
                 Select Case CurrentChar
                     Case ChrW(10), ChrW(13)
-                        Return New SyntaxToken(SyntaxType._EndOfLineToken, "EOL", "EOL", "EOL", _start, CursorPosition)
+                        Return New SyntaxToken(SyntaxType._EndOfLineToken, SyntaxType._EndOfLineToken.GetSyntaxTypeStr, "EOL", "EOL", _start, CursorPosition)
+                    Case ","c
+                        Return New SyntaxToken(SyntaxType._LIST_SEPERATOR, SyntaxType._LIST_SEPERATOR.GetSyntaxTypeStr, ",", ",", _start, CursorPosition)
+                    Case ";"c
+                        Return New SyntaxToken(SyntaxType._STATEMENT_END, SyntaxType._STATEMENT_END.GetSyntaxTypeStr, ";", ";", _start, CursorPosition)
+                    Case "{"c
+                        _start = CursorPosition
+                        _length = 1
+                        CursorPosition += _length
+                        Return New SyntaxToken(SyntaxType._CODE_BEGIN, SyntaxType._CODE_BEGIN.GetSyntaxTypeStr, "{", "{", _start, CursorPosition)
+
+
+                    Case "}"c
+                        _start = CursorPosition
+                        _length = 1
+                        CursorPosition += _length
+                        Return New SyntaxToken(SyntaxType._CODE_END, SyntaxType._CODE_END.GetSyntaxTypeStr, "}", "}", _start, CursorPosition)
+
 
                     Case "+"
                         If Lookahead = "=" Then
@@ -234,6 +251,11 @@ Namespace CodeAnalysis
                     Return ReadString()
                 End If
 
+                If CurrentChar = "@" Then
+                    Return New SyntaxToken(SyntaxType._EndOfFileToken, SyntaxType._EndOfFileToken.GetSyntaxTypeStr, "EOF", "EOF", _start, _start + _length)
+
+                Else
+                End If
 
                 CursorPosition += 1
                 _Diagnostics.Add("Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
@@ -478,36 +500,7 @@ Namespace CodeAnalysis
                 Loop
                 Return iMatches
             End Function
-            Public Shared Function LexTokens(ByRef Line As String) As List(Of SyntaxToken)
-                Dim Itok As SyntaxToken
-                'Original Tokenizer
-                Dim SAL_VB_LEXER As New Lexer(Line)
-                Dim lst As New List(Of SyntaxToken)
-                While True
-                    Itok = SAL_VB_LEXER._NextToken
-                    If Itok._SyntaxType = SyntaxType._EndOfFileToken Then
 
-                        Exit While
-
-                    Else
-                        ' Console.WriteLine(vbNewLine & "Tokens> " & vbNewLine & "Text: " & Itok._Text & vbNewLine & "Type: " & Itok._SyntaxStr & vbNewLine)
-                        lst.Add(Itok)
-                    End If
-                End While
-                'TOKENIZER DIAGNOSTICS
-                If SAL_VB_LEXER._Diagnostics.Count > 0 Then
-                    Console.ForegroundColor = ConsoleColor.Red
-                    Console.WriteLine("Tokenizer Error:" & vbNewLine)
-                    For Each item In SAL_VB_LEXER._Diagnostics
-
-                        Console.WriteLine(item & vbNewLine)
-
-                    Next
-                    'Enable wait
-                    Dim UserInput_LINE = Console.ReadLine()
-                End If
-                Return lst
-            End Function
         End Class
     End Namespace
 End Namespace

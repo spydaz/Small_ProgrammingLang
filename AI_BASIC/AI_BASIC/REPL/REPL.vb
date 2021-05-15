@@ -101,21 +101,6 @@ Namespace REPL
                 UserInput_LINE = Console.ReadLine()
             End If
 #End Region
-#Region "Main Compiler"
-
-
-
-
-
-
-
-
-
-#End Region
-
-
-
-
 
         End Sub
         Public Sub RunScript()

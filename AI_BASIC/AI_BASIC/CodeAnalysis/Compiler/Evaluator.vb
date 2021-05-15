@@ -91,7 +91,8 @@ Namespace CodeAnalysis
                         Console.WriteLine(item & vbNewLine)
                     Next
                     'Tokens
-                    Lexer.LexTokens(UserInput_LINE)
+
+
                     Evaluateable = True
                     Return True
 

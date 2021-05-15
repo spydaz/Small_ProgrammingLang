@@ -17,8 +17,6 @@ Module REPL_
     End Sub
     Sub main()
         _Show_title()
-
-
         While True
             SetReplCode()
             _GetInput()
@@ -60,14 +58,12 @@ Module REPL_
 #End Region
             _CreateLexer()
             _LexTokens()
-            '  RunScript()
-
-
+            RunScript()
         End While
 
 
     End Sub
-    Public Sub RunScript()
+    Private Sub RunScript()
         ':::_EVALUATE_::: 
         If DisplayDiagnostics() = True Then
             If EvaluateScript = True Then
@@ -75,6 +71,7 @@ Module REPL_
                 Console.ForegroundColor = ConsoleColor.Green
                 Dim Eval As New Evaluator(ExpressionTree)
                 Dim Result = Eval._Evaluate
+                Console.ForegroundColor = ConsoleColor.DarkGray
                 Console.WriteLine(Result & vbNewLine)
             End If
 
@@ -93,9 +90,10 @@ Module REPL_
         SAL_VB_LEXER = New Lexer(Line)
     End Sub
     Public Sub _LexTokens()
-        TokenTree = New List(Of SyntaxToken)
+
         Dim Token As SyntaxToken
         DisplayToken_Tree()
+
 
         While True
             Token = SAL_VB_LEXER._NextToken
@@ -108,13 +106,14 @@ Module REPL_
                 Console.WriteLine(Token.ToJson)
             End If
         End While
+
     End Sub
     Private Sub SetReplCode()
         Console.ForegroundColor = ConsoleColor.Yellow
     End Sub
     Private Function DisplayDiagnostics() As Boolean
         ExpressionTree = SyntaxTree.Parse(Line)
-        If TokenTree IsNot Nothing Then
+        If ExpressionTree IsNot Nothing Then
             'Catch Errors
             If ExpressionTree.Diagnostics.Count > 0 Then
                 'Tokens
