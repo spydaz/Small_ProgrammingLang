@@ -111,6 +111,8 @@ Namespace Syntax
         Public Function GetSyntaxTypeStr(ByRef _Syntaxtype As SyntaxType) As String
             Select Case _Syntaxtype
 'literals
+                Case SyntaxType._String
+                    Return "_String"
                 Case SyntaxType._Integer
                     Return "_Integer"
                 Case SyntaxType._Identifier

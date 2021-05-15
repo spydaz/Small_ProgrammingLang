@@ -1,4 +1,5 @@
 ﻿
+Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
 Imports System.Windows.Forms
@@ -127,6 +128,11 @@ Namespace CodeAnalysis
                 Else
                 End If
 
+                If CurrentChar = ChrW(34) Then
+                    Return ReadString()
+                End If
+
+
                 CursorPosition += 1
                 _Diagnostics.Add("Unrecognized Character in input: '" & CurrentChar & "' at Position : " & CursorPosition - 1)
                 Return New SyntaxToken(SyntaxType._UnknownToken, SyntaxType._UnknownToken.GetSyntaxTypeStr, _iText, _iText, _start, CursorPosition)
@@ -201,6 +207,51 @@ Namespace CodeAnalysis
 
                 End If
                 Return Nothing
+            End Function
+            Private Function ReadString() As SyntaxToken
+                '-string
+                Dim _start As Integer = 0
+                Dim _length As Integer = 0
+                Dim _iText As String = ""
+                ' "Test \" dddd"
+                ' "Test "" dddd"
+
+                ' skip the current quote
+                CursorPosition += 1
+                'Capture StartPoint ForSlicer
+                _start = CursorPosition
+                Dim sb = New StringBuilder
+                Dim done = False
+
+                While Not done
+                    Select Case CurrentChar
+                        Case ChrW(0), ChrW(13), ChrW(10)
+
+
+                            done = True
+                        Case """"c
+                            If GetSlice(CursorPosition, 1) = """"c Then
+                                '  sb.Append(CurrentChar)
+                                _length = CursorPosition - _start
+                                CursorPosition += 2
+                                done = True
+                            Else
+                                'get length 
+                                _length = CursorPosition - _start
+                                CursorPosition += 1
+
+                                done = True
+                            End If
+                        Case Else
+                            sb.Append(CurrentChar)
+                            CursorPosition += 1
+                    End Select
+                End While
+
+
+                _iText = sb.ToString
+                Return New SyntaxToken(SyntaxType._String, SyntaxType._String.GetSyntaxTypeStr, _iText, _iText, _start, _start + _length)
+
             End Function
             ''' <summary>
             ''' Checks token without moving the cursor
