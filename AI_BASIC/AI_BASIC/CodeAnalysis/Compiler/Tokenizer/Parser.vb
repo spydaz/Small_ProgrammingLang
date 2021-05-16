@@ -1,6 +1,7 @@
 ﻿Imports System.Web
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports Microsoft.VisualBasic.CompilerServices
 
 Namespace CodeAnalysis
     Namespace Compiler
@@ -209,40 +210,16 @@ Namespace CodeAnalysis
                     Return Lst
                 End Function
                 Public Function _Expression()
-                    Return _PrimaryExpression()
-                End Function
-
-                ''' <summary>
-                ''' Literal
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _LiteralExpression() As ExpressionSyntaxNode
 
                     Select Case CurrentToken._SyntaxType
-                        Case SyntaxType._Integer
-                            Return _NumericLiteralExpression()
-                        Case SyntaxType._Decimal
-                            Return _NumericLiteralExpression()
-                        Case SyntaxType._String
-                        Case SyntaxType._arrayList
+                        Case SyntaxType.LetKeyword
+                            Return _VariableDeclarationExpression()
+                        Case SyntaxType.DimKeyword
+                            Return _VariableDeclarationExpression()
+                        Case Else
+                            Return _PrimaryExpression()
                     End Select
-                    _Diagnostics.Add("unknown _Literal? " & vbNewLine & CurrentToken.ToJson)
-                    Return Nothing
-                End Function
-                Public Function _NumericLiteralExpression()
-                    Dim NewNode As SyntaxToken
-                    Select Case CurrentToken._SyntaxType
-                        Case SyntaxType._Integer
-                            'Consume Token
-                            NewNode = _MatchToken(SyntaxType._Integer)
-                            Return New NumericalExpression(NewNode)
-                        Case SyntaxType._Decimal
-                            'Consume Token
-                            NewNode = _MatchToken(SyntaxType._Decimal)
-                            Return New NumericalExpression(NewNode)
-                    End Select
-                    _Diagnostics.Add("unknown _NumericLiteralExpression? " & vbNewLine & CurrentToken.ToJson)
-                    Return Nothing
+
                 End Function
                 Public Function _UnaryExpression(ByRef _Operator As SyntaxToken) As ExpressionSyntaxNode
                     Dim x = New UnaryExpression(_Operator, _NumericLiteralExpression)
@@ -254,129 +231,140 @@ Namespace CodeAnalysis
                 ''' </summary>
                 ''' <returns></returns>
                 Public Function _PrimaryExpression() As ExpressionSyntaxNode
-
+                    Dim _Left As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType.Add_Operator
                             If LookaheadSyntaxType = SyntaxType._Integer Then
-                                Return _UnaryExpression(_MatchToken(SyntaxType.Add_Operator))
+                                _Left = _UnaryExpression(_MatchToken(SyntaxType.Add_Operator))
+
+                                Return _LeftHandExpression(_Left)
                             Else
-                                _Diagnostics.Add("unknown _UnaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                                Return _LeftHandExpression(_Left)
                             End If
                         Case SyntaxType.Sub_Operator
                             If LookaheadSyntaxType = SyntaxType._Integer Then
-                                Return _UnaryExpression(_MatchToken(SyntaxType.Sub_Operator))
+                                _Left = _UnaryExpression(_MatchToken(SyntaxType.Sub_Operator))
+
+                                Return _LeftHandExpression(_Left)
                             Else
-                                _Diagnostics.Add("unknown _UnaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                                Return _LeftHandExpression(_Left)
                             End If
                         Case SyntaxType._Integer, SyntaxType._Decimal, SyntaxType._arrayList, SyntaxType._String
-                            Return _LiteralExpression()
+                            Return _LeftHandExpression(_LiteralExpression())
+                        Case SyntaxType._Identifier
+                            Return _LeftHandExpression(_IdentifierExpression())
+
                     End Select
-                    _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & _Left.ToJson)
+                    Return _Left
+                End Function
+                Public Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode)
+                    Select Case CurrentToken._SyntaxType
+
+                                    'Simple Assign
+                        Case SyntaxType.Equals
+                            Return _AssignmentExpression(_left)
+                                    'Complex Assign
+                        Case SyntaxType.Add_Equals_Operator
+                            Return _AssignmentExpression(_left)
+                        Case SyntaxType.Divide_Equals_Operator
+                            Return _AssignmentExpression(_left)
+                        Case SyntaxType.Minus_Equals_Operator
+                            Return _AssignmentExpression(_left)
+                        Case SyntaxType.Multiply_Equals_Operator
+                            Return _AssignmentExpression(_left)
+                                    'Compare
+                        Case SyntaxType.GreaterThanEquals
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.LessThanEquals
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.NotEqual
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.EquivelentTo
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.GreaterThan_Operator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.LessThanOperator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                                    'Maths
+                        Case SyntaxType.Add_Operator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.Divide_Operator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.Sub_Operator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                        Case SyntaxType.Multiply_Operator
+                            Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
+                    End Select
+                    _Diagnostics.Add("unknown _BinaryExpression? " & vbNewLine & CurrentToken.ToJson)
                     Return Nothing
                 End Function
-                Public Function _LeftHandExpression()
 
-                End Function
                 ''' <summary>
                 ''' Left Operator Right
                 ''' </summary>
                 ''' <returns></returns>
-                Public Function _BinaryExpression() As ExpressionSyntaxNode
+                Public Function _BinaryExpression(ByRef _Left As ExpressionSyntaxNode, ByRef Precedence As Integer) As ExpressionSyntaxNode
+
+                    Dim _Operator As New SyntaxToken
+                    Dim Right As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
+                                    'Simple Assign
+                        Case SyntaxType.Equals
+                            _Operator = _MatchToken(SyntaxType.Equals)
 
-                        Case SyntaxType.Add_Operator
-                            Return _FactorExpression()
-                        Case SyntaxType.Sub_Operator
-                            Return _FactorExpression()
-                        Case SyntaxType.Divide_Operator
-                            Return _TermExpression()
-                        Case SyntaxType.Multiply_Operator
-                            Return _TermExpression()
-
-                    End Select
-                    Return Nothing
-                End Function
-                Public Function _BinaryExpression(ByRef Precedence As Integer) As ExpressionSyntaxNode
-                    Precedence = 0
-
-                End Function
-                ''' <summary>
-                ''' Addative +- Addative
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _FactorExpression() As ExpressionSyntaxNode
-
-                    Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.Add_Operator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                        Case SyntaxType.Sub_Operator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                    End Select
-
-                End Function
-                ''' <summary>
-                ''' Multiplicative */ Multiplicative
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _TermExpression() As ExpressionSyntaxNode
-
-                    Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.Multiply_Operator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                        Case SyntaxType.Divide_Operator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                    End Select
-
-                End Function
-                ''' <summary>
-                ''' Expression ComparesTo Expression
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _ComparisionExpression() As ExpressionSyntaxNode
-
-                    Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.GreaterThan_Operator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                        Case SyntaxType.EquivelentTo
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                        Case SyntaxType.NotEqual
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                        Case SyntaxType.LessThanOperator
-                            Return _BinaryExpression(CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
-                    End Select
-
-                End Function
-                ''' <summary>
-                ''' Identifier =
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _AssignmentExpression() As ExpressionSyntaxNode
-
-                    Select Case CurrentToken._SyntaxType
-
-                        Case SyntaxType._SIMPLE_ASSIGN
-                        Case SyntaxType.LessThanEquals
-                        Case SyntaxType.GreaterThanEquals
-                        Case SyntaxType.Multiply_Equals_Operator
-                        Case SyntaxType.Divide_Equals_Operator
+                                    'Complex Assign
                         Case SyntaxType.Add_Equals_Operator
+                            _Operator = _MatchToken(SyntaxType.Add_Equals_Operator)
+
+                        Case SyntaxType.Divide_Equals_Operator
+                            _Operator = _MatchToken(SyntaxType.Divide_Equals_Operator)
+
                         Case SyntaxType.Minus_Equals_Operator
+                            _Operator = _MatchToken(SyntaxType.Minus_Equals_Operator)
 
+                        Case SyntaxType.Multiply_Equals_Operator
+                            _Operator = _MatchToken(SyntaxType.Multiply_Equals_Operator)
+
+                                    'Compare
+                        Case SyntaxType.GreaterThanEquals
+                            _Operator = _MatchToken(SyntaxType.GreaterThanEquals)
+
+                        Case SyntaxType.LessThanEquals
+                            _Operator = _MatchToken(SyntaxType.LessThanEquals)
+
+                        Case SyntaxType.NotEqual
+                            _Operator = _MatchToken(SyntaxType.NotEqual)
+
+                        Case SyntaxType.EquivelentTo
+                            _Operator = _MatchToken(SyntaxType.EquivelentTo)
+
+                        Case SyntaxType.GreaterThan_Operator
+                            _Operator = _MatchToken(SyntaxType.GreaterThan_Operator)
+
+                        Case SyntaxType.LessThanOperator
+                            _Operator = _MatchToken(SyntaxType.LessThanOperator)
+
+                                    'Maths
+                        Case SyntaxType.Add_Operator
+                            _Operator = _MatchToken(SyntaxType.Add_Operator)
+
+                        Case SyntaxType.Divide_Operator
+                            _Operator = _MatchToken(SyntaxType.Divide_Operator)
+
+                        Case SyntaxType.Sub_Operator
+                            _Operator = _MatchToken(SyntaxType.Sub_Operator)
+
+                        Case SyntaxType.Multiply_Operator
+                            _Operator = _MatchToken(SyntaxType.Multiply_Operator)
 
                     End Select
-
+                    Right = _PrimaryExpression()
+                    Dim x = New BinaryExpression(_Left, Right, _Operator)
+                    Return x
                 End Function
-                ''' <summary>
-                ''' DIM/LET
-                ''' </summary>
-                ''' <returns></returns>
-                Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
-                    Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.LetKeyword
-                        Case SyntaxType.DimKeyword
-                    End Select
-
-                End Function
+#End Region
+#Region "Blocks"
                 ''' <summary>
                 ''' {Expression;Expression;}
                 ''' </summary>
@@ -400,6 +388,133 @@ Namespace CodeAnalysis
                 Public Function _ListExpression() As ExpressionSyntaxNode
 
 
+                End Function
+#End Region
+#Region "Variables"
+                ''' <summary>
+                ''' Identifier =
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _AssignmentExpression(ByRef Left As IdentifierExpression) As ExpressionSyntaxNode
+
+                    Select Case CurrentToken._SyntaxType
+
+                        Case SyntaxType.Equals
+                            Dim _Operator = _MatchToken(SyntaxType.Equals)
+
+                        Case SyntaxType.Multiply_Equals_Operator
+                            Dim _Operator = _MatchToken(SyntaxType.Multiply_Equals_Operator)
+                        Case SyntaxType.Divide_Equals_Operator
+                            Dim _Operator = _MatchToken(SyntaxType.Divide_Equals_Operator)
+                        Case SyntaxType.Add_Equals_Operator
+                            Dim _Operator = _MatchToken(SyntaxType.Add_Equals_Operator)
+                        Case SyntaxType.Minus_Equals_Operator
+                            Dim _Operator = _MatchToken(SyntaxType.Minus_Equals_Operator)
+
+                    End Select
+                    Dim _right = _PrimaryExpression()
+                    'Todo: Requires Assignment Expression
+                    _Diagnostics.Add("unknown _AssignmentExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                ''' <summary>
+                ''' DIM/LET
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.LetKeyword
+                            Dim _LetKeyword = _MatchToken(SyntaxType.LetKeyword)
+                            CursorPosition += 1
+                        Case SyntaxType.DimKeyword
+                            Dim _DimKeyword = _MatchToken(SyntaxType.DimKeyword)
+                            CursorPosition += 1
+                    End Select
+
+
+                    Dim left = _IdentifierExpression()
+                    CursorPosition += 1
+                    Dim _Operator = _MatchToken(SyntaxType.Equals)
+                    CursorPosition += 1
+                    'TODO : Requires Deleration Expression 
+                    Dim _Type = _TypeExpression()
+                    _Diagnostics.Add("unknown _VariableDeclarationExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _TypeExpression() As SyntaxType
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._BooleanType
+                            _MatchToken(SyntaxType._BooleanType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._IntegerType
+                            _MatchToken(SyntaxType._IntegerType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._DecimalType
+                            _MatchToken(SyntaxType._DecimalType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._StringType
+                            _MatchToken(SyntaxType._StringType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._ArrayType
+                            _MatchToken(SyntaxType._ArrayType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._DateType
+                            _MatchToken(SyntaxType._DateType)
+                            Return CurrentToken._SyntaxType
+                        Case SyntaxType._NullType
+                            _MatchToken(SyntaxType._NullType)
+                            Return CurrentToken._SyntaxType
+                    End Select
+                    _Diagnostics.Add("unknown _TypeExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return SyntaxType._null
+                End Function
+#End Region
+#Region "Literals"
+                ''' <summary>
+                ''' Literal
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _LiteralExpression() As ExpressionSyntaxNode
+
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._Integer
+                            Return _NumericLiteralExpression()
+                        Case SyntaxType._Decimal
+                            Return _NumericLiteralExpression()
+                        Case SyntaxType._String
+                        Case SyntaxType._arrayList
+                    End Select
+                    _Diagnostics.Add("unknown _Literal? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _IdentifierExpression() As IdentifierExpression
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._Identifier
+                            Dim _left = New IdentifierExpression(_MatchToken(SyntaxType._Identifier))
+                            CursorPosition += 1
+                            Return _left
+                    End Select
+
+
+                    _Diagnostics.Add("unknown _IdentifierExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _NumericLiteralExpression()
+                    Dim NewNode As SyntaxToken
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._Integer
+                            'Consume Token
+                            NewNode = _MatchToken(SyntaxType._Integer)
+                            CursorPosition += 1
+                            Return New NumericalExpression(NewNode)
+                        Case SyntaxType._Decimal
+                            'Consume Token
+                            NewNode = _MatchToken(SyntaxType._Decimal)
+                            CursorPosition += 1
+                            Return New NumericalExpression(NewNode)
+                    End Select
+                    _Diagnostics.Add("unknown _NumericLiteralExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
                 End Function
 #End Region
             End Class

@@ -9,12 +9,44 @@ Namespace Syntax
         LOGO
         Unknown
     End Enum
+    Public Enum LiteralTypes
+        _Boolean
+        _String
+        _Array
+        _Integer
+        _Decimal
+        _Date
+    End Enum
+    Public Enum BinaryOperations
+        _Comparison
+        _Multiplcative
+        _Addative
+        _Assignment
+    End Enum
+    Public Enum Functions
+        If_Then_Function
+        If_Then_Else_Function
+        For_Next_Function
+        Do_While_Function
+        Do_Until_Function
+        Variable_Declare_Function
+        Binary_Operation
+    End Enum
     Public Module SyntaxFacts
         <Runtime.CompilerServices.Extension()>
         Function GetKeywordSyntaxType(text As String) As SyntaxType
 
             Select Case text
-
+                Case "string"
+                    Return SyntaxType._StringType
+                Case "boolean"
+                    Return SyntaxType._BooleanType
+                Case "array"
+                    Return SyntaxType._ArrayType
+                Case "integer"
+                    Return SyntaxType._IntegerType
+                Case "decimal"
+                    Return SyntaxType._DecimalType
                 Case "true"
                     Return SyntaxType.TrueKeyword
                 Case "false"
@@ -398,6 +430,7 @@ Namespace Syntax
         _ParenthesizedExpresion = 130
         'List pf (Expr)
         _CodeBlock = 140
+
         _VariableDeclaration
 #End Region
 #Region "MainLanguage"
@@ -516,6 +549,13 @@ Namespace Syntax
         UntilKeword = 215
         ThenKeyword = 216
         DimKeyword = 217
+        _StringType = 218
+        _ArrayType = 219
+        _IntegerType = 220
+        _DecimalType = 221
+        _BooleanType = 222
+        _DateType = 223
+        _NullType = 224
 #End Region
 #End Region
     End Enum
