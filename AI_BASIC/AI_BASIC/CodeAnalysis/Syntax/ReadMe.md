@@ -22,6 +22,7 @@
     -Project file manager(compilerSevices)
 ### Would hope to be able.
         Add Functions / Classes 
+        Implement a Runtime ie add a refference to AI_SDK as Extension Library. ?_import functions and classes__
 
 ### Defining the syntax for the language requires components to be unified, regardless of the syntax you decide upon
  
