@@ -74,18 +74,19 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\Compilation.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Evaluator.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Lexer.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Parser.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Transpiler.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\Evaluator.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Lexer.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Parser.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Emit\Transpiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\Binder.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
-    <Compile Include="AI_BASIC\Program.vb" />
-    <Compile Include="AI_BASIC\REPL\REPL.vb" />
-    <Compile Include="AI_BASIC\REPL\REPL_.vb" />
+    <Compile Include="AI_BASIC\MAIN\Program.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\CompilerRepl.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\InterpretorRepl.vb" />
     <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
       <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </Compile>

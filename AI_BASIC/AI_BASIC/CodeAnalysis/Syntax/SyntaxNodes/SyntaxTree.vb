@@ -2,6 +2,7 @@
 Imports System.Text
 Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Compiler
+Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 ''' <summary>

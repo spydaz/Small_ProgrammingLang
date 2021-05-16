@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Compiler
+Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
 Imports AI_BASIC.Syntax
 
 Public Class SAL_ZX21_SPL_BASIC_REPL
