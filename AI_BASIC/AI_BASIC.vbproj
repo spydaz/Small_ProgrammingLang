@@ -147,6 +147,8 @@
     </Compile>
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
+    <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\ReadMe.md" />
+    <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
     <None Include="AI_BASIC\Readme.Md" />
@@ -222,8 +224,6 @@
   <ItemGroup>
     <Content Include="IconUFP.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
