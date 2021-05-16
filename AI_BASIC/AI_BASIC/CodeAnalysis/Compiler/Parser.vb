@@ -253,10 +253,14 @@ Namespace CodeAnalysis
                     Case SyntaxType.Add_Operator
                         If LookaheadSyntaxType = SyntaxType._Integer Then
                             Return _UnaryExpression(_MatchToken(SyntaxType.Add_Operator))
+                        Else
+                            _Diagnostics.Add("unknown _UnaryExpression? " & vbNewLine & CurrentToken.ToJson)
                         End If
                     Case SyntaxType.Sub_Operator
                         If LookaheadSyntaxType = SyntaxType._Integer Then
                             Return _UnaryExpression(_MatchToken(SyntaxType.Sub_Operator))
+                        Else
+                            _Diagnostics.Add("unknown _UnaryExpression? " & vbNewLine & CurrentToken.ToJson)
                         End If
                     Case SyntaxType._Integer, SyntaxType._Decimal, SyntaxType._arrayList, SyntaxType._String
                         Return _LiteralExpression()

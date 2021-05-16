@@ -10,6 +10,7 @@ Module REPL_
     Private EvaluateScript As Boolean = True
     Private ShowTree As Boolean = True
     Private ShowTokens As Boolean = True
+    Private ShowDiagnostics As Boolean = True
     Private _diagnostics As New List(Of String)
     Private SAL_VB_PARSER As Parser
     Private Sub _Show_title()
@@ -58,14 +59,13 @@ Module REPL_
             End If
 #End Region
             _CreateLexer()
-            _LexTokens()
+            If ShowTokens = True Then _LexTokens()
             RunScript()
         End While
 
 
     End Sub
     Private Sub RunScript()
-
         ':::_EVALUATE_::: 
         If DisplayDiagnostics() = True Then
             Dim Result = ""
@@ -84,14 +84,18 @@ Module REPL_
             Console.WriteLine("Unable to Evaluate" & vbNewLine)
             _diagnostics = New List(Of String)
         End If
-
     End Sub
     Private Sub GetDiagnostics()
         _diagnostics.AddRange(SAL_VB_LEXER._Diagnostics)
         _diagnostics.AddRange(ExpressionTree.Diagnostics)
     End Sub
     Private Sub DisplayToken_Tree()
-        Console.ForegroundColor = ConsoleColor.White
+        If _diagnostics.Count > 0 Then
+            Console.ForegroundColor = ConsoleColor.Gray
+        Else
+            Console.ForegroundColor = ConsoleColor.DarkYellow
+        End If
+
     End Sub
     Public Sub _GetInput()
         Line = Console.ReadLine()
@@ -134,17 +138,24 @@ Module REPL_
                 Console.ForegroundColor = ConsoleColor.Red
                 'PARSER DIAGNOSTICS
                 Console.WriteLine("Compiler Errors: " & vbNewLine)
-                For Each item In _diagnostics
-                    Console.ForegroundColor = ConsoleColor.DarkRed
-                    Console.WriteLine(item & vbNewLine)
-                Next
-                'Tokens
-                _LexTokens()
+                If ShowDiagnostics = True Then
+                    For Each item In _diagnostics
+                        Console.ForegroundColor = ConsoleColor.DarkRed
+                        Console.WriteLine(item & vbNewLine)
+                    Next
+
+                    'Tokens
+                    If ShowTokens = True Then _LexTokens()
+                End If
+
                 Return False
 
             Else
-                Console.ForegroundColor = ConsoleColor.Green
-                Console.WriteLine(ExpressionTree.ToJson)
+                If ShowTree = True Then
+                    Console.ForegroundColor = ConsoleColor.Green
+                    Console.WriteLine(ExpressionTree.ToJson)
+                End If
+
                 Return True
 
             End If
