@@ -296,8 +296,8 @@ Namespace CodeAnalysis
                         Case SyntaxType.Multiply_Operator
                             Return _BinaryExpression(_left, CurrentToken._SyntaxType.GetBinaryOperatorPrecedence)
                     End Select
-                    _Diagnostics.Add("unknown _BinaryExpression? " & vbNewLine & CurrentToken.ToJson)
-                    Return Nothing
+                    '_Diagnostics.Add("unknown _BinaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return _left
                 End Function
 
                 ''' <summary>
@@ -359,6 +359,7 @@ Namespace CodeAnalysis
                             _Operator = _MatchToken(SyntaxType.Multiply_Operator)
 
                     End Select
+                    CursorPosition += 1
                     Right = _PrimaryExpression()
                     Dim x = New BinaryExpression(_Left, Right, _Operator)
                     Return x
