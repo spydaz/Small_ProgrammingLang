@@ -239,5 +239,18 @@ Public Class GDU
         End Select
 
     End Sub
+
+    Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(GDU))
+        CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
+        '
+        'GDU
+        '
+        Me.Image = CType(resources.GetObject("$this.Image"), System.Drawing.Image)
+        CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+
+    End Sub
 #End Region
 End Class

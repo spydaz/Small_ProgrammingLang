@@ -156,6 +156,9 @@
     <None Include="AI_BASIC\VirtualMachine\Spydaz Virtual Machine Code Language %3b.md" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_GDU.resx">
+      <DependentUpon>ZX21_GDU.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
       <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </EmbeddedResource>
