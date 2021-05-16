@@ -257,17 +257,10 @@ Namespace Syntax
             ''' </summary>
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
-                MyBase.New(SyntaxType._Integer, SyntaxType._Integer.GetSyntaxTypeStr, Value)
-                Me._Literal = Value
-                'Enables for Change according to entry
-                Select Case Value._SyntaxType
-                    Case SyntaxType._Integer
-                        Me._SyntaxType = SyntaxType._Integer
-                        Me._SyntaxTypeStr = "_Integer"
-                    Case SyntaxType._Decimal
-                        Me._SyntaxType = SyntaxType._Decimal
-                        Me._SyntaxTypeStr = "_Decimal"
-                End Select
+                MyBase.New(SyntaxType._NumericLiteralExpression, SyntaxType._NumericLiteralExpression.GetSyntaxTypeStr, Value)
+                _Literal = New Integer
+                Me._Literal = Value._Value
+
             End Sub
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
@@ -278,7 +271,28 @@ Namespace Syntax
 
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal._value
+                Return _Literal
+            End Function
+        End Class
+        Public Class StringExpression
+            Inherits LiteralExpression
+            ''' <summary>
+            ''' Initiates a Integer Expression
+            ''' </summary>
+            ''' <param name="Value"></param>
+            Public Sub New(ByRef Value As SyntaxToken)
+                MyBase.New(SyntaxType._StringExpression, SyntaxType._StringExpression.GetSyntaxTypeStr, Value)
+                _Literal = ""
+                Me._Literal = Value._Value
+
+            End Sub
+            Public Overrides Function GetChildren() As List(Of SyntaxToken)
+                Dim Lst As New List(Of SyntaxToken)
+                Lst.Add(_Literal)
+                Return Lst
+            End Function
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Return _Literal
             End Function
         End Class
         Public Class IdentifierExpression
@@ -288,7 +302,7 @@ Namespace Syntax
             ''' </summary>
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
-                MyBase.New(SyntaxType._Identifier, SyntaxType._Identifier.GetSyntaxTypeStr, Value)
+                MyBase.New(SyntaxType._IdentifierExpression, SyntaxType._IdentifierExpression.GetSyntaxTypeStr, Value)
             End Sub
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
                 Dim Lst As New List(Of SyntaxToken)
@@ -299,11 +313,11 @@ Namespace Syntax
                 Return GetValue(ParentEnv)
             End Function
             Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
-                Return ParentEnv.CheckVar(_Literal)
+                Return ParentEnv.CheckVar(_Literal._value)
             End Function
             Public Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                If ParentEnv.CheckVar(_Literal) = True Then
-                    Return ParentEnv.GetVar(_Literal)
+                If ParentEnv.CheckVar(_Literal._value) = True Then
+                    Return ParentEnv.GetVar(_Literal._value)
                 Else
                     Return Nothing
                 End If

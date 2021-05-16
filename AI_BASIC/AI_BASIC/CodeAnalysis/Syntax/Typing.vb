@@ -420,6 +420,8 @@ Namespace Syntax
         'ExpressionSyntax
         'Single numeric
         _NumericLiteralExpression = 100
+        _IdentifierExpression = 101
+        _StringExpression = 102
         ' -3 +2
         _UnaryExpression = 105
         'Left +/-*><= _Right
@@ -430,8 +432,7 @@ Namespace Syntax
         _ParenthesizedExpresion = 130
         'List pf (Expr)
         _CodeBlock = 140
-
-        _VariableDeclaration
+        _VariableDeclaration = 141
 #End Region
 #Region "MainLanguage"
 #Region "Functions - Used In Universal RegexSearches"

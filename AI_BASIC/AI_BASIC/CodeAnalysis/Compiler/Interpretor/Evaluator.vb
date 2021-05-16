@@ -31,10 +31,14 @@ Namespace CodeAnalysis
                 End Function
                 Public Function _EvaluateExpresssion(ByRef iNode As Object) As Object
                     If iNode IsNot Nothing Then
-
-
-                        If iNode._SyntaxType = SyntaxType._Integer Then
+                        If iNode._SyntaxType = SyntaxType._NumericLiteralExpression Then
                             Dim n As SyntaxNodes.NumericalExpression = iNode
+                            Return n.Evaluate(Env)
+                        Else
+
+                        End If
+                        If iNode._SyntaxType = SyntaxType._StringExpression Then
+                            Dim n As SyntaxNodes.StringExpression = iNode
                             Return n.Evaluate(Env)
                         Else
 
@@ -44,6 +48,10 @@ Namespace CodeAnalysis
                             Return u.Evaluate(Env)
                         Else
 
+                        End If
+                        If iNode._SyntaxType = SyntaxType._IdentifierExpression Then
+                            Dim i As SyntaxNodes.IdentifierExpression = iNode
+                            Return i.Evaluate(Env)
                         End If
                         If iNode.SyntaxType = SyntaxType._BinaryExpression Then
                             Dim b As SyntaxNodes.BinaryExpression = iNode
