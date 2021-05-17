@@ -131,6 +131,10 @@ Namespace Syntax
         Public Class BinaryExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
+            ''' Operator
+            ''' </summary>
+            Public _Operator As SyntaxToken
+            ''' <summary>
             ''' Value / Identifier / Expression
             ''' </summary>
             Public _Left As ExpressionSyntaxNode
@@ -138,10 +142,7 @@ Namespace Syntax
             ''' Value / Identifier / Expression 
             ''' </summary>
             Public _Right As ExpressionSyntaxNode
-            ''' <summary>
-            ''' Operator
-            ''' </summary>
-            Public _Operator As SyntaxToken
+
             ''' <summary>
             ''' Used to perform Calulations,
             ''' Comparison Operations as well as logical operations and assignments.
@@ -152,19 +153,13 @@ Namespace Syntax
             ''' <param name="left">Left Value or Identifier</param>
             ''' <param name="right">Right Value or Identifier</param>
             ''' <param name="iOperator">Operator Token</param>
-            Public Sub New(left As ExpressionSyntaxNode, right As ExpressionSyntaxNode, iOperator As SyntaxToken)
+            Public Sub New(ileft As ExpressionSyntaxNode, iright As ExpressionSyntaxNode, iOperator As SyntaxToken)
                 MyBase.New(SyntaxType._BinaryExpression, SyntaxType._BinaryExpression.GetSyntaxTypeStr)
-                If left Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(left))
-                End If
-
-                If right Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(right))
-                End If
 
 
-                _Left = left
-                _Right = right
+
+                _Left = ileft
+                _Right = iright
                 _Operator = iOperator
             End Sub
             ''' <summary>
@@ -191,7 +186,37 @@ Namespace Syntax
             ''' </summary>
             ''' <returns></returns>
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                Select Case _Operator._SyntaxType
+        'Calc
+                    Case SyntaxType.Add_Operator
+                        Return _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Sub_Operator
+                        Return _Left.Evaluate(ParentEnv) - _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Divide_Operator
+                        Return _Left.Evaluate(ParentEnv) / _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Multiply_Operator
+                        Return _Left.Evaluate(ParentEnv) * _Right.Evaluate(ParentEnv)
+        'Compare
+                    Case SyntaxType.GreaterThan_Operator
+                        Return _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.LessThanOperator
+                        Return _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.GreaterThanEquals
+                        Return _Left.Evaluate(ParentEnv) >= _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.LessThanEquals
+                        Return _Left.Evaluate(ParentEnv) <= _Right.Evaluate(ParentEnv)
+       'Complex Assign
+                    Case SyntaxType.Add_Equals_Operator
+                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Minus_Equals_Operator
+                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Multiply_Equals_Operator
+                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                    Case SyntaxType.Divide_Equals_Operator
+                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+
+                End Select
+                Return "Unrecognized BinaryExpression"
             End Function
         End Class
         Public Class UnaryExpression
@@ -319,21 +344,21 @@ Namespace Syntax
                 If ParentEnv.CheckVar(_Literal._value) = True Then
                     Return ParentEnv.GetVar(_Literal._value)
                 Else
-                    Return Nothing
+                    Return "Does not Exist in Record"
                 End If
             End Function
         End Class
         Public Class BooleanLiteralExpression
             Inherits LiteralExpression
-            Public Sub New(ByRef Value As Object)
-                MyBase.New(SyntaxType._Boolean, SyntaxType._Boolean.GetSyntaxTypeStr, Value)
+            Public Sub New(ByRef Value As SyntaxToken)
+                MyBase.New(SyntaxType._BooleanLiteralExpression, SyntaxType._BooleanLiteralExpression.GetSyntaxTypeStr, Value)
                 Dim result As Boolean = False
 
                 'Try parse the correct values;
                 'If it fails then it will automatically default to false
                 'It is imortant that the literal object is initalized as a boolean first
 
-                If Boolean.TryParse(Value, result) = True Then
+                If Boolean.TryParse(Value._Value, result) = True Then
                     Me._Literal = New Boolean = False
                     Me._Literal = result
 
@@ -343,15 +368,7 @@ Namespace Syntax
 
                 End If
 
-                'Enable for Stronger typing
-                Select Case result
-                    Case True
-                        Me._SyntaxType = SyntaxType.TrueKeyword
-                        Me._SyntaxType = Me._SyntaxType.GetSyntaxTypeStr
-                    Case False
-                        Me._SyntaxType = SyntaxType.FalseKeyword
-                        Me._SyntaxType = Me._SyntaxType.GetSyntaxTypeStr
-                End Select
+
             End Sub
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
                 Dim Lst As New List(Of SyntaxToken)
@@ -360,7 +377,7 @@ Namespace Syntax
             End Function
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal.value
+                Return _Literal
             End Function
         End Class
         Public Class ArrayLiteralExpression

@@ -37,8 +37,15 @@ Namespace CodeAnalysis
                         Else
 
                         End If
+
                         If iNode._SyntaxType = SyntaxType._StringExpression Then
                             Dim n As SyntaxNodes.StringExpression = iNode
+                            Return n.Evaluate(Env)
+                        Else
+
+                        End If
+                        If iNode._SyntaxType = SyntaxType._BooleanLiteralExpression Then
+                            Dim n As SyntaxNodes.BooleanLiteralExpression = iNode
                             Return n.Evaluate(Env)
                         Else
 
@@ -53,10 +60,10 @@ Namespace CodeAnalysis
                             Dim i As SyntaxNodes.IdentifierExpression = iNode
                             Return i.Evaluate(Env)
                         End If
-                        If iNode.SyntaxType = SyntaxType._BinaryExpression Then
+                        If iNode._SyntaxType = SyntaxType._BinaryExpression Then
                             Dim b As SyntaxNodes.BinaryExpression = iNode
-                            Dim _Left As Integer = _EvaluateExpresssion(b._Left)
-                            Dim _Right As Integer = _EvaluateExpresssion(b._Right)
+                            Dim _Left As Integer = b._Left.Evaluate(Env)
+                            Dim _Right As Integer = b._Right.Evaluate(Env)
 
                             Select Case iNode._Operator._SyntaxType
                                 Case SyntaxType.Add_Operator

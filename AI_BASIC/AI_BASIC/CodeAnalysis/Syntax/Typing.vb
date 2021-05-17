@@ -422,6 +422,7 @@ Namespace Syntax
         _NumericLiteralExpression = 100
         _IdentifierExpression = 101
         _StringExpression = 102
+        _BooleanLiteralExpression = 103
         ' -3 +2
         _UnaryExpression = 105
         'Left +/-*><= _Right
