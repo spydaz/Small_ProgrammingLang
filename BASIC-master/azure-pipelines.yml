@@ -1,0 +1,31 @@
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  sln: './Minsk/minsk.sln'
+  tests: './Minsk/Minsk.Tests/Minsk.Tests.csproj'
+  samples: './samples/samples.sln'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: Build minsk ($(buildConfiguration))
+  inputs:
+    command: build
+    projects: $(sln)
+    arguments: -c $(buildConfiguration)
+- task: DotNetCoreCLI@2
+  displayName: Run tests ($(buildConfiguration))
+  inputs:
+    command: test
+    projects: $(tests)
+    arguments: -c $(buildConfiguration)
+    publishTestResults: true
+- task: DotNetCoreCLI@2
+  displayName: Build samples ($(buildConfiguration))
+  inputs:
+    command: build
+    projects: $(samples)
+    arguments: -c $(buildConfiguration)
