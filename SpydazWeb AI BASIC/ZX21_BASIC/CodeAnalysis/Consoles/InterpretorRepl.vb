@@ -11,6 +11,8 @@ Namespace Consoles
             Private Line As String = ""
             Private SAL_VB_LEXER As Lexer
             Private TokenTree As List(Of SyntaxToken)
+            Private TokenTrees As List(Of List(Of SyntaxToken))
+            Private ExpressionTrees As List(Of SyntaxTree)
             Private ExpressionTree As SyntaxTree
             Private EvaluateScript As Boolean = True
             Private ShowTree As Boolean = True
@@ -67,8 +69,6 @@ Namespace Consoles
                     If ShowTokens = True Then _LexTokens()
                     RunScript()
                 End While
-
-
             End Sub
             Private Sub RunScript()
                 ':::_EVALUATE_::: 
@@ -109,11 +109,8 @@ Namespace Consoles
                 SAL_VB_LEXER = New Lexer(Line)
             End Sub
             Public Sub _LexTokens()
-
                 Dim Token As SyntaxToken
                 DisplayToken_Tree()
-
-
                 While True
                     Token = SAL_VB_LEXER._NextToken
                     If Token._SyntaxType = SyntaxType._EndOfFileToken Then
@@ -125,7 +122,6 @@ Namespace Consoles
                         Console.WriteLine(Token.ToJson)
                     End If
                 End While
-
             End Sub
             Private Sub SetReplCode()
                 Console.ForegroundColor = ConsoleColor.Yellow

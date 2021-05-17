@@ -16,13 +16,38 @@ Namespace CodeAnalysis
                 End Get
 
             End Property
-            Private _LineDiagnostics As New List(Of String)
-            Private Program As New List(Of String)
-            Private CurrentLine As Integer
-            Private CompiledWithErrors As Boolean = False
-            Private CurrentLineStateReady As Boolean = False
-            Private ProgramCompiledReady As Boolean = False
-            Private ProgramScript As String = ""
+            Private Shared _LineDiagnostics As New List(Of String)
+            Private Shared Program As New List(Of String)
+            Private Shared CurrentLine As Integer
+            Private Shared CompiledWithErrors As Boolean = False
+            Private Shared CurrentLineStateReady As Boolean = False
+            Private Shared ProgramCompiledReady As Boolean = False
+            Private Shared ProgramScript As String = ""
+            Private Shared ExpressionTree As SyntaxTree
+            Private Shared _tree As New List(Of SyntaxToken)
+            Private iTokenTrees As List(Of List(Of SyntaxToken))
+            Private iExpressionTrees As List(Of SyntaxTree)
+            Public ReadOnly Property TokenTrees As List(Of List(Of SyntaxToken))
+                Get
+                    Return iTokenTrees
+                End Get
+            End Property
+            Public ReadOnly Property ExpressionTrees As List(Of SyntaxTree)
+                Get
+                    Return iExpressionTrees
+                End Get
+            End Property
+            Public ReadOnly Property CurrentTokenTree As List(Of SyntaxToken)
+                Get
+                    Return _tree
+                End Get
+            End Property
+            Public ReadOnly Property CurrentSyntaxTree As SyntaxTree
+                Get
+                    Return ExpressionTree
+                End Get
+
+            End Property
             Public ReadOnly Property CompiledReady As Boolean
                 Get
                     Return ProgramCompiledReady
@@ -35,9 +60,7 @@ Namespace CodeAnalysis
                     Return GetCompilerDiagnostics()
                 End Get
             End Property
-            Public Sub New()
 
-            End Sub
             Public Sub New(ByRef _Program As String)
                 ProgramScript = _Program
             End Sub
@@ -50,106 +73,80 @@ Namespace CodeAnalysis
                 CompileProgram()
 
                 If ProgramCompiledReady = True Then
-                    Return EvaluateExpressionSyntaxTree(ProduceExpressionSyntaxTree(ProduceTokenTree(ProgramScript)))
+                    Return EvaluateExpressionSyntaxTree(CurrentSyntaxTree)
                 Else
                     Return "Compiler still has errors please recompile: " & vbNewLine &
                         "Unable to execute:" & vbNewLine & CompilerErrors
                 End If
 
             End Function
-            Public Function ExecuteProgram(ByRef _Program As String) As String
-                ProgramScript = _Program
-                'Check if it compiles
-                CompileProgram()
 
-                If ProgramCompiledReady = True Then
-                    Return EvaluateExpressionSyntaxTree(ProduceExpressionSyntaxTree(ProduceTokenTree(ProgramScript)))
-                Else
-                    Return "Compiler still has errors please recompile: " & vbNewLine &
-                        "Unable to execute:" & vbNewLine & CompilerErrors
-                End If
-
-            End Function
             ''' <summary>
-            ''' Debugs code for errors
+            ''' Debugs code for errors / Produces Both tree also
             ''' </summary>
             ''' <returns></returns>
             Public Function CompileProgram() As Boolean
+                iTokenTrees = New List(Of List(Of SyntaxToken))
+                iExpressionTrees = New List(Of SyntaxTree)
                 CompiledWithErrors = False
                 CurrentLineStateReady = False
                 ProgramCompiledReady = False
                 LineCompiledlineStates = New List(Of Boolean)
+                _CompilerDiagnostics = New List(Of String)
                 Dim lines = ProgramScript.Split(vbNewLine)
                 For Each item In lines
+                    'Capture LineDiagnostic state
                     LineCompiledlineStates.Add(CompileForDebugging(item))
                     If CurrentLineStateReady = True Then
                     Else
                         _CompilerDiagnostics.Add("Error at line " & CurrentLine &
                                                  vbNewLine & GetLineDiagnostics())
                     End If
+                    'capture Accumilated trees
+                    iTokenTrees.Add(CurrentTokenTree)
+                    iExpressionTrees.Add(CurrentSyntaxTree)
                 Next
-                'checkState
-                Select Case CompiledWithErrors
-                    Case True
-                        ProgramCompiledReady = True
-                        Return ProgramCompiledReady
-                    Case False
-                        ProgramCompiledReady = False
-                        Return ProgramCompiledReady
-                End Select
-                Return Nothing
-            End Function
-            ''' <summary>
-            ''' Debugs code for errors 
-            ''' </summary>
-            ''' <param name="_Program"></param>
-            ''' <returns></returns>
-            Public Function CompileProgram(ByRef _Program As String) As Boolean
-                CompiledWithErrors = False
-                CurrentLineStateReady = False
-                ProgramCompiledReady = False
-                LineCompiledlineStates = New List(Of Boolean)
-                Dim lines = _Program.Split(vbNewLine)
-                For Each item In lines
-                    LineCompiledlineStates.Add(CompileForDebugging(item))
-                    If CurrentLineStateReady = True Then
-                    Else
-                        _CompilerDiagnostics.Add("Error at line " & CurrentLine &
-                                                 vbNewLine & GetLineDiagnostics())
+
+                'checkState of Compiled lines
+                For Each item In LineCompiledlineStates
+                    If item = False Then
+                        CompiledWithErrors = False
                     End If
                 Next
-                'checkState
+                'Set Ready state
                 Select Case CompiledWithErrors
                     Case True
-                        ProgramCompiledReady = True
+                        ProgramCompiledReady = False
                         Return ProgramCompiledReady
                     Case False
-                        ProgramCompiledReady = False
+                        ProgramCompiledReady = True
                         Return ProgramCompiledReady
                 End Select
                 Return Nothing
             End Function
+
             ''' <summary>
             ''' Debugs code for errors
             ''' </summary>
             ''' <param name="Line"></param>
             ''' <returns></returns>
             Private Function CompileForDebugging(ByRef Line As String) As Boolean
-                Dim ExpressionTree As SyntaxTree
+
                 _LineDiagnostics = New List(Of String)
                 CurrentLineStateReady = False
                 CurrentLine += 1
                 Try
-                    ExpressionTree = ProduceExpressionSyntaxTree(ProduceTokenTree(Line))
+                    ProduceTokenTree(Line)
+                    ProduceExpressionSyntaxTree(Line)
                     If _LineDiagnostics.Count > 0 Then
                         ''DEBUGGING POINT:
-                        '    MessageBox.Show("Compiler Errors :" & vbNewLine & GetLineDiagnostics(),
-                        '"Compiler has Found Errors on Current line :" & CurrentLine)
+                        MessageBox.Show("Compiler Errors :" & vbNewLine & GetLineDiagnostics(),
+                        "Compiler has Found Errors on Current line :" & CurrentLine)
 
                         CurrentLineStateReady = False
                         CompiledWithErrors = True
                     Else
-
+                        CompiledWithErrors = False
                         CurrentLineStateReady = True
                     End If
 
@@ -184,7 +181,7 @@ Namespace CodeAnalysis
             ''' Gets compiler diagnostics 
             ''' </summary>
             ''' <returns></returns>
-            Private Function GetCompilerDiagnostics() As String
+            Public Function GetCompilerDiagnostics() As String
                 Dim Str As String = ""
                 Dim Count As Integer = 1
                 If _CompilerDiagnostics.Count > 0 Then
@@ -200,9 +197,9 @@ Namespace CodeAnalysis
             ''' </summary>
             ''' <param name="Line"></param>
             ''' <returns></returns>
-            Public Function ProduceTokenTree(ByRef Line As String) As List(Of SyntaxToken)
+            Public Shared Function ProduceTokenTree(ByRef Line As String) As List(Of SyntaxToken)
                 Dim iLexer As New Lexer(Line)
-                Dim _tree As New List(Of SyntaxToken)
+                _tree = New List(Of SyntaxToken)
 
                 While True
                     Dim Token = iLexer._NextToken
@@ -222,32 +219,24 @@ Namespace CodeAnalysis
 
                 Return _tree
             End Function
-            ''' <summary>
-            ''' Produces an abstract syntax tree
-            ''' </summary>
-            ''' <param name="_SyntaxTokentree"></param>
-            ''' <returns></returns>
-            Public Function ProduceExpressionSyntaxTree(ByRef _SyntaxTokentree As List(Of SyntaxToken)) As SyntaxTree
-                Dim iParser = New Parser(_SyntaxTokentree)
-                Dim _tree As SyntaxTree = iParser.ParseSyntaxTree()
-                _LineDiagnostics.AddRange(iParser._Diagnostics)
-                Return _tree
-            End Function
-            ''' <summary>
-            ''' Produces an abstract syntax tree
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function ProduceExpressionSyntaxTree(ByRef Line As String) As SyntaxTree
-                Dim iParser = New Parser(ProduceTokenTree(Line))
-                Dim _tree As SyntaxTree = iParser.ParseSyntaxTree()
 
-                Return _tree
+            ''' <summary>
+            ''' Produces an abstract syntax tree
+            ''' </summary>
+            ''' <returns></returns>
+            Public Shared Function ProduceExpressionSyntaxTree(ByRef Line As String) As SyntaxTree
+                Dim iParser = New Parser(Line)
+                ExpressionTree = iParser.Parse()
+
+                Return ExpressionTree
+
+
             End Function
             ''' <summary>
             ''' Evaluates Syntax tree
             ''' </summary>
             ''' <returns></returns>
-            Public Function EvaluateExpressionSyntaxTree(ByRef ExpressionTree As SyntaxTree) As String
+            Public Shared Function EvaluateExpressionSyntaxTree(ByRef ExpressionTree As SyntaxTree) As String
                 Dim IEvaluator As New Evaluator(ExpressionTree)
                 Dim Result = IEvaluator._Evaluate().ToString
                 _LineDiagnostics.AddRange(IEvaluator._Diagnostics)
