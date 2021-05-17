@@ -258,7 +258,6 @@ Namespace CodeAnalysis
 
                             Return _LeftHandExpression(_Left)
                         Case SyntaxType._Integer, SyntaxType._Decimal
-
                             Return _BinaryExpression()
                         'Begins ArrayList Literal
                         Case SyntaxType._LIST_BEGIN
@@ -292,8 +291,8 @@ Namespace CodeAnalysis
 #End Region
 
                     End Select
-                    _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & CurrentToken.ToJson)
-                    Return Nothing
+                    ' _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & CurrentToken.ToJson)
+                    Return _BinaryExpression()
                 End Function
                 Public Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode)
                     Select Case CurrentToken._SyntaxType
@@ -315,22 +314,22 @@ Namespace CodeAnalysis
                 Public Function _BinaryExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
+
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType.Add_Operator
-                            _Operator = _MatchToken(SyntaxType.Add_Operator)
-                            CursorPosition += 1
-                            _right = _PrimaryExpression()
-
-                            _Left = New BinaryExpression(_Left, _right, _Operator)
-                            CursorPosition += 1
-                            Return _Left
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
 
 
                     End Select
 
-                    CursorPosition += 1
+
                     Return _Left
                 End Function
                 Public Function _BinaryExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
@@ -338,16 +337,15 @@ Namespace CodeAnalysis
                     Dim _right As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType.Add_Operator
-                            _Operator = _MatchToken(SyntaxType.Add_Operator)
-                            CursorPosition += 1
-                            _right = _PrimaryExpression()
-
-                            _Left = New BinaryExpression(_Left, _BinaryExpression(), _Operator)
-                            CursorPosition += 1
-                            Return _Left
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
 
                     End Select
-                    CursorPosition += 1
+
                     Return _Left
                 End Function
 #End Region

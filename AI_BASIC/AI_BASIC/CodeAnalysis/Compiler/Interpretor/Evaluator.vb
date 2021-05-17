@@ -23,7 +23,7 @@ Namespace CodeAnalysis
                         Dim result = _EvaluateExpresssion(item)
                         If _Diagnostics.Count > 0 Then
 
-                            Return "Evaluation Error"
+                            Return "Evaluation Error" & _tree.ToJson
                         End If
                         Return result
                     Next
@@ -59,29 +59,35 @@ Namespace CodeAnalysis
                         If iNode._SyntaxType = SyntaxType._IdentifierExpression Then
                             Dim i As SyntaxNodes.IdentifierExpression = iNode
                             Return i.Evaluate(Env)
-                        End If
-                        If iNode._SyntaxType = SyntaxType._BinaryExpression Then
-                            Dim b As SyntaxNodes.BinaryExpression = iNode
-                            Dim _Left As Integer = b._Left.Evaluate(Env)
-                            Dim _Right As Integer = b._Right.Evaluate(Env)
-
-                            Select Case iNode._Operator._SyntaxType
-                                Case SyntaxType.Add_Operator
-                                    Return _Left + _Right
-                                Case SyntaxType.Sub_Operator
-                                    Return _Left - _Right
-                                Case SyntaxType.Multiply_Operator
-                                    Return _Left * _Right
-                                Case SyntaxType.Divide_Operator
-                                    Return _Left / _Right
-                                Case Else
-                                    Throw New Exception("Unexpected Binary Operator :" & iNode._Operator._SyntaxStr)
-                            End Select
-
-                        Else
 
                         End If
+                        Try
 
+
+                            If iNode._SyntaxType = SyntaxType._BinaryExpression Then
+                                Dim b As SyntaxNodes.BinaryExpression = iNode
+                                Dim _Left As Integer = b._Left.Evaluate(Env)
+                                Dim _Right As Integer = b._Right.Evaluate(Env)
+
+                                Select Case iNode._Operator._SyntaxType
+                                    Case SyntaxType.Add_Operator
+                                        Return _Left + _Right
+                                    Case SyntaxType.Sub_Operator
+                                        Return _Left - _Right
+                                    Case SyntaxType.Multiply_Operator
+                                        Return _Left * _Right
+                                    Case SyntaxType.Divide_Operator
+                                        Return _Left / _Right
+                                    Case Else
+                                        Throw New Exception("Unexpected Binary Operator :" & iNode._Operator._SyntaxStr)
+                                End Select
+
+                            Else
+
+                            End If
+                        Catch ex As Exception
+                            _Diagnostics.Add("Unexpected Exception :" & vbNewLine & ex.ToString)
+                        End Try
 
                     End If
                     _Diagnostics.Add("Unexpected Expression :")

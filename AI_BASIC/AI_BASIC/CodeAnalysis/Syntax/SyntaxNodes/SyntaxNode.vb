@@ -216,7 +216,7 @@ Namespace Syntax
                         Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
 
                 End Select
-                Return "Unrecognized BinaryExpression"
+                Return 0
             End Function
         End Class
         Public Class UnaryExpression
