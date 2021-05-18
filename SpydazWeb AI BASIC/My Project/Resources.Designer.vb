@@ -131,6 +131,55 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized string similar to The section numbers are per the Berkeley Logo Reference Manual in Brian Harvey&apos;s Computer Science Logo Style volume 2: Advanced Techniques for ease of comparison.
+        '''
+        '''Data Types and Syntax
+        '''Data Structure Primitives
+        '''Communication
+        '''Arithmetic
+        '''Logical Operations
+        '''Graphics
+        '''Workspace Management
+        '''Control Structures
+        '''Data Types and Syntax
+        '''&quot;word
+        '''&apos;word
+        '''number
+        '''Word. (Quoted words are terminated by [](){} or whitespace, \ to escape.)
+        '''show &quot;hello
+        '''show &quot;hello\ logo
+        '''show 12.34
+        ''':variable
+        '''Input definition/varia [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property LOGO_REF() As String
+            Get
+                Return ResourceManager.GetString("LOGO_REF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to SpydazWeb Assembly Language : 
+        '''	Description :
+        '''		This assembly language is specific to this virtual processor 
+        '''		Enableing for the code to be executed on the cpu: 
+        '''		This is a Micro based instruction set (Misc)
+        '''	ZX81:
+        '''		_PUSH					: Pushes items on to the stack (top)
+        '''		_POP					: Pops items off the stack (top)
+        '''		_PEEK					: Views items on the stack (top)
+        '''		_WAIT					: Pauses execution of code
+        '''		_PAUSE					: Pauses execution of code
+        '''		_HALT					: HALT execution of code
+        '''		_RESUME					: Resumes execu [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property SAL_REF() As String
+            Get
+                Return ResourceManager.GetString("SAL_REF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend ReadOnly Property Script() As System.Drawing.Bitmap
@@ -147,6 +196,47 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("SERIES_1_sal9000", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Turtle() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Turtle", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to TurtleGraphics.NET - Developer&apos;s Reference
+        '''
+        '''The interface is intentionally simplified through a single static class (I know this is not a good practice in OOP), to enable kids start playing with the turtle with just few clicks, without knowing anything about &quot;classes&quot; and &quot;objects&quot;. The class Turtle supports all major turtle graphics primitives in Windows Forms C# / .NET GUI applications:
+        '''•Init() - initializes the turtle graphics system. Callers can specify the target Windows Forms control to hold the dr [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property TurtleREF() As String
+            Get
+                Return ResourceManager.GetString("TurtleREF", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized string similar to &apos;    Z-80 CPU Instruction Set
+        '''    &apos;---- --- ----------- ---
+        '''
+        '''    &apos;&apos;ADC   HL, ss      Add With carry register pair ss To HL.
+        '''    &apos;&apos;ADC   A, s        Add With carry operand s To accumulator.
+        '''    &apos;&apos;ADD   A, n        Add value n To accumulator.
+        '''    &apos;&apos;ADD   A, r        Add register r To accumulator.
+        '''    &apos;&apos;ADD   A,(HL)      Add location (HL) To acccumulator.
+        '''    &apos;&apos;ADD   A,(IX + d)  Add location (IX+d) To accumulator.
+        '''    &apos;&apos;ADD   A,(IY + d)  Add location (IY+d) To accumulator.
+        '''    &apos;&apos;ADD   HL, ss      Add [rest of string was truncated]&quot;;.
+        '''</summary>
+        Friend ReadOnly Property Zx80Ref() As String
+            Get
+                Return ResourceManager.GetString("Zx80Ref", resourceCulture)
             End Get
         End Property
     End Module

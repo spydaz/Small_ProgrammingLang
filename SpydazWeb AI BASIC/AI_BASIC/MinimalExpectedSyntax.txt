@@ -1,0 +1,96 @@
+﻿[ Let ] varname = expression
+
+Dim MyStr, MyInt 
+' The following variable assignments use the Let statement. 
+Let MyStr = "Hello World" 
+Let MyInt = 5 
+
+[ Call ] name [ argumentlist ]
+' Call a Sub procedure. 
+Call PrintToDebugWindow("Hello World") 
+
+Dim MyDate 
+MyDate = #February 12, 1985# ' Assign a date. 
+Date= MyDate ' Change system date. 
+
+Dim varname [ ( [ subscripts ] ) ] [ As [ New ] type ] 
+
+Do [{ While | Until } condition ]
+	[ statements ]
+		[ Exit Do ]
+	[ statements ]
+Loop
+
+			Public Sub LoopExample()
+				Dim Check As Boolean, Counter As Long, Total As Long
+				Check = True: Counter = 0: Total = 0 ' Initialize variables.
+				Do ' Outer loop.
+					Do While Counter < 20 ' Inner Loop
+						Counter = Counter + 1 ' Increment Counter.
+						If Counter Mod 10 = 0 Then ' Check in with the user on every multiple of 10.
+							Check = (MsgBox("Keep going?", vbYesNo) = vbYes) ' Stop when user click's on No
+							If Not Check Then Exit Do ' Exit inner loop.
+						End If
+					Loop
+					Total = Total + Counter ' Exit Do Lands here.
+					Counter = 0
+				Loop Until Check = False ' Exit outer loop immediately.
+				MsgBox "Counted to: " & Total
+			End Sub
+
+For Each element In group
+	[ statements ]
+		[ Exit For ]
+	[ statements ]
+Next [ element ]
+
+			Dim Found, MyObject, MyCollection 
+			Found = False    ' Initialize variable. 
+			For Each MyObject In MyCollection    ' Iterate through each element.  
+				If MyObject.Text = "Hello" Then    ' If Text equals "Hello". 
+					Found = True    ' Set Found to True. 
+					Exit For    ' Exit loop. 
+				End If 
+			Next
+
+For counter = start To end [ Step step ]
+	[ statements ]
+		[ Exit For ]
+	[ statements ]
+Next [ counter ]
+
+			For I = 1 To 10 
+				 For J = 1 To 10 
+					 For K = 1 To 10 
+					 ... 
+					 Next K 
+				 Next J 
+			Next I 
+
+If condition Then
+		[ statements ]
+	[ ElseIf condition-n Then
+		[ elseifstatements ]]
+	[ Else
+		[ elsestatements ]]
+End If
+
+				 If TypeOf MyControl Is CommandButton Then 
+						 Debug.Print "You passed in a " & TypeName(MyControl) 
+					 ElseIf TypeOf MyControl Is CheckBox Then 
+						 Debug.Print "You passed in a " & TypeName(MyControl) 
+					 ElseIf TypeOf MyControl Is TextBox Then 
+						 Debug.Print "You passed in a " & TypeName(MyControl) 
+					 Else
+				 End If 
+
+Print (statement)
+Input (statement)
+
+Select [ Case ] testexpression  
+    [ Case expressionlist  
+        [ statements ] ]  
+    [ Case Else  
+        [ elsestatements ] ]  
+End Select 
+
