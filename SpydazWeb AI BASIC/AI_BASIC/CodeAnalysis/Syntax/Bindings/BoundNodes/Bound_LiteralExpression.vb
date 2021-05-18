@@ -88,7 +88,7 @@ Namespace Syntax
 
 #Region "Get Identifer Value"
 
-                Public Function GetLiteralType(ByRef ParentEnv As EnvironmentalMemory)
+                Public Function GetLiteralType(ByRef ParentEnv As EnvironmentalMemory) As LiteralType
                     Select Case _SyntaxType
                         Case SyntaxType._IdentifierExpression
                             Dim iName = _Literal.evaluate(ParentEnv)
@@ -114,6 +114,57 @@ Namespace Syntax
                 Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
                     Return ParentEnv.CheckVar(_Literal)
                 End Function
+                Private Function SetValue(ByRef ParentEnv As EnvironmentalMemory, ByRef Value As Bound_LiteralExpression) As Boolean
+                    If ParentEnv.CheckVar(_Literal) = True Then
+
+                        Select Case Value.GetLiteralType(ParentEnv)
+                            Case LiteralType._Boolean
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._Boolean Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+
+                            Case LiteralType._String
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._String Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+
+                            Case LiteralType._Array
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._Array Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+
+                            Case LiteralType._Integer
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._Integer Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+
+                            Case LiteralType._Decimal
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._Decimal Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+                            Case LiteralType._Date
+                                If ParentEnv.GetVarType(_Literal) = LiteralType._Date Then
+                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+                                    Return True
+                                End If
+                            Case LiteralType._NULL
+
+                                ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
+
+
+                        End Select
+
+
+                    Else
+
+                    End If
+                    Return False
+                End Function
                 Private Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
                     If ParentEnv.CheckVar(_Literal) = True Then
                         Return ParentEnv.GetVar(_Literal)
@@ -123,6 +174,7 @@ Namespace Syntax
                 End Function
                 Public Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
                     Dim iName = _Literal.evaluate(ParentEnv)
+
                     ParentEnv.Define(iName, GetLiteralType(ParentEnv))
                 End Sub
                 Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
