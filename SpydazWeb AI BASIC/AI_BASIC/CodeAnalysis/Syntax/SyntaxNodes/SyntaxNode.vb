@@ -479,6 +479,23 @@ Namespace Syntax
                 Dim iType = _literalType
                 Dim iName = _Literal.evaluate(ParentEnv)
                 ParentEnv.Define(iName, iType)
+                Select Case _literalType
+                    Case LiteralType._Boolean
+                        ParentEnv.AssignValue(iName, False)
+                    Case LiteralType._String
+                        ParentEnv.AssignValue(iName, "")
+                    Case LiteralType._Array
+                        ParentEnv.AssignValue(iName, Nothing)
+                    Case LiteralType._Integer
+                        ParentEnv.AssignValue(iName, 0)
+                    Case LiteralType._Decimal
+                        ParentEnv.AssignValue(iName, 0.0)
+                    Case LiteralType._Date
+                        ParentEnv.AssignValue(iName, Nothing)
+                    Case LiteralType._NULL
+                        ParentEnv.AssignValue(iName, Nothing)
+                End Select
+
             End Sub
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 SetVar(ParentEnv)
