@@ -152,6 +152,7 @@
     </Compile>
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
+    <None Include="AI_BASIC\CodeAnalysis\Consoles\Readme.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
