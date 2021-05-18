@@ -217,7 +217,7 @@ Public Class Editor_IDE
 
     End Sub
 
-    Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles Small_PL_AstTreeView.AfterSelect
+    Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs)
         Small_PL_TextBoxREPL_OUTPUT.Text = Small_PL_AstTreeView.SelectedNode.Tag
     End Sub
 

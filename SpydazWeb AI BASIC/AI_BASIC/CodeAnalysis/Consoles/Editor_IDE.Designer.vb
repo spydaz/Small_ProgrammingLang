@@ -69,7 +69,6 @@ Partial Class Editor_IDE
         Me.TabPageCompilerResults = New System.Windows.Forms.TabPage()
         Me.CompilerResutltsText = New System.Windows.Forms.RichTextBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
-        Me.Small_PL_AstTreeView = New System.Windows.Forms.TreeView()
         Me.TabPageSAL_REPL = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -147,6 +146,7 @@ Partial Class Editor_IDE
         Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Small_PL_AstTreeView = New System.Windows.Forms.TreeView()
         Me.TabControl_ProgrammingLang_Repl.SuspendLayout()
         Me.TabPageSpydaz_PL.SuspendLayout()
         Me.TabControlRepl_Inner.SuspendLayout()
@@ -719,23 +719,6 @@ Partial Class Editor_IDE
         Me.GroupBox10.TabIndex = 0
         Me.GroupBox10.TabStop = False
         '
-        'Small_PL_AstTreeView
-        '
-        Me.Small_PL_AstTreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Small_PL_AstTreeView.BackColor = System.Drawing.SystemColors.InfoText
-        Me.Small_PL_AstTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Small_PL_AstTreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Small_PL_AstTreeView.ForeColor = System.Drawing.Color.MintCream
-        Me.Small_PL_AstTreeView.HotTracking = True
-        Me.Small_PL_AstTreeView.Location = New System.Drawing.Point(116, 23)
-        Me.Small_PL_AstTreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.Small_PL_AstTreeView.Name = "Small_PL_AstTreeView"
-        Me.Small_PL_AstTreeView.ShowNodeToolTips = True
-        Me.Small_PL_AstTreeView.Size = New System.Drawing.Size(745, 216)
-        Me.Small_PL_AstTreeView.TabIndex = 0
-        '
         'TabPageSAL_REPL
         '
         Me.TabPageSAL_REPL.Controls.Add(Me.SplitContainer1)
@@ -949,7 +932,7 @@ Partial Class Editor_IDE
         Me.TabPageSalReplErrors.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
         Me.TabPageSalReplErrors.Name = "TabPageSalReplErrors"
         Me.TabPageSalReplErrors.Padding = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.TabPageSalReplErrors.Size = New System.Drawing.Size(628, 280)
+        Me.TabPageSalReplErrors.Size = New System.Drawing.Size(628, 281)
         Me.TabPageSalReplErrors.TabIndex = 0
         Me.TabPageSalReplErrors.Text = "Errors"
         Me.TabPageSalReplErrors.UseVisualStyleBackColor = True
@@ -963,7 +946,7 @@ Partial Class Editor_IDE
         Me.SAL_TextBoxErrorOutput.Multiline = True
         Me.SAL_TextBoxErrorOutput.Name = "SAL_TextBoxErrorOutput"
         Me.SAL_TextBoxErrorOutput.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.SAL_TextBoxErrorOutput.Size = New System.Drawing.Size(618, 268)
+        Me.SAL_TextBoxErrorOutput.Size = New System.Drawing.Size(618, 269)
         Me.SAL_TextBoxErrorOutput.TabIndex = 1
         '
         'GroupBox4
@@ -1422,7 +1405,7 @@ Partial Class Editor_IDE
         Me.TabPage4.Location = New System.Drawing.Point(4, 22)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(634, 272)
+        Me.TabPage4.Size = New System.Drawing.Size(634, 273)
         Me.TabPage4.TabIndex = 1
         Me.TabPage4.Text = "Syntax"
         Me.TabPage4.UseVisualStyleBackColor = True
@@ -1432,7 +1415,7 @@ Partial Class Editor_IDE
         Me.LOGO_HELP.Dock = System.Windows.Forms.DockStyle.Fill
         Me.LOGO_HELP.Location = New System.Drawing.Point(3, 3)
         Me.LOGO_HELP.Name = "LOGO_HELP"
-        Me.LOGO_HELP.Size = New System.Drawing.Size(628, 266)
+        Me.LOGO_HELP.Size = New System.Drawing.Size(628, 267)
         Me.LOGO_HELP.TabIndex = 0
         Me.LOGO_HELP.Text = resources.GetString("LOGO_HELP.Text")
         '
@@ -1567,6 +1550,23 @@ Partial Class Editor_IDE
         'ToolTip1
         '
         Me.ToolTip1.IsBalloon = True
+        '
+        'Small_PL_AstTreeView
+        '
+        Me.Small_PL_AstTreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Small_PL_AstTreeView.BackColor = System.Drawing.SystemColors.InfoText
+        Me.Small_PL_AstTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Small_PL_AstTreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Small_PL_AstTreeView.ForeColor = System.Drawing.Color.MintCream
+        Me.Small_PL_AstTreeView.HotTracking = True
+        Me.Small_PL_AstTreeView.Location = New System.Drawing.Point(115, 17)
+        Me.Small_PL_AstTreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.Small_PL_AstTreeView.Name = "Small_PL_AstTreeView"
+        Me.Small_PL_AstTreeView.ShowNodeToolTips = True
+        Me.Small_PL_AstTreeView.Size = New System.Drawing.Size(747, 219)
+        Me.Small_PL_AstTreeView.TabIndex = 2
         '
         'Editor_IDE
         '
@@ -1727,7 +1727,6 @@ Partial Class Editor_IDE
     Friend WithEvents TabPageCompilerErrors As TabPage
     Friend WithEvents Small_PL_TextboxErrors As RichTextBox
     Friend WithEvents GroupBox10 As GroupBox
-    Friend WithEvents Small_PL_AstTreeView As TreeView
     Friend WithEvents OpenTextFileDialog As OpenFileDialog
     Friend WithEvents SaveTextFileDialog As SaveFileDialog
     Friend WithEvents ToolTip1 As ToolTip
@@ -1793,4 +1792,5 @@ Partial Class Editor_IDE
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents LineNumbers_For_RichTextBox1 As LineNumbers.LineNumbering
     Friend WithEvents Small_PL_TextBoxCodeInput As RichTextBox
+    Friend WithEvents Small_PL_AstTreeView As TreeView
 End Class

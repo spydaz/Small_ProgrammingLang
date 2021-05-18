@@ -44,7 +44,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>AI_BASIC.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>IconUFP.ico</ApplicationIcon>
@@ -128,6 +128,15 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AI_BASIC\CodeAnalysis\Consoles\VisualRepl.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\ClassSyntaxTextbox.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\IDE.Designer.vb">
+      <DependentUpon>IDE.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\IDE.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -152,7 +161,6 @@
     </Compile>
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
-    <None Include="AI_BASIC\CodeAnalysis\Consoles\Readme.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
@@ -178,6 +186,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
       <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\ClassSyntaxTextbox.resx">
+      <DependentUpon>ClassSyntaxTextbox.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\IDE.resx">
+      <DependentUpon>IDE.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -230,6 +244,39 @@
   <ItemGroup>
     <Content Include="AI_BASIC\MinimalExpectedSyntax.txt" />
     <Content Include="IconUFP.ico" />
+    <None Include="Resources\websave.png" />
+    <None Include="Resources\webopen.png" />
+    <None Include="Resources\warning.png" />
+    <None Include="Resources\vbexport.png" />
+    <None Include="Resources\splash.png" />
+    <None Include="Resources\shield.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\programrun.png" />
+    <None Include="Resources\programcheck.png" />
+    <None Include="Resources\programbuild.png" />
+    <None Include="Resources\programbreakpoint.png" />
+    <None Include="Resources\intellisensevariable.png" />
+    <None Include="Resources\intellisensesubroutine.png" />
+    <None Include="Resources\intellisenseproperty.png" />
+    <None Include="Resources\intellisensemethod.png" />
+    <None Include="Resources\intellisenselabel.png" />
+    <None Include="Resources\intellisensekeyword.png" />
+    <None Include="Resources\intellisenseitem.png" />
+    <None Include="Resources\intellisenseevent.png" />
+    <None Include="Resources\information.png" />
+    <None Include="Resources\glass.png" />
+    <None Include="Resources\filesaveas.png" />
+    <None Include="Resources\filesave.png" />
+    <None Include="Resources\fileopen.png" />
+    <None Include="Resources\filenew.png" />
+    <None Include="Resources\error.png" />
+    <None Include="Resources\editundo.png" />
+    <None Include="Resources\editredo.png" />
+    <None Include="Resources\editpaste.png" />
+    <None Include="Resources\editcut.png" />
+    <None Include="Resources\editcopy.png" />
+    <None Include="Resources\AppWorkspace.png" />
+    <None Include="Resources\Bar2.PNG" />
     <None Include="Resources\Turtle.png" />
   </ItemGroup>
   <ItemGroup />

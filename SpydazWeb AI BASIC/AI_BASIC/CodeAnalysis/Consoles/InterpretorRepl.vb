@@ -55,11 +55,16 @@ Namespace Consoles
                         _GetInput()
                     End If
                     If Line = "#repl" Then
-                        Call Application.EnableVisualStyles()
-                        Application.SetCompatibleTextRenderingDefault(True)
-                        Call Application.Run(New Editor_IDE)
-                    End If
 
+                        Call Application.Run(New Editor_IDE)
+                        _GetInput()
+                    End If
+                    If Line = "#ide" Then
+
+
+                        Call Application.Run(New IDE)
+                        _GetInput()
+                    End If
 
                     'Can be turned off / To reinstate #Run
                     'Default always Run
