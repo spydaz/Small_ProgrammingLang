@@ -143,6 +143,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property dotnet() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("dotnet", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property editcopy() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("editcopy", resourceCulture)
@@ -442,9 +452,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend ReadOnly Property Script() As System.Drawing.Bitmap
+        Friend ReadOnly Property Script_Code_Html() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("Script", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("Script_Code_Html", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -485,6 +495,16 @@ Namespace My.Resources
         Friend ReadOnly Property splash() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("splash", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property SpydazLookingGlass() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SpydazLookingGlass", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

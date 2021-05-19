@@ -69,6 +69,7 @@ Partial Class Editor_IDE
         Me.TabPageCompilerResults = New System.Windows.Forms.TabPage()
         Me.CompilerResutltsText = New System.Windows.Forms.RichTextBox()
         Me.GroupBox10 = New System.Windows.Forms.GroupBox()
+        Me.Small_PL_AstTreeView = New System.Windows.Forms.TreeView()
         Me.TabPageSAL_REPL = New System.Windows.Forms.TabPage()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -146,7 +147,6 @@ Partial Class Editor_IDE
         Me.OpenTextFileDialog = New System.Windows.Forms.OpenFileDialog()
         Me.SaveTextFileDialog = New System.Windows.Forms.SaveFileDialog()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Small_PL_AstTreeView = New System.Windows.Forms.TreeView()
         Me.TabControl_ProgrammingLang_Repl.SuspendLayout()
         Me.TabPageSpydaz_PL.SuspendLayout()
         Me.TabControlRepl_Inner.SuspendLayout()
@@ -488,7 +488,7 @@ Partial Class Editor_IDE
         '
         Me.CompileSpydazWebAI_BASIC.BackColor = System.Drawing.Color.Silver
         Me.CompileSpydazWebAI_BASIC.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.CompileSpydazWebAI_BASIC.Image = Global.AI_BASIC.My.Resources.Resources.Script
+        Me.CompileSpydazWebAI_BASIC.Image = Global.AI_BASIC.My.Resources.Resources.Script_Code_Html
         Me.CompileSpydazWebAI_BASIC.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CompileSpydazWebAI_BASIC.Name = "CompileSpydazWebAI_BASIC"
         Me.CompileSpydazWebAI_BASIC.Size = New System.Drawing.Size(54, 54)
@@ -718,6 +718,23 @@ Partial Class Editor_IDE
         Me.GroupBox10.Size = New System.Drawing.Size(981, 254)
         Me.GroupBox10.TabIndex = 0
         Me.GroupBox10.TabStop = False
+        '
+        'Small_PL_AstTreeView
+        '
+        Me.Small_PL_AstTreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Small_PL_AstTreeView.BackColor = System.Drawing.SystemColors.InfoText
+        Me.Small_PL_AstTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Small_PL_AstTreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Small_PL_AstTreeView.ForeColor = System.Drawing.Color.MintCream
+        Me.Small_PL_AstTreeView.HotTracking = True
+        Me.Small_PL_AstTreeView.Location = New System.Drawing.Point(115, 17)
+        Me.Small_PL_AstTreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
+        Me.Small_PL_AstTreeView.Name = "Small_PL_AstTreeView"
+        Me.Small_PL_AstTreeView.ShowNodeToolTips = True
+        Me.Small_PL_AstTreeView.Size = New System.Drawing.Size(747, 219)
+        Me.Small_PL_AstTreeView.TabIndex = 2
         '
         'TabPageSAL_REPL
         '
@@ -1550,23 +1567,6 @@ Partial Class Editor_IDE
         'ToolTip1
         '
         Me.ToolTip1.IsBalloon = True
-        '
-        'Small_PL_AstTreeView
-        '
-        Me.Small_PL_AstTreeView.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Small_PL_AstTreeView.BackColor = System.Drawing.SystemColors.InfoText
-        Me.Small_PL_AstTreeView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Small_PL_AstTreeView.Font = New System.Drawing.Font("Courier New", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Small_PL_AstTreeView.ForeColor = System.Drawing.Color.MintCream
-        Me.Small_PL_AstTreeView.HotTracking = True
-        Me.Small_PL_AstTreeView.Location = New System.Drawing.Point(115, 17)
-        Me.Small_PL_AstTreeView.Margin = New System.Windows.Forms.Padding(5, 6, 5, 6)
-        Me.Small_PL_AstTreeView.Name = "Small_PL_AstTreeView"
-        Me.Small_PL_AstTreeView.ShowNodeToolTips = True
-        Me.Small_PL_AstTreeView.Size = New System.Drawing.Size(747, 219)
-        Me.Small_PL_AstTreeView.TabIndex = 2
         '
         'Editor_IDE
         '

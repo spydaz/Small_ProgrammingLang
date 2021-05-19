@@ -27,7 +27,9 @@ Public Class SyntaxTextBox
 
 
 
-
+    Public Sub HighlightTerm(ByRef Str As String, ByRef Color As Drawing.Color)
+        Highlighter.ColorSearchTerm(Str, Me, Color)
+    End Sub
 
     Public Sub HighlightTerm(ByRef Str As String)
         Highlighter.HighlightWord(Me, Str)
@@ -262,7 +264,7 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
                 'find
                 sender.Find(word, index, sender.TextLength, RichTextBoxFinds.WholeWord)
                 'select and color
-                sender.SelectionColor = Color.Blue
+                sender.SelectionColor = Color.Magenta
                 ' word = UCase(word)
                 index = sender.Text.IndexOf(word, index) + 1
             End While
@@ -518,7 +520,6 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             Case Keys.Enter
                 ImDone = True
                 IveBeenClicked = False
-                newWord = ""
                 cmsDropDown.Close()
 
             Case Else

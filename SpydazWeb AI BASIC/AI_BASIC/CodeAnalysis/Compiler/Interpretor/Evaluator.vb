@@ -6,7 +6,7 @@ Imports AI_BASIC.Syntax.SyntaxNodes
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Interpretor
-            Friend Class Evaluator
+            Public Class Evaluator
                 Private Env As New EnvironmentalMemory
 
                 Public _Diagnostics As New List(Of String)

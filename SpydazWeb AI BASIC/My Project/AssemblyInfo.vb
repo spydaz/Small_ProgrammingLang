@@ -9,13 +9,13 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("SpydazWeb AI BASIC")>
-<Assembly: AssemblyDescription("SpydazWeb AI BASIC programming language")>
+<Assembly: AssemblyDescription("SpydazWeb AI BASIC Programming Language")>
 <Assembly: AssemblyCompany("SpydazWeb AI")>
-<Assembly: AssemblyProduct("AI SDK")>
+<Assembly: AssemblyProduct("SpydazWeb AI SDK")>
 <Assembly: AssemblyCopyright("SpydazWeb AI Copyright ©  2021")>
 <Assembly: AssemblyTrademark("SpydazWeb AI Copyright ©  2021")>
 
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(True)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
 <Assembly: Guid("52eb895d-d999-4acb-89a9-7d113644a05d")>

@@ -356,6 +356,7 @@ Namespace Syntax
             Dim Converter As New JavaScriptSerializer
             If Me._Value IsNot Nothing Then
 
+
                 Return Converter.Serialize(Me)
 
             End If

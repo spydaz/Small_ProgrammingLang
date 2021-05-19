@@ -752,9 +752,7 @@ Namespace LineNumbers
         ''' <summary>
         ''' FindStartIndex is a recursive Sub (one that calls itself) to compute the first visible line that should have a LineNumber.
         ''' </summary>
-        ''' <paramname="zMin"> this will hold the eventual BestStartIndex when the Sub has completed its run.</param>
-        ''' <paramname="zMax"></param>
-        ''' <paramname="zTarget"></param>
+        ''' <paramname>=</paramname>"zMin"> this will hold the eventual BestStartIndex when the Sub has completed its run.</param>
         ''' <remarks></remarks>
         Private Sub FindStartIndex(ByRef zMin As Integer, ByRef zMax As Integer, ByRef zTarget As Integer)
             '   Recursive Sub to compute best starting index - only run when zParent is known to exist
@@ -790,7 +788,6 @@ Namespace LineNumbers
         ''' in SeeThroughMode (if it's active): the figures in the GraphicsPaths will form a customized outline for the control by setting them as the 
         ''' Region of the LineNumber control. Note: the vertical ReminderMessages are only drawn during designtime. 
         ''' </summary>
-        ''' <paramname="e"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
             '   Build the list of visible LineNumberItems (= zLNIs) first. (doesn't take long, so it can stay in OnPaint)

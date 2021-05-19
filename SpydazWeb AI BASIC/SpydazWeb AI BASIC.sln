@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SpydazWeb AI BASIC", "SpydazWeb AI BASIC.vbproj", "{4C3DB8A4-4555-438C-9FDC-8AE773629416}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SpydazWebAI_BASIC", "SpydazWebAI_BASIC.vbproj", "{4C3DB8A4-4555-438C-9FDC-8AE773629416}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +20,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {20B47142-BDD7-4033-AFB8-F2D62DAFF901}
+		SolutionGuid = {47014CC9-C2ED-4E82-A4D9-EA8D57D90069}
 	EndGlobalSection
 EndGlobal
