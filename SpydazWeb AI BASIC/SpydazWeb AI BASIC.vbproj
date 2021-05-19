@@ -54,6 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -137,6 +138,12 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Consoles\IDE.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CompilerPropertys.designer.vb">
+      <DependentUpon>CompilerPropertys.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CompilerPropertys.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -192,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\IDE.resx">
       <DependentUpon>IDE.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompilerPropertys.resx">
+      <DependentUpon>CompilerPropertys.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
