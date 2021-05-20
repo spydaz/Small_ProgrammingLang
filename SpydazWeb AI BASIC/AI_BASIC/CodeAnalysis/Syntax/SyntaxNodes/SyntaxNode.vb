@@ -337,7 +337,7 @@ Namespace Syntax
                 Return Lst
             End Function
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal._value
+                Return GetValue(ParentEnv)
             End Function
             Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
                 Return ParentEnv.CheckVar(_Literal._value)

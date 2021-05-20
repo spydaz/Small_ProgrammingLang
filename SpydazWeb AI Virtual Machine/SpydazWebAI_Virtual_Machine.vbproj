@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AAD6B3A4-2D2A-4EF7-AA67-DDFC62ADC6B9}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>SDK.My.MyApplication</StartupObject>
-    <RootNamespace>SDK</RootNamespace>
-    <AssemblyName>Small_Programming_Language</AssemblyName>
+    <ProjectGuid>{24601FC8-50FF-49DB-8A7A-AD8EA8F48D57}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>SAL_VM</RootNamespace>
+    <AssemblyName>SpydazWeb.AI.Virtual.Machine</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsForms</MyType>
+    <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -22,7 +23,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>Small_Programming_Language.xml</DocumentationFile>
+    <DocumentationFile>SpydazWeb.AI.Virtual.Machine.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +33,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>Small_Programming_Language.xml</DocumentationFile>
+    <DocumentationFile>SpydazWeb.AI.Virtual.Machine.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -48,22 +49,21 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>COM.ICO</ApplicationIcon>
+    <ApplicationIcon>IconUFP.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Text.Json, Version=5.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Text.Json.5.0.2\lib\net461\System.Text.Json.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Extensions.Design" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
@@ -73,31 +73,46 @@
     <Import Include="System.Data" />
     <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
+    <Import Include="System.Web.Script.Serialization" />
     <Import Include="System.Windows.Forms" />
     <Import Include="System.Linq" />
     <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.vb" />
-    <Compile Include="SpydazWebAI.Basic_Repl.vb" />
-    <Compile Include="SourceCode\PL_COMPILER.vb" />
-    <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.Designer.vb">
-      <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
+    <Compile Include="SourceCode\C_P_U\ZX21_GDU.designer.vb">
+      <DependentUpon>ZX21_GDU.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\FormDisplayGraphics.vb">
+    <Compile Include="SourceCode\C_P_U\ZX21_GDU.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\C64.vb" />
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\ZX21_COMPILER.vb" />
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.Designer.vb">
+      <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.Designer.vb">
       <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\SAL_ZX21_SPL_BASIC_REPL.vb">
+    <Compile Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.designer.vb">
-      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\Turtle.vb" />
+    <Compile Include="SourceCode\SDK\ZX21_API.vb" />
+    <Compile Include="SourceCode\SDK\ZX21_Ext.vb" />
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.designer.vb">
+      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\EMU_MachineUI.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.designer.vb">
+      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -116,32 +131,29 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.designer.vb">
-      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
+      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\FormDisplayConsole.vb">
+    <Compile Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\VM_MachineUI.designer.vb">
-      <DependentUpon>VM_MachineUI.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SourceCode\MachineUI\ZX21_GDU.designer.vb">
-      <DependentUpon>ZX21_GDU.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCode\MachineUI\ZX21_GDU.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="SourceCode\SpydazWebAI.Basic.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_CacheMemory.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_CPU.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_GPU.vb" />
+    <Compile Include="SourceCode\C_P_U\ZX21_RAM.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayGraphics.resx">
-      <DependentUpon>FormDisplayGraphics.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_GDU.resx">
+      <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\SAL_ZX21_SPL_BASIC_REPL.resx">
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
+      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_SPL_Interpretor\SAL_ZX21_SPL_BASIC_REPL.resx">
       <DependentUpon>SAL_ZX21_SPL_BASIC_REPL.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
+      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -149,23 +161,25 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\FormDisplayConsole.resx">
-      <DependentUpon>FormDisplayConsole.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\VM_MachineUI.resx">
-      <DependentUpon>VM_MachineUI.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SourceCode\MachineUI\EMU_MachineUI.resx">
-      <DependentUpon>EMU_MachineUI.vb</DependentUpon>
+    <EmbeddedResource Include="SourceCode\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
+      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
-      <Link>.editorconfig</Link>
-    </None>
-    <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\BASIC.ROM" />
+    <None Include="Resources\CHAR.ROM" />
+    <None Include="Resources\KERNAL.ROM" />
+    <None Include="Resources\X SERIES AL 9000s.jpg" />
     <None Include="Resources\up.png" />
+    <None Include="Resources\SERIES 1 sal9000.bmp" />
+    <None Include="Resources\Script_Code_Html_.png" />
+    <None Include="Resources\ipad-mockup-hands.png" />
     <None Include="Resources\Icon_UpVote.png" />
+    <None Include="Resources\EYE BLUE .gif" />
+    <None Include="Resources\Dell UltraSharp 27.png" />
+    <None Include="Resources\Console A.jpg" />
+    <None Include="Resources\Complier_RUN.png" />
+    <None Include="Resources\Arrow_Right.png" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -176,29 +190,19 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="toDo.md" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\Arrow_Right.png" />
+    <Content Include="IconUFP.ico" />
+    <None Include="Resources\Simple64.exe" />
+    <None Include="Resources\6502.dll" />
+    <None Include="Resources\Turtle.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Complier_RUN.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SpydazWeb AI Virtual Machine\SpydazWebAI_Virtual_Machine.vbproj">
-      <Project>{24601FC8-50FF-49DB-8A7A-AD8EA8F48D57}</Project>
-      <Name>SpydazWebAI_Virtual_Machine</Name>
+    <ProjectReference Include="EMU6502\EMU6502.csproj">
+      <Project>{3f6b8296-d8e7-43eb-96b8-84482b41a048}</Project>
+      <Name>EMU6502</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="COM.ICO" />
-    <None Include="Resources\console-icon.png" />
-    <None Include="Resources\ipad-mockup-hands.png" />
-    <None Include="Resources\Console A.jpg" />
-    <None Include="Resources\SERIES 1 sal9000.bmp" />
-    <None Include="Resources\X SERIES AL 9000s.jpg" />
-    <None Include="Resources\EYE BLUE .gif" />
-    <None Include="Resources\Dell UltraSharp 27.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

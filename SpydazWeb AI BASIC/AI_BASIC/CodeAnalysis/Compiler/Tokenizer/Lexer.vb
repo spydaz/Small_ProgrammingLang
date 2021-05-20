@@ -198,6 +198,16 @@ Namespace CodeAnalysis
                                 Return New SyntaxToken(SyntaxType._ASSIGN, "_ASSIGN", "=", "=", _start, _start + _length)
 
                             End If
+                        Case "<"c
+                            If Lookahead = ">"c Then
+                                _start = CursorPosition
+                                _length = 2
+                                CursorPosition += _length
+                                Return New SyntaxToken(SyntaxType.NotEqual, SyntaxType.NotEqual.GetSyntaxTypeStr, "!=", "!=", _start, _start + _length)
+
+                            Else
+
+                            End If
                         Case "!"c
                             If Lookahead = "="c Then
                                 _start = CursorPosition

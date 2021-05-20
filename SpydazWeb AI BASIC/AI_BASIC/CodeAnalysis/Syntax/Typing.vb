@@ -1,8 +1,31 @@
-﻿Imports System.Runtime.CompilerServices
+﻿Imports System.Globalization
+Imports System.Runtime.CompilerServices
 Imports System.Text
 Imports System.Web.Script.Serialization
 
 Namespace Syntax
+    Public Enum DiagnosticType
+        TokenizerDiagnostics
+        ExpressionSyntaxDiagnostics
+        EvaluationDiagnostics
+    End Enum
+    Public Enum ExceptionType
+        GeneralError
+        VariableDeclarationError
+        MemoryAccessError
+        UnknownLiteralError
+        UnknownTokenError
+        UnknownReturnType
+        UnknownExpressionError
+        TokenizerGeneralException
+        ParserGeneralException
+        EvaluationException
+        InvalidLiteralType
+        InvalidParameter
+        UnabletoCompileError
+        UnabletoParseError
+        UnabletoTokenizeError
+    End Enum
     Public Enum OperatorType
         Add
         Minus
@@ -44,7 +67,6 @@ Namespace Syntax
         _Multiplcative
         _Addative
         _Assignment
-
     End Enum
     Public Enum ExpressionType
         Literal
@@ -66,6 +88,47 @@ Namespace Syntax
         Function GetKeywordSyntaxType(text As String) As SyntaxType
 
             Select Case text
+#Region "Psudoe maths Coding"
+                Case "greater_than"
+                    Return SyntaxType.GreaterThan_Operator
+                Case "less_than"
+                    Return SyntaxType.LessThanOperator
+                Case "add_to"
+                    Return SyntaxType.Add_Operator
+                Case "multiply_by"
+                    Return SyntaxType.Multiply_Operator
+                Case "subtract_from"
+                    Return SyntaxType.Sub_Operator
+                Case "divide_by"
+                    Return SyntaxType.Divide_Operator
+                Case "greater_than_or_equals"
+                    Return SyntaxType.GreaterThanEquals
+                Case "less_than_or_equals"
+                    Return SyntaxType.LessThanEquals
+                Case "not_equal_to"
+                    Return SyntaxType.NotEqual
+                Case "equal_to"
+                    Return SyntaxType.EquivelentTo
+                Case "equals"
+                    Return SyntaxType._ASSIGN
+                Case "add_equals"
+                    Return SyntaxType.Add_Equals_Operator
+                Case "minus_equals"
+                    Return SyntaxType.Minus_Equals_Operator
+                Case "divide_equals"
+                    Return SyntaxType.Divide_Equals_Operator
+                Case "multiply_equals"
+                    Return SyntaxType.Multiply_Equals_Operator
+#End Region
+#Region "Logical"
+                Case "or"
+                    Return SyntaxType.OrKeyword
+                Case "and"
+                    Return SyntaxType.AndKeyWord
+                Case "not"
+                    Return SyntaxType.NotKeyWord
+#End Region
+#Region "Literaltpyes"
                 Case "string"
                     Return SyntaxType._StringType
                 Case "boolean"
@@ -80,52 +143,152 @@ Namespace Syntax
                     Return SyntaxType.TrueKeyword
                 Case "false"
                     Return SyntaxType.FalseKeyword
-
-                Case "let"
-                    Return SyntaxType.LetKeyword
-                Case "return"
-                    Return SyntaxType.ReturnKeyword
+                Case "date"
+                    Return SyntaxType._DateType
+#End Region
+#Region "basic Functions"
+#Region "Variable Declerations"
                 Case "var"
                     Return SyntaxType.VarKeyword
                 Case "dim"
                     Return SyntaxType.DimKeyword
-                Case "function"
-                    Return SyntaxType.FunctionKeyword
+                Case "as"
+                    Return SyntaxType.AsKeyWord
+#End Region
+#Region "Assignment"
+                Case "let"
+                    Return SyntaxType.LetKeyword
+                Case "equals"
+                    Return SyntaxType._ASSIGN
+#End Region
+#Region "If/Then/Else"
                 Case "if"
                     Return SyntaxType.IfKeyword
-        'Case "then"
-        '  Return SyntaxKind.ThenKeyword
-                Case "break"
-                    Return SyntaxType.BreakKeyword
-                Case "continue"
-                    Return SyntaxType.ContinueKeyword
                 Case "else"
                     Return SyntaxType.ElseKeyword
-        'Case "elseif"
-        '  Return SyntaxKind.ElseIfKeyword
-        'Case "endif"
-        '  Return SyntaxKind.ElseIfKeyword
-                Case "function"
-                    Return SyntaxType.WhileKeyword
+                Case "then"
+                    Return SyntaxType.ThenKeyword
+                Case "elseif"
+                    Return SyntaxType.ElseIfKeyword
+                Case "endif"
+                    Return SyntaxType.EndIfKeyword
+#End Region
+#Region "Do/While/Until"
+
+
                 Case "while"
                     Return SyntaxType.WhileKeyword
                 Case "do"
                     Return SyntaxType.DoKeyword
                 Case "until"
                     Return SyntaxType.UntilKeword
+                Case "loop"
+                    Return SyntaxType.LoopKeyWord
+#End Region
+#Region "For/Each/In/To Next"
+
                 Case "for"
                     Return SyntaxType.ForKeyword
                 Case "to"
                     Return SyntaxType.ToKeyword
-                Case "do"
-                    Return SyntaxType.DoKeyword
-                Case "then"
-                    Return SyntaxType.ThenKeyword
+
+                Case "each"
+                    Return SyntaxType.EachKeyWord
+                Case "in"
+                    Return SyntaxType.InKeyWord
+                Case "next"
+                    Return SyntaxType.NextKeyWord
+#End Region
+#Region "Function"
+                Case "return"
+                    Return SyntaxType.ReturnKeyword
+                Case "function"
+                    Return SyntaxType.FunctionKeyword
+                Case "break"
+                    Return SyntaxType.BreakKeyword
+                Case "continue"
+                    Return SyntaxType.ContinueKeyword
+#End Region
+#Region "Sal Commands"
+                Case "push"
+                    Return SyntaxType.SAL_PUSH
+                Case "pop"
+                    Return SyntaxType.SAL_POP
+                Case "pull"
+                    Return SyntaxType.SAL_PULL
+                Case "peek"
+                    Return SyntaxType.SAL_PEEK
+                Case "wait"
+                    Return SyntaxType.SAL_WAIT
+                Case "pause"
+                    Return SyntaxType.SAL_PAUSE
+                Case "halt"
+                    Return SyntaxType.SAL_HALT
+                Case "resume"
+                    Return SyntaxType.SAL_RESUME
+                Case "dup"
+                    Return SyntaxType.SAL_DUP
+                Case "jmp"
+                    Return SyntaxType.SAL_JMP
+                Case "jif_t"
+                    Return SyntaxType.SAL_JIF_T
+                Case "jif_f"
+                    Return SyntaxType.SAL_JIF_F
+                Case "jif_eq"
+                    Return SyntaxType.SAL_JIF_EQ
+                Case "jif_gt"
+                    Return SyntaxType.SAL_JIF_GT
+                Case "jif_lt"
+                    Return SyntaxType.SAL_JIF_LT
+                Case "load"
+                    Return SyntaxType.SAL_LOAD
+                Case "store"
+                    Return SyntaxType.SAL_STORE
+                Case "remove"
+                    Return SyntaxType.SAL_REMOVE
+                Case "call"
+                    Return SyntaxType.SAL_CALL
+                Case "print_c"
+                    Return SyntaxType.SAL_PRINT_C
+                Case "print_m"
+                    Return SyntaxType.SAL_PRINT_M
+                Case "add"
+                    Return SyntaxType.SAL_ADD
+                Case "sub"
+                    Return SyntaxType.SAL_SUB
+                Case "mul"
+                    Return SyntaxType.SAL_MUL
+                Case "div"
+                    Return SyntaxType.SAL_DIV
+
+                Case "is_eq"
+                    Return SyntaxType.SAL_IS_EQ
+                Case "is_gt"
+                    Return SyntaxType.SAL_IS_GT
+                Case "is_lt"
+                    Return SyntaxType.SAL_IS_LT
+                Case "is_gte"
+                    Return SyntaxType.SAL_IS_GTE
+                Case "is_lte"
+                    Return SyntaxType.SAL_IS_LTE
+                Case "to_pos"
+                    Return SyntaxType.SAL_TO_POS
+                Case "is_neg"
+                    Return SyntaxType.SAL_TO_NEG
+                Case "incr"
+                    Return SyntaxType.SAL_INCR
+                Case "decr"
+                    Return SyntaxType.SAL_DECR
+#End Region
+
+#End Region
+
                 Case Else
                     Return SyntaxType._Identifier
             End Select
 
         End Function
+
         <Runtime.CompilerServices.Extension()>
         Public Function GetUnaryOperatorPrecedence(kind As SyntaxType) As Integer
             Select Case kind
@@ -155,11 +318,11 @@ Namespace Syntax
                      SyntaxType.GreaterThan_Operator
                     Return 3
 
-                Case SyntaxType._LOGICAL_AND
+                Case SyntaxType.AndKeyWord
                     'SyntaxType.AmpersandAmpersandToken
                     Return 2
 
-                Case SyntaxType._LOGICAL_OR
+                Case SyntaxType.OrKeyword
                     ' SyntaxType.PipePipeToken,
                     ' SyntaxType.HatToken
                     Return 1
@@ -265,7 +428,6 @@ Namespace Syntax
 
             Return "_UnknownToken"
         End Function
-
         <Runtime.CompilerServices.Extension()>
         Public Function GetOperator(ByRef _Operatortype As OperatorType) As String
             Select Case _Operatortype
@@ -472,9 +634,8 @@ Namespace Syntax
         _Not = 25
         'Logical Operators
         '
-        _LOGICAL_AND = 26
-        _LOGICAL_OR = 27
-        _LOGICAL_NOT = 28
+
+
 #End Region
 
         'Symbols
@@ -525,10 +686,7 @@ Namespace Syntax
 #Region "MainLanguage"
 #Region "Functions - Used In Universal RegexSearches"
 
-        _LOOP = 72
-        _EACH = 81
-        _NEXT = 83
-        _IN = 84
+
         _PRINT = 90
         _FUNCTION_DECLARE = 95
 
@@ -613,9 +771,8 @@ Namespace Syntax
         _SAL_Expression = 750
         _Sal_Program_title = 760
         _Sal_BeginStatement = 770
-        _SAL_PROGRAM_BEGIN = 771
-        BASIC_LANG = 772
 
+        SAL_POP
 
 
 
@@ -645,11 +802,26 @@ Namespace Syntax
         _BooleanType = 222
         _DateType = 223
         _NullType = 224
+        AsKeyWord = 225
+        EachKeyWord = 225
+        NextKeyWord
+        LoopKeyWord
+        InKeyWord
+        ElseIfKeyword
+        EndIfKeyword
+        OrKeyword
+        AndKeyWord
+        NotKeyWord
 #End Region
 #Region "BoundNodes"
         UnboundLiteral
         BoundLiteral
+
+
+
 #End Region
+        _SAL_PROGRAM_BEGIN = 771
+        BASIC_LANG = 772
 
 #End Region
 
@@ -829,42 +1001,42 @@ Namespace Syntax
 
             'Logical Operators
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_AND
+            NewGram.Identifer = SyntaxType.AndKeyWord
             NewGram.SearchPattern = "^\bAND\b"
             Spec.Add(NewGram)
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_OR
+            NewGram.Identifer = SyntaxType.SAL_OR
             NewGram.SearchPattern = "^\bOR\b"
             Spec.Add(NewGram)
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_NOT
+            NewGram.Identifer = SyntaxType.NotKeyWord
             NewGram.SearchPattern = "^\bNOT\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_AND
+            NewGram.Identifer = SyntaxType.AndKeyWord
             NewGram.SearchPattern = "^\band\b"
             Spec.Add(NewGram)
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_OR
+            NewGram.Identifer = SyntaxType.OrKeyword
             NewGram.SearchPattern = "^\bor\b"
             Spec.Add(NewGram)
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOGICAL_NOT
+            NewGram.Identifer = SyntaxType.NotKeyWord
             NewGram.SearchPattern = "^\bnot\b"
             Spec.Add(NewGram)
 
             'Equality operators: !=
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.NotEqual
+            NewGram.Identifer = SyntaxType.EquivelentTo
             NewGram.SearchPattern = "^(=\)=\="
             'Equality operators: ==
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.EquivelentTo
-            NewGram.SearchPattern = "^(=|!)=\="
+            NewGram.Identifer = SyntaxType.NotEqual
+            NewGram.SearchPattern = "^(!)=\="
 
             'Operations (Groups)
             '_ParenthesizedExpresion
@@ -1194,7 +1366,7 @@ Namespace Syntax
             NewGram.SearchPattern = "^\buntil\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._LOOP
+            NewGram.Identifer = SyntaxType.LoopKeyWord
             NewGram.SearchPattern = "^\bloop\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -1210,7 +1382,7 @@ Namespace Syntax
             NewGram.SearchPattern = "^\bfor\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._EACH
+            NewGram.Identifer = SyntaxType.EachKeyWord
             NewGram.SearchPattern = "^\beach\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
@@ -1218,11 +1390,11 @@ Namespace Syntax
             NewGram.SearchPattern = "^\bto\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._NEXT
+            NewGram.Identifer = SyntaxType.NextKeyWord
             NewGram.SearchPattern = "^\bnext\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType._IN
+            NewGram.Identifer = SyntaxType.InKeyWord
             NewGram.SearchPattern = "^\bin\b"
             Spec.Add(NewGram)
 
@@ -1295,6 +1467,10 @@ Namespace Syntax
             NewGram = New GrammarDefinintion
             NewGram.Identifer = SyntaxType.SAL_PUSH
             NewGram.SearchPattern = "^\bpush\b"
+            iSpec.Add(NewGram)
+            NewGram = New GrammarDefinintion
+            NewGram.Identifer = SyntaxType.SAL_POP
+            NewGram.SearchPattern = "^\bpop\b"
             iSpec.Add(NewGram)
             NewGram = New GrammarDefinintion
             NewGram.Identifer = SyntaxType.SAL_PULL

@@ -112,68 +112,33 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\Evaluator.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Lexer.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Parser.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\CompilerPropertys.Designer.vb">
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerPropertys.Designer.vb">
       <DependentUpon>CompilerPropertys.vb</DependentUpon>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\CompilerPropertys.vb">
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerPropertys.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\IDE.Designer.vb">
+    <Compile Include="AI_BASIC\Consoles\IDE\IDE.Designer.vb">
       <DependentUpon>IDE.vb</DependentUpon>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\IDE.vb">
+    <Compile Include="AI_BASIC\Consoles\IDE\IDE.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Emit\Transpiler.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Diagnostics\Diagnostics.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Emit\Emitter.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\Binder.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\Bound_LiteralExpression.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
     <Compile Include="AI_BASIC\MAIN\Program.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\CompilerRepl.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\InterpretorRepl.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.designer.vb">
-      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_GDU.Designer.vb">
-      <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_GDU.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_VDU.designer.vb">
-      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_VDU.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_Web.designer.vb">
-      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_Web.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\SDK\ZX21_API.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\SDK\ZX21_Ext.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_CacheMemory.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_CPU.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_GDU.designer.vb">
-      <DependentUpon>ZX21_GDU.vb</DependentUpon>
-    </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_GDU.vb">
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\InterpretorRepl.vb" />
+    <Compile Include="AI_BASIC\Consoles\UserControls\linenum_rtf.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_GPU.vb" />
-    <Compile Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_RAM.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\linenum_rtf.vb">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\VisualRepl.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\ClassSyntaxTextbox.vb">
+    <Compile Include="AI_BASIC\Consoles\VisualRepl.vb" />
+    <Compile Include="AI_BASIC\Consoles\UserControls\ClassSyntaxTextbox.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -192,10 +157,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\Editor_IDE.Designer.vb">
+    <Compile Include="AI_BASIC\Consoles\IDE\Editor_IDE.Designer.vb">
       <DependentUpon>Editor_IDE.vb</DependentUpon>
     </Compile>
-    <Compile Include="AI_BASIC\CodeAnalysis\Consoles\Editor_IDE.vb">
+    <Compile Include="AI_BASIC\Consoles\IDE\Editor_IDE.vb">
       <SubType>Form</SubType>
     </Compile>
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
@@ -205,35 +170,17 @@
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
     <None Include="AI_BASIC\Readme.Md" />
-    <None Include="AI_BASIC\VirtualMachine\C_P_U\readme.md" />
-    <None Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\Readme.md" />
     <None Include="My Project\app.manifest" />
     <None Include="ReadMe.md" />
-    <None Include="AI_BASIC\VirtualMachine\Spydaz Virtual Machine Code Language %3b.md" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\CompilerPropertys.resx">
+    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerPropertys.resx">
       <DependentUpon>CompilerPropertys.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\IDE.resx">
+    <EmbeddedResource Include="AI_BASIC\Consoles\IDE\IDE.resx">
       <DependentUpon>IDE.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\VirtualMachine\C_P_U\ZX21_GDU.resx">
-      <DependentUpon>ZX21_GDU.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_ConsoleUI.resx">
-      <DependentUpon>SAL_ZX21_ConsoleUI.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_GDU.resx">
-      <DependentUpon>SAL_ZX21_GDU.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_VDU.resx">
-      <DependentUpon>SAL_ZX21_VDU.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\VirtualMachine\SAL_ZX21_VM_UI\SAL_ZX21_Web.resx">
-      <DependentUpon>SAL_ZX21_Web.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\ClassSyntaxTextbox.resx">
+    <EmbeddedResource Include="AI_BASIC\Consoles\UserControls\ClassSyntaxTextbox.resx">
       <DependentUpon>ClassSyntaxTextbox.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -242,7 +189,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="AI_BASIC\CodeAnalysis\Consoles\Editor_IDE.resx">
+    <EmbeddedResource Include="AI_BASIC\Consoles\IDE\Editor_IDE.resx">
       <DependentUpon>Editor_IDE.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

@@ -1,6 +1,6 @@
-﻿Imports AI_BASIC.Consoles.Interpretor
-Imports System.Windows.Forms
+﻿Imports System.Windows.Forms
 Imports System.Console
+Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
 
 Module Program
 

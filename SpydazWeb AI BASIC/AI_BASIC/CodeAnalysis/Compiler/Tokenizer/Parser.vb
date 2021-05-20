@@ -58,6 +58,7 @@ Namespace CodeAnalysis
                     End Get
                 End Property
 #End Region
+
 #Region "Functions"
                 Private Function _Peek(ByVal offset As Integer) As SyntaxToken
                     Dim index = CursorPosition + offset
@@ -143,6 +144,7 @@ Namespace CodeAnalysis
                     Return Nothing
                 End Function
 #End Region
+
 #Region "Parser"
 
                 Public Function ParseSyntaxTree() As SyntaxTree
@@ -172,6 +174,7 @@ Namespace CodeAnalysis
                 End Function
 
 #End Region
+
 #Region "Basic _ExpressionSyntaxTree"
                 Public Function _ExpressionSyntaxTree() As SyntaxTree
                     Select Case CurrentToken._SyntaxType
@@ -198,7 +201,10 @@ Namespace CodeAnalysis
                     Return New SyntaxTree(_Script, ExpressionList, _Tree, _Diagnostics)
                 End Function
 #End Region
+
 #Region "MAIN_EXPRESSIONS"
+
+#Region "Expression"
                 Public Function ExpressionList() As List(Of SyntaxNode)
                     Dim Lst As New List(Of SyntaxNode)
                     Do While CursorPosition < EOT_CursorPosition
@@ -221,11 +227,17 @@ Namespace CodeAnalysis
                     End Select
 
                 End Function
+#End Region
+
+#Region "Unary Expression"
                 Public Function _UnaryExpression(ByRef _Operator As SyntaxToken) As ExpressionSyntaxNode
                     Dim x = New UnaryExpression(_Operator, _NumericLiteralExpression)
                     CursorPosition += 2
                     Return x
                 End Function
+#End Region
+
+#Region "Prime Expression"
                 ''' <summary>
                 ''' (Identifer_KeyWord)
                 ''' </summary>
@@ -294,6 +306,10 @@ Namespace CodeAnalysis
                     ' _Diagnostics.Add("unknown _PrimaryExpression? " & vbNewLine & CurrentToken.ToJson)
                     Return _BinaryExpression()
                 End Function
+
+#End Region
+
+#Region "Left hand Functional Expressions"
                 Public Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode)
                     Select Case CurrentToken._SyntaxType
 
@@ -307,11 +323,266 @@ Namespace CodeAnalysis
                     'If not _LeftHandExpression then send value to binary Expression to continue
                     Return _BinaryExpression(_left)
                 End Function
+#End Region
+
+#Region "Binary Expression"
                 ''' <summary>
                 ''' Left Operator Right
                 ''' </summary>
                 ''' <returns></returns>
                 Public Function _BinaryExpression() As ExpressionSyntaxNode
+                    Dim _Left As ExpressionSyntaxNode
+                    _Left = _LiteralExpression()
+
+                    Select Case CurrentToken._SyntaxType
+#Region "MathsExpression"
+                        Case SyntaxType.Add_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                Return _AddativeExpression(_Left)
+                            End While
+                        Case SyntaxType.Multiply_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                                Return _MultiplicativeExpression(_Left)
+                            End While
+                        Case SyntaxType.Sub_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                Return _AddativeExpression(_Left)
+                            End While
+                        Case SyntaxType.Divide_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                                Return _MultiplicativeExpression(_Left)
+                            End While
+#End Region
+#Region "Comparison Expression"
+
+                        Case SyntaxType.GreaterThan_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThan_Operator
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.LessThanOperator
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanOperator
+                                Return _ComparisonExpression(_Left)
+                            End While
+
+                        Case SyntaxType.EquivelentTo
+                            While CurrentToken._SyntaxType = SyntaxType.EquivelentTo
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.NotEqual
+                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                                Return _ComparisonExpression(_Left)
+                            End While
+
+                        Case SyntaxType.GreaterThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThanEquals
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.LessThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanEquals
+                                Return _ComparisonExpression(_Left)
+                            End While
+#End Region
+#Region "ComplexAssign"
+
+#End Region
+#Region "SimpleAssign"
+
+#End Region
+                    End Select
+
+                    Return _Left
+                End Function
+                Public Function _BinaryExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
+
+                    Select Case CurrentToken._SyntaxType
+#Region "Maths Expression"
+                        Case SyntaxType.Add_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                Return _AddativeExpression(_Left)
+                            End While
+                        Case SyntaxType.Multiply_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                                Return _MultiplicativeExpression(_Left)
+                            End While
+
+                        Case SyntaxType.Sub_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Sub_Operator
+                                Return _AddativeExpression(_Left)
+                            End While
+                        Case SyntaxType.Divide_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Divide_Operator
+                                Return _MultiplicativeExpression(_Left)
+                            End While
+#End Region
+#Region "Comparison Expressions"
+
+                        Case SyntaxType.GreaterThan_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThan_Operator
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.LessThanOperator
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanOperator
+                                Return _ComparisonExpression(_Left)
+                            End While
+
+                        Case SyntaxType.EquivelentTo
+                            While CurrentToken._SyntaxType = SyntaxType.EquivelentTo
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.NotEqual
+                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                                Return _ComparisonExpression(_Left)
+                            End While
+
+                        Case SyntaxType.GreaterThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThanEquals
+                                Return _ComparisonExpression(_Left)
+                            End While
+                        Case SyntaxType.LessThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanEquals
+                                Return _ComparisonExpression(_Left)
+                            End While
+#End Region
+#Region "ComplexAssign"
+
+#End Region
+#Region "SimpleAssign"
+
+#End Region
+
+
+
+                    End Select
+
+
+
+
+
+                    Return _Left
+                End Function
+
+#Region "ComparisonExpression"
+
+                ''' <summary>
+                ''' Left Operator Right
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _ComparisonExpression() As ExpressionSyntaxNode
+                    Dim _Left As ExpressionSyntaxNode
+                    _Left = _LiteralExpression()
+                    Dim _Operator As New SyntaxToken
+                    Dim _right As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.GreaterThan_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThan_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.LessThanOperator
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanOperator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.NotEqual
+                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.EquivelentTo
+                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+                        Case SyntaxType.GreaterThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThanEquals
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+                        Case SyntaxType.LessThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanEquals
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                    End Select
+                    Return _Left
+                End Function
+
+                Public Function _ComparisonExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
+                    Dim _Operator As New SyntaxToken
+                    Dim _right As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.GreaterThan_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThan_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.LessThanOperator
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanOperator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.NotEqual
+                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.EquivelentTo
+                            While CurrentToken._SyntaxType = SyntaxType.EquivelentTo
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+
+                        Case SyntaxType.LessThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.LessThanEquals
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.GreaterThanEquals
+                            While CurrentToken._SyntaxType = SyntaxType.GreaterThanEquals
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+
+                    End Select
+
+                    Return _Left
+                End Function
+
+#End Region
+#Region "AddativeExpression"
+                ''' <summary>
+                ''' Left Operator Right
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _AddativeExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
 
@@ -326,13 +597,21 @@ Namespace CodeAnalysis
                                 Return _Left
                             End While
 
+                        Case SyntaxType.Sub_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Sub_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
 
                     End Select
 
 
                     Return _Left
                 End Function
-                Public Function _BinaryExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
+
+                Public Function _AddativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
@@ -343,11 +622,80 @@ Namespace CodeAnalysis
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
                                 Return _Left
                             End While
-
+                        Case SyntaxType.Sub_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
                     End Select
 
                     Return _Left
                 End Function
+
+#End Region
+#Region "MultiplicativeExpression"
+                ''' <summary>
+                ''' Left Operator Right
+                ''' </summary>
+                ''' <returns></returns>
+                Public Function _MultiplicativeExpression() As ExpressionSyntaxNode
+                    Dim _Left As ExpressionSyntaxNode
+                    _Left = _LiteralExpression()
+
+                    Dim _Operator As New SyntaxToken
+                    Dim _right As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.Multiply_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+                        Case SyntaxType.Divide_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Divide_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+
+                    End Select
+
+
+                    Return _Left
+                End Function
+
+                Public Function _MultiplicativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
+                    Dim _Operator As New SyntaxToken
+                    Dim _right As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.Multiply_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                        Case SyntaxType.Divide_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Divide_Operator
+                                _Operator = _GetNextToken()
+                                _right = _BinaryExpression()
+                                _Left = New BinaryExpression(_Left, _right, _Operator)
+                                Return _Left
+                            End While
+                    End Select
+
+                    Return _Left
+                End Function
+
+#End Region
+#End Region
+
+
 #End Region
 #Region "Blocks"
                 ''' <summary>

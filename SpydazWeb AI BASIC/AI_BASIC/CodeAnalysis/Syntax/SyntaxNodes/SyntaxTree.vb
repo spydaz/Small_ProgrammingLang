@@ -72,6 +72,9 @@ Namespace Syntax
                 Return Converter.Serialize(Me)
             End Function
             Private Function FormatJsonOutput(ByVal jsonString As String) As String
+
+
+
                 Dim stringBuilder = New StringBuilder()
                 Dim escaping As Boolean = False
                 Dim inQuotes As Boolean = False
@@ -115,6 +118,8 @@ Namespace Syntax
                         End If
                     End If
                 Next
+
+
 
                 Return stringBuilder.ToString()
             End Function

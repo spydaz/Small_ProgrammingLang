@@ -78,6 +78,18 @@ Namespace CodeAnalysis
                                         Return _Left * _Right
                                     Case SyntaxType.Divide_Operator
                                         Return _Left / _Right
+                                    Case SyntaxType.GreaterThan_Operator
+                                        Return _Left > _Right
+                                    Case SyntaxType.LessThanOperator
+                                        Return _Left < _Right
+                                    Case SyntaxType.NotEqual
+                                        Return _Left <> _Right
+                                    Case SyntaxType.EquivelentTo
+                                        Return _Left = _Right
+                                    Case SyntaxType.LessThanEquals
+                                        Return _Left <= _Right
+                                    Case SyntaxType.GreaterThanEquals
+                                        Return _Left >= _Right
                                     Case Else
                                         Throw New Exception("Unexpected Binary Operator :" & iNode._Operator._SyntaxStr)
                                 End Select
@@ -121,7 +133,6 @@ Namespace CodeAnalysis
                 End Function
             End Class
         End Namespace
-End Namespace
-
+    End Namespace
 End Namespace
 
