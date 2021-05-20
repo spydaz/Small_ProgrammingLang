@@ -384,7 +384,7 @@ Namespace Syntax
 
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal.value
+                Return ParentEnv.GetVar(_Literal.value)
             End Function
         End Class
 #End Region
@@ -460,13 +460,19 @@ Namespace Syntax
                 Return GetValue(ParentEnv)
             End Function
         End Class
+
         Public Class VariableDeclarationExpression
             Inherits IdentifierExpression
             Public _literalType As LiteralType
+            Public _literalTypeStr As String
+
             Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String, value As SyntaxToken, literalType As LiteralType)
                 MyBase.New(value)
                 Me._literalType = literalType
                 _SyntaxType = SyntaxType._VariableDeclaration
+                _SyntaxTypeStr = SyntaxType._VariableDeclaration.GetSyntaxTypeStr
+                _Literal = value
+                _literalTypeStr = literalType.GetLiteralTypeStr
             End Sub
 
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
@@ -477,7 +483,7 @@ Namespace Syntax
 
             Private Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
                 Dim iType = _literalType
-                Dim iName = _Literal.evaluate(ParentEnv)
+                Dim iName = _Literal.value
                 ParentEnv.Define(iName, iType)
                 Select Case _literalType
                     Case LiteralType._Boolean
@@ -485,13 +491,13 @@ Namespace Syntax
                     Case LiteralType._String
                         ParentEnv.AssignValue(iName, "")
                     Case LiteralType._Array
-                        ParentEnv.AssignValue(iName, Nothing)
+                        ParentEnv.AssignValue(iName, New List(Of Object))
                     Case LiteralType._Integer
                         ParentEnv.AssignValue(iName, 0)
                     Case LiteralType._Decimal
                         ParentEnv.AssignValue(iName, 0.0)
                     Case LiteralType._Date
-                        ParentEnv.AssignValue(iName, Nothing)
+                        ParentEnv.AssignValue(iName, Date.Now)
                     Case LiteralType._NULL
                         ParentEnv.AssignValue(iName, Nothing)
                 End Select
@@ -499,11 +505,8 @@ Namespace Syntax
             End Sub
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 SetVar(ParentEnv)
-                Return True
+                Return ParentEnv.GetVar(_Literal.value)
             End Function
-
-
-
 
         End Class
 #End Region

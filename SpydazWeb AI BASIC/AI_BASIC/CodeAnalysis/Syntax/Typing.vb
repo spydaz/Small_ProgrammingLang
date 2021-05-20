@@ -62,6 +62,9 @@ Namespace Syntax
         _Date
         _NULL
     End Enum
+
+
+
     Public Enum BinaryOperation
         _Comparison
         _Multiplcative
@@ -83,7 +86,27 @@ Namespace Syntax
         Variable_Declare_Function
         Binary_Operation
     End Enum
+
     Public Module SyntaxFacts
+        <Runtime.CompilerServices.Extension()>
+        Public Function GetLiteralTypeStr(ByRef _LiteralType As LiteralType) As String
+            Select Case _LiteralType
+                Case LiteralType._Boolean
+                    Return "Boolean"
+                Case LiteralType._String
+                    Return "String"
+                Case LiteralType._Array
+                    Return "Array"
+                Case LiteralType._Integer
+                    Return "Integer"
+                Case LiteralType._Decimal
+                    Return "Decimal"
+                Case LiteralType._Date
+                    Return "Date"
+                Case LiteralType._NULL
+                    Return "Null"
+            End Select
+        End Function
         <Runtime.CompilerServices.Extension()>
         Function GetKeywordSyntaxType(text As String) As SyntaxType
 
@@ -132,6 +155,8 @@ Namespace Syntax
                 Case "string"
                     Return SyntaxType._StringType
                 Case "boolean"
+                    Return SyntaxType._BooleanType
+                Case "bool"
                     Return SyntaxType._BooleanType
                 Case "array"
                     Return SyntaxType._ArrayType
@@ -292,7 +317,7 @@ Namespace Syntax
         <Runtime.CompilerServices.Extension()>
         Public Function GetUnaryOperatorPrecedence(kind As SyntaxType) As Integer
             Select Case kind
-                Case SyntaxType.Add_Operator, SyntaxType.Sub_Operator
+                Case SyntaxType.Add_Operator, SyntaxType.Sub_Operator, SyntaxType.NotKeyWord
                     ' SyntaxKind.BangToken,
                     '   SyntaxKind.TildeToken
                     Return 6
@@ -335,25 +360,50 @@ Namespace Syntax
         Public Function GetSyntaxTypeStr(ByRef _Syntaxtype As SyntaxType) As String
             Select Case _Syntaxtype
 'literals
+                Case SyntaxType._arrayList
+                    Return "_arrayList"
+                Case SyntaxType._Date
+                    Return "_Date"
                 Case SyntaxType._String
                     Return "_String"
                 Case SyntaxType._Integer
                     Return "_Integer"
                 Case SyntaxType._Identifier
                     Return "_Identifier"
+                Case SyntaxType._Boolean
+                    Return "_Boolean"
+                Case SyntaxType._Decimal
+                    Return "_Decimal"
+
+                Case SyntaxType.TrueKeyword
+                    Return "TrueKeyword"
+                Case SyntaxType.FalseKeyword
+                    Return "FalseKeyword"
+                Case SyntaxType._DecimalType
+                    Return "_DecimalType"
+                Case SyntaxType._IntegerType
+                    Return "_IntegerType"
+                Case SyntaxType._StringType
+                    Return "_StringType"
+                Case SyntaxType._ArrayType
+                    Return "_ArrayType"
+                Case SyntaxType._IntegerType
+                    Return "_IntegerType"
+                Case SyntaxType._DateType
+                    Return "_DateType"
+                Case SyntaxType._NullType
+                    Return "_NullType"
+                Case SyntaxType._BooleanType
+                    Return "_BooleanType"
+'keywords
                 Case SyntaxType.IfKeyword
                     Return "IfKeyword"
-'keywords
                 Case SyntaxType.ForKeyword
                     Return "ForKeyword"
                 Case SyntaxType.ToKeyword
                     Return "ToKeyword"
                 Case SyntaxType.ReturnKeyword
                     Return "ReturnKeyword"
-                Case SyntaxType.VarKeyword
-                    Return "VarKeyword"
-                Case SyntaxType.ContinueKeyword
-                    Return "ContinueKeyword"
                 Case SyntaxType.WhileKeyword
                     Return "WhileKeyword"
                 Case SyntaxType.DoKeyword
@@ -364,12 +414,26 @@ Namespace Syntax
                     Return "ThenKeyword"
                 Case SyntaxType.FunctionKeyword
                     Return "FunctionKeyword"
-                Case SyntaxType.TrueKeyword
-                    Return "TrueKeyword"
-                Case SyntaxType.FalseKeyword
-                    Return "FalseKeyword"
                 Case SyntaxType.ElseKeyword
                     Return "ElseKeyword"
+                Case SyntaxType.EndIfKeyword
+                    Return "EndIfKeyword"
+                Case SyntaxType.AsKeyWord
+                    Return "AsKeyWord"
+                Case SyntaxType.InKeyWord
+                    Return "InKeyWord"
+                Case SyntaxType.EachKeyWord
+                    Return "EachKeyWord"
+                Case SyntaxType.ToKeyword
+                    Return "ToKeyword"
+                Case SyntaxType.ElseIfKeyword
+                    Return "ElseIfKeyword"
+                Case SyntaxType._null
+                    Return "_null"
+                Case SyntaxType.ContinueKeyword
+                    Return "ContinueKeyword"
+                Case SyntaxType.BreakKeyword
+                    Return "BreakKeyword"
 'maths
                 Case SyntaxType.Add_Operator
                     Return "Add_Operator"
@@ -397,6 +461,7 @@ Namespace Syntax
                 Case SyntaxType.Multiply_Equals_Operator
                     Return "Multiply_Equals_Operator"
 'expressions
+
                 Case SyntaxType._BinaryExpression
                     Return "_BinaryExpression"
                 Case SyntaxType._UnaryExpression
@@ -409,8 +474,14 @@ Namespace Syntax
                     Return "_VariableDeclaration"
                 Case SyntaxType._ParenthesizedExpresion
                     Return "_ParenthesizedExpresion"
+                Case SyntaxType._BooleanLiteralExpression
+                    Return "_BooleanLiteralExpression"
+                Case SyntaxType._StringExpression
+                    Return "_StringExpression"
                 Case SyntaxType._CodeBlock
                     Return "_CodeBlock"
+                Case SyntaxType._IdentifierExpression
+                    Return "_IdentifierExpression"
 'sys
                 Case SyntaxType._UnknownToken
                     Return "_UnknownToken"
@@ -424,6 +495,12 @@ Namespace Syntax
                     Return "DimKeyword"
                 Case SyntaxType.LetKeyword
                     Return "LetKeyword"
+                Case SyntaxType._ASSIGN
+                    Return "_Assign"
+                Case SyntaxType.VarKeyword
+                    Return "VarKeyword"
+
+
             End Select
 
             Return "_UnknownToken"

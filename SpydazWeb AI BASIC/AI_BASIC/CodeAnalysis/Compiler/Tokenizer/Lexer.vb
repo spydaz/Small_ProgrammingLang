@@ -271,7 +271,7 @@ Namespace CodeAnalysis
                     CursorPosition += 1
 
                     Dim x = New SyntaxToken(SyntaxType._UnknownToken, SyntaxType._UnknownToken.GetSyntaxTypeStr, itext, itext, CursorPosition, CursorPosition)
-                    _Diagnostics.Add("Unrecognized Character in input: '" & vbNewLine & x.ToJson)
+                    _Diagnostics.Add("Unrecognized Character in input: '" & vbNewLine & x.ToString)
                     Return x
                 End Function
                 Public Function ReadWhiteSpace() As SyntaxToken

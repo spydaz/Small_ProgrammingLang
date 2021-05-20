@@ -752,7 +752,6 @@ Namespace LineNumbers
         ''' <summary>
         ''' FindStartIndex is a recursive Sub (one that calls itself) to compute the first visible line that should have a LineNumber.
         ''' </summary>
-        ''' <paramname>=</paramname>"zMin"> this will hold the eventual BestStartIndex when the Sub has completed its run.</param>
         ''' <remarks></remarks>
         Private Sub FindStartIndex(ByRef zMin As Integer, ByRef zMax As Integer, ByRef zTarget As Integer)
             '   Recursive Sub to compute best starting index - only run when zParent is known to exist

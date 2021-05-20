@@ -218,7 +218,7 @@ Namespace CodeAnalysis
                 Public Function _Expression()
 
                     Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.LetKeyword
+                        Case SyntaxType.VarKeyword
                             Return _VariableDeclarationExpression()
                         Case SyntaxType.DimKeyword
                             Return _VariableDeclarationExpression()
@@ -313,10 +313,27 @@ Namespace CodeAnalysis
                 Public Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode)
                     Select Case CurrentToken._SyntaxType
 
-                                    'Simple Assign
-                        Case SyntaxType.Equals
+                     'Simple Assign
+                        Case SyntaxType._ASSIGN
                             Dim x = _AssignmentExpression(_left)
-                            CursorPosition += 1
+                            CursorPosition += 2
+                            Return x
+                    'Complex Assign
+                        Case SyntaxType.Multiply_Equals_Operator
+                            Dim x = _AssignmentExpression(_left)
+                            CursorPosition += 2
+                            Return x
+                        Case SyntaxType.Divide_Equals_Operator
+                            Dim x = _AssignmentExpression(_left)
+                            CursorPosition += 2
+                            Return x
+                        Case SyntaxType.Add_Equals_Operator
+                            Dim x = _AssignmentExpression(_left)
+                            CursorPosition += 2
+                            Return x
+                        Case SyntaxType.Minus_Equals_Operator
+                            Dim x = _AssignmentExpression(_left)
+                            CursorPosition += 2
                             Return x
 
                     End Select
@@ -663,11 +680,14 @@ Namespace CodeAnalysis
                                 Return _Left
                             End While
 
+
                     End Select
 
 
                     Return _Left
                 End Function
+
+
 
                 Public Function _MultiplicativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
@@ -728,77 +748,119 @@ Namespace CodeAnalysis
                 ''' Identifier =
                 ''' </summary>
                 ''' <returns></returns>
-                Public Function _AssignmentExpression(ByRef Left As IdentifierExpression) As ExpressionSyntaxNode
+                Public Function _AssignmentExpression(ByRef _Left As IdentifierExpression) As ExpressionSyntaxNode
+                    Dim _Operator As SyntaxToken
 
                     Select Case CurrentToken._SyntaxType
 
-                        Case SyntaxType.Equals
-                            Dim _Operator = _MatchToken(SyntaxType.Equals)
-
+                        Case SyntaxType._ASSIGN
+                            _Operator = _MatchToken(SyntaxType._ASSIGN)
+                            CursorPosition += 1
+                            Dim _right = _BinaryExpression()
+                            Return New AssignmentExpression(_Left, _Operator, _right)
                         Case SyntaxType.Multiply_Equals_Operator
-                            Dim _Operator = _MatchToken(SyntaxType.Multiply_Equals_Operator)
+                            _Operator = _MatchToken(SyntaxType.Multiply_Equals_Operator)
+                            CursorPosition += 1
+                            Dim _right = _BinaryExpression()
+                            Return New AssignmentExpression(_Left, _Operator, _right)
                         Case SyntaxType.Divide_Equals_Operator
-                            Dim _Operator = _MatchToken(SyntaxType.Divide_Equals_Operator)
+                            _Operator = _MatchToken(SyntaxType.Divide_Equals_Operator)
+                            CursorPosition += 1
+                            Dim _right = _BinaryExpression()
+                            Return New AssignmentExpression(_Left, _Operator, _right)
                         Case SyntaxType.Add_Equals_Operator
-                            Dim _Operator = _MatchToken(SyntaxType.Add_Equals_Operator)
+                            _Operator = _MatchToken(SyntaxType.Add_Equals_Operator)
+                            CursorPosition += 1
+                            Dim _right = _BinaryExpression()
+                            Return New AssignmentExpression(_Left, _Operator, _right)
                         Case SyntaxType.Minus_Equals_Operator
-                            Dim _Operator = _MatchToken(SyntaxType.Minus_Equals_Operator)
+                            _Operator = _MatchToken(SyntaxType.Minus_Equals_Operator)
+                            CursorPosition += 1
+                            Dim _right = _BinaryExpression()
+                            Return New AssignmentExpression(_Left, _Operator, _right)
 
                     End Select
-                    Dim _right = _PrimaryExpression()
+
                     'Todo: Requires Assignment Expression
-                    _Diagnostics.Add("unknown _AssignmentExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _AssignmentExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
                 ''' <summary>
-                ''' DIM/LET
+                ''' DIM/VAR
+                ''' Dim varname  [ As [ New ] type ] 
                 ''' </summary>
                 ''' <returns></returns>
                 Public Function _VariableDeclarationExpression() As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.LetKeyword
-                            Dim _LetKeyword = _MatchToken(SyntaxType.LetKeyword)
-                            CursorPosition += 1
                         Case SyntaxType.DimKeyword
                             Dim _DimKeyword = _MatchToken(SyntaxType.DimKeyword)
                             CursorPosition += 1
+
+                            Dim _left = _MatchToken(SyntaxType._Identifier)
+                            CursorPosition += 1
+
+                            Dim _AsKeyword = _MatchToken(SyntaxType.AsKeyWord)
+                            CursorPosition += 1
+
+                            'Whitespace
+                            Dim _Type = _TypeExpression()
+
+                            Return New VariableDeclarationExpression(SyntaxType._VariableDeclaration, SyntaxType._VariableDeclaration.GetSyntaxTypeStr, _left, _Type)
+                        Case SyntaxType.VarKeyword
+                            Dim _DimKeyword = _MatchToken(SyntaxType.VarKeyword)
+                            CursorPosition += 1
+
+                            Dim _left = _MatchToken(SyntaxType._Identifier)
+                            CursorPosition += 1
+
+                            Dim _AsKeyword = _MatchToken(SyntaxType.AsKeyWord)
+                            CursorPosition += 1
+
+                            'Whitespace
+                            Dim _Type = _TypeExpression()
+                            Return New VariableDeclarationExpression(SyntaxType._VariableDeclaration, SyntaxType._VariableDeclaration.GetSyntaxTypeStr, _left, _Type)
+
                     End Select
-
-
-                    Dim left = _IdentifierExpression()
-                    CursorPosition += 1
-                    Dim _Operator = _MatchToken(SyntaxType.Equals)
-                    CursorPosition += 1
                     'TODO : Requires Deleration Expression 
-                    Dim _Type = _TypeExpression()
-                    _Diagnostics.Add("unknown _VariableDeclarationExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _VariableDeclarationExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
-                Public Function _TypeExpression() As SyntaxType
+                Public Function _TypeExpression() As LiteralType
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType._BooleanType
                             _MatchToken(SyntaxType._BooleanType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._Boolean
                         Case SyntaxType._IntegerType
                             _MatchToken(SyntaxType._IntegerType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._Integer
                         Case SyntaxType._DecimalType
                             _MatchToken(SyntaxType._DecimalType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._Decimal
                         Case SyntaxType._StringType
                             _MatchToken(SyntaxType._StringType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._String
                         Case SyntaxType._ArrayType
                             _MatchToken(SyntaxType._ArrayType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._Array
                         Case SyntaxType._DateType
                             _MatchToken(SyntaxType._DateType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._Date
                         Case SyntaxType._NullType
                             _MatchToken(SyntaxType._NullType)
-                            Return CurrentToken._SyntaxType
+                            CursorPosition += 1
+                            Return LiteralType._NULL
+                        Case Else
+                            CursorPosition += 1
+                            Return LiteralType._NULL
                     End Select
                     _Diagnostics.Add("unknown _TypeExpression? " & vbNewLine & CurrentToken.ToJson)
+                    CursorPosition += 1
                     Return SyntaxType._null
                 End Function
 #End Region
@@ -823,7 +885,7 @@ Namespace CodeAnalysis
                         Case SyntaxType._LIST_BEGIN
                         Case SyntaxType._Date
                     End Select
-                    _Diagnostics.Add("unknown _Literal? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _Literal? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
                 Public Function _IdentifierExpression() As IdentifierExpression
@@ -835,7 +897,7 @@ Namespace CodeAnalysis
                     End Select
 
 
-                    _Diagnostics.Add("unknown _IdentifierExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _IdentifierExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
                 Public Function _NumericLiteralExpression() As NumericalExpression
@@ -852,7 +914,7 @@ Namespace CodeAnalysis
 
                             Return New NumericalExpression(NewNode)
                     End Select
-                    _Diagnostics.Add("unknown _NumericLiteralExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _NumericLiteralExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
                 Public Function _StringExpression() As StringExpression
@@ -863,7 +925,7 @@ Namespace CodeAnalysis
                             CursorPosition += 1
                             Return New StringExpression(NewNode)
                     End Select
-                    _Diagnostics.Add("unknown _StringExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _StringExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
                 Public Function _BooleanExpression() As BooleanLiteralExpression
@@ -879,7 +941,7 @@ Namespace CodeAnalysis
                             CursorPosition += 1
                             Return New BooleanLiteralExpression(NewNode)
                     End Select
-                    _Diagnostics.Add("unknown _BooleanExpression? " & vbNewLine & CurrentToken.ToJson)
+                    _Diagnostics.Add("unknown _BooleanExpression? " & vbNewLine & CurrentToken.ToString)
                     Return Nothing
                 End Function
 #End Region
