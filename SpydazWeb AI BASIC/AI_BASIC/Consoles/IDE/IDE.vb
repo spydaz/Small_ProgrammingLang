@@ -241,7 +241,7 @@ Public Class IDE
         DoRunText(CodeTextBox)
     End Sub
 #End Region
-#Region "Flie"
+#Region "files"
     Private Sub SaveToolStripButton_Click(sender As Object, e As EventArgs) Handles SaveToolStripButton.Click
         Dim myStream = CodeTextBox.Text
         Dim saveFileDialog1 As New SaveFileDialog()

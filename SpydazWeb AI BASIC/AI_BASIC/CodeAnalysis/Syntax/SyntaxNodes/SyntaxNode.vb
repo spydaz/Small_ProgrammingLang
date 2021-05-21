@@ -16,6 +16,10 @@ Namespace Syntax
         ''' </summary>
         Public MustInherit Class SyntaxNode
             ''' <summary>
+            ''' Text String of Type(for diagnostics)
+            ''' </summary>
+            Public _SyntaxTypeStr As String
+            ''' <summary>
             ''' Gets the values for the held tokens
             ''' </summary>
             ''' <returns></returns>
@@ -24,10 +28,6 @@ Namespace Syntax
             ''' Enum Strong Type
             ''' </summary>
             Public _SyntaxType As SyntaxType
-            ''' <summary>
-            ''' Text String of Type(for diagnostics)
-            ''' </summary>
-            Public _SyntaxTypeStr As String
             ''' <summary>
             ''' Initializes the Type for the Syntax Node to identify the node
             ''' </summary>
@@ -120,7 +120,6 @@ Namespace Syntax
         ''' </summary>
         Public MustInherit Class ExpressionSyntaxNode
             Inherits SyntaxNode
-
             Protected Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
                 MyBase.New(syntaxType, syntaxTypeStr)
             End Sub
@@ -132,10 +131,6 @@ Namespace Syntax
         Public Class BinaryExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
-            ''' Operator
-            ''' </summary>
-            Public _Operator As SyntaxToken
-            ''' <summary>
             ''' Value / Identifier / Expression
             ''' </summary>
             Public _Left As ExpressionSyntaxNode
@@ -143,7 +138,10 @@ Namespace Syntax
             ''' Value / Identifier / Expression 
             ''' </summary>
             Public _Right As ExpressionSyntaxNode
-
+            ''' <summary>
+            ''' Operator
+            ''' </summary>
+            Public _Operator As SyntaxToken
             ''' <summary>
             ''' Used to perform Calulations,
             ''' Comparison Operations as well as logical operations and assignments.
@@ -224,8 +222,8 @@ Namespace Syntax
         End Class
         Public Class UnaryExpression
             Inherits ExpressionSyntaxNode
-            Public OperatorToken As SyntaxToken
             Public NumericLiteral As NumericalExpression
+            Public OperatorToken As SyntaxToken
             Public Sub New(ByRef _OperatorToken As SyntaxToken, ByRef _NumericLiteral As NumericalExpression)
                 MyBase.New(SyntaxType._UnaryExpression, SyntaxType._UnaryExpression.GetSyntaxTypeStr)
                 OperatorToken = _OperatorToken
@@ -395,7 +393,6 @@ Namespace Syntax
             Public _identifier As IdentifierExpression
             Public Operand As SyntaxToken
             Public Value As ExpressionSyntaxNode
-
             Public Sub New(identifier As IdentifierExpression, operand As SyntaxToken, value As ExpressionSyntaxNode)
                 MyBase.New(SyntaxType._AssignmentExpression, SyntaxType._AssignmentExpression.GetSyntaxTypeStr)
 
@@ -411,7 +408,6 @@ Namespace Syntax
                 Me.Operand = operand
                 Me.Value = value
             End Sub
-
             Private Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
 
                 'MustExist in record
@@ -419,7 +415,6 @@ Namespace Syntax
                 Dim iValue = calcValue(ParentEnv)
                 ParentEnv.AssignValue(iName, iValue)
             End Sub
-
             Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
                 Return ParentEnv.CheckVar(_identifier.Evaluate(ParentEnv))
             End Function
@@ -430,7 +425,6 @@ Namespace Syntax
                     Return "Does not Exist in Record"
                 End If
             End Function
-
             Public Overrides Function GetChildren() As List(Of SyntaxToken)
                 Throw New NotImplementedException()
             End Function
@@ -460,12 +454,10 @@ Namespace Syntax
                 Return GetValue(ParentEnv)
             End Function
         End Class
-
         Public Class VariableDeclarationExpression
             Inherits IdentifierExpression
-            Public _literalType As LiteralType
             Public _literalTypeStr As String
-
+            Public _literalType As LiteralType
             Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String, value As SyntaxToken, literalType As LiteralType)
                 MyBase.New(value)
                 Me._literalType = literalType

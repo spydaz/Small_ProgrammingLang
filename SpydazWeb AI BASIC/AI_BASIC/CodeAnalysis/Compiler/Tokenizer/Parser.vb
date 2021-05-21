@@ -362,11 +362,11 @@ Namespace CodeAnalysis
                                 Return _MultiplicativeExpression(_Left)
                             End While
                         Case SyntaxType.Sub_Operator
-                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Sub_Operator
                                 Return _AddativeExpression(_Left)
                             End While
                         Case SyntaxType.Divide_Operator
-                            While CurrentToken._SyntaxType = SyntaxType.Multiply_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Divide_Operator
                                 Return _MultiplicativeExpression(_Left)
                             End While
 #End Region
@@ -399,12 +399,7 @@ Namespace CodeAnalysis
                                 Return _ComparisonExpression(_Left)
                             End While
 #End Region
-#Region "ComplexAssign"
 
-#End Region
-#Region "SimpleAssign"
-
-#End Region
                     End Select
 
                     Return _Left
@@ -460,21 +455,9 @@ Namespace CodeAnalysis
                                 Return _ComparisonExpression(_Left)
                             End While
 #End Region
-#Region "ComplexAssign"
-
-#End Region
-#Region "SimpleAssign"
-
-#End Region
-
 
 
                     End Select
-
-
-
-
-
                     Return _Left
                 End Function
 
@@ -640,7 +623,7 @@ Namespace CodeAnalysis
                                 Return _Left
                             End While
                         Case SyntaxType.Sub_Operator
-                            While CurrentToken._SyntaxType = SyntaxType.Add_Operator
+                            While CurrentToken._SyntaxType = SyntaxType.Sub_Operator
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)

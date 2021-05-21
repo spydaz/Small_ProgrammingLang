@@ -62,9 +62,6 @@ Namespace Syntax
         _Date
         _NULL
     End Enum
-
-
-
     Public Enum BinaryOperation
         _Comparison
         _Multiplcative
@@ -86,8 +83,94 @@ Namespace Syntax
         Variable_Declare_Function
         Binary_Operation
     End Enum
-
+    Public Enum Classification
+        Text
+        Identifier
+        Keyword
+        Literal
+        Type
+        Comment
+        number
+        _string
+        unknown
+    End Enum
     Public Module SyntaxFacts
+        <Runtime.CompilerServices.Extension()>
+        Public Function IsKeyWord(kind As SyntaxType) As Boolean
+            Select Case kind
+                Case SyntaxType.IfKeyword
+                    Return True
+                Case SyntaxType.ThenKeyword
+                    Return True
+                Case SyntaxType.ElseIfKeyword
+                    Return True
+                Case SyntaxType.EndIfKeyword
+                    Return True
+                Case SyntaxType.ForKeyword
+                    Return True
+                Case SyntaxType.NextKeyWord
+                    Return True
+                Case SyntaxType.EachKeyWord
+                    Return True
+                Case SyntaxType.InKeyWord
+                    Return True
+                Case SyntaxType.ToKeyword
+                    Return True
+
+                Case SyntaxType.VarKeyword
+                    Return True
+                Case SyntaxType.DimKeyword
+                    Return True
+                Case SyntaxType.LetKeyword
+                    Return True
+
+                Case SyntaxType.DoKeyword
+                    Return True
+                Case SyntaxType.WhileKeyword
+                    Return True
+                Case SyntaxType.UntilKeword
+                    Return True
+                Case SyntaxType.LoopKeyWord
+                    Return True
+            End Select
+            Return False
+        End Function
+        <Runtime.CompilerServices.Extension()>
+        Public Function IsNumber(kind As SyntaxType) As Boolean
+            Select Case kind
+                Case SyntaxType._Decimal
+                    Return True
+
+                Case SyntaxType._Integer
+                    Return True
+
+            End Select
+
+            Return False
+        End Function
+        <Runtime.CompilerServices.Extension()>
+        Public Function GetClassification(kind As SyntaxType) As Classification
+
+            Dim isKeyword = kind.IsKeyWord
+            Dim isNumber = kind.IsNumber
+            Dim isIdentifier = kind = SyntaxType._Identifier
+            Dim isString = kind = SyntaxType._String
+            If isKeyword Then
+                Return Classification.Keyword
+            ElseIf isIdentifier Then
+                Return Classification.Identifier
+            ElseIf isNumber Then
+                Return Classification.number
+            ElseIf isString Then
+                Return Classification._string
+            Else
+                Return Classification.unknown
+            End If
+
+        End Function
+
+
+
         <Runtime.CompilerServices.Extension()>
         Public Function GetLiteralTypeStr(ByRef _LiteralType As LiteralType) As String
             Select Case _LiteralType

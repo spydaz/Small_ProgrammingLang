@@ -18,13 +18,18 @@ Namespace Diagnostics
         ''' </summary>
         Public DataType As SyntaxType
         Public ReadOnly _Timestamp As String = Timestamp()
-        Public Sub New(errorMessage As String, exceptionType As ExceptionType, data As Object, dataType As SyntaxType)
+        ''' <summary>
+        ''' Location Of Error
+        ''' </summary>
+        Public _Location As Location
+        Public Sub New(errorMessage As String, exceptionType As ExceptionType, ilocation As Location, data As Object, dataType As SyntaxType)
             If errorMessage Is Nothing Then
                 Throw New ArgumentNullException(NameOf(errorMessage))
             End If
             If data Is Nothing Then
                 Throw New ArgumentNullException(NameOf(data))
             End If
+            Me._Location = ilocation
             Me.ErrorMessage = errorMessage
             _ExceptionType = exceptionType
             _Data = data
@@ -107,6 +112,15 @@ Namespace Diagnostics
             Return StrOut
         End Function
     End Class
-
+    Public Class Location
+        Public _Start As Integer
+        Public _End As Integer
+        Public _Length As Integer
+        Public Sub New(iStart As Integer, iEnd As Integer, iLength As Integer)
+            _Start = iStart
+            _End = iEnd
+            _Length = iEnd - iStart
+        End Sub
+    End Class
 End Namespace
 

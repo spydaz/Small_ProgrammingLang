@@ -108,7 +108,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\Compilation.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\VBC.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\EvaluationResult.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\Evaluator.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Lexer.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Parser.vb" />
@@ -118,6 +120,7 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerPropertys.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AI_BASIC\Consoles\ConsoleWriter.vb" />
     <Compile Include="AI_BASIC\Consoles\IDE\IDE.Designer.vb">
       <DependentUpon>IDE.vb</DependentUpon>
     </Compile>
@@ -131,6 +134,9 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
+    <Compile Include="AI_BASIC\Consoles\Module1.vb" />
+    <Compile Include="AI_BASIC\Consoles\ReplCmds.vb" />
+    <Compile Include="AI_BASIC\IO\FileHandler.vb" />
     <Compile Include="AI_BASIC\MAIN\Program.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\InterpretorRepl.vb" />
