@@ -1,11 +1,56 @@
-﻿Imports System.Text
+﻿
+Imports System.Text
 Imports System.Web.Script.Serialization
+Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
+Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
+Imports AI_BASIC.CodeAnalysis.Diagnostics
+Imports AI_BASIC.Consoles
+Imports AI_BASIC.Syntax
+Imports AI_BASIC.Syntax.SyntaxNodes
 
 Namespace CodeAnalysis
 
-    Namespace Emit
+    Namespace Compiler
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
-        Public Class Emitter
+        Public Class CompilerII
+            Private Script As String = ""
+            Public Result As EvaluationResult
+            Public Sub New(script As String)
+                If script Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(script))
+                End If
+                Me.Script = script
+                Dim _debug = Compile()
+                Dim Eval As New EvaluatorII
+                Dim _results = Eval.EvaluateProgram(script, Program)
+                Result = New EvaluationResult(_debug, _results)
+            End Sub
+            Public Sub PrintTokenTreeToConsole()
+                ConsoleWriter.WriteTokenList(GetTokenTree)
+            End Sub
+            Public Sub PrintSyntaxTreeToConsole()
+                ConsoleWriter.WriteExpressionList(GetSyntaxTree)
+            End Sub
+            Public Function GetTokenTree() As List(Of SyntaxToken)
+                Dim Ast As New List(Of SyntaxToken)
+                For Each lst In Debugger.ProduceTokenTree(Script)
+                    Ast.AddRange(lst)
+                Next
+                Return Ast
+            End Function
+            Public Function GetSyntaxTree() As List(Of SyntaxNode)
+                Dim Ast As New List(Of SyntaxNode)
+                For Each lst In Debugger.ProduceExpressionTree(Script)
+                    Ast.AddRange(lst.Body)
+                Next
+                Return Ast
+            End Function
+            Private Program As List(Of SyntaxTree)
+            Private Function Compile() As CompilerDiagnosticResults
+                Dim iDebugger As New Debugger(Script)
+                Program = iDebugger.GetProgram
+                Return iDebugger.DebugCodeScript(Script)
+            End Function
 #Region "TOSTRING"
             ''' <summary>
             ''' Serializes object to json
@@ -65,12 +110,15 @@ Namespace CodeAnalysis
 
                 Return stringBuilder.ToString()
             End Function
-#End Region
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
+#End Region
         End Class
-
     End Namespace
 End Namespace
+
+
+
 

@@ -8,7 +8,7 @@ Imports AI_BASIC.Syntax.SyntaxNodes
 
 Namespace Consoles
     Public Class ConsoleWriter
-        Private Sub WriteSyntaxToken(ByRef Token As SyntaxToken)
+        Friend Shared Sub WriteSyntaxToken(ByRef Token As SyntaxToken)
             Select Case Token._SyntaxType
                 Case SyntaxType._UnknownToken
                     Console.ForegroundColor = ConsoleColor.Magenta
@@ -19,7 +19,6 @@ Namespace Consoles
                         Console.ForegroundColor = ConsoleColor.Blue
                         Console.WriteLine(Token.ToJson)
                     End If
-
                     If IsNumber(Token._SyntaxType) = True Then
                         Console.ForegroundColor = ConsoleColor.Yellow
                         Console.WriteLine(Token.ToJson)
@@ -37,17 +36,17 @@ Namespace Consoles
                     Console.WriteLine(Token.ToJson)
             End Select
         End Sub
-        Public Sub WriteTokenList(ByRef Lst As List(Of SyntaxToken))
+        Friend Shared Sub WriteTokenList(ByRef Lst As List(Of SyntaxToken))
             For Each item In Lst
                 WriteSyntaxToken(item)
             Next
         End Sub
-        Public Sub WriteExpressionList(ByRef Lst As List(Of ExpressionSyntaxNode))
+        Public Shared Sub WriteExpressionList(ByRef Lst As List(Of SyntaxNode))
             For Each item In Lst
                 WriteExpressionSyntaxToken(item)
             Next
         End Sub
-        Private Sub WriteExpressionSyntaxToken(ByRef Expression As ExpressionSyntaxNode)
+        Private Shared Sub WriteExpressionSyntaxToken(ByRef Expression As ExpressionSyntaxNode)
             Select Case Expression._SyntaxType
                 Case SyntaxType._NumericLiteralExpression
                     Console.ForegroundColor = ConsoleColor.Yellow
@@ -75,17 +74,17 @@ Namespace Consoles
                     Console.WriteLine(Expression.ToJson)
             End Select
         End Sub
-        Public Sub WriteKeyword(ByRef text As String)
+        Friend Shared Sub WriteKeyword(ByRef text As String)
             Console.ForegroundColor = ConsoleColor.Blue
             Console.Write(text)
             Console.ResetColor()
         End Sub
-        Public Sub WriteIdentifier(ByRef text As String)
+        Friend Shared Sub WriteIdentifier(ByRef text As String)
             Console.ForegroundColor = ConsoleColor.DarkYellow
             Console.Write(text)
             Console.ResetColor()
         End Sub
-        Public Sub WriteNumber(ByRef text As String)
+        Friend Shared Sub WriteNumber(ByRef text As String)
             Console.ForegroundColor = ConsoleColor.DarkYellow
             Console.Write(text)
             Console.ResetColor()

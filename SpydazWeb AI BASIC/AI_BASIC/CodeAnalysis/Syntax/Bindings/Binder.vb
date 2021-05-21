@@ -44,7 +44,7 @@ Namespace CodeAnalysis
                         End Select
                     Next
                 End Sub
-                Public Sub BindLiteralExpression(ByRef Expression As ExpressionSyntaxNode)
+                Friend Sub BindLiteralExpression(ByRef Expression As ExpressionSyntaxNode)
                     Select Case Expression._SyntaxType
                         Case SyntaxType._NumericLiteralExpression
                             BoundStatements.Add(New Bound_LiteralExpression(Expression))
@@ -63,7 +63,7 @@ Namespace CodeAnalysis
 
                 End Sub
             End Class
-            Public Class BoundSyntaxTree
+            Friend Class BoundSyntaxTree
                 Public BoundStatements As List(Of ExpressionSyntaxNode)
                 Public ExpressionSyntaxStatments As List(Of SyntaxNode)
                 Public SyntaxTokens As List(Of SyntaxToken)

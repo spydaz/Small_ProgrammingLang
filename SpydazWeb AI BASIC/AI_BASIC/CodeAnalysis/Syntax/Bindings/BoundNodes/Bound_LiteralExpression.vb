@@ -9,7 +9,7 @@ Namespace Syntax
             Public Interface Bound_Expression
                 Property _ExpressionType As ExpressionType
             End Interface
-            Public Class Bound_LiteralExpression
+            Friend Class Bound_LiteralExpression
                 Inherits LiteralExpression
                 Implements Bound_Expression
 
@@ -74,13 +74,6 @@ Namespace Syntax
                     iExpressionType = ExpressionType.Literal
                 End Sub
 
-
-
-                Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                    Dim Lst As New List(Of SyntaxToken)
-                    Lst.Add(_Literal)
-                    Return Lst
-                End Function
                 Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                     Return _Literal
                 End Function
@@ -104,85 +97,28 @@ Namespace Syntax
 #End Region
 
             End Class
-            Public Class Bound_IdentifierExpression
+            Friend Class Bound_IdentifierExpression
                 Inherits Bound_LiteralExpression
                 Implements Bound_Expression
                 Public Sub New(ExpressionSyntax As LiteralExpression)
                     MyBase.New(ExpressionSyntax)
                     Me._ExpressionType = ExpressionType.Variable
                 End Sub
-                Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
-                    Return ParentEnv.CheckVar(_Literal)
-                End Function
-                Private Function SetValue(ByRef ParentEnv As EnvironmentalMemory, ByRef Value As Bound_LiteralExpression) As Boolean
-                    If ParentEnv.CheckVar(_Literal) = True Then
 
-                        Select Case Value.GetLiteralType(ParentEnv)
-                            Case LiteralType._Boolean
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._Boolean Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-
-                            Case LiteralType._String
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._String Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-
-                            Case LiteralType._Array
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._Array Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-
-                            Case LiteralType._Integer
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._Integer Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-
-                            Case LiteralType._Decimal
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._Decimal Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-                            Case LiteralType._Date
-                                If ParentEnv.GetVarType(_Literal) = LiteralType._Date Then
-                                    ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-                                    Return True
-                                End If
-                            Case LiteralType._NULL
-
-                                ParentEnv.AssignValue(_Literal, Value.Evaluate(ParentEnv))
-
-
-                        End Select
-
-
-                    Else
-
-                    End If
-                    Return False
-                End Function
                 Private Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                    If ParentEnv.CheckVar(_Literal) = True Then
+                    If ParentEnv.CheckIfExists(_Literal) = True Then
                         Return ParentEnv.GetVar(_Literal)
                     Else
                         Return "Does not Exist in Record"
                     End If
                 End Function
-                Public Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
-                    Dim iName = _Literal.evaluate(ParentEnv)
 
-                    ParentEnv.Define(iName, GetLiteralType(ParentEnv))
-                End Sub
                 Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
 
                     Return GetValue(ParentEnv)
                 End Function
             End Class
-            Public Class Bound_BinaryExpression
+            Friend Class Bound_BinaryExpression
                 Inherits SyntaxNodes.BinaryExpression
                 Implements Bound_Expression
 

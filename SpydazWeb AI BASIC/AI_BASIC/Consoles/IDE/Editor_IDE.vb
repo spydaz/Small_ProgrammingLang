@@ -1,12 +1,8 @@
-﻿Imports System.Drawing
-Imports System.IO
-Imports System.Runtime.CompilerServices
-Imports System.Web
-Imports System.Windows.Forms
+﻿Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Compiler
+Imports AI_BASIC.CodeAnalysis.Compiler.Environment
+Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
-Imports AI_BASIC.Consoles.Compiler
-Imports AI_BASIC.Consoles.Interpretor
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 
@@ -15,13 +11,15 @@ Public Class Editor_IDE
 
     Private Sub Small_PL_ToolStripButtonRunCode_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonRunCode.Click
         Dim ExpressionTree As SyntaxTree
+        Dim env As New EnvironmentalMemory
+
         For Each line In Small_PL_TextBoxCodeInput.Lines
             ExpressionTree = SyntaxTree.Parse(Small_PL_TextBoxCodeInput.Text)
             AddCompiledTree(ExpressionTree)
             Small_PL_TextBoxREPL_OUTPUT.Text = ExpressionTree.ToJson
 
             Dim Eval As New Evaluator(ExpressionTree)
-            Dim Result = Eval._Evaluate
+            Dim Result = Eval._Evaluate(env)
             Small_PL_TextboxErrors.Text = vbNewLine & vbNewLine & vbNewLine &
                 vbNewLine & "RESULTS RETUNED : " & Result & vbNewLine
 

@@ -1,4 +1,5 @@
 ﻿Imports System.Web
+Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 Imports Microsoft.VisualBasic.CompilerServices
@@ -6,8 +7,8 @@ Imports Microsoft.VisualBasic.CompilerServices
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Tokenizer
-
-            Public Class Parser
+            Friend Class Parser
+                Public ParserDiagnostics = New List(Of DiagnosticsException)
 #Region "Propertys"
                 Private _Script As String
                 Private _Tree As List(Of SyntaxToken)

@@ -2,13 +2,17 @@
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
+Imports System.Web.Script.Serialization
 Imports System.Windows.Forms
+Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Tokenizer
+            <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Lexer
+                Public LexerDiagnostics = New List(Of DiagnosticsException)
                 Public _Diagnostics As New List(Of String)
                 Private _Script As String = ""
                 ''' <summary>
@@ -513,7 +517,70 @@ Namespace CodeAnalysis
                     Loop
                     Return iMatches
                 End Function
+#Region "TOSTRING"
+                ''' <summary>
+                ''' Serializes object to json
+                ''' </summary>
+                ''' <returns> </returns>
+                Public Function ToJson() As String
+                    Return FormatJsonOutput(ToString)
+                End Function
+                Public Overrides Function ToString() As String
+                    Dim Converter As New JavaScriptSerializer
+                    Return Converter.Serialize(Me)
+                End Function
+                Private Function FormatJsonOutput(ByVal jsonString As String) As String
+                    Dim stringBuilder = New StringBuilder()
+                    Dim escaping As Boolean = False
+                    Dim inQuotes As Boolean = False
+                    Dim indentation As Integer = 0
 
+                    For Each character As Char In jsonString
+
+                        If escaping Then
+                            escaping = False
+                            stringBuilder.Append(character)
+                        Else
+
+                            If character = "\"c Then
+                                escaping = True
+                                stringBuilder.Append(character)
+                            ElseIf character = """"c Then
+                                inQuotes = Not inQuotes
+                                stringBuilder.Append(character)
+                            ElseIf Not inQuotes Then
+
+                                If character = ","c Then
+                                    stringBuilder.Append(character)
+                                    stringBuilder.Append(vbCrLf)
+                                    stringBuilder.Append(vbTab, indentation)
+                                ElseIf character = "["c OrElse character = "{"c Then
+                                    stringBuilder.Append(character)
+                                    stringBuilder.Append(vbCrLf)
+                                    stringBuilder.Append(vbTab, System.Threading.Interlocked.Increment(indentation))
+                                ElseIf character = "]"c OrElse character = "}"c Then
+                                    stringBuilder.Append(vbCrLf)
+                                    stringBuilder.Append(vbTab, System.Threading.Interlocked.Decrement(indentation))
+                                    stringBuilder.Append(character)
+                                ElseIf character = ":"c Then
+                                    stringBuilder.Append(character)
+                                    stringBuilder.Append(vbTab)
+                                ElseIf Not Char.IsWhiteSpace(character) Then
+                                    stringBuilder.Append(character)
+                                End If
+                            Else
+                                stringBuilder.Append(character)
+                            End If
+                        End If
+                    Next
+
+                    Return stringBuilder.ToString()
+                End Function
+
+                Private Function GetDebuggerDisplay() As String
+                    Return ToString()
+                End Function
+#End Region
             End Class
         End Namespace
 

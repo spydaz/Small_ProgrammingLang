@@ -19,11 +19,7 @@ Namespace Syntax
             ''' Text String of Type(for diagnostics)
             ''' </summary>
             Public _SyntaxTypeStr As String
-            ''' <summary>
-            ''' Gets the values for the held tokens
-            ''' </summary>
-            ''' <returns></returns>
-            Public MustOverride Function GetChildren() As List(Of SyntaxToken)
+
             ''' <summary>
             ''' Enum Strong Type
             ''' </summary>
@@ -118,7 +114,7 @@ Namespace Syntax
         ''' <summary>
         ''' Used for Strong Typing All Expressions must inherit this class
         ''' </summary>
-        Public MustInherit Class ExpressionSyntaxNode
+        Friend MustInherit Class ExpressionSyntaxNode
             Inherits SyntaxNode
             Protected Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
                 MyBase.New(syntaxType, syntaxTypeStr)
@@ -128,7 +124,7 @@ Namespace Syntax
 
 #Region "Expressions"
         'Concrete
-        Public Class BinaryExpression
+        Friend Class BinaryExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
             ''' Value / Identifier / Expression
@@ -163,23 +159,7 @@ Namespace Syntax
 
             End Sub
 
-            ''' <summary>
-            ''' Here we return a list of Syntax Tokens in the Order required by the Transpiler
-            ''' s-Expression is Preffered;
-            ''' 
-            ''' Syntax:
-            ''' OPERATOR , LITERAL, LITERAL
-            ''' </summary>
-            ''' <returns></returns>
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim lst As New List(Of SyntaxToken)
-                'RPL = OPERATOR , LITERAL, LITERAL
-                lst.Add(_Operator)
-                lst.AddRange(_Left.GetChildren)
-                lst.AddRange(_Right.GetChildren)
 
-                Return lst
-            End Function
             ''' <summary>
             ''' Returns a evaluated result for this expression,
             ''' Based on the input from the parent environment,
@@ -220,7 +200,7 @@ Namespace Syntax
                 Return 0
             End Function
         End Class
-        Public Class UnaryExpression
+        Friend Class UnaryExpression
             Inherits ExpressionSyntaxNode
             Public NumericLiteral As NumericalExpression
             Public OperatorToken As SyntaxToken
@@ -232,12 +212,6 @@ Namespace Syntax
 
             End Sub
 
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim lst As New List(Of SyntaxToken)
-                Dim x = New SyntaxToken(SyntaxType._Integer, SyntaxType._Integer.GetSyntaxTypeStr, OperatorToken._Value & NumericLiteral._Literal, OperatorToken._Value & NumericLiteral._Literal, OperatorToken._start, OperatorToken._start + 2)
-                lst.Add(x)
-                Return lst
-            End Function
             ''' <summary>
             ''' Returns a value
             ''' </summary>
@@ -257,7 +231,7 @@ Namespace Syntax
 
 #Region "Literals"
         'Abstract
-        Public MustInherit Class LiteralExpression
+        Friend MustInherit Class LiteralExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
             ''' Holds the Value of the literal :
@@ -275,7 +249,7 @@ Namespace Syntax
                 _Literal = Value
             End Sub
         End Class
-        Public Class NumericalExpression
+        Friend Class NumericalExpression
             Inherits LiteralExpression
             ''' <summary>
             ''' Initiates a Integer Expression
@@ -283,23 +257,18 @@ Namespace Syntax
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._NumericLiteralExpression, SyntaxType._NumericLiteralExpression.GetSyntaxTypeStr, Value)
-                _Literal = New SyntaxToken
-                Me._Literal = Value
+
+                Me._Literal = Value._Value
 
             End Sub
 
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim Lst As New List(Of SyntaxToken)
-                Lst.Add(_Literal)
-                Return Lst
-            End Function
 
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal._value
+                Return _Literal
             End Function
         End Class
-        Public Class StringExpression
+        Friend Class StringExpression
             Inherits LiteralExpression
             ''' <summary>
             ''' Initiates a Integer Expression
@@ -308,19 +277,15 @@ Namespace Syntax
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._StringExpression, SyntaxType._StringExpression.GetSyntaxTypeStr, Value)
 
-                Me._Literal = Value
+                Me._Literal = Value._Raw
 
             End Sub
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim Lst As New List(Of SyntaxToken)
-                Lst.Add(_Literal)
-                Return Lst
-            End Function
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal.value
+                Return _Literal
             End Function
         End Class
-        Public Class IdentifierExpression
+        Friend Class IdentifierExpression
             Inherits LiteralExpression
             ''' <summary>
             ''' Initiates a Identifier Expression Its value is its name or identifier tag
@@ -328,72 +293,84 @@ Namespace Syntax
             ''' <param name="Value"></param>
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._IdentifierExpression, SyntaxType._IdentifierExpression.GetSyntaxTypeStr, Value)
+                Me._Literal = Value._Value
             End Sub
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim Lst As New List(Of SyntaxToken)
-                Lst.Add(_Literal)
-                Return Lst
-            End Function
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return GetValue(ParentEnv)
             End Function
-            Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
-                Return ParentEnv.CheckVar(_Literal._value)
-            End Function
+
             Public Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                If ParentEnv.CheckVar(_Literal._value) = True Then
-                    Return ParentEnv.GetVar(_Literal._value)
-                Else
-                    Return "Does not Exist in Record"
+                If ParentEnv.CheckIfExists(_Literal) = False Then
+                    Return "-Unknown Identifier-"
                 End If
+                Dim ivar = ParentEnv.GetVar(_Literal)
+                Select Case ivar.Type
+                    Case LiteralType._Boolean
+                        Return New Boolean = ivar.Value
+                    Case LiteralType._String
+                        Dim x As String = ivar.Value
+                        Return x
+                    Case LiteralType._Array
+                        Exit Select
+                    Case LiteralType._Integer
+                        Return New Integer = ivar.Value
+                    Case LiteralType._Decimal
+                        Return New Decimal = ivar.Value
+                    Case LiteralType._Date
+                        Return New Date = ivar.Value
+                    Case LiteralType._NULL
+                        Return ivar.Value
+
+                End Select
+                Return ivar.Value
             End Function
         End Class
-        Public Class BooleanLiteralExpression
+        Friend Class BooleanLiteralExpression
             Inherits LiteralExpression
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._BooleanLiteralExpression, SyntaxType._BooleanLiteralExpression.GetSyntaxTypeStr, Value)
-
+                _Literal = New Boolean = False
+                Select Case Value._SyntaxType
+                    Case SyntaxType.TrueKeyword
+                        Me._Literal = True
+                    Case SyntaxType.FalseKeyword
+                        Me._Literal = False
+                End Select
 
 
             End Sub
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim Lst As New List(Of SyntaxToken)
-                Lst.Add(_Literal)
-                Return Lst
-            End Function
+
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return _Literal._value
+                Return _Literal
             End Function
         End Class
-        Public Class ArrayLiteralExpression
+        Friend Class ArrayLiteralExpression
             Inherits LiteralExpression
 
             Public Sub New(ByRef Value As Object)
                 MyBase.New(SyntaxType._arrayList, SyntaxType._arrayList.GetSyntaxTypeStr, Value)
             End Sub
 
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim Lst As New List(Of SyntaxToken)
-                Lst.Add(_Literal)
-                Return Lst
-            End Function
-
 
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Return ParentEnv.GetVar(_Literal.value)
+                Return _Literal._value
             End Function
         End Class
 #End Region
 
 #Region "Variables"
-        Public Class AssignmentExpression
+        Friend Class AssignmentExpression
             Inherits ExpressionSyntaxNode
             Public _identifier As IdentifierExpression
             Public Operand As SyntaxToken
+            ''' <summary>
+            ''' Can be any expression
+            ''' </summary>
             Public Value As ExpressionSyntaxNode
-            Public Sub New(identifier As IdentifierExpression, operand As SyntaxToken, value As ExpressionSyntaxNode)
+            Public Sub New(identifier As IdentifierExpression, operand As SyntaxToken, value As Object)
                 MyBase.New(SyntaxType._AssignmentExpression, SyntaxType._AssignmentExpression.GetSyntaxTypeStr)
 
                 If identifier Is Nothing Then
@@ -410,51 +387,56 @@ Namespace Syntax
             End Sub
             Private Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
 
+
                 'MustExist in record
-                Dim iName = _identifier.Evaluate(ParentEnv)
-                Dim iValue = calcValue(ParentEnv)
-                ParentEnv.AssignValue(iName, iValue)
-            End Sub
-            Private Function CheckVar(ByRef ParentEnv As EnvironmentalMemory) As Boolean
-                Return ParentEnv.CheckVar(_identifier.Evaluate(ParentEnv))
-            End Function
-            Private Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
-                If ParentEnv.CheckVar(_identifier.Evaluate(ParentEnv)) = True Then
-                    Return ParentEnv.GetVar(_identifier.Evaluate(ParentEnv))
+
+
+                If ParentEnv.CheckIfExists(_identifier._Literal) = True Then
+
+                    Dim iValue = calcValue(ParentEnv.GetVarValue(_identifier._Literal), ParentEnv)
+                    ParentEnv.AssignValue(_identifier._Literal, iValue)
                 Else
-                    Return "Does not Exist in Record"
+
                 End If
-            End Function
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Throw New NotImplementedException()
-            End Function
-            Function calcValue(ByRef ParentEnv As EnvironmentalMemory) As Double
-                Dim iValue = Value.Evaluate(ParentEnv)
-                Dim nValue = GetValue(ParentEnv)
+
+
+            End Sub
+
+
+            Function calcValue(ByRef IdentifierValue As Object, ByRef ParentEnv As EnvironmentalMemory) As Object
+
+                Dim nValue = IdentifierValue
                 Dim result As Object
 
                 Select Case Operand._SyntaxType
                     Case SyntaxType.Add_Equals_Operator
-                        result = nValue + iValue
+                        result = nValue + Value.Evaluate(ParentEnv)
+                        Return New Integer = result
                     Case SyntaxType.Minus_Equals_Operator
-                        result = nValue - iValue
+                        result = nValue - Value.Evaluate(ParentEnv)
+                        Return New Integer = result
                     Case SyntaxType.Multiply_Equals_Operator
-                        result = nValue * iValue
+                        result = nValue * Value.Evaluate(ParentEnv)
+                        Return New Integer = result
                     Case SyntaxType.Divide_Equals_Operator
-                        result = nValue / iValue
+                        result = nValue / Value.Evaluate(ParentEnv)
+                        Return New Integer = result
                     Case SyntaxType.Equals
-                        result = iValue
-                    Case Else
-                        result = 0
+                        result = Value.Evaluate(ParentEnv)
+                        Return result
+                    Case SyntaxType._ASSIGN
+                        result = Value.Evaluate(ParentEnv)
+                        Return result
+
                 End Select
-                Return result
+                Return "-Unknown Assignment Operation-"
             End Function
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 SetVar(ParentEnv)
-                Return GetValue(ParentEnv)
+                Return ParentEnv.GetVarValue(_identifier._Literal)
             End Function
         End Class
-        Public Class VariableDeclarationExpression
+        Friend Class VariableDeclarationExpression
             Inherits IdentifierExpression
             Public _literalTypeStr As String
             Public _literalType As LiteralType
@@ -463,41 +445,30 @@ Namespace Syntax
                 Me._literalType = literalType
                 _SyntaxType = SyntaxType._VariableDeclaration
                 _SyntaxTypeStr = SyntaxType._VariableDeclaration.GetSyntaxTypeStr
-                _Literal = value
+                _Literal = value._Value
                 _literalTypeStr = literalType.GetLiteralTypeStr
             End Sub
 
-            Public Overrides Function GetChildren() As List(Of SyntaxToken)
-                Dim lst As New List(Of SyntaxToken)
-                lst.Add(_Literal.value)
-                Return lst
-            End Function
 
-            Private Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
-                Dim iType = _literalType
-                Dim iName = _Literal.value
-                ParentEnv.Define(iName, iType)
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Select Case _literalType
                     Case LiteralType._Boolean
-                        ParentEnv.AssignValue(iName, False)
+                        ParentEnv.DefineValue(_Literal, _literalType, False)
                     Case LiteralType._String
-                        ParentEnv.AssignValue(iName, "")
+                        ParentEnv.DefineValue(_Literal, _literalType, "")
                     Case LiteralType._Array
-                        ParentEnv.AssignValue(iName, New List(Of Object))
+                        Exit Select
                     Case LiteralType._Integer
-                        ParentEnv.AssignValue(iName, 0)
+                        ParentEnv.DefineValue(_Literal, _literalType, 0)
                     Case LiteralType._Decimal
-                        ParentEnv.AssignValue(iName, 0.0)
+                        ParentEnv.DefineValue(_Literal, _literalType, 0)
                     Case LiteralType._Date
-                        ParentEnv.AssignValue(iName, Date.Now)
+                        ParentEnv.DefineValue(_Literal, _literalType, Date.Now)
                     Case LiteralType._NULL
-                        ParentEnv.AssignValue(iName, Nothing)
+                        Exit Select
                 End Select
 
-            End Sub
-            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                SetVar(ParentEnv)
-                Return ParentEnv.GetVar(_Literal.value)
+                Return ParentEnv.GetVar(_Literal).Value
             End Function
 
         End Class

@@ -7,8 +7,11 @@ Imports AI_BASIC.Syntax.SyntaxNodes
 Imports AI_BASIC.CodeAnalysis
 Imports System.IO
 Imports System.Drawing
+Imports AI_BASIC.CodeAnalysis.Compiler.Environment
+Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 
 Public Class IDE
+    Public Env As EnvironmentalMemory
 
 
 #Region "SpydazWebBasicCompiler"
@@ -194,13 +197,13 @@ Public Class IDE
     '
     Public Sub DoRunText(ByRef Text As RichTextBox)
         Dim ExpressionTree As SyntaxTree
-
+        Env = New EnvironmentalMemory
         For Each line In Text.Lines
             ExpressionTree = SyntaxTree.Parse(line)
             ClearTree()
             AddCompiledTree(ExpressionTree)
             Dim Eval As New Evaluator(ExpressionTree)
-            Dim Result = Eval._Evaluate
+            Dim Result = Eval._Evaluate(Env)
             DISPLAY_OUT.Text &= vbNewLine & "RESULTS RETUNED : " & Result & vbNewLine
             Dim Str As String = ""
             For Each item In Eval._Diagnostics
@@ -209,6 +212,10 @@ Public Class IDE
             CompilerErrors.Text = Str
             TabControlOutput.SelectedTab = TabPage_IDE_RESULTS
         Next
+        PrintMemory(Env)
+    End Sub
+    Public Sub PrintMemory(ByRef Env As EnvironmentalMemory)
+        AstSyntaxJson.Text += Env.ToJson()
     End Sub
     'Debug TextBox
     '
@@ -355,6 +362,10 @@ Public Class IDE
 
         Frm.CodeReady = True
         Frm.Show()
+    End Sub
+
+    Private Sub IDE_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Env = New EnvironmentalMemory
     End Sub
 
 
