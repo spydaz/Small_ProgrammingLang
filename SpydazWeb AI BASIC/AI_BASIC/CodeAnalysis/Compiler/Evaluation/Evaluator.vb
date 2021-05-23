@@ -74,10 +74,27 @@ Namespace CodeAnalysis
                             Return i.Evaluate(Env)
 
                         End If
+                        If iNode._SyntaxType = SyntaxType._ParenthesizedExpresion Then
+                            Dim p As SyntaxNodes.ParenthesizedExpression = iNode
+
+                            For Each item In p.Body
+                                If item._SyntaxType = SyntaxType._leftParenthes Or
+                                    item._SyntaxType = SyntaxType._RightParenthes Then
+                                Else
+                                    _EvaluateExpresssion(item)
+                                End If
+
+                            Next
+
+                        End If
                         Try
 
 
-                            If iNode._SyntaxType = SyntaxType._BinaryExpression Then
+                            If iNode._SyntaxType = SyntaxType._BinaryExpression Or
+                                iNode._SyntaxType = SyntaxType.AddativeExpression Or
+                                iNode._SyntaxType = SyntaxType.MultiplicativeExpression Or
+                                iNode._SyntaxType = SyntaxType.ConditionalExpression Then
+
                                 Dim b As SyntaxNodes.BinaryExpression = iNode
                                 Dim _Left As Integer = b._Left.Evaluate(Env)
                                 Dim _Right As Integer = b._Right.Evaluate(Env)

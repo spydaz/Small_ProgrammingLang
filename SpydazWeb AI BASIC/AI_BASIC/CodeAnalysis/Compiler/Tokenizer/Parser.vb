@@ -219,10 +219,9 @@ Namespace CodeAnalysis
                 Public Function _Expression()
 
                     Select Case CurrentToken._SyntaxType
-                        Case SyntaxType.VarKeyword
-                            Return _VariableDeclarationExpression()
-                        Case SyntaxType.DimKeyword
-                            Return _VariableDeclarationExpression()
+
+                        Case SyntaxType.IfKeyword
+
                         Case Else
                             Return _PrimaryExpression()
                     End Select
@@ -246,6 +245,18 @@ Namespace CodeAnalysis
                 Public Function _PrimaryExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.VarKeyword
+                            Return _VariableDeclarationExpression()
+                        Case SyntaxType.DimKeyword
+                            Return _VariableDeclarationExpression()
+                        Case SyntaxType._leftParenthes
+                            _MatchToken(SyntaxType._leftParenthes)
+
+                            Return _PrimaryExpression()
+                        Case SyntaxType._RightParenthes
+                            _MatchToken(SyntaxType._RightParenthes)
+
+                            Return _PrimaryExpression()
 #Region "UnaryValues"
 
 
@@ -272,13 +283,7 @@ Namespace CodeAnalysis
                             Return _LeftHandExpression(_Left)
                         Case SyntaxType._Integer, SyntaxType._Decimal
                             Return _BinaryExpression()
-                        'Begins ArrayList Literal
-                        Case SyntaxType._LIST_BEGIN
-                            'Populate list
-                            _Left = _LiteralExpression()
-                            CursorPosition += 1
-                            'Maybe assign values
-                            Return _LeftHandExpression(_Left)
+
 #Region "Literals"
 
 
@@ -315,6 +320,7 @@ Namespace CodeAnalysis
                     Select Case CurrentToken._SyntaxType
 
                      'Simple Assign
+
                         Case SyntaxType._ASSIGN
                             Dim x = _AssignmentExpression(_left)
                             CursorPosition += 2
@@ -479,6 +485,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.LessThanOperator
@@ -486,6 +495,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.NotEqual
@@ -493,13 +505,19 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.EquivelentTo
-                            While CurrentToken._SyntaxType = SyntaxType.NotEqual
+                            While CurrentToken._SyntaxType = SyntaxType.EquivelentTo
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
@@ -508,6 +526,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
@@ -516,12 +537,14 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                     End Select
                     Return _Left
                 End Function
-
                 Public Function _ComparisonExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
@@ -531,6 +554,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.LessThanOperator
@@ -538,6 +564,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.NotEqual
@@ -545,6 +574,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.EquivelentTo
@@ -552,15 +584,19 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
-
-
                         Case SyntaxType.LessThanEquals
                             While CurrentToken._SyntaxType = SyntaxType.LessThanEquals
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.GreaterThanEquals
@@ -568,12 +604,14 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.ConditionalExpression
+                                _Left._SyntaxTypeStr = SyntaxType.ConditionalExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
 
                     End Select
-
                     Return _Left
                 End Function
 
@@ -595,6 +633,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.AddativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.AddativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
@@ -621,6 +662,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.AddativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.AddativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.Sub_Operator
@@ -628,6 +672,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.AddativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.AddativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                     End Select
@@ -653,6 +700,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.MultiplicativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.MultiplicativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
@@ -661,6 +711,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.MultiplicativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.MultiplicativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
 
@@ -670,9 +723,6 @@ Namespace CodeAnalysis
 
                     Return _Left
                 End Function
-
-
-
                 Public Function _MultiplicativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
@@ -682,6 +732,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.MultiplicativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.MultiplicativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                         Case SyntaxType.Divide_Operator
@@ -689,6 +742,9 @@ Namespace CodeAnalysis
                                 _Operator = _GetNextToken()
                                 _right = _BinaryExpression()
                                 _Left = New BinaryExpression(_Left, _right, _Operator)
+                                _Left._SyntaxType = SyntaxType.MultiplicativeExpression
+                                _Left._SyntaxTypeStr = SyntaxType.MultiplicativeExpression.GetSyntaxTypeStr
+
                                 Return _Left
                             End While
                     End Select
@@ -707,25 +763,132 @@ Namespace CodeAnalysis
                 ''' </summary>
                 ''' <returns></returns>
                 Public Function _CodeBlockExpression() As ExpressionSyntaxNode
+                    Dim Body As New List(Of ExpressionSyntaxNode)
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._CODE_BEGIN
+                            Do Until CurrentToken._SyntaxType = SyntaxType._CODE_END
 
-
+                                Body.Add(_Expression)
+                            Loop
+                    End Select
+                    Return New CodeBlockExpression(Body)
                 End Function
+
+#Region "If/Then"
+
                 ''' <summary>
                 ''' (Expression)
                 ''' </summary>
                 ''' <returns></returns>
                 Public Function _ParenthesizedExpression() As ExpressionSyntaxNode
+                    Dim Body As New List(Of ExpressionSyntaxNode)
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._leftParenthes
+                            Dim lft = _MatchToken(SyntaxType._leftParenthes)
 
+                            Do Until CurrentToken._SyntaxType = SyntaxType._RightParenthes
+
+                                Body.Add(_BinaryExpression)
+
+
+                            Loop
+                            _MatchToken(SyntaxType._RightParenthes)
+                            CursorPosition += 1
+                            Return New ParenthesizedExpression(Body)
+
+                    End Select
+
+
+                    _MatchToken(SyntaxType._RightParenthes)
+                    CursorPosition += 1
+                    Return New ParenthesizedExpression(Body)
 
                 End Function
                 ''' <summary>
                 ''' [term,term] [identifer,identifer]
                 ''' </summary>
                 ''' <returns></returns>
-                Public Function _ListExpression() As ExpressionSyntaxNode
+                Public Function _IfExpression() As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.IfKeyword
+                            Dim IfCondition = _IfCondition()
+                            Dim ThenExpression = _ThenCodeBlockExpression()
+                            Dim ElseExpression = _ElseCodeBlockExpression()
+                            Return New IfExpression(IfCondition, ThenExpression, ElseExpression)
+                    End Select
+                    _Diagnostics.Add("unknown _IfExpression ? " & vbNewLine & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _IfCondition() As BinaryExpression
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.IfKeyword
+                            Dim x = _MatchToken(SyntaxType.IfKeyword)
+                            CursorPosition += 1
+                            Return _ComparisonExpression()
+                    End Select
+                    _Diagnostics.Add("Error Unknown _IfCondition: " & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _ThenCodeBlockExpression() As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.ThenKeyword
+                            Dim x = _MatchToken(SyntaxType.ThenKeyword)
+                            CursorPosition += 1
+                            Return _CodeBlockExpression()
+                    End Select
+                    _Diagnostics.Add("Error Unknown ThenBlock: " & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+                Public Function _ElseCodeBlockExpression() As ExpressionSyntaxNode
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.ElseIfKeyword
+                            Dim x = _MatchToken(SyntaxType.ElseIfKeyword)
+                            CursorPosition += 1
+                            Return _CodeBlockExpression()
+                    End Select
+                    _Diagnostics.Add("Error Unknown ElseBlock: " & CurrentToken.ToJson)
+                    Return Nothing
+                End Function
+#End Region
+#Region "Do/While/Until"
+                Public Function _Do() As ExpressionSyntaxNode
+                    _MatchToken(SyntaxType.DoKeyword)
+                    CursorPosition += 1
+
+                    Select Case CurrentToken._SyntaxType
+                        Case SyntaxType.WhileKeyword
+                            Dim cond = _ComparisonExpression()
+                            Dim blk = _CodeBlockExpression()
+
+                        Case SyntaxType.UntilKeyword
+                            Dim cond = _ComparisonExpression()
+                            Dim blk = _CodeBlockExpression()
+
+                    End Select
 
 
                 End Function
+#End Region
+#Region "For/Next"
+                Public Function _ForNext()
+                    _MatchToken(SyntaxType.ForKeyword)
+                    _IdentifierExpression()
+                    _MatchToken(SyntaxType._ASSIGN)
+                    _NumericLiteralExpression()
+                    _MatchToken(SyntaxType.ToKeyword)
+                    _NumericLiteralExpression()
+                    _CodeBlockExpression()
+                End Function
+                Public Function _ForEach()
+                    _MatchToken(SyntaxType.ForKeyword)
+                    _MatchToken(SyntaxType.EachKeyWord)
+                    _IdentifierExpression()
+                    _MatchToken(SyntaxType.InKeyWord)
+                    _IdentifierExpression()
+                    _CodeBlockExpression()
+                End Function
+#End Region
+
 #End Region
 #Region "Variables"
                 ''' <summary>

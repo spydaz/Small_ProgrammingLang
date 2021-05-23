@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("6502")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("6502 Processor")]
+[assembly: AssemblyDescription("6502 Processor - Yve Verstrepen")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("6502")]
+[assembly: AssemblyCompany("SpydazWeb")]
+[assembly: AssemblyProduct("6502 Processor Small")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

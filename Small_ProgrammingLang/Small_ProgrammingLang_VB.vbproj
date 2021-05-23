@@ -128,12 +128,6 @@
     <Compile Include="SourceCode\MachineUI\VM_MachineUI.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SourceCode\MachineUI\ZX21_GDU.designer.vb">
-      <DependentUpon>ZX21_GDU.vb</DependentUpon>
-    </Compile>
-    <Compile Include="SourceCode\MachineUI\ZX21_GDU.vb">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SourceCode\SpydazWebAI.Basic.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +179,18 @@
     <None Include="Resources\Complier_RUN.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SpydazWeb AI BASIC\SpydazWebAI_BASIC.vbproj">
+      <Project>{4c3db8a4-4555-438c-9fdc-8ae773629416}</Project>
+      <Name>SpydazWebAI_BASIC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpydazWeb AI Minsk\SpydazWebAI_Minsk_basic.vbproj">
+      <Project>{baa60125-91b1-4f19-939a-bbc9e46f222d}</Project>
+      <Name>SpydazWebAI_Minsk_basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpydazWeb AI Virtual Machine\EMU6502\EMU6502.csproj">
+      <Project>{3f6b8296-d8e7-43eb-96b8-84482b41a048}</Project>
+      <Name>EMU6502</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SpydazWeb AI Virtual Machine\SpydazWebAI_Virtual_Machine.vbproj">
       <Project>{24601FC8-50FF-49DB-8A7A-AD8EA8F48D57}</Project>
       <Name>SpydazWebAI_Virtual_Machine</Name>

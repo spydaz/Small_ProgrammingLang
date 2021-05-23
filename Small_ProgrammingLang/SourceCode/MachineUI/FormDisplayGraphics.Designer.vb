@@ -1,4 +1,6 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿Imports SAL_VM
+
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class FormDisplayGraphics
     Inherits System.Windows.Forms.Form
 
@@ -22,7 +24,7 @@ Partial Class FormDisplayGraphics
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.GDU_DISPLAY = New SDK.GDU()
+        Me.GDU_DISPLAY = New GDU()
         CType(Me.GDU_DISPLAY, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '

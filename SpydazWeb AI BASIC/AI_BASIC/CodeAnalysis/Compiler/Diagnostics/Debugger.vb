@@ -46,6 +46,7 @@ Namespace CodeAnalysis
             Private Shared ParserTree As List(Of SyntaxTree)
             Private Shared ParserDiagnostics As New List(Of DiagnosticsException)
             Public Shared Function ProduceExpressionTree(ByRef Script As String) As List(Of SyntaxTree)
+                ParserTree = New List(Of SyntaxTree)
                 Dim Program As List(Of String)
                 Program = Script.Split(vbNewLine).ToList
                 For Each Line In Program
@@ -58,7 +59,7 @@ Namespace CodeAnalysis
                 Dim ExpressionTree As SyntaxTree
                 ExpressionTree = iParser.Parse()
                 Dim _LineDiagnostics As New List(Of DiagnosticsException)
-                _LineDiagnostics.AddRange(iParser._Diagnostics)
+                _LineDiagnostics.AddRange(iParser.ParserDiagnostics)
                 ParserDiagnostics.AddRange(_LineDiagnostics)
 
                 Return ExpressionTree
@@ -72,6 +73,7 @@ Namespace CodeAnalysis
             Private Shared LexerDiagnostics As New List(Of DiagnosticsException)
             Private Shared TokenTree As List(Of List(Of SyntaxToken))
             Friend Shared Function ProduceTokenTree(ByRef Script As String) As List(Of List(Of SyntaxToken))
+                TokenTree = New List(Of List(Of SyntaxToken))
                 Dim Program As List(Of String)
                 Program = Script.Split(vbNewLine).ToList
                 For Each Line In Program
@@ -101,7 +103,7 @@ Namespace CodeAnalysis
                                           "EOL", "EOL", Line.Length, Line.Length))
 #End Region
 
-                _LineDiagnostics.AddRange(iLexer._Diagnostics)
+                _LineDiagnostics.AddRange(iLexer.LexerDiagnostics)
                 LexerDiagnostics.AddRange(_LineDiagnostics)
                 Return CurrentTree
             End Function

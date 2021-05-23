@@ -9,6 +9,8 @@ Module Program
         Application.SetCompatibleTextRenderingDefault(False)
         InterpretorRepl.RunInterpretorRepl()
 
+        Dim repl As New ReplCompiler
+        'repl.Run()
 
     End Sub
 

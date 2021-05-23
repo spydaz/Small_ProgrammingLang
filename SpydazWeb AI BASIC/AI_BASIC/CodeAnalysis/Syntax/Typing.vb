@@ -149,6 +149,7 @@ Namespace Syntax
         BinaryExpression
         VariableDecleration
         Variable
+        ConditionalExpression
     End Enum
     Public Enum Functions
         If_Then_Function
@@ -204,7 +205,7 @@ Namespace Syntax
                     Return True
                 Case SyntaxType.WhileKeyword
                     Return True
-                Case SyntaxType.UntilKeword
+                Case SyntaxType.UntilKeyword
                     Return True
                 Case SyntaxType.LoopKeyWord
                     Return True
@@ -365,7 +366,7 @@ Namespace Syntax
                 Case "do"
                     Return SyntaxType.DoKeyword
                 Case "until"
-                    Return SyntaxType.UntilKeword
+                    Return SyntaxType.UntilKeyword
                 Case "loop"
                     Return SyntaxType.LoopKeyWord
 #End Region
@@ -467,6 +468,7 @@ Namespace Syntax
 
 #End Region
 
+
                 Case Else
                     Return SyntaxType._Identifier
             End Select
@@ -567,7 +569,7 @@ Namespace Syntax
                     Return "WhileKeyword"
                 Case SyntaxType.DoKeyword
                     Return "DoKeyword"
-                Case SyntaxType.UntilKeword
+                Case SyntaxType.UntilKeyword
                     Return "UntilKeword"
                 Case SyntaxType.ThenKeyword
                     Return "ThenKeyword"
@@ -641,6 +643,14 @@ Namespace Syntax
                     Return "_CodeBlock"
                 Case SyntaxType._IdentifierExpression
                     Return "_IdentifierExpression"
+#Region "Expressions"
+                Case SyntaxType.AddativeExpression
+                    Return "AddativeExpression"
+                Case SyntaxType.MultiplicativeExpression
+                    Return "MultiplicativeExpression"
+                Case SyntaxType.ConditionalExpression
+                    Return "ConditionalExpression"
+#End Region
 'sys
                 Case SyntaxType._UnknownToken
                     Return "_UnknownToken"
@@ -1028,7 +1038,7 @@ Namespace Syntax
         ElseKeyword = 212
         WhileKeyword = 213
         DoKeyword = 214
-        UntilKeword = 215
+        UntilKeyword = 215
         ThenKeyword = 216
         DimKeyword = 217
         _StringType = 218
@@ -1059,6 +1069,10 @@ Namespace Syntax
         _SAL_PROGRAM_BEGIN = 771
         BASIC_LANG = 772
         UnknownVariable = 773
+        MultiplicativeExpression = 774
+        AddativeExpression = 775
+        ConditionalExpression = 776
+        _ifExpression = 777
 
 #End Region
 
@@ -1599,7 +1613,7 @@ Namespace Syntax
 
 
             NewGram = New GrammarDefinintion
-            NewGram.Identifer = SyntaxType.UntilKeword
+            NewGram.Identifer = SyntaxType.UntilKeyword
             NewGram.SearchPattern = "^\buntil\b"
             Spec.Add(NewGram)
             NewGram = New GrammarDefinintion

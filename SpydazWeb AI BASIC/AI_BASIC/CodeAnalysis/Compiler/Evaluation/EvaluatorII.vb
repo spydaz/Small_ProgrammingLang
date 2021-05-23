@@ -15,9 +15,11 @@ Namespace CodeAnalysis
                 Private ResultsList As New List(Of Object)
                 Public Function EvaluateProgram(ByRef Script As String, ByRef Program As List(Of SyntaxTree))
                     Env = New EnvironmentalMemory
-                    For Each item In Program
-                        ResultsList.AddRange(_EvaluateLine(item, Env))
-                    Next
+                    If Program IsNot Nothing Then
+                        For Each item In Program
+                            ResultsList.AddRange(_EvaluateLine(item, Env))
+                        Next
+                    End If
                     Return ResultsList
                 End Function
                 Public Function _EvaluateLine(ByRef _tree As SyntaxTree, ByRef Env As EnvironmentalMemory) As Object
@@ -110,7 +112,7 @@ Namespace CodeAnalysis
                                     Case SyntaxType.GreaterThanEquals
                                         Return _Left >= _Right
                                     Case Else
-                                        Dim zexe As New DiagnosticsException("Unexpected Binary Operator :", ExceptionType.EvaluationException, iNode, SyntaxType._BinaryExpression)
+                                        Dim zexe As New DiagnosticsException("Unexpected Binary Operator :", ExceptionType.EvaluationException, b, SyntaxType._BinaryExpression)
                                         EvaluatorDiagnostics.Add(zexe)
                                 End Select
 
@@ -123,7 +125,7 @@ Namespace CodeAnalysis
                         End Try
 
                     End If
-                    Dim iexe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, iNode, iNode._SyntaxType)
+                    Dim iexe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, SyntaxType._UnknownToken.GetSyntaxTypeStr, SyntaxType._UnknownToken)
                     EvaluatorDiagnostics.Add(iexe)
                     Return "Unable to Evaluate"
                 End Function

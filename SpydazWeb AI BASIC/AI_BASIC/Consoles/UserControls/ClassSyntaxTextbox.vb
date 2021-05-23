@@ -117,15 +117,8 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             If SearchStr <> "" Then
 
                 SearchStr = SearchStr & " "
-                If SearchStr.Length > 0 Then
-                    startindex = FindText(Rtb, ProperCase(SearchStr), start, Rtb.Text.Length)
-                End If
-                If SearchStr.Length > 0 And startindex = 0 Then
-                    startindex = FindText(Rtb, LCase(SearchStr), start, Rtb.Text.Length)
-                End If
-                If SearchStr.Length > 0 And startindex = 0 Then
-                    startindex = FindText(Rtb, UCase(SearchStr), start, Rtb.Text.Length)
-                End If
+
+
                 If SearchStr.Length > 0 And startindex = 0 Then
                     startindex = FindText(Rtb, SearchStr, start, Rtb.Text.Length)
                 End If
@@ -343,6 +336,7 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
     Public Function GetLastIndex(ByRef sender As SyntaxTextBox) As Integer
         'Get last word entered
         tb = sender
+
         Dim CursorPosition As Integer = tb.SelectionStart
         Dim Txt = Strings.Trim(CStr(tb.Text))
         Dim lastIndex As Integer = IIf(Txt.LastIndexOf(" ") = -1, 0, Txt.LastIndexOf(" ") + 1)
@@ -461,7 +455,7 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
     End Sub
     Private Sub ClassInteliTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
-        AddTerms()
+
 
         Select Case e.KeyCode
             Case Keys.Insert

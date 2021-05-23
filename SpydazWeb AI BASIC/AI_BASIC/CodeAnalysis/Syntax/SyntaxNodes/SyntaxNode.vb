@@ -148,16 +148,22 @@ Namespace Syntax
             ''' <param name="ileft">Left Value or Identifier</param>
             ''' <param name="iright">Right Value or Identifier</param>
             ''' <param name="iOperator">Operator Token</param>
-            Public Sub New(ileft As ExpressionSyntaxNode, iright As ExpressionSyntaxNode, iOperator As SyntaxToken)
+            Public Sub New(ileft As ExpressionSyntaxNode, iright As ExpressionSyntaxNode, ioperator As SyntaxToken)
                 MyBase.New(SyntaxType._BinaryExpression, SyntaxType._BinaryExpression.GetSyntaxTypeStr)
 
+                If ileft Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(ileft))
+                End If
 
+                If iright Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(iright))
+                End If
 
                 _Left = ileft
                 _Right = iright
-                _Operator = iOperator
-
+                _Operator = ioperator
             End Sub
+
 
 
             ''' <summary>
@@ -225,6 +231,75 @@ Namespace Syntax
                         Return NumericLiteral.Evaluate(ParentEnv)
                 End Select
                 Return Nothing
+            End Function
+        End Class
+        Friend Class IfExpression
+            Inherits ExpressionSyntaxNode
+
+            Public IfCondition As BinaryExpression
+            Public ThenCondition As ExpressionSyntaxNode
+            Public ElseCondition As ExpressionSyntaxNode
+
+
+            Public Sub New(ifCondition As BinaryExpression,
+                           thenCondition As ExpressionSyntaxNode,
+                           elseCondition As ExpressionSyntaxNode)
+                MyBase.New(SyntaxType._ifExpression, SyntaxType._ifExpression.GetSyntaxTypeStr)
+                If ifCondition Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(ifCondition))
+                End If
+
+                If thenCondition Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(thenCondition))
+                End If
+
+                If elseCondition Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(elseCondition))
+                End If
+
+                Me.IfCondition = ifCondition
+                Me.ThenCondition = thenCondition
+                Me.ElseCondition = elseCondition
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Throw New NotImplementedException()
+            End Function
+        End Class
+        Friend Class CodeBlockExpression
+            Inherits ExpressionSyntaxNode
+            Public LocalMemory As EnvironmentalMemory
+            Public Body As List(Of ExpressionSyntaxNode)
+
+            Public Sub New(body As List(Of ExpressionSyntaxNode))
+                MyBase.New(SyntaxType._CodeBlock,
+                           SyntaxType._CodeBlock.GetSyntaxTypeStr)
+                If body Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(body))
+                End If
+                LocalMemory = New EnvironmentalMemory
+                Me.Body = body
+            End Sub
+
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Throw New NotImplementedException()
+            End Function
+        End Class
+        Friend Class ParenthesizedExpression
+            Inherits ExpressionSyntaxNode
+            Public Body As List(Of ExpressionSyntaxNode)
+            Public Sub New(ByRef Body As List(Of ExpressionSyntaxNode))
+                MyBase.New(SyntaxType._ParenthesizedExpresion, SyntaxType._ParenthesizedExpresion.GetSyntaxTypeStr)
+                Me.Body = Body
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Dim x As Object
+                For Each item In Body
+                    x = item.Evaluate(ParentEnv)
+                Next
+                Return x
             End Function
         End Class
 #End Region

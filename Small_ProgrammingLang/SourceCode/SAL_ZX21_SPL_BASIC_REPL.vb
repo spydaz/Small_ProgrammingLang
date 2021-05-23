@@ -7,6 +7,7 @@ Imports SDK.SpydazWeb.AI.Basic.CodeAnalysis.Syntax.SyntaxNodes
 Imports System.IO
 Imports System.Runtime.CompilerServices
 Imports SDK.SpydazWeb.AI.Basic.CodeAnalysis
+Imports AI_BASIC
 
 Public Class SAL_ZX21_SPL_BASIC_REPL
 #Region "SMALL_PL"
@@ -392,6 +393,11 @@ Public Class SAL_ZX21_SPL_BASIC_REPL
         Next
 
 
+    End Sub
+
+    Private Sub ToolStripButtonSpydazWebBasicRepl_Click(sender As Object, e As EventArgs) Handles ToolStripButtonSpydazWebBasicRepl.Click
+        Dim frmrpl As New IDE
+        frmrpl.Show()
     End Sub
 End Class
 'REPL_ERROR SYSTEM

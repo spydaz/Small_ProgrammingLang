@@ -202,6 +202,7 @@ Partial Class IDE
         'CodeTextBox
         '
         Me.CodeTextBox.AcceptsTab = True
+        Me.CodeTextBox.AutoWordSelection = True
         Me.CodeTextBox.BackColor = System.Drawing.SystemColors.ControlLightLight
         Me.CodeTextBox.Dock = System.Windows.Forms.DockStyle.Fill
         Me.CodeTextBox.Font = New System.Drawing.Font("Consolas", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))

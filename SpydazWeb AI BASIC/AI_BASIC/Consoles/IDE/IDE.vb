@@ -100,35 +100,41 @@ Public Class IDE
         root.Tag = Prog.ToJson
         root.ImageIndex = 27
         root.ForeColor = Color.Black
-        For Each item In Prog.Body
-            If item IsNot Nothing Then
-                '_:::MainNodes:::_(0)
-                Dim MainNode As New TreeNode
-                If item._SyntaxType = SyntaxType._UnknownToken Then
-                    MainNode.ForeColor = Color.Red
-                    MainNode.ImageIndex = 29
-                Else
-                    MainNode.ForeColor = Color.Blue
-                    MainNode.ImageIndex = 26
+        Try
 
-                End If
-                MainNode.Text = item._SyntaxTypeStr
-                MainNode.Tag = item.ToJson
-                Dim SubNode As New TreeNode
-                If item._SyntaxType = SyntaxType._UnknownToken Then
-                    SubNode.ForeColor = Color.IndianRed
-                    SubNode.ImageIndex = 29
-                Else
-                    SubNode.ForeColor = Color.Blue
-                    MainNode.ImageIndex = 25
-                End If
 
-                SubNode.Text = item.ToString
-                SubNode.Tag = item.ToJson
-                MainNode.Nodes.Add(SubNode)
-                root.Nodes.Add(MainNode)
-            End If
-        Next
+            For Each item In Prog.Body
+                If item IsNot Nothing Then
+                    '_:::MainNodes:::_(0)
+                    Dim MainNode As New TreeNode
+                    If item._SyntaxType = SyntaxType._UnknownToken Then
+                        MainNode.ForeColor = Color.Red
+                        MainNode.ImageIndex = 29
+                    Else
+                        MainNode.ForeColor = Color.Blue
+                        MainNode.ImageIndex = 26
+
+                    End If
+                    MainNode.Text = item._SyntaxTypeStr
+                    MainNode.Tag = item.ToJson
+                    Dim SubNode As New TreeNode
+                    If item._SyntaxType = SyntaxType._UnknownToken Then
+                        SubNode.ForeColor = Color.IndianRed
+                        SubNode.ImageIndex = 29
+                    Else
+                        SubNode.ForeColor = Color.Blue
+                        MainNode.ImageIndex = 25
+                    End If
+
+                    SubNode.Text = item.ToString
+                    SubNode.Tag = item.ToJson
+                    MainNode.Nodes.Add(SubNode)
+                    root.Nodes.Add(MainNode)
+                End If
+            Next
+        Catch ex As Exception
+
+        End Try
         PL_AstTreeView.Nodes.Add(root)
         PL_AstTreeView.ExpandAll()
     End Sub
