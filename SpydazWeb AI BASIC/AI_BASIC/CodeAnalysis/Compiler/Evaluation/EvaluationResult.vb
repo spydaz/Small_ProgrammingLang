@@ -8,19 +8,19 @@ Namespace CodeAnalysis
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Public NotInheritable Class EvaluationResult
                 Public ReadOnly Property Diagnostics As CompilerDiagnosticResults
-                Public ReadOnly Property Result As Object
+                Public ReadOnly Property Results As Object
 
-                Public Sub New(diagnostics As CompilerDiagnosticResults, result As Object)
+                Public Sub New(diagnostics As CompilerDiagnosticResults, _results As Object)
                     If diagnostics Is Nothing Then
                         Throw New ArgumentNullException(NameOf(diagnostics))
                     End If
 
-                    If result Is Nothing Then
-                        Throw New ArgumentNullException(NameOf(result))
+                    If _results Is Nothing Then
+                        Throw New ArgumentNullException(NameOf(_results))
                     End If
 
                     Me.Diagnostics = diagnostics
-                    Me.Result = result
+                    Me.Results = _results
                 End Sub
 #Region "TOSTRING"
                 ''' <summary>

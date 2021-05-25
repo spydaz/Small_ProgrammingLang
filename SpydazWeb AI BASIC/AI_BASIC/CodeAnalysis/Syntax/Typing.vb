@@ -245,9 +245,6 @@ Namespace Syntax
             End If
 
         End Function
-
-
-
         <Runtime.CompilerServices.Extension()>
         Public Function GetLiteralTypeStr(ByRef _LiteralType As LiteralType) As String
             Select Case _LiteralType
@@ -266,6 +263,7 @@ Namespace Syntax
                 Case LiteralType._NULL
                     Return "Null"
             End Select
+            Return "Unkown"
         End Function
         <Runtime.CompilerServices.Extension()>
         Function GetKeywordSyntaxType(text As String) As SyntaxType
@@ -465,7 +463,48 @@ Namespace Syntax
                 Case "decr"
                     Return SyntaxType.SAL_DECR
 #End Region
-
+#Region "LOGO"
+                Case "ht"
+                    Return SyntaxType.LOGO_ht
+                Case "hideturtle"
+                    Return SyntaxType.LOGO_ht
+                Case "fd"
+                    Return SyntaxType.LOGO_fd
+                Case "forward"
+                    Return SyntaxType.LOGO_fd
+                Case "bk"
+                    Return SyntaxType.LOGO_bk
+                Case "backward"
+                    Return SyntaxType.LOGO_bk
+                Case "rt"
+                    Return SyntaxType.LOGO_rt
+                Case "right"
+                    Return SyntaxType.LOGO_rt
+                Case "lt"
+                    Return SyntaxType.LOGO_lt
+                Case "left"
+                    Return SyntaxType.LOGO_lt
+                Case "label"
+                    Return SyntaxType.LOGO_label
+                Case "if"
+                    Return SyntaxType.IfKeyword
+                Case "for"
+                    Return SyntaxType.ForKeyword
+                Case "deref"
+                    Return SyntaxType.LOGO_deref
+                Case "setxy"
+                    Return SyntaxType.LOGO_setxy
+                Case "st"
+                    Return SyntaxType.LOGO_st
+                Case "stop"
+                    Return SyntaxType.LOGO_Stop
+                Case "pu"
+                    Return SyntaxType.LOGO_pu
+                Case "pd"
+                    Return SyntaxType.LOGO_pd
+                Case "make"
+                    Return SyntaxType.LOGO_make
+#End Region
 #End Region
 
 
@@ -474,7 +513,6 @@ Namespace Syntax
             End Select
 
         End Function
-
         <Runtime.CompilerServices.Extension()>
         Public Function GetUnaryOperatorPrecedence(kind As SyntaxType) As Integer
             Select Case kind
@@ -643,6 +681,12 @@ Namespace Syntax
                     Return "_CodeBlock"
                 Case SyntaxType._IdentifierExpression
                     Return "_IdentifierExpression"
+                Case SyntaxType.ifThenExpression
+                    Return "ifThenExpression"
+                Case SyntaxType.ifElseExpression
+                    Return "ifElseExpression"
+                Case SyntaxType.IfExpression
+                    Return "IfExpression"
 #Region "Expressions"
                 Case SyntaxType.AddativeExpression
                     Return "AddativeExpression"
@@ -651,6 +695,12 @@ Namespace Syntax
                 Case SyntaxType.ConditionalExpression
                     Return "ConditionalExpression"
 #End Region
+
+                Case SyntaxType._CODE_BEGIN
+                    Return "_CODE_BEGIN"
+                Case SyntaxType._CODE_END
+                    Return "_CODE_END"
+
 'sys
                 Case SyntaxType._UnknownToken
                     Return "_UnknownToken"
@@ -719,7 +769,6 @@ Namespace Syntax
                     Return "ERROR NOT DEFINED"
             End Select
         End Function
-
     End Module
     ''' <summary>
     ''' Token to be returned contain as much information required,
@@ -928,6 +977,11 @@ Namespace Syntax
         'List pf (Expr)
         _CodeBlock = 140
         _VariableDeclaration = 141
+        MultiplicativeExpression = 142
+        AddativeExpression = 143
+        ConditionalExpression = 144
+        ifThenExpression = 145
+        ifElseExpression = 146
 #End Region
 #Region "MainLanguage"
 #Region "Functions - Used In Universal RegexSearches"
@@ -1069,10 +1123,7 @@ Namespace Syntax
         _SAL_PROGRAM_BEGIN = 771
         BASIC_LANG = 772
         UnknownVariable = 773
-        MultiplicativeExpression = 774
-        AddativeExpression = 775
-        ConditionalExpression = 776
-        _ifExpression = 777
+        IfExpression = 774
 
 #End Region
 

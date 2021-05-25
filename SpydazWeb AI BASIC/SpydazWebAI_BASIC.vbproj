@@ -5,11 +5,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4C3DB8A4-4555-438C-9FDC-8AE773629416}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>AI_BASIC</RootNamespace>
     <AssemblyName>SpydazWeb.AI.Basic</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>Console</MyType>
+    <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
     <PublishUrl>publish\</PublishUrl>
@@ -43,7 +43,7 @@
     <DebugType>pdbonly</DebugType>
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>SpydazWeb.AI.Basic.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
@@ -61,7 +61,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>AI_BASIC.Program</StartupObject>
+    <StartupObject>AI_BASIC.My.MyApplication</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>IconUFP.ico</ApplicationIcon>

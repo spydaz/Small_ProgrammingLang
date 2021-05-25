@@ -2,6 +2,7 @@
 Imports System.Text
 Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
+Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 
@@ -32,110 +33,189 @@ Namespace CodeAnalysis
                     Next
                     Return "Unable to Evaluate"
                 End Function
-                Public Function _EvaluateExpresssion(ByRef iNode As Object) As Object
+                Private Function _EvaluateExpresssion(ByRef iNode As SyntaxNode) As Object
                     If iNode IsNot Nothing Then
-                        If iNode._SyntaxType = SyntaxType._NumericLiteralExpression Then
-                            Dim n As SyntaxNodes.NumericalExpression = iNode
-                            Return n.Evaluate(Env)
-                        Else
 
-                        End If
+                        Select Case iNode._SyntaxType
+                            Case SyntaxType._NumericLiteralExpression
+                                Return Evaluate_NumericLiteralExpression(iNode)
+                            Case SyntaxType._StringExpression
+                                Return EvaluateStringExpression(iNode)
+                            Case SyntaxType._BooleanLiteralExpression
+                                Return EvaluateBooleanLiteralExpression(iNode)
+                            Case SyntaxType._UnaryExpression
+                                Return EvaluateUnaryExpression(iNode)
+                            Case SyntaxType._IdentifierExpression
+                                Return EvaluateIdentifierExpression(iNode)
+                            Case SyntaxType._VariableDeclaration
+                                Return EvaluateVariableDeclaration(iNode)
+                            Case SyntaxType._AssignmentExpression
+                                Return EvaluateAssignmentExpression(iNode)
+                            Case SyntaxType.AddativeExpression
+                                Return EvaluateAddativeExpression(iNode)
+                            Case SyntaxType.MultiplicativeExpression
+                                Return EvaluateAddativeExpression(iNode)
+                            Case SyntaxType.ConditionalExpression
+                                Return EvaluateConditionalExpression(iNode)
+                            Case SyntaxType.IfExpression
+                                Return EvaluateIfExpression(iNode)
+                        End Select
 
-                        If iNode._SyntaxType = SyntaxType._StringExpression Then
-                            Dim n As SyntaxNodes.StringExpression = iNode
-                            Return n.Evaluate(Env)
-                        Else
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._BooleanLiteralExpression Then
-                            Dim n As SyntaxNodes.BooleanLiteralExpression = iNode
-                            Return n.Evaluate(Env)
-                        Else
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._UnaryExpression Then
-                            Dim u As SyntaxNodes.UnaryExpression = iNode
-                            Return u.Evaluate(Env)
-                        Else
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._IdentifierExpression Then
-                            Dim i As SyntaxNodes.IdentifierExpression = iNode
-                            Return i.Evaluate(Env)
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._VariableDeclaration Then
-                            Dim i As SyntaxNodes.VariableDeclarationExpression = iNode
-                            Return i.Evaluate(Env)
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._AssignmentExpression Then
-                            Dim i As SyntaxNodes.AssignmentExpression = iNode
-                            Return i.Evaluate(Env)
-
-                        End If
-                        If iNode._SyntaxType = SyntaxType._ParenthesizedExpresion Then
-                            Dim p As SyntaxNodes.ParenthesizedExpression = iNode
-
-                            For Each item In p.Body
-                                If item._SyntaxType = SyntaxType._leftParenthes Or
-                                    item._SyntaxType = SyntaxType._RightParenthes Then
-                                Else
-                                    _EvaluateExpresssion(item)
-                                End If
-
-                            Next
-
-                        End If
-                        Try
-
-
-                            If iNode._SyntaxType = SyntaxType._BinaryExpression Or
-                                iNode._SyntaxType = SyntaxType.AddativeExpression Or
-                                iNode._SyntaxType = SyntaxType.MultiplicativeExpression Or
-                                iNode._SyntaxType = SyntaxType.ConditionalExpression Then
-
-                                Dim b As SyntaxNodes.BinaryExpression = iNode
-                                Dim _Left As Integer = b._Left.Evaluate(Env)
-                                Dim _Right As Integer = b._Right.Evaluate(Env)
-
-                                Select Case iNode._Operator._SyntaxType
-                                    Case SyntaxType.Add_Operator
-                                        Return _Left + _Right
-                                    Case SyntaxType.Sub_Operator
-                                        Return _Left - _Right
-                                    Case SyntaxType.Multiply_Operator
-                                        Return _Left * _Right
-                                    Case SyntaxType.Divide_Operator
-                                        Return _Left / _Right
-                                    Case SyntaxType.GreaterThan_Operator
-                                        Return _Left > _Right
-                                    Case SyntaxType.LessThanOperator
-                                        Return _Left < _Right
-                                    Case SyntaxType.NotEqual
-                                        Return _Left <> _Right
-                                    Case SyntaxType.EquivelentTo
-                                        Return _Left = _Right
-                                    Case SyntaxType.LessThanEquals
-                                        Return _Left <= _Right
-                                    Case SyntaxType.GreaterThanEquals
-                                        Return _Left >= _Right
-                                    Case Else
-                                        Throw New Exception("Unexpected Binary Operator :" & iNode._Operator._SyntaxStr)
-                                End Select
-
-                            Else
-
-                            End If
-                        Catch ex As Exception
-                            _Diagnostics.Add("Unexpected Exception :" & vbNewLine & ex.ToString)
-                        End Try
-
+                    Else
                     End If
-                    _Diagnostics.Add("Unexpected Expression :")
-                    Return "Unexpected Expression :"
+                    Dim DiagExe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, iNode.ToJson, iNode._SyntaxType)
+                    _Diagnostics.Add(DiagExe.ToJson)
+                    Return "Unable to Evaluate"
                 End Function
+                Public Function EvaluateStringExpression(ByRef Expr As SyntaxNode) As String
+                    If Expr._SyntaxType = SyntaxType._StringExpression Then
+                        Dim n As SyntaxNodes.StringExpression = Expr
+                        Return n.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate StringExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function Evaluate_NumericLiteralExpression(ByRef Expr As SyntaxNode) As Integer
+                    If Expr._SyntaxType = SyntaxType._NumericLiteralExpression Then
+                        Dim n As NumericalExpression = Expr
+                        Return n.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate NumericalExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateBooleanLiteralExpression(ByRef Expr As SyntaxNode) As Boolean
+                    If Expr._SyntaxType = SyntaxType._BooleanLiteralExpression Then
+                        Dim n As SyntaxNodes.BooleanLiteralExpression = Expr
+                        Return n.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate BooleanLiteralExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateUnaryExpression(ByRef Expr As SyntaxNode) As Integer
+                    If Expr._SyntaxType = SyntaxType._UnaryExpression Then
+                        Dim u As SyntaxNodes.UnaryExpression = Expr
+                        Return u.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate UnaryExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateIdentifierExpression(ByRef Expr As SyntaxNode)
+                    If Expr._SyntaxType = SyntaxType._IdentifierExpression Then
+                        Dim i As SyntaxNodes.IdentifierExpression = Expr
+                        Return i.Evaluate(Env)
 
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate IdentifierExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateVariableDeclaration(ByRef Expr As SyntaxNode)
+                    If Expr._SyntaxType = SyntaxType._VariableDeclaration Then
+                        Dim i As SyntaxNodes.VariableDeclarationExpression = Expr
+                        Return i.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate VariableDeclaration", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateAssignmentExpression(ByRef Expr As SyntaxNode)
+                    If Expr._SyntaxType = SyntaxType._AssignmentExpression Then
+                        Dim i As SyntaxNodes.AssignmentExpression = Expr
+                        Return i.Evaluate(Env)
+                    Else
+                        Dim x As New DiagnosticsException("Unable to evaluate _AssignmentExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                        _Diagnostics.Add(x.ToJson)
+                        Return Nothing
+                    End If
+                End Function
+                Public Function EvaluateAddativeExpression(ByRef Expr As SyntaxNode) As Integer
+                    If Expr._SyntaxType = SyntaxType.AddativeExpression Then
+                        Dim b As SyntaxNodes.BinaryExpression = Expr
+                        Dim _Left As Integer = b._Left.Evaluate(Env)
+                        Dim _Right As Integer = b._Right.Evaluate(Env)
+                        Select Case b._Operator._SyntaxType
+                            Case SyntaxType.Add_Operator
+                                Return _Left + _Right
+                            Case SyntaxType.Sub_Operator
+                                Return _Left - _Right
+                        End Select
+                    Else
+                    End If
+                    Dim x As New DiagnosticsException("Unable to evaluate AddativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+                End Function
+                Public Function EvaluateMultiplicativeExpression(ByRef Expr As SyntaxNode) As Integer
+                    If Expr._SyntaxType = SyntaxType.AddativeExpression Then
+                        Dim b As SyntaxNodes.BinaryExpression = Expr
+                        Dim _Left As Integer = b._Left.Evaluate(Env)
+                        Dim _Right As Integer = b._Right.Evaluate(Env)
+                        Select Case b._Operator._SyntaxType
+                            Case SyntaxType.Multiply_Operator
+                                Return _Left * _Right
+                            Case SyntaxType.Divide_Operator
+                                Return _Left / _Right
+                        End Select
+                    Else
+                    End If
+                    Dim x As New DiagnosticsException("Unable to evaluate MultiplicativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+                End Function
+                Public Function EvaluateConditionalExpression(ByRef Expr As SyntaxNode) As Boolean
+                    If Expr._SyntaxType = SyntaxType.ConditionalExpression Then
+                        Dim b As SyntaxNodes.BinaryExpression = Expr
+                        Dim _Left As Boolean = b._Left.Evaluate(Env)
+                        Dim _Right As Boolean = b._Right.Evaluate(Env)
+                        Select Case b._Operator._SyntaxType
+                            Case SyntaxType.GreaterThan_Operator
+                                Return _Left > _Right
+                            Case SyntaxType.LessThanOperator
+                                Return _Left < _Right
+                            Case SyntaxType.NotEqual
+                                Return _Left <> _Right
+                            Case SyntaxType.EquivelentTo
+                                Return _Left = _Right
+                            Case SyntaxType.LessThanEquals
+                                Return _Left <= _Right
+                            Case SyntaxType.GreaterThanEquals
+                                Return _Left >= _Right
+                        End Select
+                    Else
+                    End If
+                    Dim x As New DiagnosticsException("Unable to evaluate ConditionalExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+                End Function
+                Public Function EvaluateIfExpression(ByRef Expr As SyntaxNode) As Boolean
+                    If Expr._SyntaxType = SyntaxType.ifElseExpression Then
+
+                        Select Case Expr._SyntaxType
+
+                            Case SyntaxType.ifElseExpression
+                                Dim i As IfElseExpression = Expr
+
+                                Return i.Evaluate(Env)
+                            Case SyntaxType.ifThenExpression
+                                Dim i As IfThenExpression = Expr
+                                Return i.Evaluate(Env)
+                        End Select
+                    Else
+                    End If
+                    Dim x As New DiagnosticsException("Unable to evaluate ConditionalExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+                End Function
                 Private Function DisplayDiagnostics(ByRef UserInput_LINE As String) As Boolean
                     Console.ForegroundColor = ConsoleColor.Red
                     'Catch Errors

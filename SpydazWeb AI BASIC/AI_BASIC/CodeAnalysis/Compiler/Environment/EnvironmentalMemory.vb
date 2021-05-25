@@ -189,6 +189,36 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
+
+                Public Function DefineValue(ByRef Name As String, ByRef Type As LiteralType) As Boolean
+                    Dim val As Object = Nothing
+                    If CheckIfExists(Name) = False Then
+                        Select Case Type
+                            Case LiteralType._Boolean
+                                val = False
+                            Case LiteralType._String
+                                val = " "
+                            Case LiteralType._Array
+                                Exit Select
+                            Case LiteralType._Integer
+                                val = New Integer = 0
+                            Case LiteralType._Decimal
+                                val = New Decimal = 0
+                            Case LiteralType._Date
+                                val = New Date = Date.Now
+                            Case LiteralType._NULL
+                                val = Nothing
+                        End Select
+
+
+                        LocalMemory.Add(New Variable(Name, Val, Type))
+                        Return True
+                    End If
+                    Return False
+                End Function
+
+
+
                 Public Function GetVarType(ByRef Name As String) As LiteralType
                     If CheckIfExists(Name) = True Then
                         Dim ivar = GetVar(Name)

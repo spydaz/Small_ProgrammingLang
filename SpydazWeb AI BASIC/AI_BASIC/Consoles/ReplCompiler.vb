@@ -18,7 +18,7 @@ Public Class ReplCompiler
     Public Sub DisplayEvaluation()
         Console.WriteLine("Evaluation" & vbNewLine)
         Console.ForegroundColor = ConsoleColor.Yellow
-        For Each item In CompiledResult.Result
+        For Each item In CompiledResult.Results
             Console.WriteLine(item.ToString())
         Next
         ResetConsole()

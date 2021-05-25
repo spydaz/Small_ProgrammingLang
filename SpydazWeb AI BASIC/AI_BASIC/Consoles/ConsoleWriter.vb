@@ -89,5 +89,16 @@ Namespace Consoles
             Console.Write(text)
             Console.ResetColor()
         End Sub
+        Public Shared Sub WriteDiagnostics(ByRef text As String)
+            If text = "NO ERRORS" Then
+                Console.ForegroundColor = ConsoleColor.DarkYellow
+                Console.Write("Compiled without Errors")
+                Console.ResetColor()
+            Else
+                Console.ForegroundColor = ConsoleColor.Magenta
+                Console.Write(text)
+                Console.ResetColor()
+            End If
+        End Sub
     End Class
 End Namespace

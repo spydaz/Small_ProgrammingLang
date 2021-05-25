@@ -14,6 +14,7 @@ Namespace Syntax
         ''' All nodes must use this model to Create SyntaxNodes
         ''' Defines the Syntax For the Language
         ''' </summary>
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public MustInherit Class SyntaxNode
             ''' <summary>
             ''' Text String of Type(for diagnostics)
@@ -109,21 +110,31 @@ Namespace Syntax
 
                 Return stringBuilder.ToString()
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
 #End Region
         End Class
         ''' <summary>
         ''' Used for Strong Typing All Expressions must inherit this class
         ''' </summary>
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend MustInherit Class ExpressionSyntaxNode
             Inherits SyntaxNode
             Protected Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
                 MyBase.New(syntaxType, syntaxTypeStr)
             End Sub
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
 #End Region
 
 #Region "Expressions"
         'Concrete
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class BinaryExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
@@ -152,6 +163,7 @@ Namespace Syntax
                 MyBase.New(SyntaxType._BinaryExpression, SyntaxType._BinaryExpression.GetSyntaxTypeStr)
 
                 If ileft Is Nothing Then
+                    '    MsgBox(ileft.ToString)
                     Throw New ArgumentNullException(NameOf(ileft))
                 End If
 
@@ -163,9 +175,6 @@ Namespace Syntax
                 _Right = iright
                 _Operator = ioperator
             End Sub
-
-
-
             ''' <summary>
             ''' Returns a evaluated result for this expression,
             ''' Based on the input from the parent environment,
@@ -176,36 +185,76 @@ Namespace Syntax
                 Select Case _Operator._SyntaxType
         'Calc
                     Case SyntaxType.Add_Operator
-                        Return _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Sub_Operator
-                        Return _Left.Evaluate(ParentEnv) - _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Divide_Operator
-                        Return _Left.Evaluate(ParentEnv) / _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Multiply_Operator
-                        Return _Left.Evaluate(ParentEnv) * _Right.Evaluate(ParentEnv)
-        'Compare
-                    Case SyntaxType.GreaterThan_Operator
-                        Return _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.LessThanOperator
-                        Return _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.GreaterThanEquals
-                        Return _Left.Evaluate(ParentEnv) >= _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.LessThanEquals
-                        Return _Left.Evaluate(ParentEnv) <= _Right.Evaluate(ParentEnv)
-       'Complex Assign
-                    Case SyntaxType.Add_Equals_Operator
-                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Minus_Equals_Operator
-                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Multiply_Equals_Operator
-                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
-                    Case SyntaxType.Divide_Equals_Operator
-                        Return _Left.Evaluate(ParentEnv) = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                        Dim NewVal As Integer = 0
+                        NewVal = _Left.Evaluate(ParentEnv) + _Right.Evaluate(ParentEnv)
+                        Return NewVal
 
+                    Case SyntaxType.Sub_Operator
+                        Dim NewVal As Integer = 0
+                        NewVal = _Left.Evaluate(ParentEnv) - _Right.Evaluate(ParentEnv)
+                        Return NewVal
+
+                    Case SyntaxType.Divide_Operator
+                        Dim NewVal As Integer = 0
+                        NewVal = _Left.Evaluate(ParentEnv) / _Right.Evaluate(ParentEnv)
+                        Return NewVal
+
+                    Case SyntaxType.Multiply_Operator
+                        Dim NewVal As Integer = 0
+                        NewVal = _Left.Evaluate(ParentEnv) * _Right.Evaluate(ParentEnv)
+                        Return NewVal
+
+
+                        'Compare ( Cast to boolean )
+                    Case SyntaxType.GreaterThan_Operator
+                        Dim NewComp As Boolean = False
+                        NewComp = _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
+                        Return NewComp
+                    Case SyntaxType.LessThanOperator
+                        Dim NewComp As Boolean = False
+                        NewComp = _Left.Evaluate(ParentEnv) > _Right.Evaluate(ParentEnv)
+                        Return NewComp
+                    Case SyntaxType.GreaterThanEquals
+                        Dim NewComp As Boolean = False
+                        NewComp = _Left.Evaluate(ParentEnv) >= _Right.Evaluate(ParentEnv)
+                        Return NewComp
+                    Case SyntaxType.LessThanEquals
+                        Dim NewComp As Boolean = False
+                        NewComp = _Left.Evaluate(ParentEnv) <= _Right.Evaluate(ParentEnv)
+                        Return NewComp
+
+                        'Complex Assign
+                    Case SyntaxType.Add_Equals_Operator
+
+                        Dim _L = _Left.Evaluate(ParentEnv)
+                        Dim _R = _Right.Evaluate(ParentEnv)
+                        Dim _A = _L + _R
+                        Return _A
+                    Case SyntaxType.Minus_Equals_Operator
+                        Dim _L = _Left.Evaluate(ParentEnv)
+                        Dim _R = _Right.Evaluate(ParentEnv)
+                        Dim _A = _L - _R
+                        Return _A
+
+                    Case SyntaxType.Multiply_Equals_Operator
+                        Dim _L = _Left.Evaluate(ParentEnv)
+                        Dim _R = _Right.Evaluate(ParentEnv)
+                        Dim _A = _L * _R
+                        Return _A
+                    Case SyntaxType.Divide_Equals_Operator
+                        Dim _L = _Left.Evaluate(ParentEnv)
+                        Dim _R = _Right.Evaluate(ParentEnv)
+                        Dim _A = _L / _R
+                        Return _A
                 End Select
                 Return 0
             End Function
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
+
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class UnaryExpression
             Inherits ExpressionSyntaxNode
             Public NumericLiteral As NumericalExpression
@@ -214,8 +263,6 @@ Namespace Syntax
                 MyBase.New(SyntaxType._UnaryExpression, SyntaxType._UnaryExpression.GetSyntaxTypeStr)
                 OperatorToken = _OperatorToken
                 NumericLiteral = _NumericLiteral
-
-
             End Sub
 
             ''' <summary>
@@ -232,80 +279,150 @@ Namespace Syntax
                 End Select
                 Return Nothing
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
-        Friend Class IfExpression
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   if expression. </summary>
+        ''' Condition: This position must contain a condition – a comparison between two values – where one or both values can be cell references. The possible conditions are:
+        ''' Equal (==)
+        ''' Unequal 
+        ''' Less than
+        ''' Greater than 
+        ''' Less than or equal to 
+        ''' Greater than or equal to 
+        '''
+        ''' <remarks>   Leroy, 24/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class IfThenExpression
             Inherits ExpressionSyntaxNode
-
+            Public ThenCondition As CodeBlockExpression
             Public IfCondition As BinaryExpression
-            Public ThenCondition As ExpressionSyntaxNode
-            Public ElseCondition As ExpressionSyntaxNode
-
-
             Public Sub New(ifCondition As BinaryExpression,
-                           thenCondition As ExpressionSyntaxNode,
-                           elseCondition As ExpressionSyntaxNode)
-                MyBase.New(SyntaxType._ifExpression, SyntaxType._ifExpression.GetSyntaxTypeStr)
-                If ifCondition Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(ifCondition))
-                End If
+                           thenCondition As CodeBlockExpression)
+                MyBase.New(SyntaxType.IfExpression, SyntaxType.IfExpression.GetSyntaxTypeStr)
 
-                If thenCondition Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(thenCondition))
-                End If
-
-                If elseCondition Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(elseCondition))
-                End If
 
                 Me.IfCondition = ifCondition
                 Me.ThenCondition = thenCondition
-                Me.ElseCondition = elseCondition
-            End Sub
 
+            End Sub
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                If IfCondition.Evaluate(ParentEnv) = True Then
+                    Return ThenCondition.Evaluate(ParentEnv)
+                Else
+                    Return False
+                End If
+
+
+            End Function
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
             End Function
         End Class
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class IfElseExpression
+            Inherits IfThenExpression
+            Public ElseCondition As CodeBlockExpression
+            Public Sub New(_ifCondition As BinaryExpression, _thenCondition As CodeBlockExpression, _ElseCondition As CodeBlockExpression)
+                MyBase.New(_ifCondition, _thenCondition)
+                Me.ElseCondition = _ElseCondition
+            End Sub
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                If IfCondition.Evaluate(ParentEnv) = True Then
+                    Return ThenCondition.Evaluate(ParentEnv)
+                Else
+                    Return ElseCondition.Evaluate(ParentEnv)
+                End If
+
+
+            End Function
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
+        End Class
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class CodeBlockExpression
             Inherits ExpressionSyntaxNode
             Public LocalMemory As EnvironmentalMemory
             Public Body As List(Of ExpressionSyntaxNode)
-
-            Public Sub New(body As List(Of ExpressionSyntaxNode))
+            '   Public BodyCount As Integer
+            Public Sub New(ibody As List(Of ExpressionSyntaxNode))
                 MyBase.New(SyntaxType._CodeBlock,
                            SyntaxType._CodeBlock.GetSyntaxTypeStr)
-                If body Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(body))
+                If ibody Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(ibody))
                 End If
                 LocalMemory = New EnvironmentalMemory
-                Me.Body = body
+                Me.Body = ibody
+
             End Sub
-
-
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Throw New NotImplementedException()
+                LocalMemory = New EnvironmentalMemory(ParentEnv)
+
+                For Each item In Body
+                    item.Evaluate(LocalMemory)
+                Next
+                Return True
+            End Function
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
             End Function
         End Class
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class ReturnExpression
+            Inherits CodeBlockExpression
+            Public _Returns As IdentifierExpression
+            Public ReturnType As LiteralType
+
+            Public Sub New(_body As List(Of ExpressionSyntaxNode), ByRef iReturns As IdentifierExpression, iReturnType As LiteralType)
+                MyBase.New(_body)
+                Me._Returns = iReturns
+                Me.ReturnType = iReturnType
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                LocalMemory = New EnvironmentalMemory(ParentEnv)
+                LocalMemory.DefineValue(_Returns._Literal, ReturnType)
+                For Each item In Body
+                    item.Evaluate(LocalMemory)
+                Next
+                Return LocalMemory.GetVarValue(_Returns._Literal)
+            End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
+        End Class
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ParenthesizedExpression
             Inherits ExpressionSyntaxNode
-            Public Body As List(Of ExpressionSyntaxNode)
-            Public Sub New(ByRef Body As List(Of ExpressionSyntaxNode))
+            Public Body As ExpressionSyntaxNode
+            Public Sub New(ByRef Body As ExpressionSyntaxNode)
                 MyBase.New(SyntaxType._ParenthesizedExpresion, SyntaxType._ParenthesizedExpresion.GetSyntaxTypeStr)
                 Me.Body = Body
             End Sub
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                Dim x As Object
-                For Each item In Body
-                    x = item.Evaluate(ParentEnv)
-                Next
-                Return x
+
+
+                Body.Evaluate(ParentEnv)
+
+                Return True
+            End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
             End Function
         End Class
 #End Region
 
 #Region "Literals"
         'Abstract
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend MustInherit Class LiteralExpression
             Inherits ExpressionSyntaxNode
             ''' <summary>
@@ -323,6 +440,10 @@ Namespace Syntax
                 MyBase.New(syntaxType, syntaxTypeStr)
                 _Literal = Value
             End Sub
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
         Friend Class NumericalExpression
             Inherits LiteralExpression
@@ -343,6 +464,8 @@ Namespace Syntax
                 Return _Literal
             End Function
         End Class
+
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class StringExpression
             Inherits LiteralExpression
             ''' <summary>
@@ -359,7 +482,13 @@ Namespace Syntax
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
+
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class IdentifierExpression
             Inherits LiteralExpression
             ''' <summary>
@@ -400,6 +529,10 @@ Namespace Syntax
                 End Select
                 Return ivar.Value
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
         Friend Class BooleanLiteralExpression
             Inherits LiteralExpression
@@ -421,6 +554,8 @@ Namespace Syntax
                 Return _Literal
             End Function
         End Class
+
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ArrayLiteralExpression
             Inherits LiteralExpression
 
@@ -433,10 +568,15 @@ Namespace Syntax
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal._value
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
 #End Region
 
 #Region "Variables"
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class AssignmentExpression
             Inherits ExpressionSyntaxNode
             Public _identifier As IdentifierExpression
@@ -510,7 +650,13 @@ Namespace Syntax
                 SetVar(ParentEnv)
                 Return ParentEnv.GetVarValue(_identifier._Literal)
             End Function
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
+
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class VariableDeclarationExpression
             Inherits IdentifierExpression
             Public _literalTypeStr As String
@@ -546,6 +692,9 @@ Namespace Syntax
                 Return ParentEnv.GetVar(_Literal).Value
             End Function
 
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
         End Class
 #End Region
 

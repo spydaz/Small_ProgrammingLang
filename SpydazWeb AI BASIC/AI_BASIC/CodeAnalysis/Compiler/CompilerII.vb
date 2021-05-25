@@ -15,6 +15,12 @@ Namespace CodeAnalysis
         Public Class CompilerII
             Private Script As String = ""
             Public Result As EvaluationResult
+            Private Final As Object
+            Private ReadOnly Property FinalResult As Object
+                Get
+                    Return Final
+                End Get
+            End Property
             Public Sub New(script As String)
                 If script Is Nothing Then
                     Throw New ArgumentNullException(NameOf(script))
@@ -24,6 +30,7 @@ Namespace CodeAnalysis
                 Dim Eval As New EvaluatorII
                 Dim _results = Eval.EvaluateProgram(script, Program)
                 Result = New EvaluationResult(_debug, _results)
+                Final = Result.Results.last
             End Sub
             Public Sub PrintTokenTreeToConsole()
                 ConsoleWriter.WriteTokenList(GetTokenTree)
@@ -115,6 +122,16 @@ Namespace CodeAnalysis
                 Return ToString()
             End Function
 #End Region
+            Private Function GetDiagnostics() As String
+                If Result.Diagnostics.HasErrors = True Then
+                    Return Result.Diagnostics.CollectDiagnostics
+                Else
+                    Return "NO ERRORS"
+                End If
+            End Function
+            Public Sub PrintDiagnostics()
+                ConsoleWriter.WriteDiagnostics(GetDiagnostics)
+            End Sub
         End Class
     End Namespace
 End Namespace

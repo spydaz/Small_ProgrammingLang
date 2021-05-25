@@ -31,7 +31,7 @@ Public Class IDE
                 CompilerErrors.Text = "Did not Compiled Successfully" & vbNewLine & MyCompiler.GetCompilerDiagnostics
 
                 For Each item In MyCompiler.ExpressionTrees
-                    AddCompiledTree(item)
+                    '   AddCompiledTree(item)
 
                 Next
                 For Each tree In MyCompiler.TokenTrees
