@@ -106,7 +106,7 @@ This is a Micro based instruction set (Misc) Uses Reverse Polish Notation
 	_TO_POS				: number is sent to negative
 	_TO_NEG				: number is sent to positive
 	_INCR				: number is incremented by 1
-	_DECR 				: number is Decremented by 2
+	_DECR 				: number is Decremented by 1
 
 The Current instruction Set Will Later include a memory register location system ; (after researching different models and implementations)( a vitual machine model based on this was created using a stack machine style. this will form the basis of my (Virtual Machine) - to be developed over time (maybe even format a virtual disk in the future)
 
