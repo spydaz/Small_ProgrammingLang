@@ -1,26 +1,63 @@
-﻿Imports System.Linq.Expressions
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Evaluation\Evaluator.vb
+'
+' summary:	Evaluator class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Linq.Expressions
 Imports System.Text
 Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports AI_BASIC.Typing
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Evaluation
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   An evaluator. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Evaluator
+                ''' <summary>   The environment. </summary>
                 Private Env As New EnvironmentalMemory
+                ''' <summary>   The diagnostics. </summary>
                 Public _Diagnostics As New List(Of String)
+                ''' <summary>   The tree. </summary>
                 Public _tree As SyntaxTree
                 ''' <summary>
                 ''' Check / Report Diagnostics
                 ''' </summary>
                 Private Evaluateable As Boolean
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Constructor. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="_itree">   [in,out] The itree. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub New(ByRef _itree As SyntaxTree)
                     _tree = _itree
                 End Sub
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluates the given environment. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Env">  [in,out] The environment. </param>
+                '''
+                ''' <returns>   An Object. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _Evaluate(ByRef Env As EnvironmentalMemory) As Object
                     Me.Env = Env
                     For Each item In _tree.Body
@@ -33,6 +70,17 @@ Namespace CodeAnalysis
                     Next
                     Return "Unable to Evaluate"
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate expresssion. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="iNode">    [in,out] Zero-based index of the node. </param>
+                '''
+                ''' <returns>   An Object. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _EvaluateExpresssion(ByRef iNode As SyntaxNode) As Object
                     If iNode IsNot Nothing Then
 
@@ -67,6 +115,17 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(DiagExe.ToJson)
                     Return "Unable to Evaluate"
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate string expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   A String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateStringExpression(ByRef Expr As SyntaxNode) As String
                     If Expr._SyntaxType = SyntaxType._StringExpression Then
                         Dim n As SyntaxNodes.StringExpression = Expr
@@ -77,6 +136,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate numeric literal expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   An Integer. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function Evaluate_NumericLiteralExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType._NumericLiteralExpression Then
                         Dim n As NumericalExpression = Expr
@@ -87,6 +157,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate boolean literal expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateBooleanLiteralExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType._BooleanLiteralExpression Then
                         Dim n As SyntaxNodes.BooleanLiteralExpression = Expr
@@ -97,6 +178,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate unary expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   An Integer. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateUnaryExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType._UnaryExpression Then
                         Dim u As SyntaxNodes.UnaryExpression = Expr
@@ -107,6 +199,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate identifier expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   . </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateIdentifierExpression(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._IdentifierExpression Then
                         Dim i As SyntaxNodes.IdentifierExpression = Expr
@@ -118,6 +221,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate variable declaration. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   . </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateVariableDeclaration(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._VariableDeclaration Then
                         Dim i As SyntaxNodes.VariableDeclarationExpression = Expr
@@ -128,6 +242,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate assignment expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   . </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateAssignmentExpression(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._AssignmentExpression Then
                         Dim i As SyntaxNodes.AssignmentExpression = Expr
@@ -138,6 +263,17 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate addative expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   An Integer. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateAddativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -155,6 +291,17 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate multiplicative expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   An Integer. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateMultiplicativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -172,6 +319,17 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate conditional expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateConditionalExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType.ConditionalExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -197,6 +355,17 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Evaluate if expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Expr"> [in,out] The expression. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function EvaluateIfExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType.ifElseExpression Then
 
@@ -216,6 +385,17 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Displays the diagnostics described by UserInput_LINE. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="UserInput_LINE">   [in,out] The user input line. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function DisplayDiagnostics(ByRef UserInput_LINE As String) As Boolean
                     Console.ForegroundColor = ConsoleColor.Red
                     'Catch Errors
@@ -242,21 +422,53 @@ Namespace CodeAnalysis
                     End If
                 End Function
 
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets debugger display. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   The debugger display. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function
 #Region "TOSTRING"
-                ''' <summary>
-                ''' Serializes object to json
-                ''' </summary>
-                ''' <returns> </returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Converts this  to a JSON. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   This  as a String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Returns a string that represents the current object. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A string that represents the current object. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Overrides Function ToString() As String
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Format JSON output. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="jsonString">   The JSON string. </param>
+                '''
+                ''' <returns>   The formatted JSON output. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False

@@ -1,4 +1,10 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\IO\TextWriterExtensions.vb
+'
+' summary:	Text writer extensions class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
@@ -13,9 +19,19 @@ Imports Basic.CodeAnalysis.Text
 
 Namespace Global.Basic.IO
 
-  Public Module TextWriterExtensions
+    Public Module TextWriterExtensions
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Query if 'writer' is console. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        '''
+        ''' <returns>   True if console, false if not. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Private Function IsConsole(writer As TextWriter) As Boolean
 
       If writer Is Console.Out Then
@@ -37,76 +53,172 @@ Namespace Global.Basic.IO
 
     End Function
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Sets a foreground. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="color">    The color. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Private Sub SetForeground(writer As TextWriter, color As ConsoleColor)
       If writer.IsConsole() Then
         Console.ForegroundColor = color
       End If
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Resets the color described by writer. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Private Sub ResetColor(writer As TextWriter)
       If writer.IsConsole() Then
         Console.ResetColor()
       End If
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a keyword. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="kind">     The kind. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteKeyword(writer As TextWriter, kind As SyntaxKind)
       Dim text = SyntaxFacts.GetText(kind)
       Debug.Assert(kind.IsKeyword AndAlso text IsNot Nothing)
       writer.WriteKeyword(text)
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a keyword. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="text">     The text. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteKeyword(writer As TextWriter, text As String)
       writer.SetForeground(ConsoleColor.Blue)
       writer.Write(text)
       writer.ResetColor()
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes an identifier. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="text">     The text. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteIdentifier(writer As TextWriter, text As String)
       writer.SetForeground(ConsoleColor.DarkYellow)
       writer.Write(text)
       writer.ResetColor()
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a number. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="text">     The text. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteNumber(writer As TextWriter, text As String)
       writer.SetForeground(ConsoleColor.Cyan)
       writer.Write(text)
       writer.ResetColor()
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a string. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="text">     The text. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteString(writer As TextWriter, text As String)
       writer.SetForeground(ConsoleColor.Magenta)
       writer.Write(text)
       writer.ResetColor()
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a space. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteSpace(writer As TextWriter)
       writer.WritePunctuation(" ")
     End Sub
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a punctuation. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="kind">     The kind. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    <Extension>
+        <Extension>
     Public Sub WritePunctuation(writer As TextWriter, kind As SyntaxKind)
       Dim text = SyntaxFacts.GetText(kind)
       Debug.Assert(text IsNot Nothing)
       writer.WritePunctuation(text)
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes a punctuation. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">   The writer. </param>
+        ''' <param name="text">     The text. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WritePunctuation(writer As TextWriter, text As String)
       writer.SetForeground(ConsoleColor.DarkGray)
       writer.Write(text)
       writer.ResetColor()
     End Sub
 
-    <Extension>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Writes the diagnostics. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="writer">       The writer. </param>
+        ''' <param name="diagnostics">  The diagnostics. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        <Extension>
     Public Sub WriteDiagnostics(writer As TextWriter, diagnostics As IEnumerable(Of Diagnostic))
 
       For Each diagnostic In diagnostics.Where(Function(diag) diag.Location.Text Is Nothing)

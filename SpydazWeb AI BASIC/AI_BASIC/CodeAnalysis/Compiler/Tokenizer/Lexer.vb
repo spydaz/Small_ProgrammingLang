@@ -1,4 +1,9 @@
-﻿
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Lexer.vb
+'
+' summary:	Lexer class
+'---------------------------------------------------------------------------------------------------
+
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Web
@@ -6,10 +11,18 @@ Imports System.Web.Script.Serialization
 Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Typing
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Tokenizer
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   A lexer. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Lexer
 
@@ -31,12 +44,13 @@ Namespace CodeAnalysis
                 ''' Cursor Position
                 ''' </summary>
                 Private EoFCursor As Integer = 0
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets the lookahead.Token. (Not using The regEx) </summary>
-                ''' To Look ahead using the regex Use 
-                ''' CheckIdentified token and ViewNextToken
+                '''
                 ''' <value> The lookahead. </value>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private ReadOnly Property Lookahead As String
                     Get
                         If CursorPosition + 2 <= EoFCursor Then
@@ -47,11 +61,13 @@ Namespace CodeAnalysis
 
                     End Get
                 End Property
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets the current character. </summary>
                 '''
                 ''' <value> The current character. </value>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private ReadOnly Property CurrentChar As Char
                     Get
                         If CursorPosition >= EoFCursor Then
@@ -61,11 +77,13 @@ Namespace CodeAnalysis
                         End If
                     End Get
                 End Property
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets the end of file. </summary>
                 '''
                 ''' <value> The end of file. </value>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public ReadOnly Property EndOfFile As Boolean
                     Get
                         If CursorPosition >= EoFCursor Then
@@ -82,26 +100,40 @@ Namespace CodeAnalysis
                 '''             Specific words will need to be reidentifed as IDENTIFIERS</summary>
                 Public CurrentGrammar As List(Of GrammarDefinintion)
 #End Region
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Constructor. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="iScript">  [in,out] Zero-based index of the script. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub New(ByRef iScript As String)
                     _Script = iScript
                     EoFCursor = _Script.Length
                 End Sub
 
 #Region "Char Scanner"
-                ''' <summary>
-                ''' Next Char
-                ''' </summary>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Next character. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub _NextChar()
                     CursorPosition += 1
                 End Sub
-                ''' <summary>
-                ''' TOKENIZING BY CHAR (MAINFUNCTION)
-                ''' 
-                '''-Numerical
-                '''-WhiteSpace
-                '''-Operators +-*/()
-                ''' </summary>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Next token. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A SyntaxToken. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _NextToken() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -313,6 +345,7 @@ Namespace CodeAnalysis
                 End Function
 #End Region
 #Region "Mini Tokenizers"
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Reads white space. </summary>
                 '''
@@ -320,6 +353,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The white space. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ReadWhiteSpace() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -338,6 +372,7 @@ Namespace CodeAnalysis
                     _iText = _Script.Substring(_start, _length)
                     Return New SyntaxToken(SyntaxType._WhitespaceToken, SyntaxType._WhitespaceToken.GetSyntaxTypeStr, _iText, _iText, _start, _start - _length)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Reads identifiers or keywords. </summary>
                 '''
@@ -345,6 +380,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The identifier or keyword. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ReadIdentifierOrKeyword() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -370,6 +406,7 @@ Namespace CodeAnalysis
                     End If
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Reads number tokens. </summary>
                 '''
@@ -377,6 +414,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The number token. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ReadNumberToken()
                     '-Numerical
                     Dim _start As Integer = 0
@@ -409,6 +447,7 @@ Namespace CodeAnalysis
                     End If
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Reads Identifed tokens (Strings) . </summary>
                 '''
@@ -416,6 +455,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The string. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function ReadString() As SyntaxToken
                     '-string
                     Dim _start As Integer = 0
@@ -464,10 +504,13 @@ Namespace CodeAnalysis
 #End Region
 #Region "ReGeX Tokenizer"
 
-                ''' <summary>
-                ''' Checks token without moving the cursor
-                ''' </summary>
-                ''' <returns></returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   View next slice. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function ViewNextSlice() As String
                     If EndOfFile = False Then
                         Dim slice = GetSlice(Me._Script, Me.CursorPosition)
@@ -481,12 +524,17 @@ Namespace CodeAnalysis
                         Return "EOF"
                     End If
                 End Function
-                ''' <summary>
-                ''' BY REGEX
-                ''' 
-                ''' </summary>
-                ''' <param name="CurrentTok"></param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets identified token. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="CurrentTok">   [in,out]. </param>
+                '''
+                ''' <returns>   The identified token. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function GetIdentifiedToken(ByRef CurrentTok As String) As SyntaxToken
 
 
@@ -516,11 +564,17 @@ Namespace CodeAnalysis
                     Return btok
 
                 End Function
-                ''' <summary>
-                ''' 
-                ''' </summary>
-                ''' <param name="CurrentTok"></param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Check identified token. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="CurrentTok">   [in,out]. </param>
+                '''
+                ''' <returns>   A SyntaxToken. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function CheckIdentifiedToken(ByRef CurrentTok As String) As SyntaxToken
 
                     For Each item In CurrentGrammar
@@ -548,12 +602,18 @@ Namespace CodeAnalysis
                     Return btok
 
                 End Function
-                ''' <summary>
-                ''' Returns from index to end of file (Universal function)
-                ''' </summary>
-                ''' <param name="Str">String</param>
-                ''' <param name="indx">Index</param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets Slice from the script. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Str">  [in,out] The string. </param>
+                ''' <param name="indx"> [in,out] The indx. </param>
+                '''
+                ''' <returns>   The slice. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Shared Function GetSlice(ByRef Str As String, ByRef indx As Integer) As String
                     If indx <= Str.Length Then
                         Str.Substring(indx)
@@ -562,21 +622,33 @@ Namespace CodeAnalysis
                     End If
                     Return Nothing
                 End Function
-                ''' <summary>
-                ''' Gets Slice from the script
-                ''' </summary>
-                ''' <param name="_start"></param>
-                ''' <param name="_length"></param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Returns from index to end of file (Universal function) </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="_start">   [in,out] The start. </param>
+                ''' <param name="_length">  [in,out] The length. </param>
+                '''
+                ''' <returns>   The slice. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function GetSlice(ByRef _start As Integer, ByRef _length As Integer) As String
                     Return _Script.Substring(_start, _length)
                 End Function
-                ''' <summary>
-                ''' Main Searcher
-                ''' </summary>
-                ''' <param name="Text">to be searched </param>
-                ''' <param name="Pattern">RegEx Search String</param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   RegEx search. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Text">     [in,out] The text. </param>
+                ''' <param name="Pattern">  Specifies the pattern. </param>
+                '''
+                ''' <returns>   A List(Of String) </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Shared Function RegExSearch(ByRef Text As String, Pattern As String) As List(Of String)
                     Dim Searcher As New Regex(Pattern)
                     Dim iMatch As Match = Searcher.Match(Text)
@@ -590,13 +662,19 @@ Namespace CodeAnalysis
 
 #End Region
 #Region "TOSTRING"
-                ''' <summary>
-                ''' Serializes object to json
-                ''' </summary>
-                ''' <returns> </returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Converts this  to a JSON. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   This  as a String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Returns a string that represents the current object. </summary>
                 '''
@@ -604,10 +682,12 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A string that represents the current object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Overrides Function ToString() As String
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Format JSON output. </summary>
                 '''
@@ -617,6 +697,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The formatted JSON output. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False
@@ -664,6 +745,7 @@ Namespace CodeAnalysis
 
                     Return stringBuilder.ToString()
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets debugger display. </summary>
                 '''
@@ -671,6 +753,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The debugger display. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function

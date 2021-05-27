@@ -107,13 +107,14 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compiler.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\iRepl_Model.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\_Compiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Diagnostics\Debugger.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\CompilerII.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\VBC.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Evaluation\EvaluationResult.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Evaluation\Evaluator.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Evaluation\EvaluatorII.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\Interpretor.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Lexer.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Parser.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerPropertys.Designer.vb">
@@ -123,6 +124,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SalNodes.vb" />
     <Compile Include="AI_BASIC\Consoles\ConsoleWriter.vb" />
     <Compile Include="AI_BASIC\Consoles\IDE\IDE.Designer.vb">
       <DependentUpon>IDE.vb</DependentUpon>
@@ -132,19 +134,14 @@
     </Compile>
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Diagnostics\Diagnostics.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Emit\Emitter.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\Binder.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\Bound_LiteralExpression.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Syntax\Typing.vb" />
-    <Compile Include="AI_BASIC\Consoles\iRepl.vb" />
-    <Compile Include="AI_BASIC\Consoles\ReplCompiler.vb" />
-    <Compile Include="AI_BASIC\LCARS\LCARS.vb" />
-    <Compile Include="AI_BASIC\Consoles\ReplCmds.vb" />
+    <Compile Include="AI_BASIC\Typing\Typing.vb" />
+    <Compile Include="AI_BASIC\MAIN\LCARS.vb" />
     <Compile Include="AI_BASIC\IO\FileHandler.vb" />
     <Compile Include="AI_BASIC\MAIN\Program.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb" />
-    <Compile Include="AI_BASIC\Consoles\InterpretorRepl.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\iRepl.vb" />
     <Compile Include="AI_BASIC\Consoles\UserControls\linenum_rtf.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -152,6 +149,7 @@
     <Compile Include="AI_BASIC\Consoles\UserControls\ClassSyntaxTextbox.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="AI_BASIC\MAIN\Globals.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -174,10 +172,9 @@
     <Compile Include="AI_BASIC\Consoles\IDE\Editor_IDE.vb">
       <SubType>Form</SubType>
     </Compile>
+    <None Include=".editorconfig" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
-    <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\BoundNodes\ReadMe.md" />
-    <None Include="AI_BASIC\CodeAnalysis\Syntax\Bindings\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
     <None Include="AI_BASIC\Readme.Md" />
@@ -294,8 +291,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CustomControls\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

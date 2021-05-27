@@ -1,21 +1,50 @@
-﻿Imports System.Drawing
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\Consoles\UserControls\ClassSyntaxTextbox.vb
+'
+' summary:	Class syntax textbox class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.String
 Imports System.Text
 
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+''' <summary>   A syntax text box. </summary>
+'''
+''' <remarks>   Leroy, 27/05/2021. </remarks>
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+
 Public Class SyntaxTextBox
     Inherits RichTextBox
+    ''' <summary>   True to im adding. </summary>
     Private ImAdding As Boolean = False
+    ''' <summary>   True to im done. </summary>
     Private ImDone As Boolean = False
+    ''' <summary>   True if ive been clicked. </summary>
     Private IveBeenClicked As Boolean = False
+    ''' <summary>   The terabytes. </summary>
     Private tb As SyntaxTextBox = Me
+    ''' <summary>   The new word. </summary>
     Private newWord As String
+    ''' <summary>   The CMS drop down. </summary>
     Private cmsDropDown As New ContextMenuStrip
+    ''' <summary>   The suggestions. </summary>
     Dim Suggestions As IEnumerable(Of String)
+    ''' <summary>   The last word. </summary>
     Dim lastWord As String = ""
+    ''' <summary>   The last index. </summary>
     Dim LastIndex As Integer = 0
+    ''' <summary>   Zero-based index of the syntax. </summary>
 
     Private iSyntax As New List(Of String)
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets or sets the syntax. </summary>
+    '''
+    ''' <value> The syntax. </value>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Property Syntax As List(Of String)
         Get
             Return iSyntax
@@ -25,15 +54,39 @@ Public Class SyntaxTextBox
         End Set
     End Property
 
-
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Highlight term. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Str">      [in,out] The string. </param>
+    ''' <param name="Color">    [in,out] The color. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Public Sub HighlightTerm(ByRef Str As String, ByRef Color As Drawing.Color)
         Highlighter.ColorSearchTerm(Str, Me, Color)
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Highlight term. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Str">  [in,out] The string. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub HighlightTerm(ByRef Str As String)
         Highlighter.HighlightWord(Me, Str)
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Highlight terms. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Str">  [in,out] The string. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub HighlightTerms(ByRef Str As List(Of String))
 
         For Each item In Str
@@ -43,16 +96,22 @@ Public Class SyntaxTextBox
 
     End Sub
 
-
-    ''' <summary>
-    ''' Colors Words in RichText Box
-    ''' </summary>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   A highlighter. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Class Highlighter
-        ''' <summary>
-        ''' Returns Propercase Sentence
-        ''' </summary>
-        ''' <param name="TheString">String to be formatted</param>
-        ''' <returns></returns>
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Proper case. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="TheString">    [in,out] the string. </param>
+        '''
+        ''' <returns>   A String. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Shared Function ProperCase(ByRef TheString As String) As String
             ProperCase = UCase(Strings.Left(TheString, 1))
 
@@ -61,6 +120,7 @@ Public Class SyntaxTextBox
                 ProperCase = If(Mid(TheString, i - 1, 1) = " ", ProperCase & UCase(Mid(TheString, i, 1)), ProperCase & LCase(Mid(TheString, i, 1)))
             Next i
         End Function
+        ''' <summary>   The syntax terms. </summary>
         Public Shared SyntaxTerms() As String = ({"SPYDAZ", "ABS", "ACCESS", "ADDITEM", "ADDNEW", "ALIAS", "AND", "ANY", "APP", "APPACTIVATE", "APPEND", "APPENDCHUNK", "ARRANGE", "AS", "ASC", "ATN", "BASE", "BEEP", "BEGINTRANS", "BINARY", "BYVAL", "CALL", "CASE", "CCUR", "CDBL", "CHDIR", "CHDRIVE", "CHR", "CHR$", "CINT", "CIRCLE", "CLEAR", "CLIPBOARD", "CLNG", "CLOSE", "CLS", "COMMAND", "
 COMMAND$", "COMMITTRANS", "COMPARE", "CONST", "CONTROL", "CONTROLS", "COS", "CREATEDYNASET", "CSNG", "CSTR", "CURDIR$", "CURRENCY", "CVAR", "CVDATE", "DATA", "DATE", "DATE$", "DIM", "DATESERIAL", "DATEVALUE", "DAY", "
 DEBUG", "DECLARE", "DEFCUR", "CEFDBL", "DEFINT", "DEFLNG", "DEFSNG", "DEFSTR", "DEFVAR", "DELETE", "DIM", "DIR", "DIR$", "DO", "DOEVENTS", "DOUBLE", "DRAG", "DYNASET", "EDIT", "ELSE", "ELSEIF", "END", "ENDDOC", "ENDIF", "
@@ -98,16 +158,38 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
     "STRING", "STRUCTURE", "SUB", "SYNCLOCK", "THEN", "THROW", "TO", "TRUE", "TRY", "TRYCAST",
     "TYPEOF", "WEND", "VARIANT", "UINTEGER", "ULONG", "USHORT", "USING", "WHEN", "WHILE", "WIDENING",
     "WITH", "WITHEVENTS", "WRITEONLY", "XOR", "#CONST", "#ELSE", "#ELSEIF", "#END", "#IF"})
+        ''' <summary>   The index of search text. </summary>
 
         Private Shared indexOfSearchText As Integer = 0
+        ''' <summary>   The start. </summary>
 
         Private Shared start As Integer = 0
+        ''' <summary>   The grammar. </summary>
 
         Private mGrammar As New List(Of String)
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Color search term. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="SearchStr">    [in,out]. </param>
+        ''' <param name="Rtb">          . </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Public Shared Sub ColorSearchTerm(ByRef SearchStr As String, Rtb As RichTextBox)
             ColorSearchTerm(SearchStr, Rtb, Color.CadetBlue)
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Color search term. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="SearchStr">    [in,out]. </param>
+        ''' <param name="Rtb">          . </param>
+        ''' <param name="MyColor">      [in,out]. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Public Shared Sub ColorSearchTerm(ByRef SearchStr As String, Rtb As RichTextBox, ByRef MyColor As Color)
             Dim startindex As Integer = 0
@@ -116,7 +198,7 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
 
             If SearchStr <> "" Then
 
-                SearchStr = SearchStr & " "
+                SearchStr &= " "
 
 
                 If SearchStr.Length > 0 And startindex = 0 Then
@@ -142,11 +224,14 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             Rtb.Select(Rtb.TextLength, Rtb.TextLength)
         End Sub
 
-        ''' <summary>
-        ''' Searches For Internal Syntax
-        ''' </summary>
-        ''' <param name="Rtb"></param>
-        ''' <remarks></remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches For Internal Syntax. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="Rtb">  [in,out]. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Shared Sub SearchSyntax(ByRef Rtb As RichTextBox)
             'Searches Basic Syntax
             For Each wrd As String In SyntaxTerms
@@ -161,11 +246,15 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             Next
         End Sub
 
-        ''' <summary>
-        ''' Searches For Internal Syntax
-        ''' </summary>
-        ''' <param name="Rtb"></param>
-        ''' <remarks></remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches for Specific Word to colorize (Blue) </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="Rtb">      [in,out]. </param>
+        ''' <param name="Terms">    [in,out] The terms. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Shared Sub SearchSyntax(ByRef Rtb As RichTextBox, ByRef Terms As List(Of String))
             'Searches Basic Syntax
             For Each wrd As String In SyntaxTerms
@@ -180,25 +269,29 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             Next
         End Sub
 
-        ''' <summary>
-        ''' Searches for Specific Word to colorize (Blue)
-        ''' </summary>
-        ''' <param name="Rtb"></param>
-        ''' <param name="SearchStr"></param>
-        ''' <remarks></remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches For Internal Syntax. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="Rtb">          [in,out]. </param>
+        ''' <param name="SearchStr">    [in,out]. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Public Shared Sub SearchSyntax(ByRef Rtb As RichTextBox, ByRef SearchStr As String)
             start = 0
             indexOfSearchText = 0
             ColorSearchTerm(SearchStr, Rtb)
         End Sub
 
-        ''' <summary>
-        ''' Searches for Specfic word to colorize specified color
-        ''' </summary>
-        ''' <param name="Rtb"></param>
-        ''' <param name="SearchStr"></param>
-        ''' <param name="MyColor"></param>
-        ''' <remarks></remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches For Internal Syntax. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="Rtb">          [in,out]. </param>
+        ''' <param name="SearchStr">    [in,out]. </param>
+        ''' <param name="MyColor">      my color. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Public Shared Sub SearchSyntax(ByRef Rtb As RichTextBox, ByRef SearchStr As String, MyColor As Color)
 
             start = 0
@@ -206,6 +299,19 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             ColorSearchTerm(SearchStr, Rtb, MyColor)
 
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches for the first text. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="Rtb">          [in,out]. </param>
+        ''' <param name="SearchStr">    . </param>
+        ''' <param name="searchStart">  The search start. </param>
+        ''' <param name="searchEnd">    The search end. </param>
+        '''
+        ''' <returns>   The found text. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Shared Function FindText(ByRef Rtb As RichTextBox, SearchStr As String,
                                                         ByVal searchStart As Integer, ByVal searchEnd As Integer) As Integer
@@ -239,6 +345,14 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
 
         End Function
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Highlight internal syntax. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   [in,out] The sender. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Shared Sub HighlightInternalSyntax(ByRef sender As RichTextBox)
 
 
@@ -249,6 +363,15 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             Next
 
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Highlight word. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   [in,out] The sender. </param>
+        ''' <param name="word">     [in,out] The word. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Public Shared Sub HighlightWord(ByRef sender As RichTextBox, ByRef word As String)
 
@@ -264,6 +387,12 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         End Sub
     End Class
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Initializes the component. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub InitializeComponent()
         Me.SuspendLayout()
         '
@@ -275,6 +404,15 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         Me.ResumeLayout(False)
         AddTerms()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Syntax text box text changed. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub SyntaxTextBox_TextChanged(sender As Object, e As EventArgs) Handles Me.TextChanged
         'Exit conditions: ImAdding prevents recursive event call, ImDeleting allows Backspace to work
@@ -323,16 +461,43 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
 
         End If
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Clears the terms. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub ClearTerms()
         Me.Syntax.Clear()
 
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds a term. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="item"> The item. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub AddTerm(item As String)
 
         Me.Syntax.Add(item)
 
 
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets the last index. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   [in,out] Source of the event. </param>
+    '''
+    ''' <returns>   The last index. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function GetLastIndex(ByRef sender As SyntaxTextBox) As Integer
         'Get last word entered
         tb = sender
@@ -342,6 +507,19 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         Dim lastIndex As Integer = IIf(Txt.LastIndexOf(" ") = -1, 0, Txt.LastIndexOf(" ") + 1)
         Return lastIndex
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets the suggestions in this collection. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="LastWord"> The last word. </param>
+    '''
+    ''' <returns>
+    ''' An enumerator that allows foreach to be used to process the suggestions in this collection.
+    ''' </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function GetSuggestions(ByVal LastWord As String) As IEnumerable(Of String)
         Dim QueryStR As String = UCase(LastWord)
         'Get word suggestions based on word start for Append function
@@ -356,6 +534,17 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         End If
         Return iSuggestions
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets the last word entered. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Sender">   [in,out] The sender. </param>
+    '''
+    ''' <returns>   The last word entered. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function GetLastWordEntered(ByRef Sender As SyntaxTextBox) As String
         'Get last word entered
         Dim tb = Sender
@@ -371,6 +560,13 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         End Try
         Return ""
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds terms. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub AddTerms()
         For Each item In SyntaxTerms
             If Checkterm(item) = False Then
@@ -378,6 +574,17 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
             End If
         Next
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Checkterms the given string. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="str">  [in,out] The string. </param>
+    '''
+    ''' <returns>   True if it succeeds, false if it fails. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function Checkterm(ByRef str As String) As Boolean
         Checkterm = False
         For Each item In Syntax
@@ -385,6 +592,7 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
 
         Next
     End Function
+    ''' <summary>   The syntax terms. </summary>
 
     Public Shared SyntaxTerms() As String = ({"SPYDAZ", "ABS", "ACCESS", "ADDITEM", "ADDNEW", "ALIAS", "AND", "ANY", "APP", "APPACTIVATE", "APPEND", "APPENDCHUNK", "ARRANGE", "AS", "ASC", "ATN", "BASE", "BEEP", "BEGINTRANS", "BINARY", "BYVAL", "CALL", "CASE", "CCUR", "CDBL", "CHDIR", "CHDRIVE", "CHR", "CHR$", "CINT", "CIRCLE", "CLEAR", "CLIPBOARD", "CLNG", "CLOSE", "CLS", "COMMAND", "
 COMMAND$", "COMMITTRANS", "COMPARE", "CONST", "CONTROL", "CONTROLS", "COS", "CREATEDYNASET", "CSNG", "CSTR", "CURDIR$", "CURRENCY", "CVAR", "CVDATE", "DATA", "DATE", "DATE$", "DIM", "DATESERIAL", "DATEVALUE", "DAY", "
@@ -424,9 +632,23 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
     "TYPEOF", "WEND", "VARIANT", "UINTEGER", "ULONG", "USHORT", "USING", "WHEN", "WHILE", "WIDENING",
     "WITH", "WITHEVENTS", "WRITEONLY", "XOR", "#CONST", "#ELSE", "#ELSEIF", "#END", "#IF"})
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>
+    ''' Initializes a new instance of the <see cref="T:System.Windows.Forms.RichTextBox" /> class.
+    ''' </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub New()
         AddTerms()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Refreshes this.  </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Public Sub _Refresh()
         Dim CursorPosition As Integer = Me.SelectionStart
@@ -434,6 +656,15 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         Highlighter.SearchSyntax(Me, iSyntax)
         Me.SelectionStart = CursorPosition
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Event handler. Called by cmsDropDown for click events. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub cmsDropDown_Click(sender As System.Object, e As System.EventArgs)
 
@@ -453,6 +684,16 @@ LINKSEND", "LOAD", "LOADPICTURE", "LOC", "LOCAL", "LOCK", "LOF", "LOG", "LONG", 
         IveBeenClicked = True
 
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Class inteli text box key down. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Key event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub ClassInteliTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
 

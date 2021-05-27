@@ -1,40 +1,84 @@
-﻿Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Diagnostics\Debugger.vb
+'
+' summary:	Debugger class
+'---------------------------------------------------------------------------------------------------
+
+Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
 Imports System.Runtime.InteropServices
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 Imports System.Linq.Expressions
 Imports System.Text
 Imports System.Web.Script.Serialization
+Imports AI_BASIC.Typing
 
 Namespace CodeAnalysis
     Namespace Diagnostics
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A debugger. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class Debugger
+            ''' <summary>   The script. </summary>
             Public Script As String
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_script">  [in,out] The script. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ByRef _script As String)
                 Script = _script
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets the program. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The program. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Function GetProgram() As List(Of SyntaxTree)
                 Return ParserTree
             End Function
 #Region "Produce Debugging"
+            ''' <summary>   The debugging. </summary>
             Private Debugging As CompilerDiagnosticResults
-            ''' <summary>
-            ''' Used for Individual Line Debugging
-            ''' </summary>
-            ''' <param name="Line"></param>
-            ''' <returns></returns>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Debug code line. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Line"> [in,out]. </param>
+            '''
+            ''' <returns>   The CompilerDiagnosticResults. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Function DebugCodeLine(ByRef Line As String) As CompilerDiagnosticResults
                 ProduceTokenTreeLine(Line)
                 ProduceExpressionSyntaxTreeLine(Line)
                 GetDiagnostics()
                 Return Debugging
             End Function
-            ''' <summary>
-            ''' Used For Script Debugging
-            ''' </summary>
-            ''' <param name="Script"></param>
-            ''' <returns></returns>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Debug code script. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Script">   [in,out]. </param>
+            '''
+            ''' <returns>   The CompilerDiagnosticResults. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Function DebugCodeScript(ByRef Script As String) As CompilerDiagnosticResults
                 ProduceTokenTree(Script)
                 ProduceExpressionTree(Script)
@@ -43,8 +87,21 @@ Namespace CodeAnalysis
             End Function
 #End Region
 #Region "Produce ExpressionTrees with Diagnostics"
+            ''' <summary>   The parser tree. </summary>
             Private Shared ParserTree As List(Of SyntaxTree)
+            ''' <summary>   The parser diagnostics. </summary>
             Private Shared ParserDiagnostics As New List(Of DiagnosticsException)
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Produce expression tree. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Script">   [in,out]. </param>
+            '''
+            ''' <returns>   A List(Of SyntaxTree) </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Function ProduceExpressionTree(ByRef Script As String) As List(Of SyntaxTree)
                 ParserTree = New List(Of SyntaxTree)
                 Dim Program As List(Of String)
@@ -54,6 +111,17 @@ Namespace CodeAnalysis
                 Next
                 Return ParserTree
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Produce expression syntax tree line. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Line"> [in,out]. </param>
+            '''
+            ''' <returns>   A SyntaxTree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Shared Function ProduceExpressionSyntaxTreeLine(ByRef Line As String) As SyntaxTree
                 Dim iParser = New Parser(Line)
                 Dim ExpressionTree As SyntaxTree
@@ -64,14 +132,36 @@ Namespace CodeAnalysis
 
                 Return ExpressionTree
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets parser diagnostic. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The parser diagnostic. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Shared Function GetParserDiagnostic() As DiagnosticOutput
                 Return New DiagnosticOutput(ParserDiagnostics, DiagnosticType.ExpressionSyntaxDiagnostics)
             End Function
 #End Region
 #Region "Produce TokenTrees with Diagnostics"
+            ''' <summary>   The lexer diagnostics. </summary>
 
             Private Shared LexerDiagnostics As New List(Of DiagnosticsException)
+            ''' <summary>   The token tree. </summary>
             Private Shared TokenTree As List(Of List(Of SyntaxToken))
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Produce token tree. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Script">   [in,out]. </param>
+            '''
+            ''' <returns>   A List(Of List(Of SyntaxToken)) </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Friend Shared Function ProduceTokenTree(ByRef Script As String) As List(Of List(Of SyntaxToken))
                 TokenTree = New List(Of List(Of SyntaxToken))
                 Dim Program As List(Of String)
@@ -81,6 +171,17 @@ Namespace CodeAnalysis
                 Next
                 Return TokenTree
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Produce token tree line. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Line"> [in,out]. </param>
+            '''
+            ''' <returns>   A List(Of SyntaxToken) </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Shared Function ProduceTokenTreeLine(ByRef Line As String) As List(Of SyntaxToken)
                 Dim CurrentTree As New List(Of SyntaxToken)
                 Dim iLexer As New Lexer(Line)
@@ -107,27 +208,66 @@ Namespace CodeAnalysis
                 LexerDiagnostics.AddRange(_LineDiagnostics)
                 Return CurrentTree
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets lexer diagnostic. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The lexer diagnostic. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Function GetLexerDiagnostic() As DiagnosticOutput
                 Return New DiagnosticOutput(LexerDiagnostics, DiagnosticType.TokenizerDiagnostics)
             End Function
 #End Region
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets the diagnostics. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Private Sub GetDiagnostics()
                 Debugging = New CompilerDiagnosticResults()
                 Debugging.Add(GetLexerDiagnostic)
                 Debugging.Add(GetParserDiagnostic)
             End Sub
 #Region "TOSTRING"
-            ''' <summary>
-            ''' Serializes object to json
-            ''' </summary>
-            ''' <returns> </returns>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Converts this  to a JSON. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   This  as a String. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Function ToJson() As String
                 Return FormatJsonOutput(ToString)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Returns a string that represents the current object. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   A string that represents the current object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function ToString() As String
                 Dim Converter As New JavaScriptSerializer
                 Return Converter.Serialize(Me)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Format JSON output. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="jsonString">   The JSON string. </param>
+            '''
+            ''' <returns>   The formatted JSON output. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function FormatJsonOutput(ByVal jsonString As String) As String
                 Dim stringBuilder = New StringBuilder()
                 Dim escaping As Boolean = False
@@ -175,6 +315,14 @@ Namespace CodeAnalysis
 
                 Return stringBuilder.ToString()
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()

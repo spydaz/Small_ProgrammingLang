@@ -1,4 +1,10 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\Emit\Emitter.vb
+'
+' summary:	Emitter class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
@@ -16,560 +22,861 @@ Imports Basic.CodeAnalysis.Syntax
 Imports System.Text
 
 Namespace Global.Basic.CodeAnalysis.Emit
+    ''' <summary> . </summary>
 
-  Friend NotInheritable Class Emitter
+    Friend NotInheritable Class Emitter
+        ''' <summary>   The diagnostics. </summary>
 
-    Private ReadOnly _diagnostics As New DiagnosticBag
-    Private ReadOnly _knownTypes As New Dictionary(Of TypeSymbol, Ccl.TypeReference)
-    Private ReadOnly _objectEqualsReference As MethodReference
-    Private ReadOnly _consoleReadLineReference As MethodReference
-    Private ReadOnly _consoleWriteLineReference As MethodReference
-    Private ReadOnly _stringConcat2Reference As MethodReference
-    Private ReadOnly _stringConcat3Reference As MethodReference
-    Private ReadOnly _stringConcat4Reference As MethodReference
-    Private ReadOnly _stringConcatArrayReference As MethodReference
-    Private ReadOnly _convertToBooleanReference As MethodReference
-    Private ReadOnly _convertToInt32Reference As MethodReference
-    Private ReadOnly _convertToStringReference As MethodReference
-    Private ReadOnly _randomReference As TypeReference
-    Private ReadOnly _randomCtorReference As MethodReference
-    Private ReadOnly _randomNextReference As MethodReference
-    Private ReadOnly _assemblyDefinition As AssemblyDefinition
-    Private ReadOnly _methods As New Dictionary(Of FunctionSymbol, MethodDefinition)
-    Private ReadOnly _locals As New Dictionary(Of VariableSymbol, VariableDefinition)
-    Private ReadOnly _labels As New Dictionary(Of BoundLabel, Integer)
-    Private ReadOnly _fixups As New List(Of (InstructionIndex As Integer, Target As BoundLabel))
+        Private ReadOnly _diagnostics As New DiagnosticBag
+        ''' <summary>   List of types of the knowns. </summary>
+        Private ReadOnly _knownTypes As New Dictionary(Of TypeSymbol, Ccl.TypeReference)
+        ''' <summary>   The object equals reference. </summary>
+        Private ReadOnly _objectEqualsReference As MethodReference
+        ''' <summary>   The console read line reference. </summary>
+        Private ReadOnly _consoleReadLineReference As MethodReference
+        ''' <summary>   The console write line reference. </summary>
+        Private ReadOnly _consoleWriteLineReference As MethodReference
+        ''' <summary>   The string concatenate 2 reference. </summary>
+        Private ReadOnly _stringConcat2Reference As MethodReference
+        ''' <summary>   The string concatenate 3 reference. </summary>
+        Private ReadOnly _stringConcat3Reference As MethodReference
+        ''' <summary>   The string concatenate 4 reference. </summary>
+        Private ReadOnly _stringConcat4Reference As MethodReference
+        ''' <summary>   The string concatenate array reference. </summary>
+        Private ReadOnly _stringConcatArrayReference As MethodReference
+        ''' <summary>   The convert to boolean reference. </summary>
+        Private ReadOnly _convertToBooleanReference As MethodReference
+        ''' <summary>   The convert to int 32 reference. </summary>
+        Private ReadOnly _convertToInt32Reference As MethodReference
+        ''' <summary>   The convert to string reference. </summary>
+        Private ReadOnly _convertToStringReference As MethodReference
+        ''' <summary>   The random reference. </summary>
+        Private ReadOnly _randomReference As TypeReference
+        ''' <summary>   The random constructor reference. </summary>
+        Private ReadOnly _randomCtorReference As MethodReference
+        ''' <summary>   The random next reference. </summary>
+        Private ReadOnly _randomNextReference As MethodReference
+        ''' <summary>   The assembly definition. </summary>
+        Private ReadOnly _assemblyDefinition As AssemblyDefinition
+        ''' <summary>   The methods. </summary>
+        Private ReadOnly _methods As New Dictionary(Of FunctionSymbol, MethodDefinition)
+        ''' <summary>   The locals. </summary>
+        Private ReadOnly _locals As New Dictionary(Of VariableSymbol, VariableDefinition)
+        ''' <summary>   The labels. </summary>
+        Private ReadOnly _labels As New Dictionary(Of BoundLabel, Integer)
+        ''' <summary>   The fixups. </summary>
+        Private ReadOnly _fixups As New List(Of (InstructionIndex As Integer, Target As BoundLabel))
+        ''' <summary>   The type definition. </summary>
 
-    Private ReadOnly _typeDefinition As TypeDefinition
-    Private _randomFieldDefinition As FieldDefinition
+        Private ReadOnly _typeDefinition As TypeDefinition
+        ''' <summary>   The random field definition. </summary>
+        Private _randomFieldDefinition As FieldDefinition
 
-    Private Sub New(moduleName As String, references() As String)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Constructor. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="moduleName">   Name of the module. </param>
+        ''' <param name="references">   The references. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Dim assemblies = New List(Of AssemblyDefinition)
+        Private Sub New(moduleName As String, references() As String)
 
-      For Each reference In references
-        Try
-          Dim assembly = Ccl.AssemblyDefinition.ReadAssembly(reference)
-          assemblies.Add(assembly)
-        Catch ex As BadImageFormatException
-          _diagnostics.ReportInvalidReference(reference)
-        End Try
-      Next
+            Dim assemblies = New List(Of AssemblyDefinition)
 
-      Dim builtInTypes = New List(Of (typeSymbol As TypeSymbol, metadataName As String)) From {
-        (TypeSymbol.Any, "System.Object"),
-        (TypeSymbol.Bool, "System.Boolean"),
-        (TypeSymbol.Int, "System.Int32"),
-        (TypeSymbol.String, "System.String"),
-        (TypeSymbol.Void, "System.Void")
-      }
+            For Each reference In references
+                Try
+                    Dim assembly = Ccl.AssemblyDefinition.ReadAssembly(reference)
+                    assemblies.Add(assembly)
+                Catch ex As BadImageFormatException
+                    _diagnostics.ReportInvalidReference(reference)
+                End Try
+            Next
 
-      Dim assemblyName = New AssemblyNameDefinition(moduleName, New Version(1, 0))
-      _assemblyDefinition = AssemblyDefinition.CreateAssembly(assemblyName, moduleName, ModuleKind.Console)
-      _knownTypes = New Dictionary(Of TypeSymbol, TypeReference)
+            Dim builtInTypes = New List(Of (typeSymbol As TypeSymbol, metadataName As String)) From {
+              (TypeSymbol.Any, "System.Object"),
+              (TypeSymbol.Bool, "System.Boolean"),
+              (TypeSymbol.Int, "System.Int32"),
+              (TypeSymbol.String, "System.String"),
+              (TypeSymbol.Void, "System.Void")
+            }
 
-      For Each entry In builtInTypes
-        Dim typeReference = Emit_ResolveType(assemblies, entry.typeSymbol.Name, entry.metadataName)
-        _knownTypes.Add(entry.typeSymbol, typeReference)
-      Next
+            Dim assemblyName = New AssemblyNameDefinition(moduleName, New Version(1, 0))
+            _assemblyDefinition = AssemblyDefinition.CreateAssembly(assemblyName, moduleName, ModuleKind.Console)
+            _knownTypes = New Dictionary(Of TypeSymbol, TypeReference)
 
-      _objectEqualsReference = Emit_ResolveMethod(assemblies, "System.Object", "Equals", {"System.Object", "System.Object"})
-      _consoleReadLineReference = Emit_ResolveMethod(assemblies, "System.Console", "ReadLine", Array.Empty(Of String))
-      _consoleWriteLineReference = Emit_ResolveMethod(assemblies, "System.Console", "WriteLine", {"System.Object"})
-      _stringConcat2Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String"})
-      _stringConcat3Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String", "System.String"})
-      _stringConcat4Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String", "System.String", "System.String"})
-      _stringConcatArrayReference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String[]"})
-      _convertToBooleanReference = Emit_ResolveMethod(assemblies, "System.Convert", "ToBoolean", {"System.Object"})
-      _convertToInt32Reference = Emit_ResolveMethod(assemblies, "System.Convert", "ToInt32", {"System.Object"})
-      _convertToStringReference = Emit_ResolveMethod(assemblies, "System.Convert", "ToString", {"System.Object"})
+            For Each entry In builtInTypes
+                Dim typeReference = Emit_ResolveType(assemblies, entry.typeSymbol.Name, entry.metadataName)
+                _knownTypes.Add(entry.typeSymbol, typeReference)
+            Next
 
-      _randomReference = Emit_ResolveType(assemblies, Nothing, "System.Random")
-      _randomCtorReference = Emit_ResolveMethod(assemblies, "System.Random", ".ctor", Array.Empty(Of String))
-      _randomNextReference = Emit_ResolveMethod(assemblies, "System.Random", "Next", {"System.Int32"})
+            _objectEqualsReference = Emit_ResolveMethod(assemblies, "System.Object", "Equals", {"System.Object", "System.Object"})
+            _consoleReadLineReference = Emit_ResolveMethod(assemblies, "System.Console", "ReadLine", Array.Empty(Of String))
+            _consoleWriteLineReference = Emit_ResolveMethod(assemblies, "System.Console", "WriteLine", {"System.Object"})
+            _stringConcat2Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String"})
+            _stringConcat3Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String", "System.String"})
+            _stringConcat4Reference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String", "System.String", "System.String", "System.String"})
+            _stringConcatArrayReference = Emit_ResolveMethod(assemblies, "System.String", "Concat", {"System.String[]"})
+            _convertToBooleanReference = Emit_ResolveMethod(assemblies, "System.Convert", "ToBoolean", {"System.Object"})
+            _convertToInt32Reference = Emit_ResolveMethod(assemblies, "System.Convert", "ToInt32", {"System.Object"})
+            _convertToStringReference = Emit_ResolveMethod(assemblies, "System.Convert", "ToString", {"System.Object"})
 
-      Dim objectType = _knownTypes(TypeSymbol.Any)
-      If objectType IsNot Nothing Then
-        _typeDefinition = New TypeDefinition("", "Program", Ccl.TypeAttributes.Abstract Or Ccl.TypeAttributes.Sealed, objectType)
-        _assemblyDefinition.MainModule.Types.Add(_typeDefinition)
-      Else
-        _typeDefinition = Nothing
-      End If
+            _randomReference = Emit_ResolveType(assemblies, Nothing, "System.Random")
+            _randomCtorReference = Emit_ResolveMethod(assemblies, "System.Random", ".ctor", Array.Empty(Of String))
+            _randomNextReference = Emit_ResolveMethod(assemblies, "System.Random", "Next", {"System.Int32"})
 
-    End Sub
+            Dim objectType = _knownTypes(TypeSymbol.Any)
+            If objectType IsNot Nothing Then
+                _typeDefinition = New TypeDefinition("", "Program", Ccl.TypeAttributes.Abstract Or Ccl.TypeAttributes.Sealed, objectType)
+                _assemblyDefinition.MainModule.Types.Add(_typeDefinition)
+            Else
+                _typeDefinition = Nothing
+            End If
 
-    Public Shared Function Emit(program As BoundProgram, moduleName As String, references() As String, outputPath As String) As ImmutableArray(Of Diagnostic)
+        End Sub
 
-      If program.Diagnostics.Any Then Return program.Diagnostics
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emits. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="program">      The program. </param>
+        ''' <param name="moduleName">   Name of the module. </param>
+        ''' <param name="references">   The references. </param>
+        ''' <param name="outputPath">   Full pathname of the output file. </param>
+        '''
+        ''' <returns>   An ImmutableArray(Of Diagnostic) </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Dim emitter = New Emitter(moduleName, references)
-      Return emitter.Emit(program, outputPath)
+        Public Shared Function Emit(program As BoundProgram, moduleName As String, references() As String, outputPath As String) As ImmutableArray(Of Diagnostic)
 
-    End Function
+            If program.Diagnostics.Any Then Return program.Diagnostics
 
-    Public Function Emit(program As BoundProgram, outputPath As String) As ImmutableArray(Of Diagnostic)
+            Dim emitter = New Emitter(moduleName, references)
+            Return emitter.Emit(program, outputPath)
 
-      If _diagnostics.Any Then Return _diagnostics.ToImmutableArray
+        End Function
 
-      For Each functionWithBody In program.Functions
-        EmitFunctionDeclaration(functionWithBody.Key)
-      Next
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emits. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="program">      The program. </param>
+        ''' <param name="outputPath">   Full pathname of the output file. </param>
+        '''
+        ''' <returns>   An ImmutableArray(Of Diagnostic) </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      For Each functionWithBody In program.Functions
-        EmitFunctionBody(functionWithBody.Key, functionWithBody.Value)
-      Next
+        Public Function Emit(program As BoundProgram, outputPath As String) As ImmutableArray(Of Diagnostic)
 
-      If program.MainFunction IsNot Nothing Then
-        _assemblyDefinition.EntryPoint = _methods(program.MainFunction)
-      End If
+            If _diagnostics.Any Then Return _diagnostics.ToImmutableArray
 
-      _assemblyDefinition.Write(outputPath)
+            For Each functionWithBody In program.Functions
+                EmitFunctionDeclaration(functionWithBody.Key)
+            Next
 
-      Return _diagnostics.ToImmutableArray
+            For Each functionWithBody In program.Functions
+                EmitFunctionBody(functionWithBody.Key, functionWithBody.Value)
+            Next
 
-    End Function
+            If program.MainFunction IsNot Nothing Then
+                _assemblyDefinition.EntryPoint = _methods(program.MainFunction)
+            End If
 
-    Private Sub EmitFunctionDeclaration(func As FunctionSymbol)
-      Dim functionType = _knownTypes(func.Type)
-      Dim method = New MethodDefinition(func.Name, Ccl.MethodAttributes.Static Or Ccl.MethodAttributes.Private, functionType)
-      For Each parameter In func.Parameters
-        Dim parameterType = _knownTypes(parameter.Type)
-        Dim parameterAttributes = Ccl.ParameterAttributes.None
-        Dim parameterDefinition = New Ccl.ParameterDefinition(parameter.Name, parameterAttributes, parameterType)
-        method.Parameters.Add(parameterDefinition)
-      Next
-      _typeDefinition.Methods.Add(method)
-      _methods.Add(func, method)
-    End Sub
+            _assemblyDefinition.Write(outputPath)
 
-    Private Sub EmitFunctionBody(func As FunctionSymbol, body As BoundBlockStatement)
-      Dim method = _methods(func)
-      _locals.Clear()
-      _labels.Clear()
-      _fixups.Clear()
-      Dim ilProcessor = method.Body.GetILProcessor
-      For Each statement In body.Statements
-        EmitStatement(ilProcessor, statement)
-      Next
-      For Each fixup In _fixups
-        Dim targetLabel = fixup.Target
-        Dim targetInstructionIndex = _labels(targetLabel)
-        Dim targetInstruction = ilProcessor.Body.Instructions(targetInstructionIndex)
-        Dim instructionToFixup = ilProcessor.Body.Instructions(fixup.InstructionIndex)
-        instructionToFixup.Operand = targetInstruction
-      Next
-      method.Body.OptimizeMacros
-    End Sub
+            Return _diagnostics.ToImmutableArray
 
-    Private Sub EmitStatement(ilProcessor As ILProcessor, node As BoundStatement)
-      Select Case node.Kind
-        Case BoundNodeKind.NopStatement : EmitNopStatement(ilProcessor, CType(node, BoundNopStatement))
-        Case BoundNodeKind.VariableDeclaration : EmitVariableDeclaration(ilProcessor, CType(node, BoundVariableDeclaration))
-        Case BoundNodeKind.LabelStatement : EmitLabelStatement(ilProcessor, CType(node, BoundLabelStatement))
-        Case BoundNodeKind.GotoStatement : EmitGotoStatement(ilProcessor, CType(node, BoundGotoStatement))
-        Case BoundNodeKind.ConditionalGotoStatement : EmitConditionalGotoStatement(ilProcessor, CType(node, BoundConditionalGotoStatement))
-        Case BoundNodeKind.ReturnStatement : EmitReturnStatement(ilProcessor, CType(node, BoundReturnStatement))
-        Case BoundNodeKind.ExpressionStatement : EmitExpressionStatement(ilProcessor, CType(node, BoundExpressionStatement))
-        Case Else
-          Throw New Exception($"Unexpected node kind {node.Kind}")
-      End Select
-    End Sub
+        End Function
 
-    Private Sub EmitNopStatement(ilProcessor As ILProcessor, node As BoundNopStatement)
-      If node Is Nothing Then
-      End If
-      ilProcessor.Emit(OpCodes.Nop)
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit function declaration. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="func"> The function. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitVariableDeclaration(ilProcessor As ILProcessor, node As BoundVariableDeclaration)
-      Dim typeReference = _knownTypes(node.Variable.Type)
-      Dim variableDefinition = New VariableDefinition(typeReference)
-      _locals.Add(node.Variable, variableDefinition)
-      ilProcessor.Body.Variables.Add(variableDefinition)
-      EmitExpression(ilProcessor, node.Initializer)
-      ilProcessor.Emit(OpCodes.Stloc, variableDefinition)
-    End Sub
+        Private Sub EmitFunctionDeclaration(func As FunctionSymbol)
+            Dim functionType = _knownTypes(func.Type)
+            Dim method = New MethodDefinition(func.Name, Ccl.MethodAttributes.Static Or Ccl.MethodAttributes.Private, functionType)
+            For Each parameter In func.Parameters
+                Dim parameterType = _knownTypes(parameter.Type)
+                Dim parameterAttributes = Ccl.ParameterAttributes.None
+                Dim parameterDefinition = New Ccl.ParameterDefinition(parameter.Name, parameterAttributes, parameterType)
+                method.Parameters.Add(parameterDefinition)
+            Next
+            _typeDefinition.Methods.Add(method)
+            _methods.Add(func, method)
+        End Sub
 
-    Private Sub EmitLabelStatement(ilProcessor As ILProcessor, node As BoundLabelStatement)
-      _labels.Add(node.Label, ilProcessor.Body.Instructions.Count)
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit function body. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="func"> The function. </param>
+        ''' <param name="body"> The body. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitGotoStatement(ilProcessor As ILProcessor, node As BoundGotoStatement)
-      _fixups.Add((ilProcessor.Body.Instructions.Count, node.Label))
-      ilProcessor.Emit(OpCodes.Br, Instruction.Create(OpCodes.Nop))
-    End Sub
+        Private Sub EmitFunctionBody(func As FunctionSymbol, body As BoundBlockStatement)
+            Dim method = _methods(func)
+            _locals.Clear()
+            _labels.Clear()
+            _fixups.Clear()
+            Dim ilProcessor = method.Body.GetILProcessor
+            For Each statement In body.Statements
+                EmitStatement(ilProcessor, statement)
+            Next
+            For Each fixup In _fixups
+                Dim targetLabel = fixup.Target
+                Dim targetInstructionIndex = _labels(targetLabel)
+                Dim targetInstruction = ilProcessor.Body.Instructions(targetInstructionIndex)
+                Dim instructionToFixup = ilProcessor.Body.Instructions(fixup.InstructionIndex)
+                instructionToFixup.Operand = targetInstruction
+            Next
+            method.Body.OptimizeMacros
+        End Sub
 
-    Private Sub EmitConditionalGotoStatement(ilProcessor As ILProcessor, node As BoundConditionalGotoStatement)
-      EmitExpression(ilProcessor, node.Condition)
-      Dim opCode = If(node.JumpIfTrue, OpCodes.Brtrue, OpCodes.Brfalse)
-      _fixups.Add((ilProcessor.Body.Instructions.Count, node.Label))
-      ilProcessor.Emit(opCode, Instruction.Create(OpCodes.Nop))
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitReturnStatement(ilProcessor As ILProcessor, node As BoundReturnStatement)
-      If node.Expression IsNot Nothing Then EmitExpression(ilProcessor, node.Expression)
-      ilProcessor.Emit(OpCodes.Ret)
-    End Sub
+        Private Sub EmitStatement(ilProcessor As ILProcessor, node As BoundStatement)
+            Select Case node.Kind
+                Case BoundNodeKind.NopStatement : EmitNopStatement(ilProcessor, CType(node, BoundNopStatement))
+                Case BoundNodeKind.VariableDeclaration : EmitVariableDeclaration(ilProcessor, CType(node, BoundVariableDeclaration))
+                Case BoundNodeKind.LabelStatement : EmitLabelStatement(ilProcessor, CType(node, BoundLabelStatement))
+                Case BoundNodeKind.GotoStatement : EmitGotoStatement(ilProcessor, CType(node, BoundGotoStatement))
+                Case BoundNodeKind.ConditionalGotoStatement : EmitConditionalGotoStatement(ilProcessor, CType(node, BoundConditionalGotoStatement))
+                Case BoundNodeKind.ReturnStatement : EmitReturnStatement(ilProcessor, CType(node, BoundReturnStatement))
+                Case BoundNodeKind.ExpressionStatement : EmitExpressionStatement(ilProcessor, CType(node, BoundExpressionStatement))
+                Case Else
+                    Throw New Exception($"Unexpected node kind {node.Kind}")
+            End Select
+        End Sub
 
-    Private Sub EmitExpressionStatement(ilProcessor As ILProcessor, node As BoundExpressionStatement)
-      EmitExpression(ilProcessor, node.Expression)
-      If node.Expression.Type IsNot TypeSymbol.Void Then
-        ilProcessor.Emit(OpCodes.Pop)
-      End If
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit nop statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitExpression(ilProcessor As ILProcessor, node As BoundExpression)
+        Private Sub EmitNopStatement(ilProcessor As ILProcessor, node As BoundNopStatement)
+            If node Is Nothing Then
+            End If
+            ilProcessor.Emit(OpCodes.Nop)
+        End Sub
 
-      If node.ConstantValue IsNot Nothing Then
-        EmitConstantExpression(ilProcessor, node)
-        Return
-      End If
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit variable declaration. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Select Case node.Kind
-        Case BoundNodeKind.VariableExpression : EmitVariableExpression(ilProcessor, CType(node, BoundVariableExpression))
-        Case BoundNodeKind.AssignmentExpression : EmitAssignmentExpression(ilProcessor, CType(node, BoundAssignmentExpression))
-        Case BoundNodeKind.UnaryExpression : EmitUnaryExpression(ilProcessor, CType(node, BoundUnaryExpression))
-        Case BoundNodeKind.BinaryExpression : EmitBinaryExpression(ilProcessor, CType(node, BoundBinaryExpression))
-        Case BoundNodeKind.CallExpression : EmitCallExpression(ilProcessor, CType(node, BoundCallExpression))
-        Case BoundNodeKind.ConversionExpression : EmitConversionExpression(ilProcessor, CType(node, BoundConversionExpression))
-        Case Else
-          Throw New Exception($"Unexpected node kind {node.Kind}")
-      End Select
-    End Sub
+        Private Sub EmitVariableDeclaration(ilProcessor As ILProcessor, node As BoundVariableDeclaration)
+            Dim typeReference = _knownTypes(node.Variable.Type)
+            Dim variableDefinition = New VariableDefinition(typeReference)
+            _locals.Add(node.Variable, variableDefinition)
+            ilProcessor.Body.Variables.Add(variableDefinition)
+            EmitExpression(ilProcessor, node.Initializer)
+            ilProcessor.Emit(OpCodes.Stloc, variableDefinition)
+        End Sub
 
-    Private Sub EmitConstantExpression(ilProcessor As ILProcessor, node As BoundExpression)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit label statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Debug.Assert(node.ConstantValue IsNot Nothing)
+        Private Sub EmitLabelStatement(ilProcessor As ILProcessor, node As BoundLabelStatement)
+            _labels.Add(node.Label, ilProcessor.Body.Instructions.Count)
+        End Sub
 
-      If node.Type Is TypeSymbol.Bool Then
-        Dim value = CBool(node.ConstantValue.Value)
-        Dim instruction = If(value, OpCodes.Ldc_I4_1, OpCodes.Ldc_I4_0)
-        ilProcessor.Emit(instruction)
-      ElseIf node.Type Is TypeSymbol.Int Then
-        Dim value = CInt(node.ConstantValue.Value)
-        ilProcessor.Emit(OpCodes.Ldc_I4, value)
-      ElseIf node.Type Is TypeSymbol.String Then
-        Dim value = CStr(node.ConstantValue.Value)
-        ilProcessor.Emit(OpCodes.Ldstr, value)
-      Else
-        Throw New Exception($"Unexpected constant expression type: {node.Type}")
-      End If
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit goto statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitVariableExpression(ilProcessor As ILProcessor, node As BoundVariableExpression)
-      If TypeOf node.Variable Is ParameterSymbol Then
-        Dim parameter = CType(node.Variable, ParameterSymbol)
-        ilProcessor.Emit(OpCodes.Ldarg, parameter.Ordinal)
-      Else
-        Dim variableDefinition = _locals(node.Variable)
-        ilProcessor.Emit(OpCodes.Ldloc, variableDefinition)
-      End If
-    End Sub
+        Private Sub EmitGotoStatement(ilProcessor As ILProcessor, node As BoundGotoStatement)
+            _fixups.Add((ilProcessor.Body.Instructions.Count, node.Label))
+            ilProcessor.Emit(OpCodes.Br, Instruction.Create(OpCodes.Nop))
+        End Sub
 
-    Private Sub EmitAssignmentExpression(ilProcessor As ILProcessor, node As BoundAssignmentExpression)
-      Dim variableDefinition = _locals(node.Variable)
-      EmitExpression(ilProcessor, node.Expression)
-      ilProcessor.Emit(OpCodes.Dup)
-      ilProcessor.Emit(OpCodes.Stloc, variableDefinition)
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit conditional goto statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitUnaryExpression(ilProcessor As ILProcessor, node As BoundUnaryExpression)
-      EmitExpression(ilProcessor, node.Operand)
-      If node.Op.Kind = BoundUnaryOperatorKind.Identity Then
-        ' Done.
-      ElseIf node.Op.Kind = BoundUnaryOperatorKind.LogicalNegation Then
-        ilProcessor.Emit(OpCodes.Ldc_I4_0)
-        ilProcessor.Emit(OpCodes.Ceq)
-      ElseIf node.Op.Kind = BoundUnaryOperatorKind.Negation Then
-        ilProcessor.Emit(OpCodes.Neg)
-      ElseIf node.Op.Kind = BoundUnaryOperatorKind.Onescomplement Then
-        ilProcessor.Emit(OpCodes.Not)
-      Else
-        Throw New Exception($"Unexpected unary operator {SyntaxFacts.GetText(node.Op.SyntaxKind)}({node.Operand.Type})")
-      End If
-    End Sub
+        Private Sub EmitConditionalGotoStatement(ilProcessor As ILProcessor, node As BoundConditionalGotoStatement)
+            EmitExpression(ilProcessor, node.Condition)
+            Dim opCode = If(node.JumpIfTrue, OpCodes.Brtrue, OpCodes.Brfalse)
+            _fixups.Add((ilProcessor.Body.Instructions.Count, node.Label))
+            ilProcessor.Emit(opCode, Instruction.Create(OpCodes.Nop))
+        End Sub
 
-    Private Sub EmitBinaryExpression(ilProcessor As ILProcessor, node As BoundBinaryExpression)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit return statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ' +(string, string)
-      If node.Op.Kind = BoundBinaryOperatorKind.Addition Then
-        If node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String Then
-          EmitStringConcatExpression(ilProcessor, node)
-          Return
-        End If
-      End If
+        Private Sub EmitReturnStatement(ilProcessor As ILProcessor, node As BoundReturnStatement)
+            If node.Expression IsNot Nothing Then EmitExpression(ilProcessor, node.Expression)
+            ilProcessor.Emit(OpCodes.Ret)
+        End Sub
 
-      EmitExpression(ilProcessor, node.Left)
-      EmitExpression(ilProcessor, node.Right)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit expression statement. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ' ==(any, any)
-      ' ==(string, string)
-      If node.Op.Kind = BoundBinaryOperatorKind.Equals Then
-        If (node.Left.Type Is TypeSymbol.Any AndAlso node.Right.Type Is TypeSymbol.Any) OrElse
-           (node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String) Then
-          ilProcessor.Emit(OpCodes.Call, _objectEqualsReference)
-          Return
-        End If
-      End If
+        Private Sub EmitExpressionStatement(ilProcessor As ILProcessor, node As BoundExpressionStatement)
+            EmitExpression(ilProcessor, node.Expression)
+            If node.Expression.Type IsNot TypeSymbol.Void Then
+                ilProcessor.Emit(OpCodes.Pop)
+            End If
+        End Sub
 
-      ' !=(any, any)
-      ' !=(string, string)
-      If node.Op.Kind = BoundBinaryOperatorKind.NotEquals Then
-        If (node.Left.Type Is TypeSymbol.Any AndAlso node.Right.Type Is TypeSymbol.Any) OrElse
-           (node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String) Then
-          ilProcessor.Emit(OpCodes.Call, _objectEqualsReference)
-          ilProcessor.Emit(OpCodes.Ldc_I4_0)
-          ilProcessor.Emit(OpCodes.Ceq)
-          Return
-        End If
-      End If
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Select Case node.Op.Kind
-        Case BoundBinaryOperatorKind.Addition
-          ilProcessor.Emit(OpCodes.Add)
-        Case BoundBinaryOperatorKind.Subtraction
-          ilProcessor.Emit(OpCodes.Sub)
-        Case BoundBinaryOperatorKind.Multiplication
-          ilProcessor.Emit(OpCodes.Mul)
-        Case BoundBinaryOperatorKind.Division
-          ilProcessor.Emit(OpCodes.Div)
-        Case BoundBinaryOperatorKind.LogicalAnd
-          'TODO: Implement short-circuit evaluation.
-          ilProcessor.Emit(OpCodes.And)
-        Case BoundBinaryOperatorKind.LogicalOr
-          'TODO: Implement short-circuit evaluation.
-          ilProcessor.Emit(OpCodes.Or)
-        Case BoundBinaryOperatorKind.BitwiseAnd
-          ilProcessor.Emit(OpCodes.And)
-        Case BoundBinaryOperatorKind.BitwiseOr
-          ilProcessor.Emit(OpCodes.Or)
-        Case BoundBinaryOperatorKind.BitwiseXor
-          ilProcessor.Emit(OpCodes.Xor)
-        Case BoundBinaryOperatorKind.Equals
-          ilProcessor.Emit(OpCodes.Ceq)
-        Case BoundBinaryOperatorKind.NotEquals
-          ilProcessor.Emit(OpCodes.Ceq)
-          ilProcessor.Emit(OpCodes.Ldc_I4_0)
-          ilProcessor.Emit(OpCodes.Ceq)
-        Case BoundBinaryOperatorKind.Less
-          ilProcessor.Emit(OpCodes.Clt)
-        Case BoundBinaryOperatorKind.LessOrEquals
-          ilProcessor.Emit(OpCodes.Cgt)
-          ilProcessor.Emit(OpCodes.Ldc_I4_0)
-          ilProcessor.Emit(OpCodes.Ceq)
-        Case BoundBinaryOperatorKind.Greater
-          ilProcessor.Emit(OpCodes.Cgt)
-        Case BoundBinaryOperatorKind.GreaterOrEquals
-          ilProcessor.Emit(OpCodes.Clt)
-          ilProcessor.Emit(OpCodes.Ldc_I4_0)
-          ilProcessor.Emit(OpCodes.Ceq)
-        Case Else
-          Throw New Exception($"Unexpected binary operator {SyntaxFacts.GetText(node.Op.SyntaxKind)}({node.Op.Type})")
-      End Select
+        Private Sub EmitExpression(ilProcessor As ILProcessor, node As BoundExpression)
 
-    End Sub
+            If node.ConstantValue IsNot Nothing Then
+                EmitConstantExpression(ilProcessor, node)
+                Return
+            End If
 
-    Private Sub EmitCallExpression(ilProcessor As ILProcessor, node As BoundCallExpression)
+            Select Case node.Kind
+                Case BoundNodeKind.VariableExpression : EmitVariableExpression(ilProcessor, CType(node, BoundVariableExpression))
+                Case BoundNodeKind.AssignmentExpression : EmitAssignmentExpression(ilProcessor, CType(node, BoundAssignmentExpression))
+                Case BoundNodeKind.UnaryExpression : EmitUnaryExpression(ilProcessor, CType(node, BoundUnaryExpression))
+                Case BoundNodeKind.BinaryExpression : EmitBinaryExpression(ilProcessor, CType(node, BoundBinaryExpression))
+                Case BoundNodeKind.CallExpression : EmitCallExpression(ilProcessor, CType(node, BoundCallExpression))
+                Case BoundNodeKind.ConversionExpression : EmitConversionExpression(ilProcessor, CType(node, BoundConversionExpression))
+                Case Else
+                    Throw New Exception($"Unexpected node kind {node.Kind}")
+            End Select
+        End Sub
 
-      If node.Function Is BuiltinFunctions.Rnd Then
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit constant expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        If _randomFieldDefinition Is Nothing Then
-          EmitRandomField()
-        End If
+        Private Sub EmitConstantExpression(ilProcessor As ILProcessor, node As BoundExpression)
 
-        ilProcessor.Emit(OpCodes.Ldsfld, _randomFieldDefinition)
-        For Each argument In node.Arguments
-          EmitExpression(ilProcessor, argument)
-        Next
-        ilProcessor.Emit(OpCodes.Callvirt, _randomNextReference)
+            Debug.Assert(node.ConstantValue IsNot Nothing)
 
-        Return
+            If node.Type Is TypeSymbol.Bool Then
+                Dim value = CBool(node.ConstantValue.Value)
+                Dim instruction = If(value, OpCodes.Ldc_I4_1, OpCodes.Ldc_I4_0)
+                ilProcessor.Emit(instruction)
+            ElseIf node.Type Is TypeSymbol.Int Then
+                Dim value = CInt(node.ConstantValue.Value)
+                ilProcessor.Emit(OpCodes.Ldc_I4, value)
+            ElseIf node.Type Is TypeSymbol.String Then
+                Dim value = CStr(node.ConstantValue.Value)
+                ilProcessor.Emit(OpCodes.Ldstr, value)
+            Else
+                Throw New Exception($"Unexpected constant expression type: {node.Type}")
+            End If
+        End Sub
 
-      End If
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit variable expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      For Each argument In node.Arguments
-        EmitExpression(ilProcessor, argument)
-      Next
+        Private Sub EmitVariableExpression(ilProcessor As ILProcessor, node As BoundVariableExpression)
+            If TypeOf node.Variable Is ParameterSymbol Then
+                Dim parameter = CType(node.Variable, ParameterSymbol)
+                ilProcessor.Emit(OpCodes.Ldarg, parameter.Ordinal)
+            Else
+                Dim variableDefinition = _locals(node.Variable)
+                ilProcessor.Emit(OpCodes.Ldloc, variableDefinition)
+            End If
+        End Sub
 
-      If node.Function Is Input Then
-        ilProcessor.Emit(OpCodes.Call, _consoleReadLineReference)
-      ElseIf node.Function Is Print Then
-        ilProcessor.Emit(OpCodes.Call, _consoleWriteLineReference)
-      Else
-        Dim methodDefinition = _methods(node.Function)
-        ilProcessor.Emit(OpCodes.Call, methodDefinition)
-      End If
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit assignment expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    End Sub
+        Private Sub EmitAssignmentExpression(ilProcessor As ILProcessor, node As BoundAssignmentExpression)
+            Dim variableDefinition = _locals(node.Variable)
+            EmitExpression(ilProcessor, node.Expression)
+            ilProcessor.Emit(OpCodes.Dup)
+            ilProcessor.Emit(OpCodes.Stloc, variableDefinition)
+        End Sub
 
-    Private Sub EmitRandomField()
-      _randomFieldDefinition = New FieldDefinition("$rnd", Ccl.FieldAttributes.Static Or
-                                                           Ccl.FieldAttributes.Private, _randomReference)
-      _typeDefinition.Fields.Add(_randomFieldDefinition)
-      Dim staticConstructor = New Ccl.MethodDefinition(".cctor", Ccl.MethodAttributes.Static Or
-                                                                 Ccl.MethodAttributes.Private Or
-                                                                 Ccl.MethodAttributes.SpecialName Or
-                                                                 Ccl.MethodAttributes.RTSpecialName, _knownTypes(TypeSymbol.Void))
-      _typeDefinition.Methods.Insert(0, staticConstructor)
-      Dim ilProcessor = staticConstructor.Body.GetILProcessor
-      ilProcessor.Emit(OpCodes.Newobj, _randomCtorReference)
-      ilProcessor.Emit(OpCodes.Stsfld, _randomFieldDefinition)
-      ilProcessor.Emit(OpCodes.Ret)
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit unary expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub EmitConversionExpression(ilProcessor As ILProcessor, node As BoundConversionExpression)
-      EmitExpression(ilProcessor, node.Expression)
-      Dim needsBoxing = node.Expression.Type Is TypeSymbol.Bool OrElse
-                        node.Expression.Type Is TypeSymbol.Int
-      If needsBoxing Then ilProcessor.Emit(OpCodes.Box, _knownTypes(node.Expression.Type))
-      If node.Type Is TypeSymbol.Any Then
-        ' Done.
-      ElseIf node.Type Is TypeSymbol.Bool Then
-        ilProcessor.Emit(OpCodes.Call, _convertToBooleanReference)
-      ElseIf node.Type Is TypeSymbol.Int Then
-        ilProcessor.Emit(OpCodes.Call, _convertToInt32Reference)
-      ElseIf node.Type Is TypeSymbol.String Then
-        ilProcessor.Emit(OpCodes.Call, _convertToStringReference)
-      Else
-        Throw New Exception($"Unexpected conversion from {node.Expression.Type} to {node.Type}")
-      End If
-    End Sub
+        Private Sub EmitUnaryExpression(ilProcessor As ILProcessor, node As BoundUnaryExpression)
+            EmitExpression(ilProcessor, node.Operand)
+            If node.Op.Kind = BoundUnaryOperatorKind.Identity Then
+                ' Done.
+            ElseIf node.Op.Kind = BoundUnaryOperatorKind.LogicalNegation Then
+                ilProcessor.Emit(OpCodes.Ldc_I4_0)
+                ilProcessor.Emit(OpCodes.Ceq)
+            ElseIf node.Op.Kind = BoundUnaryOperatorKind.Negation Then
+                ilProcessor.Emit(OpCodes.Neg)
+            ElseIf node.Op.Kind = BoundUnaryOperatorKind.Onescomplement Then
+                ilProcessor.Emit(OpCodes.Not)
+            Else
+                Throw New Exception($"Unexpected unary operator {SyntaxFacts.GetText(node.Op.SyntaxKind)}({node.Operand.Type})")
+            End If
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit binary expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub EmitBinaryExpression(ilProcessor As ILProcessor, node As BoundBinaryExpression)
+
+            ' +(string, string)
+            If node.Op.Kind = BoundBinaryOperatorKind.Addition Then
+                If node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String Then
+                    EmitStringConcatExpression(ilProcessor, node)
+                    Return
+                End If
+            End If
+
+            EmitExpression(ilProcessor, node.Left)
+            EmitExpression(ilProcessor, node.Right)
+
+            ' ==(any, any)
+            ' ==(string, string)
+            If node.Op.Kind = BoundBinaryOperatorKind.Equals Then
+                If (node.Left.Type Is TypeSymbol.Any AndAlso node.Right.Type Is TypeSymbol.Any) OrElse
+                   (node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String) Then
+                    ilProcessor.Emit(OpCodes.Call, _objectEqualsReference)
+                    Return
+                End If
+            End If
+
+            ' !=(any, any)
+            ' !=(string, string)
+            If node.Op.Kind = BoundBinaryOperatorKind.NotEquals Then
+                If (node.Left.Type Is TypeSymbol.Any AndAlso node.Right.Type Is TypeSymbol.Any) OrElse
+                   (node.Left.Type Is TypeSymbol.String AndAlso node.Right.Type Is TypeSymbol.String) Then
+                    ilProcessor.Emit(OpCodes.Call, _objectEqualsReference)
+                    ilProcessor.Emit(OpCodes.Ldc_I4_0)
+                    ilProcessor.Emit(OpCodes.Ceq)
+                    Return
+                End If
+            End If
+
+            Select Case node.Op.Kind
+                Case BoundBinaryOperatorKind.Addition
+                    ilProcessor.Emit(OpCodes.Add)
+                Case BoundBinaryOperatorKind.Subtraction
+                    ilProcessor.Emit(OpCodes.Sub)
+                Case BoundBinaryOperatorKind.Multiplication
+                    ilProcessor.Emit(OpCodes.Mul)
+                Case BoundBinaryOperatorKind.Division
+                    ilProcessor.Emit(OpCodes.Div)
+                Case BoundBinaryOperatorKind.LogicalAnd
+                    'TODO: Implement short-circuit evaluation.
+                    ilProcessor.Emit(OpCodes.And)
+                Case BoundBinaryOperatorKind.LogicalOr
+                    'TODO: Implement short-circuit evaluation.
+                    ilProcessor.Emit(OpCodes.Or)
+                Case BoundBinaryOperatorKind.BitwiseAnd
+                    ilProcessor.Emit(OpCodes.And)
+                Case BoundBinaryOperatorKind.BitwiseOr
+                    ilProcessor.Emit(OpCodes.Or)
+                Case BoundBinaryOperatorKind.BitwiseXor
+                    ilProcessor.Emit(OpCodes.Xor)
+                Case BoundBinaryOperatorKind.Equals
+                    ilProcessor.Emit(OpCodes.Ceq)
+                Case BoundBinaryOperatorKind.NotEquals
+                    ilProcessor.Emit(OpCodes.Ceq)
+                    ilProcessor.Emit(OpCodes.Ldc_I4_0)
+                    ilProcessor.Emit(OpCodes.Ceq)
+                Case BoundBinaryOperatorKind.Less
+                    ilProcessor.Emit(OpCodes.Clt)
+                Case BoundBinaryOperatorKind.LessOrEquals
+                    ilProcessor.Emit(OpCodes.Cgt)
+                    ilProcessor.Emit(OpCodes.Ldc_I4_0)
+                    ilProcessor.Emit(OpCodes.Ceq)
+                Case BoundBinaryOperatorKind.Greater
+                    ilProcessor.Emit(OpCodes.Cgt)
+                Case BoundBinaryOperatorKind.GreaterOrEquals
+                    ilProcessor.Emit(OpCodes.Clt)
+                    ilProcessor.Emit(OpCodes.Ldc_I4_0)
+                    ilProcessor.Emit(OpCodes.Ceq)
+                Case Else
+                    Throw New Exception($"Unexpected binary operator {SyntaxFacts.GetText(node.Op.SyntaxKind)}({node.Op.Type})")
+            End Select
+
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit call expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub EmitCallExpression(ilProcessor As ILProcessor, node As BoundCallExpression)
+
+            If node.Function Is BuiltinFunctions.Rnd Then
+
+                If _randomFieldDefinition Is Nothing Then
+                    EmitRandomField()
+                End If
+
+                ilProcessor.Emit(OpCodes.Ldsfld, _randomFieldDefinition)
+                For Each argument In node.Arguments
+                    EmitExpression(ilProcessor, argument)
+                Next
+                ilProcessor.Emit(OpCodes.Callvirt, _randomNextReference)
+
+                Return
+
+            End If
+
+            For Each argument In node.Arguments
+                EmitExpression(ilProcessor, argument)
+            Next
+
+            If node.Function Is Input Then
+                ilProcessor.Emit(OpCodes.Call, _consoleReadLineReference)
+            ElseIf node.Function Is Print Then
+                ilProcessor.Emit(OpCodes.Call, _consoleWriteLineReference)
+            Else
+                Dim methodDefinition = _methods(node.Function)
+                ilProcessor.Emit(OpCodes.Call, methodDefinition)
+            End If
+
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit random field. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub EmitRandomField()
+            _randomFieldDefinition = New FieldDefinition("$rnd", Ccl.FieldAttributes.Static Or
+                                                                 Ccl.FieldAttributes.Private, _randomReference)
+            _typeDefinition.Fields.Add(_randomFieldDefinition)
+            Dim staticConstructor = New Ccl.MethodDefinition(".cctor", Ccl.MethodAttributes.Static Or
+                                                                       Ccl.MethodAttributes.Private Or
+                                                                       Ccl.MethodAttributes.SpecialName Or
+                                                                       Ccl.MethodAttributes.RTSpecialName, _knownTypes(TypeSymbol.Void))
+            _typeDefinition.Methods.Insert(0, staticConstructor)
+            Dim ilProcessor = staticConstructor.Body.GetILProcessor
+            ilProcessor.Emit(OpCodes.Newobj, _randomCtorReference)
+            ilProcessor.Emit(OpCodes.Stsfld, _randomFieldDefinition)
+            ilProcessor.Emit(OpCodes.Ret)
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit conversion expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="ilProcessor">  The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub EmitConversionExpression(ilProcessor As ILProcessor, node As BoundConversionExpression)
+            EmitExpression(ilProcessor, node.Expression)
+            Dim needsBoxing = node.Expression.Type Is TypeSymbol.Bool OrElse
+                              node.Expression.Type Is TypeSymbol.Int
+            If needsBoxing Then ilProcessor.Emit(OpCodes.Box, _knownTypes(node.Expression.Type))
+            If node.Type Is TypeSymbol.Any Then
+                ' Done.
+            ElseIf node.Type Is TypeSymbol.Bool Then
+                ilProcessor.Emit(OpCodes.Call, _convertToBooleanReference)
+            ElseIf node.Type Is TypeSymbol.Int Then
+                ilProcessor.Emit(OpCodes.Call, _convertToInt32Reference)
+            ElseIf node.Type Is TypeSymbol.String Then
+                ilProcessor.Emit(OpCodes.Call, _convertToStringReference)
+            Else
+                Throw New Exception($"Unexpected conversion from {node.Expression.Type} to {node.Type}")
+            End If
+        End Sub
 
 #Region "Converted from 'inline' functions."
 
-    Private Function Emit_ResolveType(assemblies As List(Of AssemblyDefinition),
-                                      internalName As String,
-                                      metadataName As String) As TypeReference
-      Dim foundTypes = assemblies.SelectMany(Function(a) a.Modules).
-                                  SelectMany(Function(m) m.Types).
-                                  Where(Function(t) t.FullName = metadataName).ToArray
-      If foundTypes.Length = 1 Then
-        Dim typeReference = _assemblyDefinition.MainModule.ImportReference(foundTypes(0))
-        Return typeReference
-      ElseIf foundTypes.Length = 0 Then
-        _diagnostics.ReportRequiredTypeNotFound(internalName, metadataName)
-      Else
-        _diagnostics.ReportRequiredTypeAmbiguous(internalName, metadataName, foundTypes)
-      End If
-      Return Nothing
-    End Function
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit resolve type. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="assemblies">   The assemblies. </param>
+        ''' <param name="internalName"> Name of the internal. </param>
+        ''' <param name="metadataName"> Name of the metadata. </param>
+        '''
+        ''' <returns>   A TypeReference. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Function Emit_ResolveMethod(assemblies As List(Of AssemblyDefinition),
-                                        typeName As String,
-                                        methodName As String,
-                                        parameterTypeNames As String()) As MethodReference
-      Dim foundTypes = assemblies.SelectMany(Function(a) a.Modules).
-                                  SelectMany(Function(m) m.Types).
-                                  Where(Function(t) t.FullName = typeName).ToArray
-      If foundTypes.Length = 1 Then
-        Dim foundType = foundTypes(0)
-        Dim methods = foundType.Methods.Where(Function(m) m.Name = methodName)
-
-        For Each method In methods
-          If method.Parameters.Count <> parameterTypeNames.Length Then
-            Continue For
-          End If
-          Dim allParametersMatch = True
-          For i = 0 To parameterTypeNames.Length - 1
-            If method.Parameters(i).ParameterType.FullName <> parameterTypeNames(i) Then
-              allParametersMatch = False
-              Exit For
+        Private Function Emit_ResolveType(assemblies As List(Of AssemblyDefinition),
+                                          internalName As String,
+                                          metadataName As String) As TypeReference
+            Dim foundTypes = assemblies.SelectMany(Function(a) a.Modules).
+                                        SelectMany(Function(m) m.Types).
+                                        Where(Function(t) t.FullName = metadataName).ToArray
+            If foundTypes.Length = 1 Then
+                Dim typeReference = _assemblyDefinition.MainModule.ImportReference(foundTypes(0))
+                Return typeReference
+            ElseIf foundTypes.Length = 0 Then
+                _diagnostics.ReportRequiredTypeNotFound(internalName, metadataName)
+            Else
+                _diagnostics.ReportRequiredTypeAmbiguous(internalName, metadataName, foundTypes)
             End If
-          Next
-          If Not allParametersMatch Then
-            Continue For
-          End If
-          Return _assemblyDefinition.MainModule.ImportReference(method)
-        Next
-        _diagnostics.ReportRequiredMethodNotFound(typeName, methodName, parameterTypeNames)
-        Return Nothing
-      ElseIf foundTypes.Length = 0 Then
-        _diagnostics.ReportRequiredTypeNotFound(Nothing, typeName)
-      Else
-        _diagnostics.ReportRequiredTypeAmbiguous(Nothing, typeName, foundTypes)
-      End If
-      Return Nothing
-    End Function
+            Return Nothing
+        End Function
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit resolve method. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="assemblies">           The assemblies. </param>
+        ''' <param name="typeName">             Name of the type. </param>
+        ''' <param name="methodName">           Name of the method. </param>
+        ''' <param name="parameterTypeNames">   List of names of the parameter types. </param>
+        '''
+        ''' <returns>   A MethodReference. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Function Emit_ResolveMethod(assemblies As List(Of AssemblyDefinition),
+                                            typeName As String,
+                                            methodName As String,
+                                            parameterTypeNames As String()) As MethodReference
+            Dim foundTypes = assemblies.SelectMany(Function(a) a.Modules).
+                                        SelectMany(Function(m) m.Types).
+                                        Where(Function(t) t.FullName = typeName).ToArray
+            If foundTypes.Length = 1 Then
+                Dim foundType = foundTypes(0)
+                Dim methods = foundType.Methods.Where(Function(m) m.Name = methodName)
+
+                For Each method In methods
+                    If method.Parameters.Count <> parameterTypeNames.Length Then
+                        Continue For
+                    End If
+                    Dim allParametersMatch = True
+                    For i = 0 To parameterTypeNames.Length - 1
+                        If method.Parameters(i).ParameterType.FullName <> parameterTypeNames(i) Then
+                            allParametersMatch = False
+                            Exit For
+                        End If
+                    Next
+                    If Not allParametersMatch Then
+                        Continue For
+                    End If
+                    Return _assemblyDefinition.MainModule.ImportReference(method)
+                Next
+                _diagnostics.ReportRequiredMethodNotFound(typeName, methodName, parameterTypeNames)
+                Return Nothing
+            ElseIf foundTypes.Length = 0 Then
+                _diagnostics.ReportRequiredTypeNotFound(Nothing, typeName)
+            Else
+                _diagnostics.ReportRequiredTypeAmbiguous(Nothing, typeName, foundTypes)
+            End If
+            Return Nothing
+        End Function
 
 #End Region
 
-    Private Sub EmitStringConcatExpression(_ilProcessor As ILProcessor, node As BoundBinaryExpression)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Emit string concatenate expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="_ilProcessor"> The il processor. </param>
+        ''' <param name="node">         The node. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ' Flatten the expression tree to a sequence of nodes to concatenate, then fold consecutive constants in that sequence.
-      ' This approach enables constant folding of non-sibling nodes, which cannot be done in the ConstantFolding class as it would require changing the tree.
-      ' Example: folding b And c in ((a + b) + c) if they are constant.
+        Private Sub EmitStringConcatExpression(_ilProcessor As ILProcessor, node As BoundBinaryExpression)
 
-      Dim nodes = EmitStringConcatExpression_FoldConstants(EmitStringConcatExpression_Flatten(node)).ToList()
+            ' Flatten the expression tree to a sequence of nodes to concatenate, then fold consecutive constants in that sequence.
+            ' This approach enables constant folding of non-sibling nodes, which cannot be done in the ConstantFolding class as it would require changing the tree.
+            ' Example: folding b And c in ((a + b) + c) if they are constant.
 
-      Select Case nodes.Count
-        Case 0
-          _ilProcessor.Emit(OpCodes.Ldstr, String.Empty)
+            Dim nodes = EmitStringConcatExpression_FoldConstants(EmitStringConcatExpression_Flatten(node)).ToList()
 
-        Case 1
-          EmitExpression(_ilProcessor, nodes(0))
+            Select Case nodes.Count
+                Case 0
+                    _ilProcessor.Emit(OpCodes.Ldstr, String.Empty)
 
-        Case 2
-          EmitExpression(_ilProcessor, nodes(0))
-          EmitExpression(_ilProcessor, nodes(1))
-          _ilProcessor.Emit(OpCodes.[Call], _stringConcat2Reference)
+                Case 1
+                    EmitExpression(_ilProcessor, nodes(0))
 
-        Case 3
-          EmitExpression(_ilProcessor, nodes(0))
-          EmitExpression(_ilProcessor, nodes(1))
-          EmitExpression(_ilProcessor, nodes(2))
-          _ilProcessor.Emit(OpCodes.[Call], _stringConcat3Reference)
+                Case 2
+                    EmitExpression(_ilProcessor, nodes(0))
+                    EmitExpression(_ilProcessor, nodes(1))
+                    _ilProcessor.Emit(OpCodes.[Call], _stringConcat2Reference)
 
-        Case 4
-          EmitExpression(_ilProcessor, nodes(0))
-          EmitExpression(_ilProcessor, nodes(1))
-          EmitExpression(_ilProcessor, nodes(2))
-          EmitExpression(_ilProcessor, nodes(3))
-          _ilProcessor.Emit(OpCodes.[Call], _stringConcat4Reference)
+                Case 3
+                    EmitExpression(_ilProcessor, nodes(0))
+                    EmitExpression(_ilProcessor, nodes(1))
+                    EmitExpression(_ilProcessor, nodes(2))
+                    _ilProcessor.Emit(OpCodes.[Call], _stringConcat3Reference)
 
-        Case Else
-          _ilProcessor.Emit(OpCodes.Ldc_I4, nodes.Count)
-          _ilProcessor.Emit(OpCodes.Newarr, _knownTypes(TypeSymbol.[String]))
-          For i = 0 To nodes.Count - 1
-            _ilProcessor.Emit(OpCodes.Dup)
-            _ilProcessor.Emit(OpCodes.Ldc_I4, i)
-            EmitExpression(_ilProcessor, nodes(i))
-            _ilProcessor.Emit(OpCodes.Stelem_Ref)
-          Next
-          _ilProcessor.Emit(OpCodes.[Call], _stringConcatArrayReference)
+                Case 4
+                    EmitExpression(_ilProcessor, nodes(0))
+                    EmitExpression(_ilProcessor, nodes(1))
+                    EmitExpression(_ilProcessor, nodes(2))
+                    EmitExpression(_ilProcessor, nodes(3))
+                    _ilProcessor.Emit(OpCodes.[Call], _stringConcat4Reference)
 
-      End Select
+                Case Else
+                    _ilProcessor.Emit(OpCodes.Ldc_I4, nodes.Count)
+                    _ilProcessor.Emit(OpCodes.Newarr, _knownTypes(TypeSymbol.[String]))
+                    For i = 0 To nodes.Count - 1
+                        _ilProcessor.Emit(OpCodes.Dup)
+                        _ilProcessor.Emit(OpCodes.Ldc_I4, i)
+                        EmitExpression(_ilProcessor, nodes(i))
+                        _ilProcessor.Emit(OpCodes.Stelem_Ref)
+                    Next
+                    _ilProcessor.Emit(OpCodes.[Call], _stringConcatArrayReference)
 
-    End Sub
+            End Select
 
-    Private Iterator Function EmitStringConcatExpression_Flatten(node As BoundExpression) As IEnumerable(Of BoundExpression)
+        End Sub
 
-      Dim binaryExpression = TryCast(node, BoundBinaryExpression)
-      If binaryExpression IsNot Nothing AndAlso
-         binaryExpression.Op.Kind = BoundBinaryOperatorKind.Addition AndAlso
-         binaryExpression.Left.Type Is TypeSymbol.[String] AndAlso
-         binaryExpression.Right.Type Is TypeSymbol.[String] Then
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Enumerates emit string concatenate expression flatten in this collection.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="node"> The node. </param>
+        '''
+        ''' <returns>
+        ''' An enumerator that allows foreach to be used to process emit string concatenate expression
+        ''' flatten in this collection.
+        ''' </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        For Each result In EmitStringConcatExpression_Flatten(binaryExpression.Left)
-          Yield result
-        Next
+        Private Iterator Function EmitStringConcatExpression_Flatten(node As BoundExpression) As IEnumerable(Of BoundExpression)
 
-        For Each result In EmitStringConcatExpression_Flatten(binaryExpression.Right)
-          Yield result
-        Next
+            Dim binaryExpression = TryCast(node, BoundBinaryExpression)
+            If binaryExpression IsNot Nothing AndAlso
+               binaryExpression.Op.Kind = BoundBinaryOperatorKind.Addition AndAlso
+               binaryExpression.Left.Type Is TypeSymbol.[String] AndAlso
+               binaryExpression.Right.Type Is TypeSymbol.[String] Then
 
-      Else
+                For Each result In EmitStringConcatExpression_Flatten(binaryExpression.Left)
+                    Yield result
+                Next
 
-        If node.Type IsNot TypeSymbol.[String] Then
-          Throw New Exception($"Unexpected node type in string concatenation: {node.Type}")
-        End If
+                For Each result In EmitStringConcatExpression_Flatten(binaryExpression.Right)
+                    Yield result
+                Next
 
-        Yield node
+            Else
 
-      End If
+                If node.Type IsNot TypeSymbol.[String] Then
+                    Throw New Exception($"Unexpected node type in string concatenation: {node.Type}")
+                End If
 
-    End Function
+                Yield node
 
-    Private Iterator Function EmitStringConcatExpression_FoldConstants(nodes As IEnumerable(Of BoundExpression)) As IEnumerable(Of BoundExpression)
+            End If
+
+        End Function
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Enumerates emit string concatenate expression fold constants in this collection.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="nodes">    The nodes. </param>
+        '''
+        ''' <returns>
+        ''' An enumerator that allows foreach to be used to process emit string concatenate expression
+        ''' fold constants in this collection.
+        ''' </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Iterator Function EmitStringConcatExpression_FoldConstants(nodes As IEnumerable(Of BoundExpression)) As IEnumerable(Of BoundExpression)
 
       Dim sb As StringBuilder = Nothing
 

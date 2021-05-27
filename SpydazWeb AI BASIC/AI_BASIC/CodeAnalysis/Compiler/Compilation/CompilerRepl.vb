@@ -1,4 +1,10 @@
-﻿Imports System.Linq.Expressions
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb
+'
+' summary:	Compiler repl class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Linq.Expressions
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.Syntax
 Imports System.Console

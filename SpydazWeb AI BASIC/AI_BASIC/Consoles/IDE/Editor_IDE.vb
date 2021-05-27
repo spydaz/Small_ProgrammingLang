@@ -1,13 +1,34 @@
-﻿Imports System.Windows.Forms
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\Consoles\IDE\Editor_IDE.vb
+'
+' summary:	Editor IDE class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports AI_BASIC.Typing
+
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+''' <summary>   An editor ide. </summary>
+'''
+''' <remarks>   Leroy, 27/05/2021. </remarks>
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Public Class Editor_IDE
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Small pl tool strip button run code click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub Small_PL_ToolStripButtonRunCode_Click(sender As Object, e As EventArgs) Handles Small_PL_ToolStripButtonRunCode.Click
         Dim ExpressionTree As SyntaxTree
@@ -27,15 +48,38 @@ Public Class Editor_IDE
 
     End Sub
 
-
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Compile spydaz web an i basic click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub CompileSpydazWebAI_BASIC_Click(sender As Object, e As EventArgs) Handles CompileSpydazWebAI_BASIC.Click
 
         run()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Clears the tree. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub ClearTree()
         Small_PL_AstTreeView.Nodes.Clear()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds a compiled tree. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Prog"> [in,out] The prog. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub AddCompiledTree(ByRef Prog As SyntaxTree)
 
         '_:::ROOT:::_(0)
@@ -59,6 +103,15 @@ Public Class Editor_IDE
         Small_PL_AstTreeView.Nodes.Add(root)
         Small_PL_AstTreeView.ExpandAll()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets current line. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <returns>   The current line. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function GetCurrentLine() As String
         '' Get current line index using char index of any selected text for that line
 
@@ -69,10 +122,21 @@ Public Class Editor_IDE
         Dim CurrentLine = Small_PL_TextBoxCodeInput.Lines(CurrentLineIndex)
         Return CurrentLine
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Quick compile. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Line"> [in,out] The line. </param>
+    '''
+    ''' <returns>   A String. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function QuickCompile(ByRef Line As String) As String
 
         Dim Prog As String = Line
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
 
         If MyCompiler.CompileProgram() = True Then
             If MyCompiler.GetCompilerDiagnostics.Length > 0 Then
@@ -90,10 +154,17 @@ Public Class Editor_IDE
 
         End If
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Compiles this.  </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub Compile()
         Small_PL_TextBoxREPL_OUTPUT.Text = ""
         Dim Prog As String = Small_PL_TextBoxCodeInput.Text
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
         ClearTree()
 
         If MyCompiler.CompileProgram() = True Then
@@ -119,6 +190,13 @@ Public Class Editor_IDE
 
         End If
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Runs this.  </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub run()
         Dim Prog As String = Small_PL_TextBoxCodeInput.Text
 
@@ -127,7 +205,7 @@ Public Class Editor_IDE
         ClearTree()
 
         For Each item In Small_PL_TextBoxCodeInput.Lines
-            Dim MyCompiler As New Compiler(item)
+            Dim MyCompiler As New _Compiler(item)
             Dim Eval = MyCompiler.ExecuteProgram()
             CompilerResutltsText.Text &= Eval & vbNewLine
             Small_PL_TextboxErrors.Text &= MyCompiler.GetCompilerDiagnostics & vbNewLine
@@ -139,13 +217,20 @@ Public Class Editor_IDE
         Next
 
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Executes the general operation. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub RunGeneral()
         Small_PL_TextBoxREPL_OUTPUT.Text = ""
         Dim Prog As String = Small_PL_TextBoxCodeInput.Text
         Prog = Prog.Replace(vbNewLine, " ")
         Prog = RTrim(Prog)
         Prog = LTrim(Prog)
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
         ClearTree()
 
         If MyCompiler.CompileProgram() = True Then
@@ -178,6 +263,15 @@ Public Class Editor_IDE
         End If
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Small pl text box code input key down. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Key event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub Small_PL_TextBoxCodeInput_KeyDown(sender As Object, e As KeyEventArgs) Handles Small_PL_TextBoxCodeInput.KeyDown
         Dim Prog As String = Small_PL_TextBoxCodeInput.Text
 
@@ -189,7 +283,7 @@ Public Class Editor_IDE
                     Small_PL_TextboxErrors.Text = "Compiled Successfully"
                     Compile()
                     For Each item In Small_PL_TextBoxCodeInput.Lines
-                        Dim MyCompiler As New Compiler(item)
+                        Dim MyCompiler As New _Compiler(item)
                         Dim Eval = MyCompiler.ExecuteProgram()
                         CompilerResutltsText.Text &= Eval & vbNewLine
                     Next
@@ -203,7 +297,7 @@ Public Class Editor_IDE
                     Dim Templine As Integer = 0
                     For Each item In Small_PL_TextBoxCodeInput.Lines
                         Templine += 1
-                        Dim MyCompiler As New Compiler(item)
+                        Dim MyCompiler As New _Compiler(item)
                         Dim Eval = MyCompiler.CompileProgram()
                         Small_PL_TextboxErrors.Text &= "Repl Line :" & Templine & vbNewLine & " " & MyCompiler.GetCompilerDiagnostics & vbNewLine
                     Next
@@ -215,9 +309,27 @@ Public Class Editor_IDE
 
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Small pl ast tree view after select. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Tree view event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles Small_PL_AstTreeView.AfterSelect
         Small_PL_TextBoxREPL_OUTPUT.Text = Small_PL_AstTreeView.SelectedNode.Tag
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Button spydaz web basic repl click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub ButtonSpydazWebBasicREPL_Click(sender As Object, e As EventArgs) Handles ButtonSpydazWebBasicREPL.Click
         Dim frm As New IDE
@@ -228,25 +340,48 @@ End Class
 'REPL_ERROR SYSTEM
 '
 Namespace REPL
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   A pl repl error system. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Class PL_ReplErrorSystem
-        ''' <summary>
-        ''' Creates an Error Message to be displayed
-        ''' </summary>
-        ''' <param name="ErrorStr"></param>
-        ''' <param name="Errtok"></param>
-        ''' <returns></returns>
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Displays an error. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ErrorStr"> [in,out] The error string. </param>
+        ''' <param name="Errtok">   [in,out] The errtok. </param>
+        '''
+        ''' <returns>   A String. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Public Shared Function DisplayError(ByRef ErrorStr As String, ByRef Errtok As SyntaxToken) As String
             Dim str As String = ErrorStr & vbNewLine & Errtok.ToJson
             Return str
         End Function
     End Class
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   A sal repl error system. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Class SAL_ReplErrorSystem
-        ''' <summary>
-        ''' Creates an Error Message to be displayed
-        ''' </summary>
-        ''' <param name="ErrorStr"></param>
-        ''' <param name="Errtok"></param>
-        ''' <returns></returns>
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Displays an error. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="ErrorStr"> [in,out] The error string. </param>
+        ''' <param name="Errtok">   [in,out] The errtok. </param>
+        '''
+        ''' <returns>   A String. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Public Shared Function DisplayError(ByRef ErrorStr As String, ByRef Errtok As SyntaxToken) As String
             Dim str As String = ErrorStr & vbNewLine & Errtok.ToJson
             Return str

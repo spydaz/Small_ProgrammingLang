@@ -1,14 +1,53 @@
-﻿Imports System.Text
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Evaluation\EvaluationResult.vb
+'
+' summary:	Evaluation result class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Text
 Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Diagnostics
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Evaluation
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Encapsulates the result of an evaluation. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Public NotInheritable Class EvaluationResult
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets or sets the diagnostics. </summary>
+                '''
+                ''' <value> The diagnostics. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public ReadOnly Property Diagnostics As CompilerDiagnosticResults
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets or sets the results. </summary>
+                '''
+                ''' <value> The results. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public ReadOnly Property Results As Object
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Constructor. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+                '''                                             null. </exception>
+                '''
+                ''' <param name="diagnostics">  The diagnostics. </param>
+                ''' <param name="_results">     The results. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 Public Sub New(diagnostics As CompilerDiagnosticResults, _results As Object)
                     If diagnostics Is Nothing Then
@@ -23,17 +62,41 @@ Namespace CodeAnalysis
                     Me.Results = _results
                 End Sub
 #Region "TOSTRING"
-                ''' <summary>
-                ''' Serializes object to json
-                ''' </summary>
-                ''' <returns> </returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Converts this  to a JSON. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   This  as a String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Returns a string that represents the current object. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A string that represents the current object. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Overrides Function ToString() As String
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Format JSON output. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="jsonString">   The JSON string. </param>
+                '''
+                ''' <returns>   The formatted JSON output. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False
@@ -82,6 +145,15 @@ Namespace CodeAnalysis
                     Return stringBuilder.ToString()
                 End Function
 #End Region
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets debugger display. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   The debugger display. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function

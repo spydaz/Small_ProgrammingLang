@@ -1,4 +1,10 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\Lexer.vb
+'
+' summary:	Lexer class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
@@ -9,339 +15,448 @@ Imports Basic.CodeAnalysis.Text
 
 Namespace Global.Basic.CodeAnalysis.Syntax
 
-  Friend NotInheritable Class Lexer
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary> Gets or sets the diagnostics. </summary>
+    '''
+    ''' <value>   The diagnostics. </value>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Public ReadOnly Property Diagnostics As DiagnosticBag = New DiagnosticBag
-    Private ReadOnly m_syntaxTree As SyntaxTree
-    Private ReadOnly m_text As SourceText
-    Private m_position As Integer
+    Friend NotInheritable Class Lexer
 
-    Private m_start As Integer
-    Private m_kind As SyntaxKind
-    Private m_value As Object
-    Private ReadOnly m_triviaBuilder As ImmutableArray(Of SyntaxTrivia).Builder = ImmutableArray.CreateBuilder(Of SyntaxTrivia)
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets the diagnostics. </summary>
+        '''
+        ''' <value> The diagnostics. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Public Sub New(tree As SyntaxTree)
-      m_syntaxTree = tree
-      m_text = tree.Text
-    End Sub
+        Public ReadOnly Property Diagnostics As DiagnosticBag = New DiagnosticBag
+        ''' <summary>   The syntax tree. </summary>
+        Private ReadOnly m_syntaxTree As SyntaxTree
+        ''' <summary>   The text. </summary>
+        Private ReadOnly m_text As SourceText
+        ''' <summary>   The position. </summary>
+        Private m_position As Integer
+        ''' <summary>   The start. </summary>
 
-    Private ReadOnly Property Current As Char
-      Get
-        Return Peek(0)
-      End Get
-    End Property
+        Private m_start As Integer
+        ''' <summary>   The kind. </summary>
+        Private m_kind As SyntaxKind
+        ''' <summary>   The value. </summary>
+        Private m_value As Object
+        ''' <summary>   The trivia builder. </summary>
+        Private ReadOnly m_triviaBuilder As ImmutableArray(Of SyntaxTrivia).Builder = ImmutableArray.CreateBuilder(Of SyntaxTrivia)
 
-    Private ReadOnly Property LookAhead As Char
-      Get
-        Return Peek(1)
-      End Get
-    End Property
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Constructor. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="tree"> The tree. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private ReadOnly Property Peek(offset As Integer) As Char
-      Get
-        Dim index = m_position + offset
-        If index >= m_text.Length Then
-          Return ChrW(0)
-        End If
-        Return m_text(index)
-      End Get
-    End Property
+        Public Sub New(tree As SyntaxTree)
+            m_syntaxTree = tree
+            m_text = tree.Text
+        End Sub
 
-    Public Function Lex() As SyntaxToken
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets the current. </summary>
+        '''
+        ''' <value> The current. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ReadTrivia(True)
+        Private ReadOnly Property Current As Char
+            Get
+                Return Peek(0)
+            End Get
+        End Property
 
-      Dim leadingTrivia = m_triviaBuilder.ToImmutable
-      Dim tokenStart = m_position
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets the look ahead. </summary>
+        '''
+        ''' <value> The look ahead. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ReadToken()
+        Private ReadOnly Property LookAhead As Char
+            Get
+                Return Peek(1)
+            End Get
+        End Property
 
-      Dim tokenKind = m_kind
-      Dim tokenValue = m_value
-      Dim tokenLength = m_position - m_start
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets the peek. </summary>
+        '''
+        ''' <value> The peek. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      ReadTrivia(False)
+        Private ReadOnly Property Peek(offset As Integer) As Char
+            Get
+                Dim index = m_position + offset
+                If index >= m_text.Length Then
+                    Return ChrW(0)
+                End If
+                Return m_text(index)
+            End Get
+        End Property
 
-      Dim trailingTrivia = m_triviaBuilder.ToImmutable
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets the lex. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <returns>   A SyntaxToken. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Dim tokenText = SyntaxFacts.GetText(tokenKind)
-      If tokenText Is Nothing Then
-        tokenText = m_text.ToString(tokenStart, tokenLength)
-      End If
+        Public Function Lex() As SyntaxToken
 
-      Return New SyntaxToken(m_syntaxTree, tokenKind, tokenStart, tokenText, tokenValue, leadingTrivia, trailingTrivia)
+            ReadTrivia(True)
 
-    End Function
+            Dim leadingTrivia = m_triviaBuilder.ToImmutable
+            Dim tokenStart = m_position
 
-    Private Sub ReadTrivia(leading As Boolean)
+            ReadToken()
 
-      m_triviaBuilder.Clear()
+            Dim tokenKind = m_kind
+            Dim tokenValue = m_value
+            Dim tokenLength = m_position - m_start
 
-      Dim done = False
+            ReadTrivia(False)
 
-      While Not done
+            Dim trailingTrivia = m_triviaBuilder.ToImmutable
 
-        m_start = m_position
-        m_kind = SyntaxKind.BadToken
-        m_value = Nothing
+            Dim tokenText = SyntaxFacts.GetText(tokenKind)
+            If tokenText Is Nothing Then
+                tokenText = m_text.ToString(tokenStart, tokenLength)
+            End If
 
-        Select Case Current
-          Case ChrW(0)
-            done = True
-          Case "/"c
-            If LookAhead = "/" Then
-              ReadSingleLineComment()
-            ElseIf LookAhead = "*" Then
-              ReadMultiLineComment()
+            Return New SyntaxToken(m_syntaxTree, tokenKind, tokenStart, tokenText, tokenValue, leadingTrivia, trailingTrivia)
+
+        End Function
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads a trivia. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="leading">  True to leading. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub ReadTrivia(leading As Boolean)
+
+            m_triviaBuilder.Clear()
+
+            Dim done = False
+
+            While Not done
+
+                m_start = m_position
+                m_kind = SyntaxKind.BadToken
+                m_value = Nothing
+
+                Select Case Current
+                    Case ChrW(0)
+                        done = True
+                    Case "/"c
+                        If LookAhead = "/" Then
+                            ReadSingleLineComment()
+                        ElseIf LookAhead = "*" Then
+                            ReadMultiLineComment()
+                        Else
+                            done = True
+                        End If
+                    Case ChrW(10), ChrW(13)
+                        If Not leading Then done = True
+                        ReadLineBreak()
+                    Case " "c, ChrW(9) ' Short-circuit whitespace checking (common).
+                        ReadWhiteSpace()
+                    Case Else
+                        If Char.IsWhiteSpace(Current) Then
+                            ReadWhiteSpace()
+                        Else
+                            done = True
+                        End If
+                End Select
+                Dim length = m_position - m_start
+                If length > 0 Then
+                    Dim text = m_text.ToString(m_start, length)
+                    Dim trivia = New SyntaxTrivia(m_syntaxTree, m_kind, m_start, text)
+                    m_triviaBuilder.Add(trivia)
+                End If
+            End While
+
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads line break. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub ReadLineBreak()
+
+            If Current = ChrW(13) AndAlso LookAhead = ChrW(10) Then
+                m_position += 2
             Else
-              done = True
+                m_position += 1
             End If
-          Case ChrW(10), ChrW(13)
-            If Not leading Then done = True
-            ReadLineBreak()
-          Case " "c, ChrW(9) ' Short-circuit whitespace checking (common).
-            ReadWhiteSpace()
-          Case Else
-            If Char.IsWhiteSpace(Current) Then
-              ReadWhiteSpace()
-            Else
-              done = True
-            End If
-        End Select
-        Dim length = m_position - m_start
-        If length > 0 Then
-          Dim text = m_text.ToString(m_start, length)
-          Dim trivia = New SyntaxTrivia(m_syntaxTree, m_kind, m_start, text)
-          m_triviaBuilder.Add(trivia)
-        End If
-      End While
 
-    End Sub
+            m_kind = SyntaxKind.LineBreakTrivia
 
-    Private Sub ReadLineBreak()
+        End Sub
 
-      If Current = ChrW(13) AndAlso LookAhead = ChrW(10) Then
-        m_position += 2
-      Else
-        m_position += 1
-      End If
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads white space. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      m_kind = SyntaxKind.LineBreakTrivia
+        Private Sub ReadWhiteSpace()
 
-    End Sub
+            Dim done = False
+            While Not done
+                Select Case Current
+                    Case ChrW(0), ChrW(10), ChrW(13)
+                        done = True
+                    Case Else
+                        If Not Char.IsWhiteSpace(Current) Then
+                            done = True
+                        Else
+                            m_position += 1
+                        End If
+                End Select
+            End While
 
-    Private Sub ReadWhiteSpace()
+            m_kind = SyntaxKind.WhitespaceTrivia
 
-      Dim done = False
-      While Not done
-        Select Case Current
-          Case ChrW(0), ChrW(10), ChrW(13)
-            done = True
-          Case Else
-            If Not Char.IsWhiteSpace(Current) Then
-              done = True
-            Else
-              m_position += 1
-            End If
-        End Select
-      End While
+        End Sub
 
-      m_kind = SyntaxKind.WhitespaceTrivia
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads single line comment. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    End Sub
+        Private Sub ReadSingleLineComment()
 
-    Private Sub ReadSingleLineComment()
+            m_position += 2
 
-      m_position += 2
+            Dim done = False
+            While Not done
+                Select Case Current
+                    Case ChrW(0), ChrW(13), ChrW(10)
+                        done = True
+                    Case Else
+                        m_position += 1
+                End Select
+            End While
 
-      Dim done = False
-      While Not done
-        Select Case Current
-          Case ChrW(0), ChrW(13), ChrW(10)
-            done = True
-          Case Else
-            m_position += 1
-        End Select
-      End While
+            m_kind = SyntaxKind.SingleLineCommentTrivia
 
-      m_kind = SyntaxKind.SingleLineCommentTrivia
+        End Sub
 
-    End Sub
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads multi line comment. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Private Sub ReadMultiLineComment()
+        Private Sub ReadMultiLineComment()
 
-      m_position += 2
+            m_position += 2
 
-      Dim done = False
-      While Not done
-        Select Case Current
-          Case ChrW(0)
-            Dim span = New TextSpan(m_start, 2)
-            Dim location = New TextLocation(m_text, span)
-            Diagnostics.ReportUnterminatedMultiLineComment(location)
-            done = True
-          Case "*"c
-            If LookAhead = "/" Then
-              done = True
-              m_position += 1
-            End If
-            m_position += 1
-          Case Else
-            m_position += 1
-        End Select
-      End While
+            Dim done = False
+            While Not done
+                Select Case Current
+                    Case ChrW(0)
+                        Dim span = New TextSpan(m_start, 2)
+                        Dim location = New TextLocation(m_text, span)
+                        Diagnostics.ReportUnterminatedMultiLineComment(location)
+                        done = True
+                    Case "*"c
+                        If LookAhead = "/" Then
+                            done = True
+                            m_position += 1
+                        End If
+                        m_position += 1
+                    Case Else
+                        m_position += 1
+                End Select
+            End While
 
-      m_kind = SyntaxKind.MultiLineCommentTrivia
+            m_kind = SyntaxKind.MultiLineCommentTrivia
 
-    End Sub
+        End Sub
 
-    Private Sub ReadToken()
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads the token. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      m_start = m_position
-      m_kind = SyntaxKind.BadToken
-      m_value = Nothing
+        Private Sub ReadToken()
 
-      ' + Plus (Addition, String Concat)
-      ' - Minus (Subtraction, Negation)
-      ' * Multiply
-      ' / Divide (Floating Point)
-      ' \ Divide (Integer)
-      ' ^ Raise Power
-      ' : Command Separator
+            m_start = m_position
+            m_kind = SyntaxKind.BadToken
+            m_value = Nothing
 
-      Select Case Current
-        Case ChrW(0) : m_kind = SyntaxKind.EndOfFileToken
-        Case "+"c : m_kind = SyntaxKind.PlusToken : m_position += 1
-        Case "-"c : m_kind = SyntaxKind.MinusToken : m_position += 1
-        Case "*"c : m_kind = SyntaxKind.StarToken : m_position += 1
-        Case "/"c : m_kind = SyntaxKind.SlashToken : m_position += 1
+            ' + Plus (Addition, String Concat)
+            ' - Minus (Subtraction, Negation)
+            ' * Multiply
+            ' / Divide (Floating Point)
+            ' \ Divide (Integer)
+            ' ^ Raise Power
+            ' : Command Separator
+
+            Select Case Current
+                Case ChrW(0) : m_kind = SyntaxKind.EndOfFileToken
+                Case "+"c : m_kind = SyntaxKind.PlusToken : m_position += 1
+                Case "-"c : m_kind = SyntaxKind.MinusToken : m_position += 1
+                Case "*"c : m_kind = SyntaxKind.StarToken : m_position += 1
+                Case "/"c : m_kind = SyntaxKind.SlashToken : m_position += 1
         'Case "\"c : m_kind = SyntaxKind.BackslashToken : m_position += 1
-        Case "("c : m_kind = SyntaxKind.OpenParenToken : m_position += 1
-        Case ")"c : m_kind = SyntaxKind.CloseParenToken : m_position += 1
-        Case "{"c : m_kind = SyntaxKind.OpenBraceToken : m_position += 1
-        Case "}"c : m_kind = SyntaxKind.CloseBraceToken : m_position += 1
-        Case ":"c : m_kind = SyntaxKind.ColonToken : m_position += 1
-        Case ","c : m_kind = SyntaxKind.CommaToken : m_position += 1
+                Case "("c : m_kind = SyntaxKind.OpenParenToken : m_position += 1
+                Case ")"c : m_kind = SyntaxKind.CloseParenToken : m_position += 1
+                Case "{"c : m_kind = SyntaxKind.OpenBraceToken : m_position += 1
+                Case "}"c : m_kind = SyntaxKind.CloseBraceToken : m_position += 1
+                Case ":"c : m_kind = SyntaxKind.ColonToken : m_position += 1
+                Case ","c : m_kind = SyntaxKind.CommaToken : m_position += 1
         'Case ";"c : m_kind = SyntaxKind.SemicolonToken : m_position += 1
-        Case "~"c : m_kind = SyntaxKind.TildeToken : m_position += 1
+                Case "~"c : m_kind = SyntaxKind.TildeToken : m_position += 1
         'Case "'"c : m_kind = SyntaxKind.ApostropheToken : m_position += 1
-        Case "^"c : m_kind = SyntaxKind.HatToken : m_position += 1
-        Case "&"c
-          If LookAhead = "&"c Then
-            m_kind = SyntaxKind.AmpersandAmpersandToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.AmpersandToken : m_position += 1
-          End If
-        Case "|"c
-          If LookAhead = "|"c Then
-            m_kind = SyntaxKind.PipePipeToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.PipeToken : m_position += 1
-          End If
-        Case "="c
-          If LookAhead = "="c Then
-            m_kind = SyntaxKind.EqualsEqualsToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.EqualsToken : m_position += 1
-          End If
-        Case "!"c
-          If LookAhead = "="c Then
-            m_kind = SyntaxKind.BangEqualsToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.BangToken : m_position += 1
-          End If
-        Case "<"c
-          'If LookAhead = ">"c Then
-          '  Kind = SyntaxKind.LessThanGreaterThanToken : Position += 2
-          If LookAhead = "="c Then
-            m_kind = SyntaxKind.LessThanEqualsToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.LessThanToken : m_position += 1
-          End If
-        Case ">"c
-          If LookAhead = "="c Then
-            m_kind = SyntaxKind.GreaterThanEqualsToken : m_position += 2
-          Else
-            m_kind = SyntaxKind.GreaterThanToken : m_position += 1
-          End If
-        Case ChrW(34)
-          ReadString()
-        Case "0"c, "1"c, "2"c, "3"c, "4"c, "5"c, "6"c, "7"c, "8"c, "9"c
-          ReadNumberToken()
-        Case "_"c
-          ReadIdentifierOrKeyword()
-        Case Else
-          If Char.IsLetter(Current) OrElse Current = "$"c Then
-            ReadIdentifierOrKeyword()
-          Else
-            Dim span = New TextSpan(m_position, 1)
-            Dim location = New TextLocation(m_text, span)
-            Diagnostics.ReportBadCharacter(location, Current)
+                Case "^"c : m_kind = SyntaxKind.HatToken : m_position += 1
+                Case "&"c
+                    If LookAhead = "&"c Then
+                        m_kind = SyntaxKind.AmpersandAmpersandToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.AmpersandToken : m_position += 1
+                    End If
+                Case "|"c
+                    If LookAhead = "|"c Then
+                        m_kind = SyntaxKind.PipePipeToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.PipeToken : m_position += 1
+                    End If
+                Case "="c
+                    If LookAhead = "="c Then
+                        m_kind = SyntaxKind.EqualsEqualsToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.EqualsToken : m_position += 1
+                    End If
+                Case "!"c
+                    If LookAhead = "="c Then
+                        m_kind = SyntaxKind.BangEqualsToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.BangToken : m_position += 1
+                    End If
+                Case "<"c
+                    'If LookAhead = ">"c Then
+                    '  Kind = SyntaxKind.LessThanGreaterThanToken : Position += 2
+                    If LookAhead = "="c Then
+                        m_kind = SyntaxKind.LessThanEqualsToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.LessThanToken : m_position += 1
+                    End If
+                Case ">"c
+                    If LookAhead = "="c Then
+                        m_kind = SyntaxKind.GreaterThanEqualsToken : m_position += 2
+                    Else
+                        m_kind = SyntaxKind.GreaterThanToken : m_position += 1
+                    End If
+                Case ChrW(34)
+                    ReadString()
+                Case "0"c, "1"c, "2"c, "3"c, "4"c, "5"c, "6"c, "7"c, "8"c, "9"c
+                    ReadNumberToken()
+                Case "_"c
+                    ReadIdentifierOrKeyword()
+                Case Else
+                    If Char.IsLetter(Current) OrElse Current = "$"c Then
+                        ReadIdentifierOrKeyword()
+                    Else
+                        Dim span = New TextSpan(m_position, 1)
+                        Dim location = New TextLocation(m_text, span)
+                        Diagnostics.ReportBadCharacter(location, Current)
+                        m_position += 1
+                    End If
+
+            End Select
+
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads the string. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Private Sub ReadString()
+
+            ' "Test \" dddd"
+            ' "Test "" dddd"
+
+            ' skip the current quote
             m_position += 1
-          End If
 
-      End Select
+            Dim sb = New StringBuilder
+            Dim done = False
 
-    End Sub
+            While Not done
+                Select Case Current
+                    Case ChrW(0), ChrW(13), ChrW(10)
+                        Dim span = New TextSpan(m_start, 1)
+                        Dim location = New TextLocation(m_text, span)
+                        Diagnostics.ReportUnterminatedString(location)
+                        done = True
+                    Case """"c
+                        If LookAhead = """"c Then
+                            sb.Append(Current)
+                            m_position += 2
+                        Else
+                            m_position += 1
+                            done = True
+                        End If
+                    Case Else
+                        sb.Append(Current)
+                        m_position += 1
+                End Select
+            End While
 
-    Private Sub ReadString()
+            m_kind = SyntaxKind.StringToken
+            m_value = sb.ToString
 
-      ' "Test \" dddd"
-      ' "Test "" dddd"
+        End Sub
 
-      ' skip the current quote
-      m_position += 1
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads number token. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      Dim sb = New StringBuilder
-      Dim done = False
+        Private Sub ReadNumberToken()
 
-      While Not done
-        Select Case Current
-          Case ChrW(0), ChrW(13), ChrW(10)
-            Dim span = New TextSpan(m_start, 1)
-            Dim location = New TextLocation(m_text, span)
-            Diagnostics.ReportUnterminatedString(location)
-            done = True
-          Case """"c
-            If LookAhead = """"c Then
-              sb.Append(Current)
-              m_position += 2
-            Else
-              m_position += 1
-              done = True
+            While Char.IsDigit(Current)
+                m_position += 1
+            End While
+
+            Dim length = m_position - m_start
+            Dim text = m_text.ToString(m_start, length)
+            Dim value As Integer
+            If Not Integer.TryParse(text, value) Then
+                Dim location = New TextLocation(m_text, New TextSpan(m_start, length))
+                Diagnostics.ReportInvalidNumber(location, text, TypeSymbol.Int)
             End If
-          Case Else
-            sb.Append(Current)
-            m_position += 1
-        End Select
-      End While
 
-      m_kind = SyntaxKind.StringToken
-      m_value = sb.ToString
+            m_value = value
+            m_kind = SyntaxKind.NumberToken
 
-    End Sub
+        End Sub
 
-    Private Sub ReadNumberToken()
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Reads identifier or keyword. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-      While Char.IsDigit(Current)
-        m_position += 1
-      End While
-
-      Dim length = m_position - m_start
-      Dim text = m_text.ToString(m_start, length)
-      Dim value As Integer
-      If Not Integer.TryParse(text, value) Then
-        Dim location = New TextLocation(m_text, New TextSpan(m_start, length))
-        Diagnostics.ReportInvalidNumber(location, text, TypeSymbol.Int)
-      End If
-
-      m_value = value
-      m_kind = SyntaxKind.NumberToken
-
-    End Sub
-
-    Private Sub ReadIdentifierOrKeyword()
+        Private Sub ReadIdentifierOrKeyword()
 
       While Char.IsLetter(Current) OrElse Current = "_"c OrElse Current = "$"c
         m_position += 1

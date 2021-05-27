@@ -1,19 +1,28 @@
-﻿
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb
+'
+' summary:	Syntax node class
+'---------------------------------------------------------------------------------------------------
+
 Imports System.Text
 Imports System.Web.Script.Serialization
 Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
+Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Typing
 
 Namespace Syntax
     Namespace SyntaxNodes
 #Region "Abstract Models"
 
-        'Abstract Models
-        ''' <summary>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A syntax node. 
         ''' All nodes must use this model to Create SyntaxNodes
-        ''' Defines the Syntax For the Language
-        ''' </summary>
+        ''' Defines the Syntax For the Language            </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Public MustInherit Class SyntaxNode
             ''' <summary>
@@ -25,11 +34,18 @@ Namespace Syntax
             ''' Enum Strong Type
             ''' </summary>
             Public _SyntaxType As SyntaxType
-            ''' <summary>
-            ''' Initializes the Type for the Syntax Node to identify the node
-            ''' </summary>
-            ''' <param name="syntaxType">SyntaxType</param>
-            ''' <param name="syntaxTypeStr">String version of the Type</param>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Specialized constructor for use only by derived class. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+            '''                                             null. </exception>
+            '''
+            ''' <param name="syntaxType">       Enum Strong Type. </param>
+            ''' <param name="syntaxTypeStr">    Text String of Type(for diagnostics) </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Protected Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
                 If syntaxTypeStr Is Nothing Then
                     Throw New ArgumentNullException(NameOf(syntaxTypeStr))
@@ -38,6 +54,7 @@ Namespace Syntax
                 _SyntaxType = syntaxType
                 _SyntaxTypeStr = syntaxTypeStr
             End Sub
+
             ''' <summary>
             ''' Evaluates node in the interpretor;
             ''' To evaluate a node ; 
@@ -52,17 +69,41 @@ Namespace Syntax
 
 
 #Region "TOSTRING"
-            ''' <summary>
-            ''' Serializes object to json
-            ''' </summary>
-            ''' <returns> </returns>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Converts this  to a JSON. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   This  as a String. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Function ToJson() As String
                 Return FormatJsonOutput(ToString)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Returns a string that represents the current object. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   A string that represents the current object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function ToString() As String
                 Dim Converter As New JavaScriptSerializer
                 Return Converter.Serialize(Me)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Format JSON output. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="jsonString">   The JSON string. </param>
+            '''
+            ''' <returns>   The formatted JSON output. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function FormatJsonOutput(ByVal jsonString As String) As String
                 Dim stringBuilder = New StringBuilder()
                 Dim escaping As Boolean = False
@@ -111,20 +152,50 @@ Namespace Syntax
                 Return stringBuilder.ToString()
             End Function
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
 #End Region
         End Class
-        ''' <summary>
-        ''' Used for Strong Typing All Expressions must inherit this class
-        ''' </summary>
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An expression syntax node. 
+        '''             Used for Strong Typing All Expressions must inherit this class</summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend MustInherit Class ExpressionSyntaxNode
             Inherits SyntaxNode
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Initializes the Type for the Syntax Node to identify the node. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="syntaxType">       SyntaxType. </param>
+            ''' <param name="syntaxTypeStr">    String version of the Type. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Protected Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
                 MyBase.New(syntaxType, syntaxTypeStr)
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
@@ -133,7 +204,13 @@ Namespace Syntax
 #End Region
 
 #Region "Expressions"
-        'Concrete
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A binary expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class BinaryExpression
             Inherits ExpressionSyntaxNode
@@ -149,6 +226,7 @@ Namespace Syntax
             ''' Operator
             ''' </summary>
             Public _Operator As SyntaxToken
+
             ''' <summary>
             ''' Used to perform Calulations,
             ''' Comparison Operations as well as logical operations and assignments.
@@ -164,23 +242,37 @@ Namespace Syntax
 
                 If ileft Is Nothing Then
                     '    MsgBox(ileft.ToString)
-                    Throw New ArgumentNullException(NameOf(ileft))
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(ileft), ExceptionType.NullRefferenceError, NameOf(ileft), SyntaxType._String))
+
                 End If
 
                 If iright Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(iright))
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(iright), ExceptionType.NullRefferenceError, NameOf(iright), SyntaxType._String))
+
                 End If
 
                 _Left = ileft
                 _Right = iright
                 _Operator = ioperator
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''' <summary>
-            ''' Returns a evaluated result for this expression,
-            ''' Based on the input from the parent environment,
-            ''' and the information held in the expression.
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
             ''' </summary>
-            ''' <returns></returns>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Select Case _Operator._SyntaxType
         'Calc
@@ -249,27 +341,66 @@ Namespace Syntax
                 End Select
                 Return 0
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An unary expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class UnaryExpression
             Inherits ExpressionSyntaxNode
+            ''' <summary>   The numeric literal. </summary>
             Public NumericLiteral As NumericalExpression
             Public OperatorToken As SyntaxToken
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_OperatorToken">   [in,out] The operator token. </param>
+            ''' <param name="_NumericLiteral">  [in,out] The numeric literal. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ByRef _OperatorToken As SyntaxToken, ByRef _NumericLiteral As NumericalExpression)
                 MyBase.New(SyntaxType._UnaryExpression, SyntaxType._UnaryExpression.GetSyntaxTypeStr)
                 OperatorToken = _OperatorToken
                 NumericLiteral = _NumericLiteral
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''' <summary>
-            ''' Returns a value
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
             ''' </summary>
-            ''' <param name="ParentEnv"></param>
-            ''' <returns></returns>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Select Case OperatorToken._SyntaxType
                     Case SyntaxType.Sub_Operator
@@ -280,27 +411,42 @@ Namespace Syntax
                 Return Nothing
             End Function
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   if expression. </summary>
-        ''' Condition: This position must contain a condition – a comparison between two values – where one or both values can be cell references. The possible conditions are:
-        ''' Equal (==)
-        ''' Unequal 
-        ''' Less than
-        ''' Greater than 
-        ''' Less than or equal to 
-        ''' Greater than or equal to 
         '''
         ''' <remarks>   Leroy, 24/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class IfThenExpression
             Inherits ExpressionSyntaxNode
+            ''' <summary>   The then condition. </summary>
             Public ThenCondition As CodeBlockExpression
+            ''' <summary>   if condition. </summary>
             Public IfCondition As BinaryExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ifCondition">      if condition. </param>
+            ''' <param name="thenCondition">    The then condition. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ifCondition As BinaryExpression,
                            thenCondition As CodeBlockExpression)
                 MyBase.New(SyntaxType.IfExpression, SyntaxType.IfExpression.GetSyntaxTypeStr)
@@ -310,6 +456,25 @@ Namespace Syntax
                 Me.ThenCondition = thenCondition
 
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 If IfCondition.Evaluate(ParentEnv) = True Then
                     Return ThenCondition.Evaluate(ParentEnv)
@@ -319,18 +484,65 @@ Namespace Syntax
 
 
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   if else expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class IfElseExpression
             Inherits IfThenExpression
+            ''' <summary>   The else condition. </summary>
             Public ElseCondition As CodeBlockExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_ifCondition">     if condition. </param>
+            ''' <param name="_thenCondition">   The then condition. </param>
+            ''' <param name="_ElseCondition">   The else condition. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(_ifCondition As BinaryExpression, _thenCondition As CodeBlockExpression, _ElseCondition As CodeBlockExpression)
                 MyBase.New(_ifCondition, _thenCondition)
                 Me.ElseCondition = _ElseCondition
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 If IfCondition.Evaluate(ParentEnv) = True Then
                     Return ThenCondition.Evaluate(ParentEnv)
@@ -340,26 +552,75 @@ Namespace Syntax
 
 
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A code block expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class CodeBlockExpression
             Inherits ExpressionSyntaxNode
+            ''' <summary>   The local memory. </summary>
             Public LocalMemory As EnvironmentalMemory
+            ''' <summary>   The body. </summary>
             Public Body As List(Of ExpressionSyntaxNode)
-            '   Public BodyCount As Integer
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+            '''                                             null. </exception>
+            '''
+            ''' <param name="ibody">    The ibody. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ibody As List(Of ExpressionSyntaxNode))
                 MyBase.New(SyntaxType._CodeBlock,
                            SyntaxType._CodeBlock.GetSyntaxTypeStr)
                 If ibody Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(ibody))
+                    GeneralException.Add(New DiagnosticsException("Unable to register CodeBlockExpression " & NameOf(ibody), ExceptionType.NullRefferenceError, NameOf(ibody), SyntaxType._String))
+
                 End If
                 LocalMemory = New EnvironmentalMemory
                 Me.Body = ibody
 
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 LocalMemory = New EnvironmentalMemory(ParentEnv)
 
@@ -368,21 +629,67 @@ Namespace Syntax
                 Next
                 Return True
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A return expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ReturnExpression
             Inherits CodeBlockExpression
+            ''' <summary>   The returns. </summary>
             Public _Returns As IdentifierExpression
+            ''' <summary>   Type of the return. </summary>
             Public ReturnType As LiteralType
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_body">        The body. </param>
+            ''' <param name="iReturns">     [in,out] Zero-based index of the returns. </param>
+            ''' <param name="iReturnType">  Type of the return. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Sub New(_body As List(Of ExpressionSyntaxNode), ByRef iReturns As IdentifierExpression, iReturnType As LiteralType)
                 MyBase.New(_body)
                 Me._Returns = iReturns
                 Me.ReturnType = iReturnType
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 LocalMemory = New EnvironmentalMemory(ParentEnv)
@@ -393,18 +700,61 @@ Namespace Syntax
                 Return LocalMemory.GetVarValue(_Returns._Literal)
             End Function
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A parenthesized expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ParenthesizedExpression
             Inherits ExpressionSyntaxNode
+            ''' <summary>   The body. </summary>
             Public Body As ExpressionSyntaxNode
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Body"> [in,out] The body. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ByRef Body As ExpressionSyntaxNode)
                 MyBase.New(SyntaxType._ParenthesizedExpresion, SyntaxType._ParenthesizedExpresion.GetSyntaxTypeStr)
                 Me.Body = Body
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
 
@@ -414,6 +764,14 @@ Namespace Syntax
                 Return True
             End Function
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
@@ -421,7 +779,12 @@ Namespace Syntax
 #End Region
 
 #Region "Literals"
-        'Abstract
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A literal expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend MustInherit Class LiteralExpression
             Inherits ExpressionSyntaxNode
@@ -432,25 +795,49 @@ Namespace Syntax
             ''' Strongly type the object in the inheriting class
             ''' </summary>
             Public _Literal As Object
-            ''' <summary>
-            ''' Used To create Literals (atomic values)
-            ''' </summary>
-            ''' <param name="Value">Typed Value of Expression </param>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="syntaxType">       Type of the syntax. </param>
+            ''' <param name="syntaxTypeStr">    The syntax type string. </param>
+            ''' <param name="Value">            [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String, ByRef Value As Object)
                 MyBase.New(syntaxType, syntaxTypeStr)
                 _Literal = Value
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A numerical expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Friend Class NumericalExpression
             Inherits LiteralExpression
-            ''' <summary>
-            ''' Initiates a Integer Expression
-            ''' </summary>
-            ''' <param name="Value"></param>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Value">    [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._NumericLiteralExpression, SyntaxType._NumericLiteralExpression.GetSyntaxTypeStr, Value)
 
@@ -458,20 +845,46 @@ Namespace Syntax
 
             End Sub
 
-
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal
             End Function
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A string expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class StringExpression
             Inherits LiteralExpression
-            ''' <summary>
-            ''' Initiates a Integer Expression
-            ''' </summary>
-            ''' <param name="Value"></param>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Value">    [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._StringExpression, SyntaxType._StringExpression.GetSyntaxTypeStr, Value)
 
@@ -479,30 +892,93 @@ Namespace Syntax
 
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An identifier expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class IdentifierExpression
             Inherits LiteralExpression
-            ''' <summary>
-            ''' Initiates a Identifier Expression Its value is its name or identifier tag
-            ''' </summary>
-            ''' <param name="Value"></param>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>    Initiates a Identifier Expression Its value is its name or identifier tag. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Value">    [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._IdentifierExpression, SyntaxType._IdentifierExpression.GetSyntaxTypeStr, Value)
                 Me._Literal = Value._Value
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return GetValue(ParentEnv)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets a value. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   The value. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Function GetValue(ByRef ParentEnv As EnvironmentalMemory) As Object
                 If ParentEnv.CheckIfExists(_Literal) = False Then
@@ -530,12 +1006,35 @@ Namespace Syntax
                 Return ivar.Value
             End Function
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A boolean literal expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Friend Class BooleanLiteralExpression
             Inherits LiteralExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Value">    [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(ByRef Value As SyntaxToken)
                 MyBase.New(SyntaxType._BooleanLiteralExpression, SyntaxType._BooleanLiteralExpression.GetSyntaxTypeStr, Value)
                 _Literal = New Boolean = False
@@ -549,25 +1048,79 @@ Namespace Syntax
 
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal
             End Function
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An array literal expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ArrayLiteralExpression
             Inherits LiteralExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="Value">    [in,out] The value. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Sub New(ByRef Value As Object)
                 MyBase.New(SyntaxType._arrayList, SyntaxType._arrayList.GetSyntaxTypeStr, Value)
             End Sub
 
-
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Return _Literal._value
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
@@ -576,15 +1129,38 @@ Namespace Syntax
 #End Region
 
 #Region "Variables"
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An assignment expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class AssignmentExpression
             Inherits ExpressionSyntaxNode
+            ''' <summary>   The identifier. </summary>
             Public _identifier As IdentifierExpression
+            ''' <summary>   The operand. </summary>
             Public Operand As SyntaxToken
             ''' <summary>
             ''' Can be any expression
             ''' </summary>
             Public Value As ExpressionSyntaxNode
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+            '''                                             null. </exception>
+            '''
+            ''' <param name="identifier">   The identifier. </param>
+            ''' <param name="operand">      The operand. </param>
+            ''' <param name="value">        Can be any expression. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(identifier As IdentifierExpression, operand As SyntaxToken, value As Object)
                 MyBase.New(SyntaxType._AssignmentExpression, SyntaxType._AssignmentExpression.GetSyntaxTypeStr)
 
@@ -600,6 +1176,15 @@ Namespace Syntax
                 Me.Operand = operand
                 Me.Value = value
             End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Sets a variable. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Sub SetVar(ByRef ParentEnv As EnvironmentalMemory)
 
 
@@ -617,6 +1202,16 @@ Namespace Syntax
 
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Calculates the value. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="IdentifierValue">  [in,out] The identifier value. </param>
+            ''' <param name="ParentEnv">        [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   The calculated value. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Function calcValue(ByRef IdentifierValue As Object, ByRef ParentEnv As EnvironmentalMemory) As Object
 
@@ -646,21 +1241,68 @@ Namespace Syntax
                 End Select
                 Return "-Unknown Assignment Operation-"
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 SetVar(ParentEnv)
                 Return ParentEnv.GetVarValue(_identifier._Literal)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A variable declaration expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class VariableDeclarationExpression
             Inherits IdentifierExpression
+            ''' <summary>   The literal type string. </summary>
             Public _literalTypeStr As String
+            ''' <summary>   Type of the literal. </summary>
             Public _literalType As LiteralType
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="syntaxType">       Type of the syntax. </param>
+            ''' <param name="syntaxTypeStr">    The syntax type string. </param>
+            ''' <param name="value">            The value. </param>
+            ''' <param name="literalType">      Type of the literal. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String, value As SyntaxToken, literalType As LiteralType)
                 MyBase.New(value)
                 Me._literalType = literalType
@@ -670,6 +1312,23 @@ Namespace Syntax
                 _literalTypeStr = literalType.GetLiteralTypeStr
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 Select Case _literalType
@@ -691,6 +1350,14 @@ Namespace Syntax
 
                 Return ParentEnv.GetVar(_Literal).Value
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Private Function GetDebuggerDisplay() As String
                 Return ToString()

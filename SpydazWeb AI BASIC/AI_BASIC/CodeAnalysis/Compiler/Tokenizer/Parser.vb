@@ -1,24 +1,47 @@
-﻿Imports System.Web
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Tokenizer\Parser.vb
+'
+' summary:	Parser class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Web
 Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports AI_BASIC.Typing
 Imports Microsoft.VisualBasic.CompilerServices
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Tokenizer
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   A parser. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Parser
+                ''' <summary>   An enum constant representing the parser diagnostics option. </summary>
                 Public ParserDiagnostics = New List(Of DiagnosticsException)
 #Region "Propertys"
+                ''' <summary>   The script. </summary>
                 Private _Script As String
+                ''' <summary>   The tree. </summary>
                 Private _Tree As List(Of SyntaxToken)
+                ''' <summary>   The cursor position. </summary>
                 Private CursorPosition As Integer = 0
+                ''' <summary>   The diagnostics. </summary>
                 Public _Diagnostics As New List(Of String)
+                ''' <summary>   The eot cursor position. </summary>
                 Private EOT_CursorPosition As Integer = 0
-                ''' <summary>
-                ''' To hold the look ahead value without consuming the value
-                ''' </summary>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets the lookahead. </summary>
+                '''
+                ''' <value> The lookahead. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public ReadOnly Property Lookahead As String
                     Get
                         If EOT_CursorPosition <= CursorPosition + 1 Then
@@ -29,6 +52,13 @@ Namespace CodeAnalysis
 
                     End Get
                 End Property
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets the lookahead token. </summary>
+                '''
+                ''' <value> The lookahead token. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public ReadOnly Property LookaheadToken As SyntaxToken
                     Get
                         If CursorPosition + 1 <= EOT_CursorPosition Then
@@ -39,6 +69,13 @@ Namespace CodeAnalysis
 
                     End Get
                 End Property
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets the type of the lookahead syntax. </summary>
+                '''
+                ''' <value> The type of the lookahead syntax. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public ReadOnly Property LookaheadSyntaxType As SyntaxType
                     Get
                         If CursorPosition + 1 <= EOT_CursorPosition Then
@@ -53,6 +90,13 @@ Namespace CodeAnalysis
                 ''' Tokenizer !
                 ''' </summary>
                 Private Tokenizer As Lexer
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets the current token. </summary>
+                '''
+                ''' <value> The current token. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private ReadOnly Property CurrentToken As SyntaxToken
                     Get
                         Return _Peek(0)
@@ -70,6 +114,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The current top-of-stack object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _Peek(ByVal offset As Integer) As SyntaxToken
                     Dim index = CursorPosition + offset
                     If _Tree.Count > 0 Then
@@ -85,6 +130,18 @@ Namespace CodeAnalysis
                     End If
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Constructor. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+                '''                                             null. </exception>
+                '''
+                ''' <param name="Script">   [in,out] The script. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub New(ByRef Script As String)
                     _Tree = New List(Of SyntaxToken)
                     If Script Is Nothing Then
@@ -108,18 +165,29 @@ Namespace CodeAnalysis
                     _LexTokens()
                     EOT_CursorPosition = _Tree.Count
                 End Sub
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Constructor. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="TokenTree">    [in,out] The token tree. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub New(ByRef TokenTree As List(Of SyntaxToken))
                     _Tree = TokenTree
                     EOT_CursorPosition = _Tree.Count
                 End Sub
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Lex tokens. from the tokenizer 
-                '''             producing a full set of tokenized tokens 
-                '''             When parsing we parse the token tree</summary>
+                ''' <summary>
+                ''' Lex tokens. from the tokenizer producing a full set of tokenized tokens When parsing we parse
+                ''' the token tree.
+                ''' </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Sub _LexTokens()
                     Dim MyTok = Tokenizer._NextToken
                     Do While MyTok._SyntaxType <> SyntaxType._EndOfFileToken
@@ -135,7 +203,7 @@ Namespace CodeAnalysis
                 End Sub
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Gets the next token. from the token tree </summary>
+                ''' <summary>   Gets the next token. from the token tree. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
@@ -149,14 +217,15 @@ Namespace CodeAnalysis
                 End Function
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Match token. from the tree </summary>
+                ''' <summary>   Match token. from the tree. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
-                ''' <param name="Expected"> [in,out] The expected. token </param>
+                ''' <param name="Expected"> [in,out] The expected. token. </param>
                 '''
                 ''' <returns>   A SyntaxToken. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _MatchToken(ByRef Expected As SyntaxType) As SyntaxToken
                     Dim iCurrentToken As SyntaxToken
                     iCurrentToken = CurrentToken
@@ -184,17 +253,17 @@ Namespace CodeAnalysis
 #Region "Parser"
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Parse syntax tree.
-                '''             Main Entry Point
-                '''              </summary>
+                ''' <summary>   Parse syntax tree. Main Entry Point. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ParseSyntaxTree() As SyntaxTree
                     Return _ExpressionSyntaxTree()
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Parses the given language. </summary>
                 '''
@@ -204,6 +273,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function Parse(Optional Lang As LangTypes = LangTypes.Unknown) As SyntaxTree
                     Select Case Lang
                         Case LangTypes.BASIC
@@ -217,17 +287,19 @@ Namespace CodeAnalysis
                     End Select
                     Return ParseSyntaxTree()
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Parse logo.Languge 
-                '''             Still to be implemented </summary>
+                ''' <summary>   Parse logo.Languge Still to be implemented. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ParseLogo() As SyntaxTree
                     Return _LogoExpressionSyntaxTree()
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Parse SAL ASSMEBLY LANG. </summary>
                 '''
@@ -235,22 +307,36 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ParseSal() As SyntaxTree
                     Return _SalExpressionSyntaxTree()
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Parse basic.Lang </summary>
+                ''' <summary>   Parse basic.Lang. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ParseBasic() As SyntaxTree
                     Return _BasicExpressionSyntaxTree()
                 End Function
 
 #End Region
 #Region "SAL"
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Convert assignment operator. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Str">  [in,out] The string. </param>
+                '''
+                ''' <returns>   The assignment converted operator. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ConvertAssignmentOperator(ByRef Str As String) As String
                     Str = Str.Replace("<=", "_IS_LTE")
                     Str = Str.Replace("+=", "_INCR")
@@ -266,6 +352,15 @@ Namespace CodeAnalysis
                     Str = Str.Replace("=", "_ASSIGNS")
                     Return UCase(Str)
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Sal expression list. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A List(Of SyntaxNode) </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _SalExpressionList() As List(Of SyntaxNode)
                     Dim Body As New List(Of SyntaxNode)
                     Do While CursorPosition < EOT_CursorPosition
@@ -275,15 +370,22 @@ Namespace CodeAnalysis
 
                 End Function
 
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Sal prime expression. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A SalExpressionSyntax. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                Public Function SalPrimeExpression() As ExpressionSyntaxNode
+                Public Function SalPrimeExpression() As SalExpressionSyntax
                     Select Case CurrentToken._SyntaxType
 
-                        Case SyntaxType.SAL_CALL
-                        Case SyntaxType.SAL_DECR
-                        Case SyntaxType.SAL_DUP
-                        Case SyntaxType.SAL_HALT
-                        Case SyntaxType.SAL_INCR
+#Region "Binary Operations"
+
+
+
+
 'Binary Compare
                         Case SyntaxType.SAL_IS_EQ
                         Case SyntaxType.SAL_IS_GT
@@ -301,27 +403,101 @@ Namespace CodeAnalysis
                         Case SyntaxType.SAL_JIF_GT
                         Case SyntaxType.SAL_JIF_LT
                         Case SyntaxType.SAL_JIF_T
-                        Case SyntaxType.SAL_JMP
+
+
 'Boolean
                         Case SyntaxType.SAL_TO_POS
                         Case SyntaxType.SAL_TO_NEG
+#End Region
 
+#Region "SAL FUNCTIONS"
+
+'Functions
+                        Case SyntaxType.SAL_CALL
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_CALL))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
                         Case SyntaxType.SAL_LOAD
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_LOAD))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
                         Case SyntaxType.SAL_STORE
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_STORE))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
                         Case SyntaxType.SAL_REMOVE
-                        Case SyntaxType.SAL_RET
-                        Case SyntaxType.SAL_NULL
-'Stack
-                        Case SyntaxType.SAL_PULL
-                        Case SyntaxType.SAL_PEEK
-                        Case SyntaxType.SAL_POP
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_REMOVE))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
 
+
+
+                        Case SyntaxType.SAL_JMP
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_JMP))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+                        Case SyntaxType.SAL_PUSH
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_PUSH))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+                        Case SyntaxType.SAL_PULL
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_PULL))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+                        Case SyntaxType.SAL_PEEK
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_PEEK))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+                        Case SyntaxType.SAL_POP
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_POP))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _NumericLiteralExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
                         Case SyntaxType.SAL_PRINT_C
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_PRINT_C))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _StringExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
                         Case SyntaxType.SAL_PRINT_M
-'
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_PRINT_M))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _StringExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+
+                        Case SyntaxType.SAL_DECR
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_DECR))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _IdentifierExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+                        Case SyntaxType.SAL_INCR
+                            Dim Cmd = New SalCommandExpression(_MatchToken(SyntaxType.SAL_INCR))
+                            CursorPosition += 2
+                            Dim Numbe = New SalLiteralExpression(SyntaxType._Integer, _IdentifierExpression)
+                            Return New SalFunctionExpression(SyntaxType.SAL_JMP, Cmd, Numbe)
+'Comands
                         Case SyntaxType.SAL_RESUME
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_RESUME))
                         Case SyntaxType.SAL_PAUSE
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_PAUSE))
                         Case SyntaxType.SAL_WAIT
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_WAIT))
+                        Case SyntaxType.SAL_DUP
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_DUP))
+                        Case SyntaxType.SAL_HALT
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_HALT))
+                        Case SyntaxType.SAL_RET
+                            Return New SalCommandExpression(_MatchToken(SyntaxType.SAL_RET))
+
+#End Region
+
 'Identification
                         Case SyntaxType._Sal_Program_title
                         Case SyntaxType._SAL_PROGRAM_BEGIN
@@ -332,6 +508,17 @@ Namespace CodeAnalysis
                     Return Nothing
                 End Function
 #End Region
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Check logo statement. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="_left">    [in,out] The left. </param>
+                '''
+                ''' <returns>   A SyntaxType. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function CheckLogoStatement(ByRef _left As String) As SyntaxType
                     'Check if it is a left hand cmd
                     Select Case LCase(_left)
@@ -382,17 +569,18 @@ Namespace CodeAnalysis
 
                     Return Nothing
                 End Function
-
 #Region "Basic _ExpressionSyntaxTree"
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Expression syntax tree. 
-                '''             General Entrys Point Given a SyntaxType StarLang type</summary>
+                ''' <summary>
+                ''' Expression syntax tree. General Entrys Point Given a SyntaxType StarLang type.
+                ''' </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _ExpressionSyntaxTree() As SyntaxTree
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType._SAL_PROGRAM_BEGIN
@@ -405,6 +593,7 @@ Namespace CodeAnalysis
                             Return _GeneralExpressionSyntaxTree()
                     End Select
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Sal expression syntax tree. </summary>
                 '''
@@ -412,9 +601,11 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _SalExpressionSyntaxTree() As SyntaxTree
                     Return New SyntaxTree(_Script, _SalExpressionList, _Tree, _Diagnostics)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Basic expression syntax tree. </summary>
                 '''
@@ -422,9 +613,11 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _BasicExpressionSyntaxTree() As SyntaxTree
                     Return New SyntaxTree(_Script, ExpressionList, _Tree, _Diagnostics)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Logo expression syntax tree. </summary>
                 '''
@@ -432,9 +625,11 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _LogoExpressionSyntaxTree() As SyntaxTree
                     Return New SyntaxTree(_Script, ExpressionList, _Tree, _Diagnostics)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   General expression syntax tree. </summary>
                 '''
@@ -442,29 +637,24 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxTree. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _GeneralExpressionSyntaxTree() As SyntaxTree
                     Return New SyntaxTree(_Script, ExpressionList, _Tree, _Diagnostics)
                 End Function
 #End Region
-
-
-#Region "Basic Languge"
-
-
+#Region "Basic Language"
 #Region "MAIN_EXPRESSIONS"
 
 #Region "Expression"
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Expression list.
-                '''             Produces the list 
-                '''             required by the main syntax tree
-                '''              </summary>
+                ''' <summary>   Expression list. Produces the list required by the main syntax tree. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   A List(Of SyntaxNode) </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ExpressionList() As List(Of SyntaxNode)
                     Dim Lst As New List(Of SyntaxNode)
                     Do While CursorPosition < EOT_CursorPosition
@@ -475,13 +665,15 @@ Namespace CodeAnalysis
 
                     Return Lst
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Expressions this.  </summary>
+                ''' <summary>   Expressions this. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _Expression()
 
                     Select Case CurrentToken._SyntaxType
@@ -514,6 +706,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _UnaryExpression(ByRef _Operator As SyntaxToken) As ExpressionSyntaxNode
                     Dim x = New UnaryExpression(_Operator, _NumericLiteralExpression)
                     CursorPosition += 2
@@ -530,6 +723,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _PrimaryExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
@@ -617,6 +811,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                      'Simple Assign
@@ -645,6 +840,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _AssignmentExpression(ByRef _left As ExpressionSyntaxNode)
                     'Simple Assign
 
@@ -680,6 +876,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _BinaryExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
@@ -759,6 +956,7 @@ Namespace CodeAnalysis
 
                     Return _Left
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Binary expression. </summary>
                 '''
@@ -768,6 +966,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _BinaryExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
 
                     Select Case CurrentToken._SyntaxType
@@ -856,6 +1055,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ComparisonExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
@@ -938,6 +1138,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ComparisonExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
@@ -1018,6 +1219,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _AddativeExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
@@ -1059,6 +1261,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _AddativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
@@ -1118,6 +1321,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _MultiplicativeExpression() As ExpressionSyntaxNode
                     Dim _Left As ExpressionSyntaxNode
                     _Left = _LiteralExpression()
@@ -1171,6 +1375,7 @@ Namespace CodeAnalysis
 
                     Return _Left
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Multiplicative expression. </summary>
                 '''
@@ -1180,6 +1385,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _MultiplicativeExpression(ByRef _Left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Dim _Operator As New SyntaxToken
                     Dim _right As ExpressionSyntaxNode
@@ -1242,6 +1448,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _CodeBlockExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     Dim y = _MatchToken(SyntaxType._CODE_BEGIN)
@@ -1258,18 +1465,21 @@ Namespace CodeAnalysis
                     CursorPosition += 1
                     Return New CodeBlockExpression(Body)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Identifier assignment list expression.
-                '''             
+                ''' <summary>
+                ''' Identifier assignment list expression.
                 ''' 
                 ''' 
-                ''' Syntax [a=3,b=4+3,c=4>5]
-                '''               </summary>
+                ''' 
+                ''' Syntax [a=3,b=4+3,c=4>5].
+                ''' </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _IdentifierAssignmentListExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     _MatchToken(SyntaxType._LIST_BEGIN)
@@ -1285,6 +1495,7 @@ Namespace CodeAnalysis
 
                     Return New CodeBlockExpression(Body)
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Literal list expression. </summary>
                 '''
@@ -1292,6 +1503,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _LiteralListExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     _MatchToken(SyntaxType._LIST_BEGIN)
@@ -1315,6 +1527,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ParenthesizedExpression() As ExpressionSyntaxNode
                     Dim Body As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
@@ -1332,14 +1545,15 @@ Namespace CodeAnalysis
                     Return _BinaryExpression()
 
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   If expression. </summary>
-                ''' if 4>5 then {43} else {34}
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _IfExpression() As ExpressionSyntaxNode
                     Dim ThenExpression As CodeBlockExpression
                     Dim elseExpression As CodeBlockExpression
@@ -1375,6 +1589,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(xz)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   If condition. </summary>
                 '''
@@ -1382,6 +1597,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A BinaryExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _IfCondition() As ExpressionSyntaxNode
                     Dim x = _MatchToken(SyntaxType.IfKeyword)
                     CursorPosition += 1
@@ -1396,6 +1612,7 @@ Namespace CodeAnalysis
                     Loop
 
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Then code block expression. </summary>
                 '''
@@ -1403,6 +1620,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ThenCodeBlockExpression() As ExpressionSyntaxNode
                     CursorPosition += 1
                     Dim x = _MatchToken(SyntaxType.ThenKeyword)
@@ -1411,6 +1629,7 @@ Namespace CodeAnalysis
                     Return _CodeBlockExpression()
 
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Else code block expression. </summary>
                 '''
@@ -1418,6 +1637,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ElseCodeBlockExpression() As ExpressionSyntaxNode
                     CursorPosition += 1
                     Dim x = _MatchToken(SyntaxType.ElseKeyword)
@@ -1431,12 +1651,13 @@ Namespace CodeAnalysis
 #Region "Do/While/Until"
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Gets the do. Cmd </summary>
+                ''' <summary>   Gets the do. Cmd. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _Do() As ExpressionSyntaxNode
                     _MatchToken(SyntaxType.DoKeyword)
                     CursorPosition += 1
@@ -1452,7 +1673,7 @@ Namespace CodeAnalysis
 
                     End Select
 
-
+                    Return Nothing
                 End Function
 #End Region
 #Region "For/Next"
@@ -1464,6 +1685,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ForNext()
                     _MatchToken(SyntaxType.ForKeyword)
                     _IdentifierExpression()
@@ -1474,15 +1696,17 @@ Namespace CodeAnalysis
                     _CodeBlockExpression()
                     Dim x As New DiagnosticsException("unknown _ForNext? ", ExceptionType.UnabletoParseError, CurrentToken.ToJson, SyntaxType._UnknownToken)
                     ParserDiagnostics.add(x)
+                    Return Nothing
                 End Function
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                ''' <summary>   Applies an operation to all items in this collection.' </summary>
+                ''' <summary>   Applies an operation to all items in this collection.'. </summary>
                 '''
                 ''' <remarks>   Leroy, 24/05/2021. </remarks>
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _ForEach()
                     _MatchToken(SyntaxType.ForKeyword)
                     _MatchToken(SyntaxType.EachKeyWord)
@@ -1492,10 +1716,12 @@ Namespace CodeAnalysis
                     _CodeBlockExpression()
                     Dim x As New DiagnosticsException("unknown _ForEach? ", ExceptionType.UnabletoParseError, CurrentToken.ToJson, SyntaxType._UnknownToken)
                     ParserDiagnostics.add(x)
+                    Return Nothing
                 End Function
 #End Region
 #End Region
 #Region "Variables"
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Simple assignment expression. </summary>
                 '''
@@ -1505,6 +1731,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _SimpleAssignmentExpression(ByRef _Left As IdentifierExpression) As ExpressionSyntaxNode
                     Dim _Operator As SyntaxToken
 
@@ -1525,6 +1752,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(x)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Complex assignment expression. </summary>
                 '''
@@ -1534,6 +1762,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _ComplexAssignmentExpression(ByRef _Left As IdentifierExpression) As ExpressionSyntaxNode
                     Dim _Operator As SyntaxToken
 
@@ -1569,6 +1798,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(x)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Variable declaration expression. </summary>
                 '''
@@ -1576,6 +1806,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _VariableDeclarationExpression() As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType.DimKeyword
@@ -1613,6 +1844,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(x)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Type expression. </summary>
                 '''
@@ -1620,6 +1852,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A LiteralType. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function _TypeExpression() As LiteralType
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType._BooleanType
@@ -1670,6 +1903,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _LiteralExpression() As ExpressionSyntaxNode
 
                     Select Case CurrentToken._SyntaxType
@@ -1691,6 +1925,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(x)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Identifier expression. </summary>
                 '''
@@ -1698,6 +1933,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An IdentifierExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _IdentifierExpression() As IdentifierExpression
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType._Identifier
@@ -1719,6 +1955,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A NumericalExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _NumericLiteralExpression() As NumericalExpression
                     Dim NewNode As SyntaxToken
                     Select Case CurrentToken._SyntaxType
@@ -1746,6 +1983,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A StringExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _StringExpression() As StringExpression
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType._String
@@ -1759,6 +1997,7 @@ Namespace CodeAnalysis
                     ParserDiagnostics.add(x)
                     Return Nothing
                 End Function
+
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Boolean expression. </summary>
                 '''
@@ -1766,6 +2005,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A BooleanLiteralExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function _BooleanExpression() As BooleanLiteralExpression
                     Select Case CurrentToken._SyntaxType
                         Case SyntaxType.TrueKeyword
@@ -1792,14 +2032,13 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The debugger display. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function
 #End Region
 #End Region
-
             End Class
         End Namespace
     End Namespace
-
 End Namespace

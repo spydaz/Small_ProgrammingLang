@@ -1,4 +1,10 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\Symbol\FunctionSymbol.vb
+'
+' summary:	Function symbol class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
@@ -8,7 +14,7 @@ Imports Basic.CodeAnalysis.Syntax
 
 Namespace Global.Basic.CodeAnalysis.Symbols
 
-  Friend Module BuiltinFunctions
+    Friend Module BuiltinFunctions
 
 #If BASIC Then
     Public ReadOnly Hex As New FunctionSymbol("HEX$", ImmutableArray.Create(New ParameterSymbol("num", TypeSymbol.Int)), TypeSymbol.String)
@@ -26,33 +32,90 @@ Namespace Global.Basic.CodeAnalysis.Symbols
     Public ReadOnly UCase As New FunctionSymbol("UCASE$", ImmutableArray.Create(New ParameterSymbol("value", TypeSymbol.String)), TypeSymbol.String)
     Public ReadOnly Val As New FunctionSymbol("VAL", ImmutableArray.Create(New ParameterSymbol("value", TypeSymbol.String)), TypeSymbol.Int)
 #End If
-    Public ReadOnly Print As New FunctionSymbol("print", ImmutableArray.Create(New ParameterSymbol("text", TypeSymbol.Any, 0)), TypeSymbol.Void)
-    Public ReadOnly Input As New FunctionSymbol("input", ImmutableArray(Of ParameterSymbol).Empty, TypeSymbol.String)
-    Public ReadOnly Rnd As New FunctionSymbol("rnd", ImmutableArray.Create(New ParameterSymbol("max", TypeSymbol.Int, 0)), TypeSymbol.Int)
+        ''' <summary>   The print. </summary>
+        Public ReadOnly Print As New FunctionSymbol("print", ImmutableArray.Create(New ParameterSymbol("text", TypeSymbol.Any, 0)), TypeSymbol.Void)
+        ''' <summary>   The input. </summary>
+        Public ReadOnly Input As New FunctionSymbol("input", ImmutableArray(Of ParameterSymbol).Empty, TypeSymbol.String)
+        ''' <summary>   The random. </summary>
+        Public ReadOnly Rnd As New FunctionSymbol("rnd", ImmutableArray.Create(New ParameterSymbol("max", TypeSymbol.Int, 0)), TypeSymbol.Int)
 
-    Friend Function GetAll() As IEnumerable(Of FunctionSymbol)
-      Return GetType(BuiltinFunctions).GetFields(BindingFlags.Public Or BindingFlags.Static).
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets all items in this collection. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <returns>
+        ''' An enumerator that allows foreach to be used to process all items in this collection.
+        ''' </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Friend Function GetAll() As IEnumerable(Of FunctionSymbol)
+            Return GetType(BuiltinFunctions).GetFields(BindingFlags.Public Or BindingFlags.Static).
                                        Where(Function(f) f.FieldType = GetType(FunctionSymbol)).
                                        Select(Function(f) CType(f.GetValue(Nothing), FunctionSymbol))
-    End Function
+        End Function
 
-  End Module
+    End Module
 
-  Public NotInheritable Class FunctionSymbol
-    Inherits Symbol
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary> A function symbol. </summary>
+    '''
+    ''' <remarks> Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Sub New(name As String, paremeters As ImmutableArray(Of ParameterSymbol), type As TypeSymbol, Optional declaration As FunctionDeclarationSyntax = Nothing)
-      MyBase.New(name)
-      Parameters = paremeters
-      Me.Type = type
-      Me.Declaration = declaration
-    End Sub
+    Public NotInheritable Class FunctionSymbol
+        Inherits Symbol
 
-    Public Overrides ReadOnly Property Kind As SymbolKind = SymbolKind.Function
-    Public ReadOnly Property Declaration As FunctionDeclarationSyntax
-    Public ReadOnly Property Parameters As ImmutableArray(Of ParameterSymbol)
-    Public ReadOnly Property Type As TypeSymbol
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Constructor. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="name">         The name. </param>
+        ''' <param name="paremeters">   The paremeters. </param>
+        ''' <param name="type">         The type. </param>
+        ''' <param name="declaration">  (Optional) The declaration. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  End Class
+        Sub New(name As String, paremeters As ImmutableArray(Of ParameterSymbol), type As TypeSymbol, Optional declaration As FunctionDeclarationSyntax = Nothing)
+            MyBase.New(name)
+            Parameters = paremeters
+            Me.Type = type
+            Me.Declaration = declaration
+        End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the kind. </summary>
+        '''
+        ''' <value> The kind. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Public Overrides ReadOnly Property Kind As SymbolKind = SymbolKind.Function
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the declaration. </summary>
+        '''
+        ''' <value> The declaration. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Public ReadOnly Property Declaration As FunctionDeclarationSyntax
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets options for controlling the operation. </summary>
+        '''
+        ''' <value> The parameters. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Public ReadOnly Property Parameters As ImmutableArray(Of ParameterSymbol)
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the type. </summary>
+        '''
+        ''' <value> The type. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Public ReadOnly Property Type As TypeSymbol
+
+    End Class
 
 End Namespace

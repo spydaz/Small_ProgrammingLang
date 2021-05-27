@@ -1,4 +1,10 @@
-﻿Imports Microsoft.VisualBasic
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\Consoles\UserControls\linenum_rtf.vb
+'
+' summary:	Linenum RTF class
+'---------------------------------------------------------------------------------------------------
+
+Imports Microsoft.VisualBasic
 Imports System
 Imports System.Collections.Generic
 Imports System.Drawing
@@ -6,13 +12,37 @@ Imports System.Drawing.Drawing2D
 Imports System.Windows.Forms
 
 Namespace LineNumbers
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   A line numbering. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     <ComponentModel.DefaultProperty("ParentRichTextBox")>
     Public Class LineNumbering
         Inherits Control
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A line number item. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Private Class LineNumberItem
+            ''' <summary>   The line number. </summary>
             Friend LineNumber As Integer
+            ''' <summary>   The rectangle. </summary>
             Friend Rectangle As Rectangle
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="zLineNumber">  The line number. </param>
+            ''' <param name="zRectangle">   The rectangle. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Friend Sub New(ByVal zLineNumber As Integer, ByVal zRectangle As Rectangle)
                 LineNumber = zLineNumber
@@ -20,14 +50,31 @@ Namespace LineNumbers
             End Sub
         End Class
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Values that represent line number dock sides. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Enum LineNumberDockSide As Byte
+            ''' <summary>   An enum constant representing the none option. </summary>
             None = 0
+            ''' <summary>   An enum constant representing the left option. </summary>
             Left = 1
+            ''' <summary>   An enum constant representing the right option. </summary>
             Right = 2
+            ''' <summary>   An enum constant representing the height option. </summary>
             Height = 4
         End Enum
+        ''' <summary>   The with events field z coordinate parent control. </summary>
 
         Private withEventsField_zParent As RichTextBox = Nothing
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the parent. </summary>
+        '''
+        ''' <value> The z coordinate parent. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Property zParent As RichTextBox
             Get
@@ -65,10 +112,17 @@ Namespace LineNumbers
             End Set
         End Property
 
+
         'private Windows.Forms.Timer withEventsField_zTimer = new Windows.Forms.Timer();
         'private Windows.Forms.Timer zTimer {
         'private Timer withEventsField_zTimer = new Windows.Forms.Timer();
         Private withEventsField_zTimer As Timer = New Timer()
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the timer. </summary>
+        '''
+        ''' <value> The z coordinate timer. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Property zTimer As Timer
             Get
@@ -87,44 +141,86 @@ Namespace LineNumbers
                 End If
             End Set
         End Property
+        ''' <summary>   True to automatically sizing. </summary>
 
         Private zAutoSizing As Boolean = True
+        ''' <summary>   Size of the automatic sizing. </summary>
         Private zAutoSizing_Size As Size = New Size(0, 0)
         'private Rectangle zContentRectangle = null;
         Private zContentRectangle As Rectangle
+        ''' <summary>   The dock side. </summary>
         Private zDockSide As LineNumberDockSide = LineNumberDockSide.Left
+        ''' <summary>   True if parent is scrolling. </summary>
         Private zParentIsScrolling As Boolean = False
+        ''' <summary>   True to enable see through mode, false to disable it. </summary>
         Private zSeeThroughMode As Boolean = False
+        ''' <summary>   True to gradient show. </summary>
         Private zGradient_Show As Boolean = True
+        ''' <summary>   The gradient direction. </summary>
         Private zGradient_Direction As LinearGradientMode = LinearGradientMode.Horizontal
+        ''' <summary>   The gradient start color. </summary>
         Private zGradient_StartColor As Color = Color.FromArgb(0, 0, 0, 0)
+        ''' <summary>   The gradient end color. </summary>
         Private zGradient_EndColor As Color = Color.LightSteelBlue
+        ''' <summary>   True to grid lines show. </summary>
         Private zGridLines_Show As Boolean = True
+        ''' <summary>   The grid lines thickness. </summary>
         Private zGridLines_Thickness As Single = 1
+        ''' <summary>   The grid lines style. </summary>
         Private zGridLines_Style As DashStyle = DashStyle.Dot
+        ''' <summary>   The grid lines color. </summary>
         Private zGridLines_Color As Color = Color.SlateGray
+        ''' <summary>   True to border lines show. </summary>
         Private zBorderLines_Show As Boolean = True
+        ''' <summary>   The border lines thickness. </summary>
         Private zBorderLines_Thickness As Single = 1
+        ''' <summary>   The border lines style. </summary>
         Private zBorderLines_Style As DashStyle = DashStyle.Dot
+        ''' <summary>   The border lines color. </summary>
         Private zBorderLines_Color As Color = Color.SlateGray
+        ''' <summary>   True to margin lines show. </summary>
         Private zMarginLines_Show As Boolean = True
+        ''' <summary>   The margin lines side. </summary>
         Private zMarginLines_Side As LineNumberDockSide = LineNumberDockSide.Right
+        ''' <summary>   The margin lines thickness. </summary>
         Private zMarginLines_Thickness As Single = 1
+        ''' <summary>   The margin lines style. </summary>
         Private zMarginLines_Style As DashStyle = DashStyle.Solid
+        ''' <summary>   The margin lines color. </summary>
         Private zMarginLines_Color As Color = Color.SlateGray
+        ''' <summary>   True to line numbers show. </summary>
         Private zLineNumbers_Show As Boolean = True
+        ''' <summary>   True to line numbers show leading zeroes. </summary>
         Private zLineNumbers_ShowLeadingZeroes As Boolean = True
+        ''' <summary>   True to line numbers show as hexadecimal. </summary>
         Private zLineNumbers_ShowAsHexadecimal As Boolean = False
+        ''' <summary>   True to line numbers clip by item rectangle. </summary>
         Private zLineNumbers_ClipByItemRectangle As Boolean = True
+        ''' <summary>   The line numbers offset. </summary>
         Private zLineNumbers_Offset As Size = New Size(0, 0)
+        ''' <summary>   The line numbers format. </summary>
         Private zLineNumbers_Format As String = "0"
+        ''' <summary>   The line numbers alignment. </summary>
         Private zLineNumbers_Alignment As ContentAlignment = ContentAlignment.TopRight
+        ''' <summary>   True to line numbers anti alias. </summary>
         Private zLineNumbers_AntiAlias As Boolean = True
+        ''' <summary>   The line is. </summary>
         Private zLNIs As List(Of LineNumberItem) = New List(Of LineNumberItem)()
+        ''' <summary>   The point in parent. </summary>
         Private zPointInParent As Point = New Point(0, 0)
+        ''' <summary>   The point in me. </summary>
         Private zPointInMe As Point = New Point(0, 0)
+        ''' <summary>   The parent in me. </summary>
         Private zParentInMe As Integer = 0
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="T:System.Windows.Forms.Control" /> class with
+        ''' default settings.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Public Sub New()
             If True Then
@@ -147,14 +243,26 @@ Namespace LineNumbers
             Invalidate()
         End Sub
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Windows.Forms.Control.HandleCreated" /> event.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="e">    An <see cref="T:System.EventArgs" /> that contains the event data. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Protected Overrides Sub OnHandleCreated(ByVal e As EventArgs)
             MyBase.OnHandleCreated(e)
             AutoSize = False
         End Sub
 
-
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   This property is not relevant for this class. </summary>
+        '''
+        ''' <value> <see langword="true" /> if enabled; otherwise, <see langword="false" />. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         <ComponentModel.Browsable(False)>
         Public Overrides Property AutoSize As Boolean
             Get
@@ -165,6 +273,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the automatic sizing. </summary>
+        '''
+        ''' <value> The automatic sizing. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Description("Use this property to automatically resize the control (and reposition it if needed).")>
         <ComponentModel.Category("Additional Behavior")>
@@ -178,6 +292,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the parent rich text box. </summary>
+        '''
+        ''' <value> The parent rich text box. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Description("Use this property to enable LineNumbers for the chosen RichTextBox.")>
         <ComponentModel.Category("Add LineNumbers to")>
@@ -199,6 +319,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the dock side. </summary>
+        '''
+        ''' <value> The dock side. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this property to dock the LineNumbers to a chosen side of the chosen RichTextBox.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property DockSide As LineNumberDockSide
@@ -212,6 +338,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the see through mode. </summary>
+        '''
+        ''' <value> The see through mode. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this property to enable the control to act as an overlay ontop of the RichTextBox.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property _SeeThroughMode_ As Boolean
@@ -223,6 +355,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the show border lines. </summary>
+        '''
+        ''' <value> The show border lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Description("BorderLines are shown on all sides of the LineNumber control.")>
         <ComponentModel.Category("Additional Behavior")>
@@ -236,6 +374,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the color of the border lines. </summary>
+        '''
+        ''' <value> The color of the border lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property BorderLines_Color As Color
             Get
@@ -247,6 +391,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the border lines thickness. </summary>
+        '''
+        ''' <value> The border lines thickness. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property BorderLines_Thickness As Single
             Get
@@ -257,6 +407,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the border lines style. </summary>
+        '''
+        ''' <value> The border lines style. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Appearance")>
         Public Property BorderLines_Style As DashStyle
@@ -270,6 +426,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the show grid lines. </summary>
+        '''
+        ''' <value> The show grid lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("GridLines are the horizontal divider-lines shown above each LineNumber.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property Show_GridLines As Boolean
@@ -282,6 +444,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the color of the grid lines. </summary>
+        '''
+        ''' <value> The color of the grid lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property GridLines_Color As Color
             Get
@@ -293,6 +461,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the grid lines thickness. </summary>
+        '''
+        ''' <value> The grid lines thickness. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property GridLines_Thickness As Single
             Get
@@ -303,6 +477,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the grid lines style. </summary>
+        '''
+        ''' <value> The grid lines style. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Appearance")>
         Public Property GridLines_Style As DashStyle
@@ -316,6 +496,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the show margin lines. </summary>
+        '''
+        ''' <value> The show margin lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("MarginLines are shown on the Left or Right (or both in Height-mode) of the LineNumber control.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property Show_MarginLines As Boolean
@@ -328,6 +514,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the margin lines side. </summary>
+        '''
+        ''' <value> The margin lines side. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property MarginLines_Side As LineNumberDockSide
             Get
@@ -338,6 +530,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the color of the margin lines. </summary>
+        '''
+        ''' <value> The color of the margin lines. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Appearance")>
         Public Property MarginLines_Color As Color
@@ -350,6 +548,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the margin lines thickness. </summary>
+        '''
+        ''' <value> The margin lines thickness. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property MarginLines_Thickness As Single
             Get
@@ -360,6 +564,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the margin lines style. </summary>
+        '''
+        ''' <value> The margin lines style. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Appearance")>
         Public Property MarginLines_Style As DashStyle
@@ -373,6 +583,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the show background gradient. </summary>
+        '''
+        ''' <value> The show background gradient. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("The BackgroundGradient is a gradual blend of two colors, shown in the back of each LineNumber's item-area.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property Show_BackgroundGradient As Boolean
@@ -385,6 +601,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the color of the background gradient alpha. </summary>
+        '''
+        ''' <value> The color of the background gradient alpha. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property BackgroundGradient_AlphaColor As Color
             Get
@@ -395,6 +617,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the color of the background gradient beta. </summary>
+        '''
+        ''' <value> The color of the background gradient beta. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Appearance")>
         Public Property BackgroundGradient_BetaColor As Color
@@ -407,6 +635,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the background gradient direction. </summary>
+        '''
+        ''' <value> The background gradient direction. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Category("Additional Appearance")>
         Public Property BackgroundGradient_Direction As LinearGradientMode
             Get
@@ -417,6 +651,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the show line nrs. </summary>
+        '''
+        ''' <value> The show line nrs. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Category("Additional Behavior")>
         Public Property Show_LineNrs As Boolean
@@ -429,6 +669,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs clipped by item rectangle. </summary>
+        '''
+        ''' <value> The line nrs clipped by item rectangle. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this to set whether the LineNumbers are allowed to spill out of their item-area, or should be clipped by it.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property LineNrs_ClippedByItemRectangle As Boolean
@@ -440,6 +686,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs leading zeroes. </summary>
+        '''
+        ''' <value> The line nrs leading zeroes. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Description("Use this to set whether the LineNumbers should have leading zeroes (based on the total amount of textlines).")>
         <ComponentModel.Category("Additional Behavior")>
@@ -454,6 +706,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs as hexadecimal. </summary>
+        '''
+        ''' <value> The line nrs as hexadecimal. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this to set whether the LineNumbers should be shown as hexadecimal values.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property LineNrs_AsHexadecimal As Boolean
@@ -467,6 +725,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs offset. </summary>
+        '''
+        ''' <value> The line nrs offset. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this property to manually reposition the LineNumbers, relative to their current location.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property LineNrs_Offset As Size
@@ -479,6 +743,12 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs alignment. </summary>
+        '''
+        ''' <value> The line nrs alignment. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Description("Use this to align the LineNumbers to a chosen corner (or center) within their item-area.")>
         <ComponentModel.Category("Additional Behavior")>
         Public Property LineNrs_Alignment As ContentAlignment
@@ -490,6 +760,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the line nrs anti alias. </summary>
+        '''
+        ''' <value> The line nrs anti alias. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.Description("Use this to apply Anti-Aliasing to the LineNumbers (high quality). Some fonts will look better without it, though.")>
         <ComponentModel.Category("Additional Behavior")>
@@ -504,6 +780,16 @@ Namespace LineNumbers
             End Set
         End Property
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the font of the text displayed by the control. </summary>
+        '''
+        ''' <value>
+        ''' The <see cref="T:System.Drawing.Font" /> to apply to the text displayed by the control. The
+        ''' default is the value of the <see cref="P:System.Windows.Forms.Control.DefaultFont" />
+        ''' property.
+        ''' </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         <ComponentModel.Browsable(True)>
         Public Overrides Property Font As Font
             Get
@@ -515,6 +801,12 @@ Namespace LineNumbers
                 Invalidate()
             End Set
         End Property
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Gets or sets the text associated with this control. </summary>
+        '''
+        ''' <value> The text associated with this control. </value>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         <ComponentModel.DefaultValue("")>
         <ComponentModel.AmbientValue("")>
@@ -529,14 +821,30 @@ Namespace LineNumbers
             End Set
         End Property
 
-
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Windows.Forms.Control.SizeChanged" /> event.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="e">    An <see cref="T:System.EventArgs" /> that contains the event data. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Protected Overrides Sub OnSizeChanged(ByVal e As EventArgs)
             If DesignMode = True Then Refresh()
             MyBase.OnSizeChanged(e)
             Invalidate()
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Windows.Forms.Control.LocationChanged" /> event.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="e">    An <see cref="T:System.EventArgs" /> that contains the event data. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Protected Overrides Sub OnLocationChanged(ByVal e As EventArgs)
             If DesignMode = True Then Refresh()
@@ -544,16 +852,26 @@ Namespace LineNumbers
             Invalidate()
         End Sub
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>
+        ''' Forces the control to invalidate its client area and immediately redraw itself and any child
+        ''' controls.
+        ''' </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Overrides Sub Refresh()
             '   Note: don't change the order here, first the Mybase.Refresh, then the Update_SizeAndPosition.
             MyBase.Refresh()
             Update_SizeAndPosition()
         End Sub
 
-        ''' <summary>
-        ''' This Sub will run whenever Me.Refresh() is called. It applies the AutoSizing and DockSide settings.
-        ''' </summary>
-        ''' <remarks></remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Updates the size and position. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Sub Update_SizeAndPosition()
             If AutoSize = True Then Return
             If Dock = DockStyle.Bottom Or Dock = DockStyle.Fill Or Dock = DockStyle.Top Then Return
@@ -623,12 +941,14 @@ Namespace LineNumbers
             End If
         End Sub
 
-
-        ''' <summary>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Updates the visible line number items.
         ''' This Sub determines which textlines are visible in the ParentRichTextBox, and makes LineNumberItems (LineNumber + ItemRectangle)
         ''' for each visible line. They are put into the zLNIs List that will be used by the OnPaint event to draw the LineNumberItems. 
-        ''' </summary>
-        ''' <remarks></remarks>
+        '''              </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Sub Update_VisibleLineNumberItems()
 
             ' ################
@@ -749,10 +1069,17 @@ Namespace LineNumbers
             'zAutoSizing_Size = new Size(TextRenderer.MeasureText(zLineNumbers_Format.Replace("0".ToCharArray(), "W".ToCharArray()), this.Font).Width, 0);
         End Sub
 
-        ''' <summary>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Searches for the first start index.
         ''' FindStartIndex is a recursive Sub (one that calls itself) to compute the first visible line that should have a LineNumber.
-        ''' </summary>
-        ''' <remarks></remarks>
+        '''               </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="zMin">     [in,out] The minimum. </param>
+        ''' <param name="zMax">     [in,out] The maximum. </param>
+        ''' <param name="zTarget">  [in,out] Target for the. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Sub FindStartIndex(ByRef zMin As Integer, ByRef zMax As Integer, ByRef zTarget As Integer)
             '   Recursive Sub to compute best starting index - only run when zParent is known to exist
             If zMax = zMin + 1 Or zMin = (zMax + zMin) / 2 Then Return
@@ -780,14 +1107,19 @@ Namespace LineNumbers
             End If
         End Sub
 
-
-        ''' <summary>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Raises the <see cref="E:System.Windows.Forms.Control.Paint" /> event. 
         ''' OnPaint will go through the enabled elements (vertical ReminderMessage, GridLines, LineNumbers, BorderLines, MarginLines) and will
         ''' draw them if enabled. At the same time, it will build GraphicsPaths for each of those elements (that are enabled), which will be used 
         ''' in SeeThroughMode (if it's active): the figures in the GraphicsPaths will form a customized outline for the control by setting them as the 
         ''' Region of the LineNumber control. Note: the vertical ReminderMessages are only drawn during designtime. 
-        ''' </summary>
-        ''' <remarks></remarks>
+        '''             </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="e">    A <see cref="T:System.Windows.Forms.PaintEventArgs" /> that contains the
+        '''                     event data. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
             '   Build the list of visible LineNumberItems (= zLNIs) first. (doesn't take long, so it can stay in OnPaint)
             Update_VisibleLineNumberItems()
@@ -1043,30 +1375,71 @@ Namespace LineNumbers
             If zGP_LineNumbers IsNot Nothing Then zGP_LineNumbers.Dispose()
         End Sub
 
-
-        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Event handler. Called by zTimer for tick events. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   Source of the event. </param>
+        ''' <param name="e">        Event information. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Sub zTimer_Tick(ByVal sender As Object, ByVal e As EventArgs)
             zParentIsScrolling = False
             zTimer.Stop()
             Invalidate()
         End Sub
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Event handler. Called by zParent for changed events. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   Source of the event. </param>
+        ''' <param name="e">        Event information. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Private Sub zParent_Changed(ByVal sender As Object, ByVal e As EventArgs)
             Refresh()
             Invalidate()
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Event handler. Called by zParent for scroll events. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   Source of the event. </param>
+        ''' <param name="e">        Event information. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Sub zParent_Scroll(ByVal sender As Object, ByVal e As EventArgs)
             zParentIsScrolling = True
             Invalidate()
         End Sub
 
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Event handler. Called by zParent for contents resized events. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   Source of the event. </param>
+        ''' <param name="e">        Contents resized event information. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Private Sub zParent_ContentsResized(ByVal sender As Object, ByVal e As ContentsResizedEventArgs)
             zContentRectangle = e.NewRectangle
             Refresh()
             Invalidate()
         End Sub
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Event handler. Called by zParent for disposed events. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="sender">   Source of the event. </param>
+        ''' <param name="e">        Event information. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Sub zParent_Disposed(ByVal sender As Object, ByVal e As EventArgs)
             ParentRichTextBox = Nothing

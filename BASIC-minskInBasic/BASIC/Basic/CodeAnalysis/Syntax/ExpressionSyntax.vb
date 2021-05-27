@@ -1,13 +1,33 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\Syntax\ExpressionSyntax.vb
+'
+' summary:	Expression syntax class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 
 Namespace Global.Basic.CodeAnalysis.Syntax
 
-  Public MustInherit Class ExpressionSyntax
-    Inherits SyntaxNode
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary> An expression syntax. </summary>
+    '''
+    ''' <remarks> Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Friend Sub New(tree As SyntaxTree)
+    Public MustInherit Class ExpressionSyntax
+        Inherits SyntaxNode
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Constructor. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <param name="tree"> The tree. </param>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Friend Sub New(tree As SyntaxTree)
       MyBase.New(tree)
     End Sub
 

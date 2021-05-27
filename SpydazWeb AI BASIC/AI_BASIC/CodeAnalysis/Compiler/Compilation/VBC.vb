@@ -1,9 +1,38 @@
-﻿Imports System.Windows.Forms
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Compilation\VBC.vb
+'
+' summary:	Vbc class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Windows.Forms
 Namespace CodeAnalysis
     Namespace Compiler
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A vbc. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
         Public Class VBC
+            ''' <summary>   The errors. </summary>
             Private Shared Errors As New List(Of String)
+            ''' <summary>   The speaker. </summary>
             Private Shared Speaker As New Speech.Synthesis.SpeechSynthesizer
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   VB tab code compiler. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="CodeBlock">    The code block. </param>
+            ''' <param name="CompileType">  [in,out] (Optional) Type of the compile. </param>
+            ''' <param name="iClassName">   [in,out] (Optional) Name of the class. </param>
+            ''' <param name="iMethodName">  (Optional) Name of the method. </param>
+            ''' <param name="Assemblies">   (Optional) The assemblies. </param>
+            ''' <param name="EmbededFiles"> [in,out] (Optional) The embeded files. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Sub VB_Tab_CodeCompiler(CodeBlock As String,
                                           Optional ByRef CompileType As String = "DLL",
                                           Optional ByRef iClassName As String = "MainClass",

@@ -1,36 +1,94 @@
-﻿Imports System.Text
-Imports System.Web.Script.Serialization
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb
+'
+' summary:	Environmental memory class
+'---------------------------------------------------------------------------------------------------
 
+Imports System.Text
+Imports System.Web.Script.Serialization
+Imports AI_BASIC.CodeAnalysis.Diagnostics
 Imports AI_BASIC.Syntax
+Imports AI_BASIC.Typing
 
 Namespace CodeAnalysis
     Namespace Compiler
         Namespace Environment
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   An environmental memory. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Class EnvironmentalMemory
+                ''' <summary>   The local memory. </summary>
                 Public LocalMemory As List(Of Variable)
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   A variable. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Structure Variable
+                    ''' <summary>   The name. </summary>
                     Public name As String
+                    ''' <summary>   The type. </summary>
                     Public Type As LiteralType
+                    Public TypeStr As String
+                    ''' <summary>   The ivalue. </summary>
                     Private ivalue As Object
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Gets the value. </summary>
+                    '''
+                    ''' <value> The value. </value>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     Public ReadOnly Property Value As Object
                         Get
                             Return ivalue
                         End Get
                     End Property
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Constructor. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+                    '''                                             null. </exception>
+                    '''
+                    ''' <param name="name">     The name. </param>
+                    ''' <param name="value">    The value. </param>
+                    ''' <param name="type">     The type. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Public Sub New(name As String, value As Object, type As LiteralType)
                         If name Is Nothing Then
-                            Throw New ArgumentNullException(NameOf(name))
+                            GeneralException.Add(New DiagnosticsException("Unable to register memory " & NameOf(name), ExceptionType.NullRefferenceError, NameOf(name), SyntaxType._String))
+
                         End If
 
                         If value Is Nothing Then
-                            Throw New ArgumentNullException(NameOf(value))
+                            GeneralException.Add(New DiagnosticsException("Unable to register memory " & NameOf(name), ExceptionType.NullRefferenceError, NameOf(name), SyntaxType._String))
+
                         End If
 
                         Me.name = name
                         Me.ivalue = value
                         Me.Type = type
+                        Me.TypeStr = type.GetLiteralTypeStr
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the given nValue. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="nValue">   [in,out] The value. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Public Sub Update(ByRef nValue As Object)
                         Select Case Me.Type
                             Case LiteralType._Boolean
@@ -50,41 +108,102 @@ Namespace CodeAnalysis
                                 UpdateValue(x)
                         End Select
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the value described by NewString. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="NewBoolean">   [in,out] True to new boolean. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Sub UpdateValue(ByRef NewBoolean As Boolean)
                         Me.ivalue = New Boolean = NewBoolean
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the value described by NewString. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="NewInteger">   [in,out] The new integer. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Sub UpdateValue(ByRef NewInteger As Integer)
                         Me.ivalue = New Integer = NewInteger
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the value described by NewString. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="NewDate">  [in,out] The new date. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Sub UpdateValue(ByRef NewDate As Date)
                         Me.ivalue = New Date = NewDate
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the value described by NewString. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="NewDecimal">   [in,out] The new decimal. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Sub UpdateValue(ByRef NewDecimal As Decimal)
                         Me.ivalue = New Decimal = NewDecimal
                     End Sub
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Updates the value described by NewString. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="NewString">    [in,out] The new string. </param>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Sub UpdateValue(ByRef NewString As String)
                         Me.ivalue = NewString
                     End Sub
-                    ''' <summary>
-                    ''' Formatted json
-                    ''' </summary>
-                    ''' <returns> </returns>
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Converts this  to a JSON. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <returns>   This  as a String. </returns>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Public Function ToJson() As String
                         Return FormatJsonOutput(ToString)
                     End Function
-                    ''' <summary>
-                    ''' Inline json
-                    ''' </summary>
-                    ''' <returns></returns>
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Returns the fully qualified type name of this instance. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <returns>   The fully qualified type name. </returns>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Public Overrides Function ToString() As String
                         Dim Converter As New JavaScriptSerializer
                         Return Converter.Serialize(Me)
                     End Function
-                    ''' <summary>
-                    ''' Formats the output of the json parsed
-                    ''' </summary>
-                    ''' <param name="jsonString"></param>
-                    ''' <returns></returns>
+
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                    ''' <summary>   Format JSON output. </summary>
+                    '''
+                    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                    '''
+                    ''' <param name="jsonString">   The JSON string. </param>
+                    '''
+                    ''' <returns>   The formatted JSON output. </returns>
+                    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                     Private Function FormatJsonOutput(ByVal jsonString As String) As String
                         Dim stringBuilder = New StringBuilder()
                         Dim escaping As Boolean = False
@@ -134,27 +253,54 @@ Namespace CodeAnalysis
                     End Function
 
                 End Structure
+                ''' <summary>   The global memory. </summary>
                 Private mGlobalMemory As EnvironmentalMemory
-                ''' <summary>
-                ''' Global memeory passed in from parent environment
-                ''' </summary>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets the global memory. </summary>
+                '''
+                ''' <value> The global memory. </value>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public ReadOnly Property GlobalMemory As EnvironmentalMemory
                     Get
                         Return mGlobalMemory
                     End Get
                 End Property
-                ''' <summary>
-                ''' Has no Global Memory
-                ''' </summary>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Initializes a new instance of the <see cref="T:System.Object" /> class. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Sub New()
                     LocalMemory = New List(Of Variable)
                 End Sub
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Has no Global Memory. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="GlobalMemory"> [in,out] Global memeory passed in from parent environment. </param>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Sub New(ByRef GlobalMemory As EnvironmentalMemory)
                     LocalMemory = New List(Of Variable)
                     Me.mGlobalMemory = GlobalMemory
 
                 End Sub
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Assign value. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                ''' <param name="Val">  [in,out] The value. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function AssignValue(ByRef Name As String, ByRef Val As Object) As Boolean
                     Dim x As Variable
                     If CheckIfExists(Name) = True Then
@@ -165,6 +311,17 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets a variable. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                '''
+                ''' <returns>   The variable. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function GetVar(ByRef Name As String) As Variable
                     For Each item In LocalMemory
                         If item.name = Name Then
@@ -174,6 +331,17 @@ Namespace CodeAnalysis
                     Next
                     Return Nothing
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Determine if exists. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function CheckIfExists(ByRef Name As String) As Boolean
                     For Each item In LocalMemory
                         If item.name = Name Then
@@ -182,6 +350,19 @@ Namespace CodeAnalysis
                     Next
                     Return False
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Define value. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                ''' <param name="Type"> [in,out] The type. </param>
+                ''' <param name="Val">  [in,out] The value. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function DefineValue(ByRef Name As String, ByRef Type As LiteralType, ByRef Val As Object) As Boolean
                     If CheckIfExists(Name) = False Then
                         LocalMemory.Add(New Variable(Name, Val, Type))
@@ -189,6 +370,17 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Define value. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                ''' <param name="Type"> [in,out] The type. </param>
+                '''
+                ''' <returns>   True if it succeeds, false if it fails. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 Public Function DefineValue(ByRef Name As String, ByRef Type As LiteralType) As Boolean
                     Dim val As Object = Nothing
@@ -211,13 +403,21 @@ Namespace CodeAnalysis
                         End Select
 
 
-                        LocalMemory.Add(New Variable(Name, Val, Type))
+                        LocalMemory.Add(New Variable(Name, val, Type))
                         Return True
                     End If
                     Return False
                 End Function
 
-
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets variable type. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                '''
+                ''' <returns>   The variable type. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 Public Function GetVarType(ByRef Name As String) As LiteralType
                     If CheckIfExists(Name) = True Then
@@ -234,6 +434,17 @@ Namespace CodeAnalysis
                     End If
                     Return LiteralType._NULL
                 End Function
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Gets variable value. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="Name"> [in,out] The name. </param>
+                '''
+                ''' <returns>   The variable value. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function GetVarValue(ByRef Name As String) As Object
                     If CheckIfExists(Name) = True Then
                         Dim ivar = GetVar(Name)
@@ -249,26 +460,41 @@ Namespace CodeAnalysis
                     End If
                     Return "Unknown Variable? :"
                 End Function
-                ''' <summary>
-                ''' Formatted json
-                ''' </summary>
-                ''' <returns> </returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Converts this  to a JSON. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   This  as a String. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
-                ''' <summary>
-                ''' Inline json
-                ''' </summary>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Returns a string that represents the current object. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <returns>   A string that represents the current object. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Overrides Function ToString() As String
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
-                ''' <summary>
-                ''' Formats the output of the json parsed
-                ''' </summary>
-                ''' <param name="jsonString"></param>
-                ''' <returns></returns>
+
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                ''' <summary>   Format JSON output. </summary>
+                '''
+                ''' <remarks>   Leroy, 27/05/2021. </remarks>
+                '''
+                ''' <param name="jsonString">   The JSON string. </param>
+                '''
+                ''' <returns>   The formatted JSON output. </returns>
+                '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False

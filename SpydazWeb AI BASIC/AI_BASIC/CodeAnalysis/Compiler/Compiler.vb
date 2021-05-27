@@ -1,256 +1,256 @@
-﻿Imports System.Windows.Forms
-Imports AI_BASIC.CodeAnalysis.Compiler.Environment
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Compiler\CompilerII.vb
+'
+' summary:	Compiler ii class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Text
+Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
-Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
+Imports AI_BASIC.CodeAnalysis.Diagnostics
+Imports AI_BASIC.Consoles
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports AI_BASIC.CodeAnalysis.Compiler
+Imports AI_BASIC.Typing
 
 Namespace CodeAnalysis
     Namespace Compiler
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A <see cref="compiler"/>. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class Compiler
+            ''' <summary>   The script. </summary>
+            Private Script As String = ""
+            ''' <summary>   The result. </summary>
+            Public Result As EvaluationResult
 
-        Public Class Compiler
-            ''' <summary>
-            ''' Errors Produced by the Produce TokenTree 
-            ''' </summary>
-            ''' <returns></returns>
-            Public ReadOnly Property TokenTreeErrors As List(Of String)
-                Get
-                    Return _LineDiagnostics
-                End Get
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets or sets the final result. </summary>
+            '''
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Final As Object
 
-            End Property
-            Private Shared _LineDiagnostics As New List(Of String)
-            Private Shared Program As New List(Of String)
-            Private Shared CurrentLine As Integer
-            Private Shared CompiledWithErrors As Boolean = False
-            Private Shared CurrentLineStateReady As Boolean = False
-            Private Shared ProgramCompiledReady As Boolean = False
-            Private Shared ProgramScript As String = ""
-            Private Shared ExpressionTree As SyntaxTree
-            Private Shared _tree As New List(Of SyntaxToken)
-            Private iTokenTrees As List(Of List(Of SyntaxToken))
-            Private iExpressionTrees As List(Of SyntaxTree)
-            Private LineCompiledlineStates As List(Of Boolean)
-            Private _CompilerDiagnostics As List(Of String)
-            Public ReadOnly Property TokenTrees As List(Of List(Of SyntaxToken))
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets the final result. </summary>
+            '''
+            ''' <value> The final result. </value>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private ReadOnly Property FinalResult As Object
                 Get
-                    Return iTokenTrees
-                End Get
-            End Property
-            Public ReadOnly Property ExpressionTrees As List(Of SyntaxTree)
-                Get
-                    Return iExpressionTrees
-                End Get
-            End Property
-            Public ReadOnly Property CurrentTokenTree As List(Of SyntaxToken)
-                Get
-                    Return _tree
-                End Get
-            End Property
-            Public ReadOnly Property CurrentSyntaxTree As SyntaxTree
-                Get
-                    Return ExpressionTree
-                End Get
-
-            End Property
-            Public ReadOnly Property CompiledReady As Boolean
-                Get
-                    Return ProgramCompiledReady
+                    Return Final
                 End Get
             End Property
 
-            Public ReadOnly Property CompilerErrors As String
-                Get
-                    Return GetCompilerDiagnostics()
-                End Get
-            End Property
-            Public Sub New(ByRef _Program As String)
-                ProgramScript = _Program
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+            '''                                             null. </exception>
+            '''
+            ''' <param name="script">   The script. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Sub New(script As String)
+                If script Is Nothing Then
+                    Throw New ArgumentNullException(NameOf(script))
+                End If
+                Me.Script = script
+                Dim _debug = Compile()
+                Dim Eval As New Interpretor.Interpretor
+                Dim _results = Eval.EvaluateProgram(script, Program)
+                Result = New EvaluationResult(_debug, _results)
+                Final = Result.Results.last
             End Sub
-            ''' <summary>
-            ''' Returns a result
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function ExecuteProgram() As String
-                'Check if it compiles
-                CompileProgram()
 
-                If ProgramCompiledReady = True Then
-                    Return EvaluateExpressionSyntaxTree(CurrentSyntaxTree)
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Print token tree to console. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Sub PrintTokenTreeToConsole()
+                ConsoleWriter.WriteTokenList(GetTokenTree)
+            End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Print syntax tree to console. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Sub PrintSyntaxTreeToConsole()
+                ConsoleWriter.WriteExpressionList(GetSyntaxTree)
+            End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets token tree. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The token tree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Function GetTokenTree() As List(Of SyntaxToken)
+                Dim Ast As New List(Of SyntaxToken)
+                For Each lst In Debugger.ProduceTokenTree(Script)
+                    Ast.AddRange(lst)
+                Next
+                Return Ast
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets syntax tree. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The syntax tree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Function GetSyntaxTree() As List(Of SyntaxNode)
+                Dim Ast As New List(Of SyntaxNode)
+                For Each lst In Debugger.ProduceExpressionTree(Script)
+                    Ast.AddRange(lst.Body)
+                Next
+                Return Ast
+            End Function
+            ''' <summary>   The program. </summary>
+            Private Program As List(Of SyntaxTree)
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets the compile. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The CompilerDiagnosticResults. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Function Compile() As CompilerDiagnosticResults
+                Dim iDebugger As New Debugger(Script)
+                Program = iDebugger.GetProgram
+                Return iDebugger.DebugCodeScript(Script)
+            End Function
+#Region "TOSTRING"
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Converts this  to a JSON. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   This  as a String. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Function ToJson() As String
+                Return FormatJsonOutput(ToString)
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Returns a string that represents the current object. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   A string that represents the current object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Overrides Function ToString() As String
+                Dim Converter As New JavaScriptSerializer
+                Return Converter.Serialize(Me)
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Format JSON output. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="jsonString">   The JSON string. </param>
+            '''
+            ''' <returns>   The formatted JSON output. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Function FormatJsonOutput(ByVal jsonString As String) As String
+                Dim stringBuilder = New StringBuilder()
+                Dim escaping As Boolean = False
+                Dim inQuotes As Boolean = False
+                Dim indentation As Integer = 0
+
+                For Each character As Char In jsonString
+
+                    If escaping Then
+                        escaping = False
+                        stringBuilder.Append(character)
+                    Else
+
+                        If character = "\"c Then
+                            escaping = True
+                            stringBuilder.Append(character)
+                        ElseIf character = """"c Then
+                            inQuotes = Not inQuotes
+                            stringBuilder.Append(character)
+                        ElseIf Not inQuotes Then
+
+                            If character = ","c Then
+                                stringBuilder.Append(character)
+                                stringBuilder.Append(vbCrLf)
+                                stringBuilder.Append(vbTab, indentation)
+                            ElseIf character = "["c OrElse character = "{"c Then
+                                stringBuilder.Append(character)
+                                stringBuilder.Append(vbCrLf)
+                                stringBuilder.Append(vbTab, System.Threading.Interlocked.Increment(indentation))
+                            ElseIf character = "]"c OrElse character = "}"c Then
+                                stringBuilder.Append(vbCrLf)
+                                stringBuilder.Append(vbTab, System.Threading.Interlocked.Decrement(indentation))
+                                stringBuilder.Append(character)
+                            ElseIf character = ":"c Then
+                                stringBuilder.Append(character)
+                                stringBuilder.Append(vbTab)
+                            ElseIf Not Char.IsWhiteSpace(character) Then
+                                stringBuilder.Append(character)
+                            End If
+                        Else
+                            stringBuilder.Append(character)
+                        End If
+                    End If
+                Next
+
+                Return stringBuilder.ToString()
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
+#End Region
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets the diagnostics. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The diagnostics. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Function GetDiagnostics() As String
+                If Result.Diagnostics.HasErrors = True Then
+                    Return Result.Diagnostics.CollectDiagnostics
                 Else
-                    Return "Compiler still has errors please recompile: " & vbNewLine &
-                        "Unable to execute:" & vbNewLine & CompilerErrors
+                    Return "NO ERRORS"
                 End If
-
             End Function
-            ''' <summary>
-            ''' Debugs code for errors / Produces Both tree also
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function CompileProgram() As Boolean
-                iTokenTrees = New List(Of List(Of SyntaxToken))
-                iExpressionTrees = New List(Of SyntaxTree)
-                CompiledWithErrors = False
-                CurrentLineStateReady = False
-                ProgramCompiledReady = False
-                LineCompiledlineStates = New List(Of Boolean)
-                _CompilerDiagnostics = New List(Of String)
-                CurrentLine = 0
-                Dim lines = ProgramScript.Split(vbNewLine)
-                For Each item In lines
-                    CurrentLine += 1
-                    'Capture LineDiagnostic state
-                    LineCompiledlineStates.Add(CompileForDebugging(item))
-                    If CurrentLineStateReady = True Then
-                    Else
-                        _CompilerDiagnostics.Add("Error at line " & CurrentLine &
-                                                 vbNewLine & GetLineDiagnostics())
-                    End If
 
-                    'capture Accumilated trees
-                    iTokenTrees.Add(CurrentTokenTree)
-                    iExpressionTrees.Add(CurrentSyntaxTree)
-                Next
-
-                'checkState of Compiled lines
-                For Each item In LineCompiledlineStates
-                    If item = False Then
-                        CompiledWithErrors = False
-                    End If
-                Next
-                'Set Ready state
-                Select Case CompiledWithErrors
-                    Case True
-                        ProgramCompiledReady = False
-                        Return ProgramCompiledReady
-                    Case False
-                        ProgramCompiledReady = True
-                        Return ProgramCompiledReady
-                End Select
-                Return Nothing
-            End Function
-            ''' <summary>
-            ''' Debugs code for errors
-            ''' </summary>
-            ''' <param name="Line"></param>
-            ''' <returns></returns>
-            Private Function CompileForDebugging(ByRef Line As String) As Boolean
-
-                _LineDiagnostics = New List(Of String)
-                CurrentLineStateReady = False
-
-                Try
-                    ProduceTokenTree(Line)
-                    ProduceExpressionSyntaxTree(Line)
-                    If _LineDiagnostics.Count > 0 Then
-                        ''DEBUGGING POINT:
-                        ' MessageBox.Show("Compiler Errors :" & vbNewLine & GetLineDiagnostics(),
-                        ' "Compiler has Found Errors on Current line :" & CurrentLine)
-
-                        CurrentLineStateReady = False
-                        CompiledWithErrors = True
-                    Else
-                        CompiledWithErrors = False
-                        CurrentLineStateReady = True
-                    End If
-
-
-                Catch ex As Exception
-                    CurrentLineStateReady = False
-                    MessageBox.Show(ex.ToString & vbNewLine & "Compiler Errors :" & vbNewLine & GetLineDiagnostics(),
-                    "Compiler has Found a fatal error on Current line :" & CurrentLine)
-                    Return False
-                End Try
-
-                'Compiled With or Without errors but no fatal errors
-                Return True
-
-
-            End Function
-            ''' <summary>
-            ''' Returns diagnostics for line
-            ''' </summary>
-            ''' <returns></returns>
-            Private Function GetLineDiagnostics() As String
-                Dim Str As String = ""
-                Dim Count As Integer = 1
-                If _LineDiagnostics.Count > 0 Then
-
-                    For Each item In _LineDiagnostics
-                        Str &= "Line Error :" & Count & vbNewLine & item & vbNewLine
-                        Count += 1
-                    Next
-                End If
-                Return Str
-            End Function
-            ''' <summary>
-            ''' Gets compiler diagnostics 
-            ''' </summary>
-            ''' <returns></returns>
-            Public Function GetCompilerDiagnostics() As String
-                Dim Str As String = ""
-                Dim Count As Integer = 1
-                If _CompilerDiagnostics.Count > 0 Then
-                    For Each item In _CompilerDiagnostics
-                        Str &= "CompilerError :" & Count & vbNewLine & item & vbNewLine
-                    Next
-                End If
-                Return Str
-            End Function
-            ''' <summary>
-            ''' Produces a tokenized tree regardless of errors
-            ''' Errors are retrieved in TokenTreeErrors
-            ''' </summary>
-            ''' <param name="Line"></param>
-            ''' <returns></returns>
-            Public Shared Function ProduceTokenTree(ByRef Line As String) As List(Of SyntaxToken)
-                Dim iLexer As New Lexer(Line)
-                _tree = New List(Of SyntaxToken)
-
-                While True
-                    Dim Token = iLexer._NextToken
-                    If Token._SyntaxType = SyntaxType._EndOfFileToken Then
-
-                        Exit While
-
-                    Else
-                        _tree.Add(Token)
-                    End If
-                End While
-                'Add End Of FileToken
-                _tree.Add(New SyntaxToken(SyntaxType._EndOfFileToken, SyntaxType._EndOfFileToken.GetSyntaxTypeStr,
-                                          "EOF", "EOF", Line.Length, Line.Length))
-                _LineDiagnostics.AddRange(iLexer._Diagnostics)
-
-
-                Return _tree
-            End Function
-            ''' <summary>
-            ''' Produces an abstract syntax tree
-            ''' </summary>
-            ''' <returns></returns>
-            Public Shared Function ProduceExpressionSyntaxTree(ByRef Line As String) As SyntaxTree
-                Dim iParser = New Parser(Line)
-                ExpressionTree = iParser.Parse()
-
-                Return ExpressionTree
-
-
-            End Function
-            ''' <summary>
-            ''' Evaluates Syntax tree
-            ''' </summary>
-            ''' <returns></returns>
-            Public Shared Function EvaluateExpressionSyntaxTree(ByRef ExpressionTree As SyntaxTree) As String
-                Dim IEvaluator As New Evaluator(ExpressionTree)
-                Dim Env As New EnvironmentalMemory
-
-                Dim Result = IEvaluator._Evaluate(Env).ToString
-                _LineDiagnostics.AddRange(IEvaluator._Diagnostics)
-                Return Result
-            End Function
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Print diagnostics. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Sub PrintDiagnostics()
+                ConsoleWriter.WriteDiagnostics(GetDiagnostics)
+            End Sub
         End Class
     End Namespace
 End Namespace
+
+
+
 

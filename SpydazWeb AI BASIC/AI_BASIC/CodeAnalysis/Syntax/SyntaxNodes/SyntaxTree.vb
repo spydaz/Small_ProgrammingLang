@@ -1,13 +1,23 @@
-﻿
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb
+'
+' summary:	Syntax tree class
+'---------------------------------------------------------------------------------------------------
+
 Imports System.Text
 Imports System.Web.Script.Serialization
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
+Imports AI_BASIC.Typing
+
 Namespace Syntax
     Namespace SyntaxNodes
-        ''' <summary>
-        ''' Use to contain the 'Program'
-        ''' </summary>
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A syntax tree. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Public Class SyntaxTree
             ''' <summary>
             ''' Original Raw Script of the program
@@ -17,11 +27,26 @@ Namespace Syntax
             ''' Expressions defined By the Parser
             ''' </summary>
             Public Body As List(Of SyntaxNode)
+            ''' <summary>   The tokens. </summary>
             Public Tokens As List(Of SyntaxToken)
             ''' <summary>
             ''' Used to manage Diagnostics for the Program Erros
             ''' </summary>
             Public Diagnostics As List(Of String)
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
+            '''                                             null. </exception>
+            '''
+            ''' <param name="programScript">    Original Raw Script of the program. </param>
+            ''' <param name="body">             Expressions defined By the Parser. </param>
+            ''' <param name="Tokens">           The tokens. </param>
+            ''' <param name="diagnostics">      Used to manage Diagnostics for the Program Erros. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Sub New(programScript As String, body As List(Of SyntaxNode), Tokens As List(Of SyntaxToken), diagnostics As List(Of String))
                 If programScript Is Nothing Then
@@ -41,36 +66,103 @@ Namespace Syntax
                 Me.Diagnostics = diagnostics
             End Sub
 
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Parse basic. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_Script">  [in,out] The script. </param>
+            '''
+            ''' <returns>   A SyntaxTree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Function ParseBasic(ByRef _Script As String) As SyntaxTree
                 Dim MyParser As New Parser(_Script)
 
                 Return MyParser.Parse(LangTypes.BASIC)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Parse sal. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_Script">  [in,out] The script. </param>
+            '''
+            ''' <returns>   A SyntaxTree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Function ParseSal(ByRef _Script As String) As SyntaxTree
                 Dim MyParser As New Parser(_Script)
                 Return MyParser.Parse(LangTypes.LOGO)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Parse logo. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_Script">  [in,out] The script. </param>
+            '''
+            ''' <returns>   A SyntaxTree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Function ParseLogo(ByRef _Script As String) As SyntaxTree
                 Dim MyParser As New Parser(_Script)
                 Return MyParser.Parse(LangTypes.SAL)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Parses the given script. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_Script">  [in,out] The script. </param>
+            '''
+            ''' <returns>   A SyntaxTree. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Shared Function Parse(ByRef _Script As String) As SyntaxTree
                 Dim MyParser As New Parser(_Script)
 
                 Return MyParser.Parse()
             End Function
 #Region "TOSTRING"
-            ''' <summary>
-            ''' Serializes object to json
-            ''' </summary>
-            ''' <returns> </returns>
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Converts this  to a JSON. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   This  as a String. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Function ToJson() As String
                 Return FormatJsonOutput(ToString)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Returns a string that represents the current object. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   A string that represents the current object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Public Overrides Function ToString() As String
                 Dim Converter As New JavaScriptSerializer
                 Return Converter.Serialize(Me)
             End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Format JSON output. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="jsonString">   The JSON string. </param>
+            '''
+            ''' <returns>   The formatted JSON output. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Private Function FormatJsonOutput(ByVal jsonString As String) As String
 
 

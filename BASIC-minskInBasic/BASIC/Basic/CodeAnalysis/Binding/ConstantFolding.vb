@@ -1,30 +1,63 @@
-﻿Option Explicit On
+﻿'---------------------------------------------------------------------------------------------------
+' file:		CodeAnalysis\Binding\ConstantFolding.vb
+'
+' summary:	Constant folding class
+'---------------------------------------------------------------------------------------------------
+
+Option Explicit On
 Option Strict On
 Option Infer On
 Imports Basic.CodeAnalysis.Symbols
 
 Namespace Global.Basic.CodeAnalysis.Binding
-  Friend Module ConstantFolding
+    Friend Module ConstantFolding
 
-    Public Function ComputeConstant(op As BoundUnaryOperator, operand As BoundExpression) As BoundConstant
-      If operand.ConstantValue IsNot Nothing AndAlso TypeOf operand.ConstantValue.Value Is Integer Then
-        Select Case op.Kind
-          Case BoundUnaryOperatorKind.Identity
-            Return New BoundConstant(CInt(operand.ConstantValue.Value))
-          Case BoundUnaryOperatorKind.Negation
-            Return New BoundConstant(-CInt(operand.ConstantValue.Value))
-          Case BoundUnaryOperatorKind.LogicalNegation
-            Return New BoundConstant(Not CBool(operand.ConstantValue.Value))
-          Case BoundUnaryOperatorKind.Onescomplement
-            Return New BoundConstant(Not CInt(operand.ConstantValue.Value))
-          Case Else
-            Throw New Exception($"Unexpected unary operator {op.Kind}")
-        End Select
-      End If
-      Return Nothing
-    End Function
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Calculates the constant. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="op">       The operation. </param>
+        ''' <param name="operand">  The operand. </param>
+        '''
+        ''' <returns>   The calculated constant. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    Public Function ComputeConstant(left As BoundExpression, op As BoundBinaryOperator, right As BoundExpression) As BoundConstant
+        Public Function ComputeConstant(op As BoundUnaryOperator, operand As BoundExpression) As BoundConstant
+            If operand.ConstantValue IsNot Nothing AndAlso TypeOf operand.ConstantValue.Value Is Integer Then
+                Select Case op.Kind
+                    Case BoundUnaryOperatorKind.Identity
+                        Return New BoundConstant(CInt(operand.ConstantValue.Value))
+                    Case BoundUnaryOperatorKind.Negation
+                        Return New BoundConstant(-CInt(operand.ConstantValue.Value))
+                    Case BoundUnaryOperatorKind.LogicalNegation
+                        Return New BoundConstant(Not CBool(operand.ConstantValue.Value))
+                    Case BoundUnaryOperatorKind.Onescomplement
+                        Return New BoundConstant(Not CInt(operand.ConstantValue.Value))
+                    Case Else
+                        Throw New Exception($"Unexpected unary operator {op.Kind}")
+                End Select
+            End If
+            Return Nothing
+        End Function
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   Calculates the constant. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''
+        ''' <exception cref="Exception">    Thrown when an exception error condition occurs. </exception>
+        '''
+        ''' <param name="left">     The left. </param>
+        ''' <param name="op">       The operation. </param>
+        ''' <param name="right">    The right. </param>
+        '''
+        ''' <returns>   The calculated constant. </returns>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        Public Function ComputeConstant(left As BoundExpression, op As BoundBinaryOperator, right As BoundExpression) As BoundConstant
 
       Dim leftConstant = left.ConstantValue
       Dim rightConstant = right.ConstantValue

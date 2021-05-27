@@ -1,4 +1,10 @@
-﻿Imports System.Windows.Forms
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\Consoles\IDE\IDE.vb
+'
+' summary:	IDE class
+'---------------------------------------------------------------------------------------------------
+
+Imports System.Windows.Forms
 Imports AI_BASIC
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
@@ -9,20 +15,45 @@ Imports System.IO
 Imports System.Drawing
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
+Imports AI_BASIC.Typing
+
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+''' <summary>   An ide. </summary>
+'''
+''' <remarks>   Leroy, 27/05/2021. </remarks>
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Public Class IDE
+    ''' <summary>   The environment. </summary>
     Public Env As EnvironmentalMemory
 
 
 #Region "SpydazWebBasicCompiler"
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Small pl ast tree view after select. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Tree view event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub Small_PL_AstTreeView_AfterSelect(sender As Object, e As TreeViewEventArgs) Handles PL_AstTreeView.AfterSelect
         AstSyntaxJson.Text = PL_AstTreeView.SelectedNode.Tag
         TabControl_AST_TEXT.SelectTab(TabPageAstSyntax)
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Compiles this.  </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub Compile()
         DISPLAY_OUT.Text = ""
         Dim Prog As String = CodeTextBox.Text
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
 
 
         If MyCompiler.CompileProgram() = True Then
@@ -64,6 +95,15 @@ Public Class IDE
             TabControlOutput.SelectTab(TabPage_IDE_COMPILER_ERRORS)
         End If
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Code text box key down. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Key event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Private Sub CodeTextBox_KeyDown(sender As Object, e As KeyEventArgs) Handles CodeTextBox.KeyDown
         Dim Prog As String = CodeTextBox.Text
 
@@ -91,8 +131,14 @@ Public Class IDE
         End Select
 
     End Sub
-    'Tree
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds a compiled tree. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Prog"> [in,out] The prog. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub AddCompiledTree(ByRef Prog As SyntaxTree)
         '_:::ROOT:::_(0)
         Dim root As New TreeNode
@@ -138,13 +184,23 @@ Public Class IDE
         PL_AstTreeView.Nodes.Add(root)
         PL_AstTreeView.ExpandAll()
     End Sub
-    'Tree
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Clears the tree. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub ClearTree()
         PL_AstTreeView.Nodes.Clear()
     End Sub
-    'Function
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets current line. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <returns>   The current line. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Function GetCurrentLine() As String
         '' Get current line index using char index of any selected text for that line
 
@@ -155,11 +211,19 @@ Public Class IDE
         Dim CurrentLine = CodeTextBox.Lines(CurrentLineIndex)
         Return CurrentLine
     End Function
-    'Line Diagnostics
-    ''
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Quick line diagnostics. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Line"> [in,out] The line. </param>
+    '''
+    ''' <returns>   A String. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Function QuickLineDiagnostics(ByRef Line As String) As String
         Dim Prog As String = Line
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
         If MyCompiler.CompileProgram() = True Then
             If MyCompiler.GetCompilerDiagnostics.Length > 0 Then
                 CompilerErrors.ForeColor = Drawing.Color.Red
@@ -175,11 +239,17 @@ Public Class IDE
             Return "Did not Compiled Successfully" & vbNewLine & MyCompiler.GetCompilerDiagnostics & vbNewLine
         End If
     End Function
-    'Highlight Line
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Executes the line syntax operation. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Line"> [in,out] The line. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub DoLineSyntax(ByRef Line As String)
         Dim Prog As String = Line
-        Dim MyCompiler As New Compiler(Prog)
+        Dim MyCompiler As New _Compiler(Prog)
         Dim TokeTree As New List(Of SyntaxToken)
         Dim BadStr As String = ""
         If MyCompiler.CompileProgram() = False Then
@@ -199,8 +269,14 @@ Public Class IDE
             Next
         End If
     End Sub
-    'Run TextBox
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Executes the run text operation. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Text"> [in,out] The text. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub DoRunText(ByRef Text As RichTextBox)
         Dim ExpressionTree As SyntaxTree
         Env = New EnvironmentalMemory
@@ -220,20 +296,39 @@ Public Class IDE
         Next
         PrintMemory(Env)
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Print memory. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Env">  [in,out] The environment. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Sub PrintMemory(ByRef Env As EnvironmentalMemory)
         AstSyntaxJson.Text += Env.ToJson()
     End Sub
-    'Debug TextBox
-    '
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Debug diagnostics text. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="Text"> [in,out] The text. </param>
+    '''
+    ''' <returns>   A String. </returns>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Public Function _DebugDiagnosticsText(ByRef Text As RichTextBox) As String
         Dim ResultsLst As New List(Of String)
         Dim Count As Integer = 0
         For Each item In Text.Lines
             Count += 1
-            Dim Debug = QuickLineDiagnostics(item)
-            If Debug = "Compiled Successfully" Then
+            Dim iDebug = QuickLineDiagnostics(item)
+            If iDebug = "Compiled Successfully" Then
+                Return iDebug
             Else
-                ResultsLst.Add("ERROR_ Line" & Count & vbNewLine & Debug)
+                ResultsLst.Add("ERROR_ Line" & Count & vbNewLine & iDebug)
             End If
 
         Next
@@ -242,19 +337,50 @@ Public Class IDE
         If ResultsLst.Count > 0 Then
             For Each item In ResultsLst
                 Count += 1
-                Results &= vbNewLine & "Error number : " & item & vbNewLine
+                Results &= vbNewLine & "Error number : " & Count & " " & item
             Next
         End If
+        Return Results
     End Function
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   But compile click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub But_Compile_Click(sender As Object, e As EventArgs) Handles But_Compile.Click
         ClearTree()
         Compile()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   But run click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub But_Run_Click(sender As Object, e As EventArgs) Handles But_Run.Click
         DoRunText(CodeTextBox)
     End Sub
 #End Region
 #Region "files"
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Saves a tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub SaveToolStripButton_Click(sender As Object, e As EventArgs) Handles SaveToolStripButton.Click
         Dim myStream = CodeTextBox.Text
         Dim saveFileDialog1 As New SaveFileDialog()
@@ -271,6 +397,15 @@ Public Class IDE
 
         End If
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Opens tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub OpenToolStripButton_Click(sender As Object, e As EventArgs) Handles OpenToolStripButton.Click
         Dim myOpenFileDialog As New OpenFileDialog()
@@ -289,9 +424,27 @@ Public Class IDE
 
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Creates a new tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub NewToolStripButton_Click(sender As Object, e As EventArgs) Handles NewToolStripButton.Click
         CodeTextBox.Text = ""
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds an embedded click to 'e'. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub AddEmbedded_Click(sender As Object, e As EventArgs) Handles AddEmbedded.Click
         Dim myOpenFileDialog As New OpenFileDialog()
@@ -309,6 +462,15 @@ Public Class IDE
         End If
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Adds the refferences click to 'e'. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub AddRefferences_Click(sender As Object, e As EventArgs) Handles AddRefferences.Click
         Dim myOpenFileDialog As New OpenFileDialog()
 
@@ -325,10 +487,28 @@ Public Class IDE
         End If
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Removes the embedded click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub RemoveEmbedded_Click(sender As Object, e As EventArgs) Handles RemoveEmbedded.Click
 
         EmbeddedFilePaths.Items.Remove(EmbeddedFilePaths.SelectedItem)
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Removes the refference click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub RemoveRefference_Click(sender As Object, e As EventArgs) Handles RemoveRefference.Click
 
@@ -339,19 +519,57 @@ Public Class IDE
 
 #End Region
 #Region "CutPaste"
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Pastes the tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub PasteToolStripButton_Click(sender As Object, e As EventArgs) Handles PasteToolStripButton.Click
         CodeTextBox.Paste()
     End Sub
 
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Copies the tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub CopyToolStripButton_Click(sender As Object, e As EventArgs) Handles CopyToolStripButton.Click
         CodeTextBox.Copy()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Cut tool strip button click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub CutToolStripButton_Click(sender As Object, e As EventArgs) Handles CutToolStripButton.Click
         CodeTextBox.Cut()
     End Sub
 #End Region
 #Region "VBCompiler"
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Compile VB tool strip menu item click. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
     Private Sub CompileVBToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CompileVBToolStripMenuItem.Click
         Dim Frm As New CompilerPropertys
         Frm.CodeText = CodeTextBox.Text
@@ -369,6 +587,15 @@ Public Class IDE
         Frm.CodeReady = True
         Frm.Show()
     End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   IDE load. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''
+    ''' <param name="sender">   Source of the event. </param>
+    ''' <param name="e">        Event information. </param>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Private Sub IDE_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Env = New EnvironmentalMemory
