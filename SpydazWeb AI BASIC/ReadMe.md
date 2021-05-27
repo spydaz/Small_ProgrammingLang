@@ -41,5 +41,9 @@ This project has basically taken a single day to implement; From memory....
     3) Variable Declarations 
         Dim X as string / boolean / integer / double / list / date
         Dim X as (string / boolean / integer / double) = true / "CAT" / 98 / [45,45.0] / [true,true] / [X,Y]
+        
+    4) If Expressions 
+        If 7>9 then {n+9} else {9+9}
+        if 6>9 then {n=9}
 
-
+     
