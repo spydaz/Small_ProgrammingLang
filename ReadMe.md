@@ -61,6 +61,9 @@ The parser may accept other complexed combinations Which may not be valid evalua
 
 	<Identifier>( <Identifier> = value );
 	<Identifier> = ( <Identifier> = value );
+	DIM/Var <identifier> as Integer/String/Date/Array/list/decimal
+	IF <conditionalExpression> then {<Codeblock>} else {<codeblock>}
+	IF <conditionalExpression> then {<Codeblock>} 
 	
 ### Spydaz Virtual Machine Code Language ;
 ## Description :
