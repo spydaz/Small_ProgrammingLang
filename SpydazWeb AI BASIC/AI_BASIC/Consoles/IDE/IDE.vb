@@ -3,7 +3,7 @@
 '
 ' summary:	IDE class
 '---------------------------------------------------------------------------------------------------
-
+Imports System.Runtime.InteropServices
 Imports System.Windows.Forms
 Imports AI_BASIC
 Imports AI_BASIC.CodeAnalysis.Compiler
@@ -17,6 +17,7 @@ Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.Typing
 Imports System.Text.RegularExpressions
+
 
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 ''' <summary>   An ide. </summary>
@@ -600,6 +601,24 @@ Public Class IDE
 
     Private Sub IDE_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Env = New EnvironmentalMemory
+    End Sub
+
+
+
+    Private Sub NotifyIcon1_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles NotifyIcon1.MouseDoubleClick
+        Me.Show()
+    End Sub
+
+    Private Sub But_RunOnSal_Click(sender As Object, e As EventArgs) Handles But_RunOnSal.Click
+        Me.Hide()
+        NotifyIcon1.ShowBalloonTip(100)
+    End Sub
+
+    Private Sub ToolStripButtonRepl_Click(sender As Object, e As EventArgs) Handles ToolStripButtonRepl.Click
+
+
+        'Dim myProcess As Process
+        ' myProcess = Process.Start(Program)
     End Sub
 
 

@@ -4,7 +4,7 @@
 ' summary:	Declares the iRepl interface
 '---------------------------------------------------------------------------------------------------
 
-
+Imports System.Runtime.InteropServices
 Imports System.CodeDom.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
@@ -13,12 +13,15 @@ Imports AI_BASIC.Consoles
 Imports AI_BASIC.Syntax.SyntaxNodes
 Imports System.Windows.Forms
 
+
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 ''' <summary>   A repl. </summary>
 '''
 ''' <remarks>   Leroy, 27/05/2021. </remarks>
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 Public Class InterpretorRepl
+    Public ConsoleEnabled As Boolean = True
+
     ''' <summary>   The line. </summary>
     Public Line As String = ""
     ''' <summary>   True to show, false to hide the tree. </summary>
@@ -29,7 +32,7 @@ Public Class InterpretorRepl
     Public ShowCode As Boolean = True
     Public ShowDiagnostics As Boolean = True
     Public Evaluate As Boolean = True
-
+    Public OutputStr As String = ""
 #Region "REPL"
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     ''' <summary>   Check repl command. </summary>
@@ -60,7 +63,7 @@ Public Class InterpretorRepl
                 ShowCode = True
                 _GetInput()
             Case "HELP"
-                ShowHelp
+                ShowHelp()
                 _GetInput()
             Case "SHOWDIAGNOSTICS"
                 ShowDiagnostics = True
@@ -75,9 +78,6 @@ Public Class InterpretorRepl
         _GetInput()
         _ClearScreen()
     End Sub
-    '
-
-
     Public Sub ShowHelp()
         _ClearScreen()
 
@@ -163,7 +163,6 @@ Public Class InterpretorRepl
         ResetConsole()
     End Sub
 
-
 #End Region
 #Region "Compiler"
     ''' <summary>   The compiled result. </summary>
@@ -242,6 +241,36 @@ Public Class InterpretorRepl
 
 
     End Sub
+    Public Function CompileLine(ByRef iLine As String) As String
+        Console.ForegroundColor = ConsoleColor.Magenta
+        Dim Compile As New Compiler(iLine)
+        Dim result = Compile.Result
+        CompiledResult = result
+        Dim Str As String = ""
+        'Trees are Already Compiled in Compiler
+        If ShowTree = True Then
+            Compile.PrintTokenTreeToConsole()
+        End If
+
+        'Trees are Already Compiled in Compiler
+        If ShowSyntax = True Then
+            Compile.PrintSyntaxTreeToConsole()
+        End If
+
+        If result.Diagnostics.HasErrors = True Then
+            Console.WriteLine("Diagnostics" & vbNewLine)
+            Str &= "Diagnostics" & vbNewLine
+            HasDiagnostic = True
+            Str &= DisplayOutput()
+        Else
+            HasDiagnostic = False
+            ResetConsole()
+            Console.WriteLine("CODE: " & vbNewLine & Line & vbNewLine)
+            Str &= "CODE: " & vbNewLine & Line & vbNewLine
+            Str &= Eval(Compile.GetSyntaxTree())
+        End If
+        Return Str
+    End Function
     Public Sub RunCmdLine()
         _Show_title()
         While True
@@ -251,26 +280,32 @@ Public Class InterpretorRepl
 
         End While
     End Sub
-
+    Public Sub Run()
+        RunCmdLine()
+    End Sub
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     ''' <summary>   Displays the diagnostics. </summary>
     '''
     ''' <remarks>   Leroy, 27/05/2021. </remarks>
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
-    Public Sub DisplayDiagnostics()
+    Public Function DisplayDiagnostics() As String
         ConsoleWriter.WriteDiagnostics(CompiledResult.Diagnostics.ToJson())
         ResetConsole()
-    End Sub
-    Public Sub DisplayOutput()
+        Return CompiledResult.Diagnostics.ToJson()
+    End Function
+    Public Function DisplayOutput() As String
+        Dim x = ""
         If HasDiagnostic = True Then
             If ShowDiagnostics = True Then
-                DisplayDiagnostics()
+                x = DisplayDiagnostics()
             End If
         End If
         ResetConsole()
-    End Sub
+        Return x
+    End Function
 #End Region
-    Public Sub Eval(ByRef _tree As List(Of SyntaxNode))
+    Public Function Eval(ByRef _tree As List(Of SyntaxNode)) As String
+        Dim Str As String = ""
         Dim MyInterpretor As New Interpretor
         Console.WriteLine("Evaluation" & vbNewLine)
         Console.ForegroundColor = ConsoleColor.Green
@@ -278,9 +313,19 @@ Public Class InterpretorRepl
             Dim x = MyInterpretor._EvaluateExpression(item)
             If x IsNot Nothing Then
                 Console.WriteLine("Evaluation Result :" & vbNewLine & x.ToString & vbNewLine & vbNewLine)
+                Str &= "Evaluation Result :" & vbNewLine & x.ToString & vbNewLine & vbNewLine
             End If
         Next
         ResetConsole()
-    End Sub
+        Return Str
+    End Function
+    Public Class Win32
+        <DllImport("kernel32.dll")> Public Shared Function AllocConsole() As Boolean
 
+        End Function
+        <DllImport("kernel32.dll")> Public Shared Function FreeConsole() As Boolean
+
+        End Function
+
+    End Class
 End Class

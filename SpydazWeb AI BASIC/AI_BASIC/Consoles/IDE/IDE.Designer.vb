@@ -84,6 +84,8 @@ Partial Class IDE
         Me.DISPLAY_OUT = New System.Windows.Forms.RichTextBox()
         Me.TabPage_IDE_COMPILER_ERRORS = New System.Windows.Forms.TabPage()
         Me.CompilerErrors = New System.Windows.Forms.RichTextBox()
+        Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.ToolStripButtonRepl = New System.Windows.Forms.ToolStripButton()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -511,7 +513,7 @@ Partial Class IDE
         Me.IDE_MainMenu.BackgroundImage = Global.AI_BASIC.My.Resources.Resources.Bar2
         Me.IDE_MainMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.IDE_MainMenu.ImageScalingSize = New System.Drawing.Size(45, 45)
-        Me.IDE_MainMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripButton, Me.OpenToolStripButton, Me.SaveToolStripButton, Me.PrintToolStripButton, Me.ToolStripSeparator2, Me.But_Compile, Me.But_Run, Me.toolStripSeparator, Me.CutToolStripButton, Me.CopyToolStripButton, Me.PasteToolStripButton, Me.toolStripSeparator1, Me.ToolStripButton1, Me.ToolStripSeparator3, Me.DebugSal, Me.But_RunOnSal, Me.ToolStripSeparator4, Me.ToolStripButton2})
+        Me.IDE_MainMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripButton, Me.OpenToolStripButton, Me.SaveToolStripButton, Me.PrintToolStripButton, Me.ToolStripSeparator2, Me.But_Compile, Me.But_Run, Me.toolStripSeparator, Me.CutToolStripButton, Me.CopyToolStripButton, Me.PasteToolStripButton, Me.toolStripSeparator1, Me.ToolStripButton1, Me.ToolStripSeparator3, Me.DebugSal, Me.But_RunOnSal, Me.ToolStripSeparator4, Me.ToolStripButton2, Me.ToolStripButtonRepl})
         Me.IDE_MainMenu.Location = New System.Drawing.Point(0, 0)
         Me.IDE_MainMenu.Name = "IDE_MainMenu"
         Me.IDE_MainMenu.Size = New System.Drawing.Size(1559, 52)
@@ -808,6 +810,24 @@ Partial Class IDE
         Me.CompilerErrors.TabStop = False
         Me.CompilerErrors.Text = ""
         '
+        'NotifyIcon1
+        '
+        Me.NotifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info
+        Me.NotifyIcon1.BalloonTipText = "Running in background"
+        Me.NotifyIcon1.BalloonTipTitle = "SpydazWeb AI"
+        Me.NotifyIcon1.Icon = CType(resources.GetObject("NotifyIcon1.Icon"), System.Drawing.Icon)
+        Me.NotifyIcon1.Text = "SpydazWeb AI"
+        Me.NotifyIcon1.Visible = True
+        '
+        'ToolStripButtonRepl
+        '
+        Me.ToolStripButtonRepl.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButtonRepl.Image = Global.AI_BASIC.My.Resources.Resources.console_icon
+        Me.ToolStripButtonRepl.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButtonRepl.Name = "ToolStripButtonRepl"
+        Me.ToolStripButtonRepl.Size = New System.Drawing.Size(49, 49)
+        Me.ToolStripButtonRepl.Text = "Repl"
+        '
         'IDE
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -919,4 +939,6 @@ Partial Class IDE
     Friend WithEvents InsertToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SALSnippetToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents VBSnippetToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents NotifyIcon1 As NotifyIcon
+    Friend WithEvents ToolStripButtonRepl As ToolStripButton
 End Class
