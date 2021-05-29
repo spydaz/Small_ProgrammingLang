@@ -11,6 +11,7 @@ Imports System.Runtime.CompilerServices
 Imports AI_BASIC.Syntax
 Imports AI_BASIC.Syntax.SyntaxNodes
 Imports AI_BASIC.Typing
+Imports BinaryExpression = AI_BASIC.Syntax.SyntaxNodes.BinaryExpression
 
 Namespace Consoles
 
@@ -19,7 +20,6 @@ Namespace Consoles
     '''
     ''' <remarks>   Leroy, 27/05/2021. </remarks>
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
     Friend Class ConsoleWriter
 
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,19 +107,40 @@ Namespace Consoles
                     Console.WriteLine(Expression.ToJson)
                 Case SyntaxType._BinaryExpression
                     Console.ForegroundColor = ConsoleColor.Cyan
-                    Console.WriteLine(Expression.ToJson)
+                    WriteBinaryExpression(Expression)
+                Case SyntaxType.AddativeExpression
+                    Console.ForegroundColor = ConsoleColor.Cyan
+                    WriteBinaryExpression(Expression)
+                Case SyntaxType.MultiplicativeExpression
+                    Console.ForegroundColor = ConsoleColor.Cyan
+                    WriteBinaryExpression(Expression)
+                Case SyntaxType.ConditionalExpression
+                    Console.ForegroundColor = ConsoleColor.Cyan
+                    WriteBinaryExpression(Expression)
                 Case SyntaxType._VariableDeclaration
                     Console.ForegroundColor = ConsoleColor.Yellow
                     Console.WriteLine(Expression.ToJson)
                 Case SyntaxType._AssignmentExpression
                     Console.ForegroundColor = ConsoleColor.Yellow
                     Console.WriteLine(Expression.ToJson)
+                Case SyntaxType.ifThenExpression
+                    Console.ForegroundColor = ConsoleColor.Magenta
+                    WriteIfCondition(Expression)
+                Case SyntaxType.ifElseExpression
+                    Console.ForegroundColor = ConsoleColor.Magenta
+                    WriteIfCondition(Expression)
+                Case SyntaxType.IfExpression
+                    Console.ForegroundColor = ConsoleColor.Magenta
+                    WriteIfCondition(Expression)
+                Case SyntaxType._CodeBlock
+                    Console.ForegroundColor = ConsoleColor.Green
+                    WriteCodeBlockExpression(Expression)
                 Case Else
                     Console.ForegroundColor = ConsoleColor.Red
                     Console.WriteLine(Expression.ToJson)
             End Select
+            Console.ResetColor()
         End Sub
-
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Writes a keyword. </summary>
         '''
@@ -154,7 +175,7 @@ Namespace Consoles
         ''' <param name="text"> [in,out] The text. </param>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Friend Shared Sub WriteNumber(ByRef text As String)
-            Console.ForegroundColor = ConsoleColor.DarkYellow
+            Console.ForegroundColor = ConsoleColor.DarkGreen
             Console.Write(text)
             Console.ResetColor()
         End Sub
@@ -176,6 +197,57 @@ Namespace Consoles
                 Console.Write(text)
                 Console.ResetColor()
             End If
+        End Sub
+        Private Shared Sub WriteIfCondition(ByRef Expression As ExpressionSyntaxNode)
+            Console.ResetColor()
+            Console.WriteLine("Syntax TypeStr : " & Expression._SyntaxTypeStr)
+            Console.WriteLine("Syntax Type : " & Expression._SyntaxType)
+
+            If Expression._SyntaxType = SyntaxType.ifThenExpression Then
+                Console.ForegroundColor = ConsoleColor.Yellow
+                Dim i As IfThenExpression = Expression
+                WriteExpressionSyntaxToken(i.IfCondition)
+                WriteExpressionSyntaxToken(i.ThenCondition)
+
+            Else
+                Console.ForegroundColor = ConsoleColor.DarkYellow
+                Dim i As IfElseExpression = Expression
+
+
+                WriteExpressionSyntaxToken(i.IfCondition)
+                WriteExpressionSyntaxToken(i.ThenCondition)
+                WriteExpressionSyntaxToken(i.ElseCondition)
+
+            End If
+
+            Console.ResetColor()
+        End Sub
+        Private Shared Sub WriteCodeBlockExpression(ByRef Expression As ExpressionSyntaxNode)
+            Dim c As CodeBlockExpression = Expression
+            Console.ResetColor()
+            Console.WriteLine("Syntax TypeStr : " & Expression._SyntaxTypeStr)
+            Console.WriteLine("Syntax Type : " & Expression._SyntaxType)
+
+            Console.ForegroundColor = ConsoleColor.Green
+            Console.WriteLine("LocalMemory : " & c.LocalMemory.ToJson & vbNewLine)
+            For Each item In c.Body
+                WriteExpressionSyntaxToken(item)
+            Next
+            Console.ResetColor()
+        End Sub
+        Private Shared Sub WriteBinaryExpression(ByRef Expression As ExpressionSyntaxNode)
+            Dim b As BinaryExpression = Expression
+            Dim _Left As ExpressionSyntaxNode = b._Left
+            Dim _Right As ExpressionSyntaxNode = b._Right
+            Dim Operand As SyntaxToken = b._Operator
+            Console.WriteLine("Syntax TypeStr : " & Expression._SyntaxTypeStr)
+            Console.WriteLine("Syntax Type : " & Expression._SyntaxType)
+            Console.ForegroundColor = ConsoleColor.Green
+            WriteExpressionSyntaxToken(_Left)
+            Console.ForegroundColor = ConsoleColor.Green
+            Console.WriteLine(Operand.ToJson)
+            Console.ForegroundColor = ConsoleColor.Cyan
+            WriteExpressionSyntaxToken(_Right)
         End Sub
     End Class
 End Namespace

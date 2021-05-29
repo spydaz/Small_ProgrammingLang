@@ -66,7 +66,7 @@ Namespace CodeAnalysis
                     Dim results As New List(Of Object)
                     Me.Env = Env
                     For Each item In _tree.Body
-                        results.Add(_EvaluateExpresssion(item))
+                        results.Add(_EvaluateExpression(item))
 
                     Next
                     Return results
@@ -81,11 +81,11 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                Public Function _EvaluateLine(ByRef _tree As SyntaxTree) As Object
+                Public Function _EvaluateLine(ByRef _tree As SyntaxTree) As List(Of Object)
                     Dim results As New List(Of Object)
                     Me.Env = New EnvironmentalMemory
                     For Each item In _tree.Body
-                        results.Add(_EvaluateExpresssion(item))
+                        results.Add(_EvaluateExpression(item))
 
                     Next
                     Return results
@@ -100,7 +100,7 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-                Private Function _EvaluateExpresssion(ByRef iNode As SyntaxNode) As Object
+                Public Function _EvaluateExpression(ByRef iNode As SyntaxNode) As Object
                     If iNode IsNot Nothing Then
 
                         Select Case iNode._SyntaxType
@@ -124,8 +124,11 @@ Namespace CodeAnalysis
                                 Return EvaluateAddativeExpression(iNode)
                             Case SyntaxType.ConditionalExpression
                                 Return EvaluateConditionalExpression(iNode)
-                            Case SyntaxType.IfExpression
+                            Case SyntaxType.ifThenExpression
                                 Return EvaluateIfExpression(iNode)
+                            Case SyntaxType.ifElseExpression
+                                Return EvaluateIfExpression(iNode)
+
                         End Select
 
                     Else
@@ -260,7 +263,7 @@ Namespace CodeAnalysis
                 Public Function Evaluate_NumericLiteralExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType._NumericLiteralExpression Then
                         Dim n As SyntaxNodes.NumericalExpression = Expr
-                        Return New Integer = n.Evaluate(Env)
+                        Return New Integer = n._Literal
                     Else
                         Dim x As New DiagnosticsException("Unable to evaluate NumericalExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
                         EvaluatorDiagnostics.Add(x)

@@ -19,9 +19,10 @@ Module Program
     Sub Main()
         Call Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
-        iRepl.RunInterpretorRepl()
+        '   iRepl.RunInterpretorRepl()
+        Dim MyRepl As New InterpretorRepl
 
-
+        MyRepl.RunCmdLine()
 
 
     End Sub

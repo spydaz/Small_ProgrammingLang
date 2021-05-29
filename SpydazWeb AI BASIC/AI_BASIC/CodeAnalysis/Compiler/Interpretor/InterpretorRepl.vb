@@ -1,187 +1,244 @@
-﻿Imports System.Linq.Expressions
+﻿'---------------------------------------------------------------------------------------------------
+' file:		AI_BASIC\Consoles\iRepl.vb
+'
+' summary:	Declares the iRepl interface
+'---------------------------------------------------------------------------------------------------
+
+
+Imports System.CodeDom.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler
-Imports AI_BASIC.Syntax
-Imports System.Console
-Imports AI_BASIC.CodeAnalysis.Compiler.Tokenizer
+Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
-Imports System.Windows.Forms
+Imports AI_BASIC.Consoles
 Imports AI_BASIC.Syntax.SyntaxNodes
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+''' <summary>   A repl. </summary>
+'''
+''' <remarks>   Leroy, 27/05/2021. </remarks>
+'''////////////////////////////////////////////////////////////////////////////////////////////////////
+Public Class InterpretorRepl
+    ''' <summary>   The line. </summary>
+    Public Line As String = ""
+    ''' <summary>   True to show, false to hide the tree. </summary>
+    Public ShowTree As Boolean = False
+    ''' <summary>   True to show, false to hide the syntax. </summary>
+    Public ShowSyntax As Boolean = True
+    ''' <summary>   True to show, false to hide the code. </summary>
+    Public ShowCode As Boolean = True
+    Public ShowDiagnostics As Boolean = True
+    Public Evaluate As Boolean = True
 
-Namespace CodeAnalysis
-    Namespace Compiler
-        Namespace Interpretor
-            Module InterpretorRepl
-                Private Line As String = ""
-                Private SAL_VB_LEXER As Lexer
-                Private TokenTree As List(Of SyntaxToken)
-                Private TokenTrees As List(Of List(Of SyntaxToken))
-                Private ExpressionTrees As List(Of SyntaxTree)
-                Private ExpressionTree As SyntaxTree
-                Private EvaluateScript As Boolean = True
-                Private ShowTree As Boolean = True
-                Private ShowTokens As Boolean = True
-                Private ShowDiagnostics As Boolean = True
-                Private _diagnostics As New List(Of String)
-                Private SAL_VB_PARSER As Parser
-                Private Sub _Show_title()
-                    Console.ForegroundColor = ConsoleColor.Cyan
-                    Console.WriteLine("Welcome to SpydazWeb Basic")
-                End Sub
-                Sub RunInterpretorRepl()
-                    _Show_title()
-                    While True
-                        SetReplCode()
-                        _GetInput()
-#Region "REPL_CMDS"
-                        'ReplCmds
-                        If Line = "#ShowTree" Then
-                            ShowTree = True
-                            _GetInput()
-                        End If
-                        If Line = "#HideTree" Then
-                            ShowTree = False
-                            _GetInput()
-                        End If
-                        If Line = "#ShowTokens" Then
-                            ShowTokens = True
-                            _GetInput()
-                        End If
-                        If Line = "#HideTokens" Then
-                            ShowTokens = False
-                            _GetInput()
-                        End If
-                        If Line = "#cls" Then
-                            Console.Clear()
-                            _Show_title()
-                            _GetInput()
-                        End If
-                        If Line = "#repl" Then
+#Region "REPL"
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Check repl command. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub CheckReplCmd()
+        Select Case UCase(Line)
+            Case "CLS"
+                _ClearScreen()
+                _GetInput()
+            Case "SHOWSYNTAX"
+                ShowSyntax = True
+                _GetInput()
+            Case "SHOWTOKENS"
+                ShowTree = True
+                _GetInput()
+            Case "HIDESYNTAX"
+                ShowSyntax = False
+                _GetInput()
+            Case "HIDETOKENS"
+                ShowTree = False
+                _GetInput()
+            Case "HIDECODE"
+                ShowCode = False
+                _GetInput()
+            Case "SHOWCODE"
+                ShowCode = True
+                _GetInput()
+            Case "SHOWDIAGNOSTICS"
+                ShowDiagnostics = True
+                _GetInput()
+            Case "HIDEDIAGNOSTICS"
+                ShowDiagnostics = False
+                _GetInput()
+        End Select
+        _GetInput()
+        _ClearScreen()
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Resets the console. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub ResetConsole()
+        Console.ForegroundColor = ConsoleColor.White
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Writes the code line. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub _WriteCodeLine()
+        Console.WriteLine(Line)
+        ResetConsole()
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Displays a prompt. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub _DisplayPrompt()
 
-                            Call Application.Run(New Editor_IDE)
-                            _GetInput()
-                        End If
-                        If Line = "#ide" Then
+        Console.ForegroundColor = ConsoleColor.Cyan
+        Console.Write("»")
+        ResetConsole()
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Clears the screen. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub _ClearScreen()
+        Console.Clear()
+        ResetConsole()
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Gets the input. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub _GetInput()
+        Line = Console.ReadLine().Replace("»", "")
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Shows the title. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub _Show_title()
+        Console.ForegroundColor = ConsoleColor.Cyan
+        Console.WriteLine("Welcome to SpydazWeb Basic")
+        ResetConsole()
+    End Sub
 
 
-                            Call Application.Run(New IDE)
-                            _GetInput()
-                        End If
-
-                        'Can be turned off / To reinstate #Run
-                        'Default always Run
-                        If Line = "#Run" Then
-
-                            EvaluateScript = True
-                            _GetInput()
-                        End If
-                        'Script Always Compiles
-                        If Line = "#CompileOnly" Then
-                            EvaluateScript = False
-                            _GetInput()
-                        End If
 #End Region
-                        _CreateLexer()
-                        If ShowTokens = True Then _LexTokens()
-                        RunScript()
-                    End While
-                End Sub
-                Private Sub RunScript()
-                    ':::_EVALUATE_::: 
-                    If DisplayDiagnostics() = True Then
-                        Dim Result = ""
-                        If EvaluateScript = True Then
-                            'No Errors then Evaluate
-                            Console.ForegroundColor = ConsoleColor.Green
-                            Dim Eval As New Evaluator(ExpressionTree)
+#Region "Compiler"
+    ''' <summary>   The compiled result. </summary>
+    Private CompiledResult As EvaluationResult
+    Private HasDiagnostic As Boolean = False
+    Public Sub CompileScript(ByRef Script As List(Of String))
 
-                            Console.ForegroundColor = ConsoleColor.DarkGray
-                            Console.WriteLine(Eval._Evaluate & vbNewLine)
-                        End If
+        Dim Lst As New List(Of EvaluationResult)
+        Dim Prog As New List(Of SyntaxNode)
+        For Each item In Script
+            Me.Line &= item & vbNewLine
+            Dim iCompile As New Compiler(Line)
+            Dim result = iCompile.Result
+            'Trees are Already Compiled in Compiler
+            If ShowTree = True Then
+                iCompile.PrintTokenTreeToConsole()
+            End If
 
-                    Else
-                        'Already displayed diagnostics
-                        Console.ForegroundColor = ConsoleColor.DarkGray
-                        Console.WriteLine("Unable to Evaluate" & vbNewLine)
-                        _diagnostics = New List(Of String)
-                    End If
-                End Sub
-                Private Sub GetDiagnostics()
-                    _diagnostics.AddRange(SAL_VB_LEXER._Diagnostics)
-                    _diagnostics.AddRange(ExpressionTree.Diagnostics)
-                End Sub
-                Private Sub DisplayToken_Tree()
-                    If _diagnostics.Count > 0 Then
-                        Console.ForegroundColor = ConsoleColor.Gray
-                    Else
-                        Console.ForegroundColor = ConsoleColor.DarkYellow
-                    End If
+            'Trees are Already Compiled in Compiler
+            If ShowSyntax = True Then
+                iCompile.PrintSyntaxTreeToConsole()
+            End If
+            If result.Diagnostics.HasErrors = True Then
+                HasDiagnostic = True
+                DisplayOutput()
+            End If
+            Lst.Add(result)
+            Prog.AddRange(iCompile.GetSyntaxTree)
+        Next
 
-                End Sub
-                Public Sub _GetInput()
-                    Line = Console.ReadLine()
-                End Sub
-                Public Sub _CreateLexer()
-                    SAL_VB_LEXER = New Lexer(Line)
-                End Sub
-                Public Sub _LexTokens()
-                    Dim Token As SyntaxToken
-                    DisplayToken_Tree()
-                    While True
-                        Token = SAL_VB_LEXER._NextToken
-                        If Token._SyntaxType = SyntaxType._EndOfFileToken Then
+        If HasDiagnostic = True Then
+            Console.WriteLine("Diagnostics" & vbNewLine)
+            For Each item In Lst
+                ConsoleWriter.WriteDiagnostics(item.Diagnostics.ToJson())
+                ResetConsole()
+            Next
 
-                            Exit While
+        Else
+            HasDiagnostic = False
+            ResetConsole()
+            Console.WriteLine("CODE: " & vbNewLine & Line & vbNewLine)
+            ResetConsole()
+            Eval(Prog)
+        End If
+        RunCmdLine()
+    End Sub
+    Private Sub CompileLine()
+        Console.ForegroundColor = ConsoleColor.Magenta
+        Dim Compile As New Compiler(Line)
+        Dim result = Compile.Result
+        CompiledResult = result
 
-                        Else
-                            ' Console.WriteLine(vbNewLine & "Tokens> " & vbNewLine & "Text: " & Itok._Text & vbNewLine & "Type: " & Itok._SyntaxStr & vbNewLine)
-                            Console.WriteLine(Token.ToJson)
-                        End If
-                    End While
-                End Sub
-                Private Sub SetReplCode()
-                    Console.ForegroundColor = ConsoleColor.Yellow
-                End Sub
-                Private Function DisplayDiagnostics() As Boolean
+        'Trees are Already Compiled in Compiler
+        If ShowTree = True Then
+            Compile.PrintTokenTreeToConsole()
+        End If
 
-                    SAL_VB_PARSER = New Parser(Line)
-                    ExpressionTree = SAL_VB_PARSER.Parse()
-                    GetDiagnostics()
+        'Trees are Already Compiled in Compiler
+        If ShowSyntax = True Then
+            Compile.PrintSyntaxTreeToConsole()
+        End If
 
-                    If ExpressionTree IsNot Nothing Then
-                        'Catch Errors
-                        If _diagnostics.Count > 0 Then
-                            'Tokens
-                            Console.ForegroundColor = ConsoleColor.Red
-                            'PARSER DIAGNOSTICS
-                            Console.WriteLine("Compiler Errors: " & vbNewLine)
-                            If ShowDiagnostics = True Then
-                                For Each item In _diagnostics
-                                    Console.ForegroundColor = ConsoleColor.DarkRed
-                                    Console.WriteLine(item & vbNewLine)
-                                Next
+        If result.Diagnostics.HasErrors = True Then
+            Console.WriteLine("Diagnostics" & vbNewLine)
+            HasDiagnostic = True
+            DisplayOutput()
+        Else
+            HasDiagnostic = False
+            ResetConsole()
 
-                                'Tokens
-                                If ShowTokens = True Then _LexTokens()
-                            End If
+            Console.WriteLine("CODE: " & vbNewLine & Line & vbNewLine)
+            Eval(Compile.GetSyntaxTree())
 
-                            Return False
 
-                        Else
-                            If ShowTree = True Then
-                                Console.ForegroundColor = ConsoleColor.Green
-                                Console.WriteLine(ExpressionTree.ToJson)
-                            End If
+        End If
 
-                            Return True
 
-                        End If
-                    Else
-                        Return False
-                    End If
-                    SetReplCode()
-                End Function
-            End Module
-        End Namespace
+    End Sub
+    Public Sub RunCmdLine()
+        _Show_title()
+        While True
+            _DisplayPrompt()
+            CheckReplCmd()
+            CompileLine()
 
-    End Namespace
-End Namespace
+        End While
+    End Sub
+
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Displays the diagnostics. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub DisplayDiagnostics()
+        ConsoleWriter.WriteDiagnostics(CompiledResult.Diagnostics.ToJson())
+        ResetConsole()
+    End Sub
+    Public Sub DisplayOutput()
+        If HasDiagnostic = True Then
+            If ShowDiagnostics = True Then
+                DisplayDiagnostics()
+            End If
+        End If
+        ResetConsole()
+    End Sub
+#End Region
+    Public Sub Eval(ByRef _tree As List(Of SyntaxNode))
+        Dim MyInterpretor As New Interpretor
+        Console.WriteLine("Evaluation" & vbNewLine)
+        Console.ForegroundColor = ConsoleColor.Green
+        For Each item In _tree
+            Dim x = MyInterpretor._EvaluateExpression(item)
+            Console.WriteLine("Evaluation Result :" & vbNewLine & x.ToString & vbNewLine & vbNewLine)
+        Next
+        ResetConsole()
+    End Sub
+
+End Class

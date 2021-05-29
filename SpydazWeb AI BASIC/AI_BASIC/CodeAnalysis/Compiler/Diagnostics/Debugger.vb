@@ -34,7 +34,6 @@ Namespace CodeAnalysis
             '''
             ''' <param name="_script">  [in,out] The script. </param>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Public Sub New(ByRef _script As String)
                 Script = _script
             End Sub
@@ -46,7 +45,6 @@ Namespace CodeAnalysis
             '''
             ''' <returns>   The program. </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Public Function GetProgram() As List(Of SyntaxTree)
                 Return ParserTree
             End Function
@@ -147,7 +145,6 @@ Namespace CodeAnalysis
 #End Region
 #Region "Produce TokenTrees with Diagnostics"
             ''' <summary>   The lexer diagnostics. </summary>
-
             Private Shared LexerDiagnostics As New List(Of DiagnosticsException)
             ''' <summary>   The token tree. </summary>
             Private Shared TokenTree As List(Of List(Of SyntaxToken))
@@ -161,7 +158,6 @@ Namespace CodeAnalysis
             '''
             ''' <returns>   A List(Of List(Of SyntaxToken)) </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Friend Shared Function ProduceTokenTree(ByRef Script As String) As List(Of List(Of SyntaxToken))
                 TokenTree = New List(Of List(Of SyntaxToken))
                 Dim Program As List(Of String)
@@ -181,7 +177,6 @@ Namespace CodeAnalysis
             '''
             ''' <returns>   A List(Of SyntaxToken) </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Private Shared Function ProduceTokenTreeLine(ByRef Line As String) As List(Of SyntaxToken)
                 Dim CurrentTree As New List(Of SyntaxToken)
                 Dim iLexer As New Lexer(Line)
@@ -200,8 +195,8 @@ Namespace CodeAnalysis
                 End While
 
                 'Add End Of FileToken
-                CurrentTree.Add(New SyntaxToken(SyntaxType._EndOfLineToken, SyntaxType._EndOfLineToken.GetSyntaxTypeStr,
-                                          "EOL", "EOL", Line.Length, Line.Length))
+                '    CurrentTree.Add(New SyntaxToken(SyntaxType._EndOfLineToken, SyntaxType._EndOfLineToken.GetSyntaxTypeStr,
+                '          "EOL", "EOL", Line.Length, Line.Length))
 #End Region
 
                 _LineDiagnostics.AddRange(iLexer.LexerDiagnostics)
@@ -216,7 +211,6 @@ Namespace CodeAnalysis
             '''
             ''' <returns>   The lexer diagnostic. </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Public Function GetLexerDiagnostic() As DiagnosticOutput
                 Return New DiagnosticOutput(LexerDiagnostics, DiagnosticType.TokenizerDiagnostics)
             End Function

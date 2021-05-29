@@ -242,12 +242,23 @@ Namespace Syntax
 
                 If ileft Is Nothing Then
                     '    MsgBox(ileft.ToString)
-                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(ileft), ExceptionType.NullRefferenceError, NameOf(ileft), SyntaxType._String))
+                    Try
+
+                    Catch ex As Exception
+                        GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(ileft), ExceptionType.NullRefferenceError, NameOf(ileft), SyntaxType._String))
+
+                    End Try
+
 
                 End If
 
                 If iright Is Nothing Then
-                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(iright), ExceptionType.NullRefferenceError, NameOf(iright), SyntaxType._String))
+                    Try
+
+                    Catch ex As Exception
+                        GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(iright), ExceptionType.NullRefferenceError, NameOf(iright), SyntaxType._String))
+
+                    End Try
 
                 End If
 
@@ -449,7 +460,7 @@ Namespace Syntax
 
             Public Sub New(ifCondition As BinaryExpression,
                            thenCondition As CodeBlockExpression)
-                MyBase.New(SyntaxType.IfExpression, SyntaxType.IfExpression.GetSyntaxTypeStr)
+                MyBase.New(SyntaxType.ifThenExpression, SyntaxType.ifThenExpression.GetSyntaxTypeStr)
 
 
                 Me.IfCondition = ifCondition
@@ -523,6 +534,8 @@ Namespace Syntax
             Public Sub New(_ifCondition As BinaryExpression, _thenCondition As CodeBlockExpression, _ElseCondition As CodeBlockExpression)
                 MyBase.New(_ifCondition, _thenCondition)
                 Me.ElseCondition = _ElseCondition
+                Me._SyntaxType = SyntaxType.ifElseExpression
+                Me._SyntaxTypeStr = Me._SyntaxType.GetSyntaxTypeStr
             End Sub
 
             '''////////////////////////////////////////////////////////////////////////////////////////////////////

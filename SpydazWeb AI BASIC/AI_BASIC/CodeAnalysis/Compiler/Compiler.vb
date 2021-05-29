@@ -29,22 +29,8 @@ Namespace CodeAnalysis
             ''' <summary>   The result. </summary>
             Public Result As EvaluationResult
 
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Gets or sets the final result. </summary>
-            '''
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            Private Final As Object
+            Dim _results As List(Of Object)
 
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Gets the final result. </summary>
-            '''
-            ''' <value> The final result. </value>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            Private ReadOnly Property FinalResult As Object
-                Get
-                    Return Final
-                End Get
-            End Property
 
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''' <summary>   Constructor. </summary>
@@ -57,15 +43,13 @@ Namespace CodeAnalysis
             ''' <param name="script">   The script. </param>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub New(script As String)
-                If script Is Nothing Then
-                    Throw New ArgumentNullException(NameOf(script))
-                End If
+
                 Me.Script = script
                 Dim _debug = Compile()
                 Dim Eval As New Interpretor.Interpretor
-                Dim _results = Eval.EvaluateProgram(script, Program)
+                _results = Eval.EvaluateProgram(script, Program)
                 Result = New EvaluationResult(_debug, _results)
-                Final = Result.Results.last
+
             End Sub
 
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,6 +99,7 @@ Namespace CodeAnalysis
                 Next
                 Return Ast
             End Function
+
             ''' <summary>   The program. </summary>
             Private Program As List(Of SyntaxTree)
 
@@ -246,6 +231,11 @@ Namespace CodeAnalysis
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
             Public Sub PrintDiagnostics()
                 ConsoleWriter.WriteDiagnostics(GetDiagnostics)
+            End Sub
+
+            Public Sub DebugCode()
+                Dim MyDebugger As New Debugger(Script)
+
             End Sub
         End Class
     End Namespace
