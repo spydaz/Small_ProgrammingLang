@@ -11,6 +11,8 @@ Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.CodeAnalysis.Compiler.Interpretor
 Imports AI_BASIC.Consoles
 Imports AI_BASIC.Syntax.SyntaxNodes
+Imports System.Windows.Forms
+
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 ''' <summary>   A repl. </summary>
 '''
@@ -20,7 +22,7 @@ Public Class InterpretorRepl
     ''' <summary>   The line. </summary>
     Public Line As String = ""
     ''' <summary>   True to show, false to hide the tree. </summary>
-    Public ShowTree As Boolean = False
+    Public ShowTree As Boolean = True
     ''' <summary>   True to show, false to hide the syntax. </summary>
     Public ShowSyntax As Boolean = True
     ''' <summary>   True to show, false to hide the code. </summary>
@@ -57,15 +59,47 @@ Public Class InterpretorRepl
             Case "SHOWCODE"
                 ShowCode = True
                 _GetInput()
+            Case "HELP"
+                ShowHelp
+                _GetInput()
             Case "SHOWDIAGNOSTICS"
                 ShowDiagnostics = True
                 _GetInput()
             Case "HIDEDIAGNOSTICS"
                 ShowDiagnostics = False
                 _GetInput()
+            Case "IDE"
+                LoadIDE()
+                _GetInput()
         End Select
         _GetInput()
         _ClearScreen()
+    End Sub
+    '
+
+
+    Public Sub ShowHelp()
+        _ClearScreen()
+
+        Console.ForegroundColor = ConsoleColor.White
+        Console.WriteLine("Basic Console Commands")
+        Console.WriteLine()
+        Console.WriteLine(
+    "ShowDiagnostics - HideDiagnostics          - Display CompilerDiagnostics" & vbNewLine & vbNewLine &
+          "ShowCode - hideCode                        - Shows entered Code" & vbNewLine & vbNewLine &
+          "Showtokens - hideTokens                    - Shows Tokenier Tokens" & vbNewLine & vbNewLine &
+          "ShowSyntax - hideyntax                    - Show Syntax Expression" & vbNewLine & vbNewLine &
+          "CLS - Clears the screen                    - CLS" & vbNewLine & vbNewLine &
+          "Help - Shows helpScreen                    - Shows Help ")
+        Console.WriteLine()
+
+        Console.WriteLine("IDE - Loads the Programming IDE")
+        Console.WriteLine()
+        Console.WriteLine()
+        _Show_title()
+        Console.WriteLine()
+
+        _DisplayPrompt()
     End Sub
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     ''' <summary>   Resets the console. </summary>
@@ -103,6 +137,12 @@ Public Class InterpretorRepl
     Public Sub _ClearScreen()
         Console.Clear()
         ResetConsole()
+    End Sub
+    Public Sub LoadIDE()
+
+        Call Application.Run(New IDE())
+        _ClearScreen()
+        _Show_title()
     End Sub
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     ''' <summary>   Gets the input. </summary>
@@ -236,7 +276,9 @@ Public Class InterpretorRepl
         Console.ForegroundColor = ConsoleColor.Green
         For Each item In _tree
             Dim x = MyInterpretor._EvaluateExpression(item)
-            Console.WriteLine("Evaluation Result :" & vbNewLine & x.ToString & vbNewLine & vbNewLine)
+            If x IsNot Nothing Then
+                Console.WriteLine("Evaluation Result :" & vbNewLine & x.ToString & vbNewLine & vbNewLine)
+            End If
         Next
         ResetConsole()
     End Sub

@@ -205,6 +205,8 @@ Namespace Syntax
 
 #Region "Expressions"
 
+#Region "MathMatical"
+
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   A binary expression. </summary>
         '''
@@ -242,23 +244,12 @@ Namespace Syntax
 
                 If ileft Is Nothing Then
                     '    MsgBox(ileft.ToString)
-                    Try
-
-                    Catch ex As Exception
-                        GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(ileft), ExceptionType.NullRefferenceError, NameOf(ileft), SyntaxType._String))
-
-                    End Try
-
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(ileft), ExceptionType.NullRefferenceError, NameOf(ileft), SyntaxType._String))
 
                 End If
 
                 If iright Is Nothing Then
-                    Try
-
-                    Catch ex As Exception
-                        GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(iright), ExceptionType.NullRefferenceError, NameOf(iright), SyntaxType._String))
-
-                    End Try
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression " & NameOf(iright), ExceptionType.NullRefferenceError, NameOf(iright), SyntaxType._String))
 
                 End If
 
@@ -372,6 +363,7 @@ Namespace Syntax
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class UnaryExpression
             Inherits ExpressionSyntaxNode
@@ -435,156 +427,14 @@ Namespace Syntax
             End Function
         End Class
 
-        '''////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''' <summary>   if expression. </summary>
-        '''
-        ''' <remarks>   Leroy, 24/05/2021. </remarks>
-        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+#End Region
 
-        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
-        Friend Class IfThenExpression
-            Inherits ExpressionSyntaxNode
-            ''' <summary>   The then condition. </summary>
-            Public ThenCondition As CodeBlockExpression
-            ''' <summary>   if condition. </summary>
-            Public IfCondition As BinaryExpression
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Constructor. </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <param name="ifCondition">      if condition. </param>
-            ''' <param name="thenCondition">    The then condition. </param>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Public Sub New(ifCondition As BinaryExpression,
-                           thenCondition As CodeBlockExpression)
-                MyBase.New(SyntaxType.ifThenExpression, SyntaxType.ifThenExpression.GetSyntaxTypeStr)
-
-
-                Me.IfCondition = ifCondition
-                Me.ThenCondition = thenCondition
-
-            End Sub
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>
-            ''' Evaluates node in the interpretor;
-            ''' To evaluate a node ;
-            ''' (1) It will require an Memeory Environment from its parent caller
-            '''     The Environment Will Contain the variables and functions, which the expression will have
-            '''     access to to evalute correctly.
-            ''' (2) To get the values use Get Children ,
-            '''        Evaluating the Correct values returned.
-            ''' </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
-            '''
-            ''' <returns>   An Object. </returns>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                If IfCondition.Evaluate(ParentEnv) = True Then
-                    Return ThenCondition.Evaluate(ParentEnv)
-                Else
-                    Return False
-                End If
-
-
-            End Function
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Gets debugger display. </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <returns>   The debugger display. </returns>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Private Function GetDebuggerDisplay() As String
-                Return ToString()
-            End Function
-        End Class
-
-        '''////////////////////////////////////////////////////////////////////////////////////////////////////
-        ''' <summary>   if else expression. </summary>
-        '''
-        ''' <remarks>   Leroy, 27/05/2021. </remarks>
-        '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
-        Friend Class IfElseExpression
-            Inherits IfThenExpression
-            ''' <summary>   The else condition. </summary>
-            Public ElseCondition As CodeBlockExpression
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Constructor. </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <param name="_ifCondition">     if condition. </param>
-            ''' <param name="_thenCondition">   The then condition. </param>
-            ''' <param name="_ElseCondition">   The else condition. </param>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Public Sub New(_ifCondition As BinaryExpression, _thenCondition As CodeBlockExpression, _ElseCondition As CodeBlockExpression)
-                MyBase.New(_ifCondition, _thenCondition)
-                Me.ElseCondition = _ElseCondition
-                Me._SyntaxType = SyntaxType.ifElseExpression
-                Me._SyntaxTypeStr = Me._SyntaxType.GetSyntaxTypeStr
-            End Sub
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>
-            ''' Evaluates node in the interpretor;
-            ''' To evaluate a node ;
-            ''' (1) It will require an Memeory Environment from its parent caller
-            '''     The Environment Will Contain the variables and functions, which the expression will have
-            '''     access to to evalute correctly.
-            ''' (2) To get the values use Get Children ,
-            '''        Evaluating the Correct values returned.
-            ''' </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
-            '''
-            ''' <returns>   An Object. </returns>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
-                If IfCondition.Evaluate(ParentEnv) = True Then
-                    Return ThenCondition.Evaluate(ParentEnv)
-                Else
-                    Return ElseCondition.Evaluate(ParentEnv)
-                End If
-
-
-            End Function
-
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            ''' <summary>   Gets debugger display. </summary>
-            '''
-            ''' <remarks>   Leroy, 27/05/2021. </remarks>
-            '''
-            ''' <returns>   The debugger display. </returns>
-            '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            Private Function GetDebuggerDisplay() As String
-                Return ToString()
-            End Function
-        End Class
 
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   A code block expression. </summary>
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class CodeBlockExpression
             Inherits ExpressionSyntaxNode
@@ -603,7 +453,6 @@ Namespace Syntax
             '''
             ''' <param name="ibody">    The ibody. </param>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Public Sub New(ibody As List(Of ExpressionSyntaxNode))
                 MyBase.New(SyntaxType._CodeBlock,
                            SyntaxType._CodeBlock.GetSyntaxTypeStr)
@@ -633,7 +482,6 @@ Namespace Syntax
             '''
             ''' <returns>   An Object. </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
                 LocalMemory = New EnvironmentalMemory(ParentEnv)
 
@@ -650,7 +498,6 @@ Namespace Syntax
             '''
             ''' <returns>   The debugger display. </returns>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             Private Function GetDebuggerDisplay() As String
                 Return ToString()
             End Function
@@ -661,7 +508,6 @@ Namespace Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ReturnExpression
             Inherits CodeBlockExpression
@@ -731,7 +577,6 @@ Namespace Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
         Friend Class ParenthesizedExpression
             Inherits ExpressionSyntaxNode
@@ -789,6 +634,245 @@ Namespace Syntax
                 Return ToString()
             End Function
         End Class
+
+
+#Region "IF THEN ELSE"
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   if expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 24/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class IfThenExpression
+            Inherits ExpressionSyntaxNode
+            ''' <summary>   The then condition. </summary>
+            Public ThenCondition As CodeBlockExpression
+            ''' <summary>   if condition. </summary>
+            Public IfCondition As BinaryExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ifCondition">      if condition. </param>
+            ''' <param name="thenCondition">    The then condition. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            Public Sub New(ifCondition As BinaryExpression,
+                           thenCondition As CodeBlockExpression)
+                MyBase.New(SyntaxType.ifThenExpression, SyntaxType.ifThenExpression.GetSyntaxTypeStr)
+
+
+                Me.IfCondition = ifCondition
+                Me.ThenCondition = thenCondition
+
+            End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                If IfCondition.Evaluate(ParentEnv) = True Then
+                    Return ThenCondition.Evaluate(ParentEnv)
+                Else
+                    Return True
+                End If
+
+
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
+        End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   if else expression. </summary>
+        '''
+        ''' <remarks>   Leroy, 27/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
+        Friend Class IfElseExpression
+            Inherits IfThenExpression
+            ''' <summary>   The else condition. </summary>
+            Public ElseCondition As CodeBlockExpression
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Constructor. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="_ifCondition">     if condition. </param>
+            ''' <param name="_thenCondition">   The then condition. </param>
+            ''' <param name="_ElseCondition">   The else condition. </param>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            Public Sub New(_ifCondition As BinaryExpression, _thenCondition As CodeBlockExpression, _ElseCondition As CodeBlockExpression)
+                MyBase.New(_ifCondition, _thenCondition)
+                Me.ElseCondition = _ElseCondition
+                Me._SyntaxType = SyntaxType.ifElseExpression
+                Me._SyntaxTypeStr = Me._SyntaxType.GetSyntaxTypeStr
+            End Sub
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>
+            ''' Evaluates node in the interpretor;
+            ''' To evaluate a node ;
+            ''' (1) It will require an Memeory Environment from its parent caller
+            '''     The Environment Will Contain the variables and functions, which the expression will have
+            '''     access to to evalute correctly.
+            ''' (2) To get the values use Get Children ,
+            '''        Evaluating the Correct values returned.
+            ''' </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <param name="ParentEnv">    [in,out] The parent environment. </param>
+            '''
+            ''' <returns>   An Object. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                If IfCondition.Evaluate(ParentEnv) = True Then
+                    Return ThenCondition.Evaluate(ParentEnv)
+                Else
+                    Return ElseCondition.Evaluate(ParentEnv)
+                End If
+
+
+            End Function
+
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            ''' <summary>   Gets debugger display. </summary>
+            '''
+            ''' <remarks>   Leroy, 27/05/2021. </remarks>
+            '''
+            ''' <returns>   The debugger display. </returns>
+            '''////////////////////////////////////////////////////////////////////////////////////////////////////
+            Private Function GetDebuggerDisplay() As String
+                Return ToString()
+            End Function
+        End Class
+
+#End Region
+#Region "DO"
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   A while expression.
+        '''             
+        ''' do
+        '''   body
+        ''' while condition
+        '''
+        ''' -------
+        '''               
+        '''                
+        '''                  </summary>
+        '''
+        ''' <remarks>   Leroy, 29/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        Friend Class WhileExpression
+            Inherits ExpressionSyntaxNode
+            Public Condition As ExpressionSyntaxNode
+            Public Body As CodeBlockExpression
+
+            Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
+                MyBase.New(SyntaxType.DO_WhileExpression, SyntaxType.DO_WhileExpression.GetSyntaxTypeStr)
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Do While Condition.Evaluate(ParentEnv) = True
+                    Body.Evaluate(ParentEnv)
+                Loop
+                Return True
+            End Function
+        End Class
+
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   An until expression.
+        ''' do
+        '''   body
+        ''' until condition
+        '''
+        ''' -------            
+        '''               </summary>
+        '''
+        ''' <remarks>   Leroy, 29/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        Friend Class UntilExpression
+            Inherits ExpressionSyntaxNode
+            Public Condition As ExpressionSyntaxNode
+            Public Body As CodeBlockExpression
+
+            Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
+                MyBase.New(SyntaxType.DO_UntilExpression, SyntaxType.DO_UntilExpression.GetSyntaxTypeStr)
+            End Sub
+
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                Do Until Condition.Evaluate(ParentEnv) = True
+                    Body.Evaluate(ParentEnv)
+                Loop
+                Return True
+            End Function
+        End Class
+#End Region
+#Region "For"
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        ''' <summary>   for expression. 
+        '''             
+        '''    for i = lower to upper
+        '''     body
+        '''
+        '''  ------
+        '''             
+        '''             </summary>
+        '''
+        ''' <remarks>   Leroy, 29/05/2021. </remarks>
+        '''////////////////////////////////////////////////////////////////////////////////////////////////////
+        Friend Class ForExpression
+            Inherits ExpressionSyntaxNode
+            Public _Identifier As IdentifierExpression
+            Public LowerStart As NumericalExpression
+            Public UpperStart As NumericalExpression
+            Public Body As CodeBlockExpression
+            Public Sub New(syntaxType As SyntaxType, syntaxTypeStr As String)
+                MyBase.New(SyntaxType.ForExpression, SyntaxType.ForExpression.GetSyntaxTypeStr)
+            End Sub
+            Public Overrides Function Evaluate(ByRef ParentEnv As EnvironmentalMemory) As Object
+                ParentEnv.DefineValue(_Identifier.Evaluate(ParentEnv), LiteralType._Integer, LowerStart.Evaluate(ParentEnv))
+                For i = LowerStart.Evaluate(ParentEnv) To LowerStart.Evaluate(ParentEnv)
+                    ParentEnv.AssignValue(_Identifier.Evaluate(ParentEnv), i)
+                    Body.Evaluate(ParentEnv)
+                Next i
+                Return True
+            End Function
+        End Class
+#End Region
+
 #End Region
 
 #Region "Literals"
@@ -1140,7 +1224,6 @@ Namespace Syntax
             End Function
         End Class
 #End Region
-
 #Region "Variables"
 
         '''////////////////////////////////////////////////////////////////////////////////////////////////////

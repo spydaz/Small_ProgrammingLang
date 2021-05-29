@@ -14,7 +14,7 @@ Imports AI_BASIC.CodeAnalysis.Compiler
 ''' <remarks>   Leroy, 27/05/2021. </remarks>
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Public Class CompilerPropertys
+Friend Class CompilerPropertys
     ''' <summary>   The refference files. </summary>
     Public RefferenceFiles As New List(Of String)
     ''' <summary>   The embedded files. </summary>

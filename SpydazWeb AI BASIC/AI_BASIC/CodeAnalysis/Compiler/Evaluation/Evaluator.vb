@@ -22,7 +22,6 @@ Namespace CodeAnalysis
             '''
             ''' <remarks>   Leroy, 27/05/2021. </remarks>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Evaluator
                 ''' <summary>   The environment. </summary>
@@ -43,11 +42,9 @@ Namespace CodeAnalysis
                 '''
                 ''' <param name="_itree">   [in,out] The itree. </param>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Sub New(ByRef _itree As SyntaxTree)
                     _tree = _itree
                 End Sub
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluates the given environment. </summary>
                 '''
@@ -57,7 +54,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function _Evaluate(ByRef Env As EnvironmentalMemory) As Object
                     Me.Env = Env
                     For Each item In _tree.Body
@@ -70,7 +66,6 @@ Namespace CodeAnalysis
                     Next
                     Return "Unable to Evaluate"
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate expresssion. </summary>
                 '''
@@ -80,7 +75,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _EvaluateExpresssion(ByRef iNode As SyntaxNode) As Object
                     If iNode IsNot Nothing Then
 
@@ -107,6 +101,12 @@ Namespace CodeAnalysis
                                 Return EvaluateConditionalExpression(iNode)
                             Case SyntaxType.IfExpression
                                 Return EvaluateIfExpression(iNode)
+                            Case SyntaxType.DO_UntilExpression
+                                Return EvaluateDO_Expression(iNode)
+                            Case SyntaxType.DO_WhileExpression
+                                Return EvaluateDO_Expression(iNode)
+                            Case SyntaxType.ForExpression
+                                Return EvaluateForExpression(iNode)
                         End Select
 
                     Else
@@ -115,7 +115,29 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(DiagExe.ToJson)
                     Return "Unable to Evaluate"
                 End Function
+                Public Function EvaluateForExpression(ByRef Expr As SyntaxNode) As String
 
+                    Dim f As ForExpression = Expr
+                    Return f.Evaluate(Env)
+
+                    Dim x As New DiagnosticsException("Unable to evaluate ForExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+
+                End Function
+                Public Function EvaluateDO_Expression(ByRef Expr As SyntaxNode) As String
+                    Select Case Expr._SyntaxType
+                        Case SyntaxType.DO_UntilExpression
+                            Dim D As UntilExpression = Expr
+                            Return D.Evaluate(Env)
+                        Case SyntaxType.DO_WhileExpression
+                            Dim D As WhileExpression = Expr
+                            Return D.Evaluate(Env)
+                    End Select
+                    Dim x As New DiagnosticsException("Unable to evaluate DOExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                    _Diagnostics.Add(x.ToJson)
+                    Return Nothing
+                End Function
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate string expression. </summary>
                 '''
@@ -125,7 +147,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A String. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateStringExpression(ByRef Expr As SyntaxNode) As String
                     If Expr._SyntaxType = SyntaxType._StringExpression Then
                         Dim n As SyntaxNodes.StringExpression = Expr
@@ -136,7 +157,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate numeric literal expression. </summary>
                 '''
@@ -146,7 +166,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Integer. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function Evaluate_NumericLiteralExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType._NumericLiteralExpression Then
                         Dim n As NumericalExpression = Expr
@@ -157,7 +176,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate boolean literal expression. </summary>
                 '''
@@ -167,7 +185,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateBooleanLiteralExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType._BooleanLiteralExpression Then
                         Dim n As SyntaxNodes.BooleanLiteralExpression = Expr
@@ -178,7 +195,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate unary expression. </summary>
                 '''
@@ -188,7 +204,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Integer. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateUnaryExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType._UnaryExpression Then
                         Dim u As SyntaxNodes.UnaryExpression = Expr
@@ -199,7 +214,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate identifier expression. </summary>
                 '''
@@ -209,7 +223,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateIdentifierExpression(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._IdentifierExpression Then
                         Dim i As SyntaxNodes.IdentifierExpression = Expr
@@ -221,7 +234,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate variable declaration. </summary>
                 '''
@@ -231,7 +243,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateVariableDeclaration(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._VariableDeclaration Then
                         Dim i As SyntaxNodes.VariableDeclarationExpression = Expr
@@ -242,7 +253,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate assignment expression. </summary>
                 '''
@@ -252,7 +262,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateAssignmentExpression(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._AssignmentExpression Then
                         Dim i As SyntaxNodes.AssignmentExpression = Expr
@@ -263,7 +272,6 @@ Namespace CodeAnalysis
                         Return Nothing
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate addative expression. </summary>
                 '''
@@ -273,7 +281,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Integer. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateAddativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -291,7 +298,6 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate multiplicative expression. </summary>
                 '''
@@ -301,7 +307,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An Integer. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateMultiplicativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -319,7 +324,6 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate conditional expression. </summary>
                 '''
@@ -329,7 +333,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateConditionalExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType.ConditionalExpression Then
                         Dim b As SyntaxNodes.BinaryExpression = Expr
@@ -355,7 +358,6 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate if expression. </summary>
                 '''
@@ -365,7 +367,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateIfExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType.ifElseExpression Then
 
@@ -385,7 +386,6 @@ Namespace CodeAnalysis
                     _Diagnostics.Add(x.ToJson)
                     Return Nothing
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Displays the diagnostics described by UserInput_LINE. </summary>
                 '''
@@ -395,7 +395,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function DisplayDiagnostics(ByRef UserInput_LINE As String) As Boolean
                     Console.ForegroundColor = ConsoleColor.Red
                     'Catch Errors
@@ -421,7 +420,6 @@ Namespace CodeAnalysis
 
                     End If
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets debugger display. </summary>
                 '''
@@ -429,7 +427,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The debugger display. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function

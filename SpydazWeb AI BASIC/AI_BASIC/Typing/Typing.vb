@@ -1403,6 +1403,9 @@ Namespace Typing
         ifThenExpression = 145
         ''' <summary>   An enum constant representing if else expression option. </summary>
         ifElseExpression = 146
+        DO_UntilExpression = 147
+        DO_WhileExpression = 148
+        ForExpression = 149
 #End Region
 #Region "MainLanguage"
 #Region "Functions - Used In Universal RegexSearches"

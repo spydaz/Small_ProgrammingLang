@@ -16,6 +16,7 @@ Imports System.Drawing
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
 Imports AI_BASIC.CodeAnalysis.Compiler.Evaluation
 Imports AI_BASIC.Typing
+Imports System.Text.RegularExpressions
 
 '''////////////////////////////////////////////////////////////////////////////////////////////////////
 ''' <summary>   An ide. </summary>
@@ -53,7 +54,7 @@ Public Class IDE
     Public Sub Compile()
         DISPLAY_OUT.Text = ""
         Dim Prog As String = CodeTextBox.Text
-        Dim MyCompiler As New _IDECompiler(Prog)
+        Dim MyCompiler As New IDE_Compiler(Prog)
 
 
         If MyCompiler.CompileProgram() = True Then
@@ -223,7 +224,7 @@ Public Class IDE
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Function QuickLineDiagnostics(ByRef Line As String) As String
         Dim Prog As String = Line
-        Dim MyCompiler As New _IDECompiler(Prog)
+        Dim MyCompiler As New IDE_Compiler(Prog)
         If MyCompiler.CompileProgram() = True Then
             If MyCompiler.GetCompilerDiagnostics.Length > 0 Then
                 CompilerErrors.ForeColor = Drawing.Color.Red
@@ -249,7 +250,7 @@ Public Class IDE
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub DoLineSyntax(ByRef Line As String)
         Dim Prog As String = Line
-        Dim MyCompiler As New _IDECompiler(Prog)
+        Dim MyCompiler As New IDE_Compiler(Prog)
         Dim TokeTree As New List(Of SyntaxToken)
         Dim BadStr As String = ""
         If MyCompiler.CompileProgram() = False Then
@@ -603,4 +604,8 @@ Public Class IDE
 
 
 #End Region
+
+
+
+
 End Class

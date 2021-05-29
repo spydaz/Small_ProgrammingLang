@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\InterpretorRepl.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\IDECompiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Diagnostics\Debugger.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\VBC.vb" />
@@ -123,7 +124,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Environment\EnvironmentalMemory.vb" />
-    <Compile Include="AI_BASIC\Consoles\IDE\_IDECompiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SalNodes.vb" />
     <Compile Include="AI_BASIC\Consoles\ConsoleWriter.vb" />
     <Compile Include="AI_BASIC\Consoles\IDE\IDE.Designer.vb">
@@ -137,8 +137,8 @@
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxNode.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\SyntaxTree.vb" />
     <Compile Include="AI_BASIC\Typing\Typing.vb" />
-    <Compile Include="AI_BASIC\MAIN\LCARS.vb" />
-    <Compile Include="AI_BASIC\IO\FileHandler.vb" />
+    <Compile Include="AI_BASIC\Typing\LCARS.vb" />
+    <Compile Include="AI_BASIC\MAIN\IO\FileHandler.vb" />
     <Compile Include="AI_BASIC\MAIN\Program.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\iRepl.vb" />
@@ -177,6 +177,7 @@
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
+    <None Include="AI_BASIC\Readme.Md" />
     <None Include="My Project\app.manifest" />
     <None Include="ReadMe.md" />
   </ItemGroup>

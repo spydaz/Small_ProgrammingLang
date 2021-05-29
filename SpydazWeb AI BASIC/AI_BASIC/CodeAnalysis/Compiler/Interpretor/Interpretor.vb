@@ -133,9 +133,13 @@ Namespace CodeAnalysis
 
                     Else
                     End If
-                    Dim DiagExe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, iNode.ToJson, iNode._SyntaxType)
-                    EvaluatorDiagnostics.Add(DiagExe)
-                    Return "Unable to Evaluate"
+                    If iNode IsNot Nothing Then
+                        Dim DiagExe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, iNode.ToJson, iNode._SyntaxType)
+                        EvaluatorDiagnostics.Add(DiagExe)
+                        Return "Unable to Evaluate"
+                    End If
+
+                    Return Nothing
                 End Function
 #Region "TOSTRING"
 

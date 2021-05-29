@@ -810,10 +810,10 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
         Private Function ParseNameExpression() As ExpressionSyntax
-      Dim identifierToken = MatchToken(SyntaxKind.IdentifierToken)
-      Return New NameExpressionSyntax(m_syntaxTree, identifierToken)
-    End Function
+            Dim identifierToken = MatchToken(SyntaxKind.IdentifierToken)
+            Return New NameExpressionSyntax(m_syntaxTree, identifierToken)
+        End Function
 
-  End Class
+    End Class
 
 End Namespace
