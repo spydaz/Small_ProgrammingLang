@@ -4,6 +4,7 @@
 ' summary:	Editor IDE class
 '---------------------------------------------------------------------------------------------------
 
+Imports System.CodeDom.Compiler
 Imports System.Windows.Forms
 Imports AI_BASIC.CodeAnalysis.Compiler
 Imports AI_BASIC.CodeAnalysis.Compiler.Environment
@@ -136,7 +137,7 @@ Public Class Editor_IDE
     Public Function QuickCompile(ByRef Line As String) As String
 
         Dim Prog As String = Line
-        Dim MyCompiler As New _Compiler(Prog)
+        Dim MyCompiler As New _IDECompiler(Prog)
 
         If MyCompiler.CompileProgram() = True Then
             If MyCompiler.GetCompilerDiagnostics.Length > 0 Then
@@ -164,7 +165,7 @@ Public Class Editor_IDE
     Public Sub Compile()
         Small_PL_TextBoxREPL_OUTPUT.Text = ""
         Dim Prog As String = Small_PL_TextBoxCodeInput.Text
-        Dim MyCompiler As New _Compiler(Prog)
+        Dim MyCompiler As New _IDECompiler(Prog)
         ClearTree()
 
         If MyCompiler.CompileProgram() = True Then
@@ -205,7 +206,7 @@ Public Class Editor_IDE
         ClearTree()
 
         For Each item In Small_PL_TextBoxCodeInput.Lines
-            Dim MyCompiler As New _Compiler(item)
+            Dim MyCompiler As New _IDECompiler(item)
             Dim Eval = MyCompiler.ExecuteProgram()
             CompilerResutltsText.Text &= Eval & vbNewLine
             Small_PL_TextboxErrors.Text &= MyCompiler.GetCompilerDiagnostics & vbNewLine
@@ -230,7 +231,7 @@ Public Class Editor_IDE
         Prog = Prog.Replace(vbNewLine, " ")
         Prog = RTrim(Prog)
         Prog = LTrim(Prog)
-        Dim MyCompiler As New _Compiler(Prog)
+        Dim MyCompiler As New _IDECompiler(Prog)
         ClearTree()
 
         If MyCompiler.CompileProgram() = True Then
@@ -283,7 +284,7 @@ Public Class Editor_IDE
                     Small_PL_TextboxErrors.Text = "Compiled Successfully"
                     Compile()
                     For Each item In Small_PL_TextBoxCodeInput.Lines
-                        Dim MyCompiler As New _Compiler(item)
+                        Dim MyCompiler As New _IDECompiler(item)
                         Dim Eval = MyCompiler.ExecuteProgram()
                         CompilerResutltsText.Text &= Eval & vbNewLine
                     Next
@@ -297,7 +298,7 @@ Public Class Editor_IDE
                     Dim Templine As Integer = 0
                     For Each item In Small_PL_TextBoxCodeInput.Lines
                         Templine += 1
-                        Dim MyCompiler As New _Compiler(item)
+                        Dim MyCompiler As New _IDECompiler(item)
                         Dim Eval = MyCompiler.CompileProgram()
                         Small_PL_TextboxErrors.Text &= "Repl Line :" & Templine & vbNewLine & " " & MyCompiler.GetCompilerDiagnostics & vbNewLine
                     Next
