@@ -33,51 +33,10 @@ Public Class InterpretorRepl
     Public ShowDiagnostics As Boolean = True
     Public Evaluate As Boolean = True
     Public OutputStr As String = ""
+    Public showSyntaxViewer As Boolean = False
+
 #Region "REPL"
-    '''////////////////////////////////////////////////////////////////////////////////////////////////////
-    ''' <summary>   Check repl command. </summary>
-    '''
-    ''' <remarks>   Leroy, 27/05/2021. </remarks>
-    '''////////////////////////////////////////////////////////////////////////////////////////////////////
-    Public Sub CheckReplCmd()
-        Select Case UCase(Line)
-            Case "CLS"
-                _ClearScreen()
-                _GetInput()
-            Case "SHOWSYNTAX"
-                ShowSyntax = True
-                _GetInput()
-            Case "SHOWTOKENS"
-                ShowTree = True
-                _GetInput()
-            Case "HIDESYNTAX"
-                ShowSyntax = False
-                _GetInput()
-            Case "HIDETOKENS"
-                ShowTree = False
-                _GetInput()
-            Case "HIDECODE"
-                ShowCode = False
-                _GetInput()
-            Case "SHOWCODE"
-                ShowCode = True
-                _GetInput()
-            Case "HELP"
-                ShowHelp()
-                _GetInput()
-            Case "SHOWDIAGNOSTICS"
-                ShowDiagnostics = True
-                _GetInput()
-            Case "HIDEDIAGNOSTICS"
-                ShowDiagnostics = False
-                _GetInput()
-            Case "IDE"
-                LoadIDE()
-                _GetInput()
-        End Select
-        _GetInput()
-        _ClearScreen()
-    End Sub
+
     Public Sub ShowHelp()
         _ClearScreen()
 
@@ -90,7 +49,8 @@ Public Class InterpretorRepl
           "Showtokens - hideTokens                    - Shows Tokenier Tokens" & vbNewLine & vbNewLine &
           "ShowSyntax - hideyntax                    - Show Syntax Expression" & vbNewLine & vbNewLine &
           "CLS - Clears the screen                    - CLS" & vbNewLine & vbNewLine &
-          "Help - Shows helpScreen                    - Shows Help ")
+          "Help - Shows helpScreen                    - Shows Help " & vbNewLine &
+          "ShowSyntaxViewer - HideSyntaxViewer Shows syntaxTreeViewer ")
         Console.WriteLine()
 
         Console.WriteLine("IDE - Loads the Programming IDE")
@@ -143,6 +103,12 @@ Public Class InterpretorRepl
         Call Application.Run(New IDE())
         _ClearScreen()
         _Show_title()
+
+    End Sub
+
+    Public Sub LoadSyntaxTree(ByRef Tree As List(Of SyntaxNode))
+        Call Application.Run(New SyntaxViewer(Tree))
+        Win32.AllocConsole()
     End Sub
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     ''' <summary>   Gets the input. </summary>
@@ -160,6 +126,7 @@ Public Class InterpretorRepl
     Public Sub _Show_title()
         Console.ForegroundColor = ConsoleColor.Cyan
         Console.WriteLine("Welcome to SpydazWeb Basic")
+
         ResetConsole()
     End Sub
 
@@ -181,9 +148,13 @@ Public Class InterpretorRepl
                 iCompile.PrintTokenTreeToConsole()
             End If
 
+
+
+
             'Trees are Already Compiled in Compiler
             If ShowSyntax = True Then
                 iCompile.PrintSyntaxTreeToConsole()
+
             End If
             If result.Diagnostics.HasErrors = True Then
                 HasDiagnostic = True
@@ -191,8 +162,9 @@ Public Class InterpretorRepl
             End If
             Lst.Add(result)
             Prog.AddRange(iCompile.GetSyntaxTree)
-        Next
 
+        Next
+        LoadSyntaxTree(Prog)
         If HasDiagnostic = True Then
             Console.WriteLine("Diagnostics" & vbNewLine)
             For Each item In Lst
@@ -207,6 +179,8 @@ Public Class InterpretorRepl
             ResetConsole()
             Eval(Prog)
         End If
+
+
         RunCmdLine()
     End Sub
     Private Sub CompileLine()
@@ -220,11 +194,20 @@ Public Class InterpretorRepl
             Compile.PrintTokenTreeToConsole()
         End If
 
+
         'Trees are Already Compiled in Compiler
         If ShowSyntax = True Then
             Compile.PrintSyntaxTreeToConsole()
+
         End If
 
+
+        If showSyntaxViewer = True Then
+            LoadSyntaxTree(Compile.GetSyntaxTree)
+        End If
+
+
+        ' Win32.AllocConsole()
         If result.Diagnostics.HasErrors = True Then
             Console.WriteLine("Diagnostics" & vbNewLine)
             HasDiagnostic = True
@@ -236,9 +219,7 @@ Public Class InterpretorRepl
             Console.WriteLine("CODE: " & vbNewLine & Line & vbNewLine)
             Eval(Compile.GetSyntaxTree())
 
-
         End If
-
 
     End Sub
     Public Function CompileLine(ByRef iLine As String) As String
@@ -255,6 +236,7 @@ Public Class InterpretorRepl
         'Trees are Already Compiled in Compiler
         If ShowSyntax = True Then
             Compile.PrintSyntaxTreeToConsole()
+            LoadSyntaxTree(Compile.GetSyntaxTree)
         End If
 
         If result.Diagnostics.HasErrors = True Then
@@ -279,6 +261,56 @@ Public Class InterpretorRepl
             CompileLine()
 
         End While
+    End Sub
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    ''' <summary>   Check repl command. </summary>
+    '''
+    ''' <remarks>   Leroy, 27/05/2021. </remarks>
+    '''////////////////////////////////////////////////////////////////////////////////////////////////////
+    Public Sub CheckReplCmd()
+        Select Case UCase(Line)
+            Case "HIDESYNTAXVIEWER"
+                showSyntaxViewer = False
+                _GetInput()
+            Case "SHOWSYNTAXVIEWER"
+                showSyntaxViewer = True
+                _GetInput()
+            Case "CLS"
+                _ClearScreen()
+                _GetInput()
+            Case "SHOWSYNTAX"
+                ShowSyntax = True
+                _GetInput()
+            Case "SHOWTOKENS"
+                ShowTree = True
+                _GetInput()
+            Case "HIDESYNTAX"
+                ShowSyntax = False
+                _GetInput()
+            Case "HIDETOKENS"
+                ShowTree = False
+                _GetInput()
+            Case "HIDECODE"
+                ShowCode = False
+                _GetInput()
+            Case "SHOWCODE"
+                ShowCode = True
+                _GetInput()
+            Case "HELP"
+                ShowHelp()
+                _GetInput()
+            Case "SHOWDIAGNOSTICS"
+                ShowDiagnostics = True
+                _GetInput()
+            Case "HIDEDIAGNOSTICS"
+                ShowDiagnostics = False
+                _GetInput()
+            Case "IDE"
+                LoadIDE()
+                _GetInput()
+        End Select
+        _GetInput()
+        _ClearScreen()
     End Sub
     Public Sub Run()
         RunCmdLine()

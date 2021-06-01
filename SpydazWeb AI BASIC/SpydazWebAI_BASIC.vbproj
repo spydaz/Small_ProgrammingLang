@@ -117,6 +117,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\IDE_REPL.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\InterpretorRepl.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\IDECompiler.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Diagnostics\Debugger.vb" />
@@ -160,6 +161,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="AI_BASIC\MAIN\Globals.vb" />
+    <Compile Include="AI_BASIC\CodeAnalysis\Emit\Lowering.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -182,9 +184,16 @@
     <Compile Include="AI_BASIC\Consoles\IDE\Editor_IDE.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="AI_BASIC\Consoles\SyntaxViewer.Designer.vb">
+      <DependentUpon>SyntaxViewer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AI_BASIC\Consoles\SyntaxViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <None Include=".editorconfig" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\Environment\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Compiler\ReadMe.md" />
+    <None Include="AI_BASIC\CodeAnalysis\Emit\readme.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\ReadMe.md" />
     <None Include="AI_BASIC\CodeAnalysis\Syntax\SyntaxNodes\ReadMe.md" />
     <None Include="AI_BASIC\Readme.Md" />
@@ -210,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AI_BASIC\Consoles\IDE\Editor_IDE.resx">
       <DependentUpon>Editor_IDE.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AI_BASIC\Consoles\SyntaxViewer.resx">
+      <DependentUpon>SyntaxViewer.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

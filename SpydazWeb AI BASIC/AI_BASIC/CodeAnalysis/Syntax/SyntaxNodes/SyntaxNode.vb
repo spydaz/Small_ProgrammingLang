@@ -244,12 +244,12 @@ Namespace Syntax
 
                 If ileft Is Nothing Then
                     '    MsgBox(ileft.ToString)
-                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression ", ExceptionType.NullRefferenceError, "", SyntaxType._String))
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression ", ExceptionType.NullRefferenceError, "", Nothing))
 
                 End If
 
                 If iright Is Nothing Then
-                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression ", ExceptionType.NullRefferenceError, "", SyntaxType._String))
+                    GeneralException.Add(New DiagnosticsException("Unable to register BinaryExpression ", ExceptionType.NullRefferenceError, "", Nothing))
 
                 End If
 

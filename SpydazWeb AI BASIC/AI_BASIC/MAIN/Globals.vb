@@ -2,7 +2,7 @@
 Imports AI_BASIC.CodeAnalysis.Diagnostics
 
 Friend Module Globals
-    Private iGeneralException As List(Of DiagnosticsException)
+    Private iGeneralException As New List(Of DiagnosticsException)
     Public Property GeneralException As List(Of DiagnosticsException)
         Get
             Return iGeneralException

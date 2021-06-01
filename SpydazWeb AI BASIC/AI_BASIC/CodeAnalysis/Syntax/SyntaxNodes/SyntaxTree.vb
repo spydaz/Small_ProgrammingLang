@@ -94,7 +94,7 @@ Namespace Syntax
 
             Public Shared Function ParseSal(ByRef _Script As String) As SyntaxTree
                 Dim MyParser As New Parser(_Script)
-                Return MyParser.Parse(LangTypes.LOGO)
+                Return MyParser.Parse(LangTypes.SAL)
             End Function
 
             '''////////////////////////////////////////////////////////////////////////////////////////////////////

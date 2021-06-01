@@ -24,9 +24,9 @@ Namespace Typing
             ''' <summary>   An enum constant representing the hide token tree option. </summary>
             HideTokenTree
             ''' <summary>   An enum constant representing the show expression tree option. </summary>
-            ShowExpressionTree
+            ShowSyntaxTree
             ''' <summary>   An enum constant representing the hide expression tree option. </summary>
-            HideExpressionTree
+            HideSyntaxTree
             ''' <summary>   An enum constant representing the clear screen option. </summary>
             ClearScreen
             ''' <summary>   An enum constant representing the load editor option. </summary>
@@ -39,6 +39,8 @@ Namespace Typing
             Run
             ''' <summary>   An enum constant representing the compile option. </summary>
             Compile
+            IDE
+            Help
         End Enum
 
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,10 +58,10 @@ Namespace Typing
                     Return ReplCmd.ShowTokenTree
                 Case "HIDETOKENTREE"
                     Return ReplCmd.HideTokenTree
-                Case "SHOWEXPRESSIONTREE"
-                    Return ReplCmd.ShowExpressionTree
-                Case "HIDEEXPRESSIONTREE"
-                    Return ReplCmd.HideExpressionTree
+                Case "SHOWSYNTAXTREE"
+                    Return ReplCmd.ShowSyntaxTree
+                Case "HIDESYNTAXTREE"
+                    Return ReplCmd.HideSyntaxTree
                 Case "CLEARSCREEN"
                     Return ReplCmd.ClearScreen
                 Case "LOADEDITOR"
@@ -74,7 +76,6 @@ Namespace Typing
                     Return ReplCmd.NoComand
             End Select
         End Function
-
 
 
     End Module
@@ -376,6 +377,15 @@ Namespace Typing
         Variable
         ''' <summary>   An enum constant representing the conditional expression option. </summary>
         ConditionalExpression
+        AddativeExpression
+        MultiplicativeExpression
+        ForNextExpression
+        IfThenExpression
+        IfElseExpression
+        WhileExpression
+        UntilExpression
+        StringExpression
+        CodeBlockExpression
     End Enum
 
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -977,6 +987,15 @@ Namespace Typing
                     Return "ContinueKeyword"
                 Case SyntaxType.BreakKeyword
                     Return "BreakKeyword"
+                    'assign
+                Case SyntaxType.DimKeyword
+                    Return "DimKeyword"
+                Case SyntaxType.LetKeyword
+                    Return "LetKeyword"
+                Case SyntaxType._ASSIGN
+                    Return "_Assign"
+                Case SyntaxType.VarKeyword
+                    Return "VarKeyword"
 'maths
                 Case SyntaxType.Add_Operator
                     Return "Add_Operator"
@@ -1005,33 +1024,51 @@ Namespace Typing
                     Return "Multiply_Equals_Operator"
 'expressions
 
-                Case SyntaxType._BinaryExpression
-                    Return "_BinaryExpression"
+#Region "Literal Expressions"
                 Case SyntaxType._UnaryExpression
                     Return "_UnaryExpression"
                 Case SyntaxType._NumericLiteralExpression
                     Return "_NumericLiteralExpression"
-                Case SyntaxType._AssignmentExpression
-                    Return "_AssignmentExpression"
-                Case SyntaxType._VariableDeclaration
-                    Return "_VariableDeclaration"
-                Case SyntaxType._ParenthesizedExpresion
-                    Return "_ParenthesizedExpresion"
                 Case SyntaxType._BooleanLiteralExpression
                     Return "_BooleanLiteralExpression"
                 Case SyntaxType._StringExpression
                     Return "_StringExpression"
+#End Region
+#Region "Variables"
+                Case SyntaxType._AssignmentExpression
+                    Return "_AssignmentExpression"
+                Case SyntaxType._VariableDeclaration
+                    Return "_VariableDeclaration"
+#End Region
+                Case SyntaxType._ParenthesizedExpresion
+                    Return "_ParenthesizedExpresion"
                 Case SyntaxType._CodeBlock
                     Return "_CodeBlock"
+
                 Case SyntaxType._IdentifierExpression
                     Return "_IdentifierExpression"
+#Region "IF"
                 Case SyntaxType.ifThenExpression
                     Return "ifThenExpression"
                 Case SyntaxType.ifElseExpression
                     Return "ifElseExpression"
                 Case SyntaxType.IfExpression
                     Return "IfExpression"
-#Region "Expressions"
+#End Region
+#Region "DO"
+                Case SyntaxType.DO_UntilExpression
+                    Return "DO_UntilExpression"
+                Case SyntaxType.DO_WhileExpression
+                    Return "DO_WhileExpression"
+#End Region
+#Region "FOR"
+                Case SyntaxType.ForExpression
+                    Return "ForExpression"
+#End Region
+
+#Region "Binary Expressions"
+                Case SyntaxType._BinaryExpression
+                    Return "_BinaryExpression"
                 Case SyntaxType.AddativeExpression
                     Return "AddativeExpression"
                 Case SyntaxType.MultiplicativeExpression
@@ -1053,15 +1090,7 @@ Namespace Typing
                 Case SyntaxType._EndOfFileToken
                     Return "_EndOfFileToken"
 
-'assign
-                Case SyntaxType.DimKeyword
-                    Return "DimKeyword"
-                Case SyntaxType.LetKeyword
-                    Return "LetKeyword"
-                Case SyntaxType._ASSIGN
-                    Return "_Assign"
-                Case SyntaxType.VarKeyword
-                    Return "VarKeyword"
+
 
 
             End Select

@@ -22,7 +22,6 @@ Namespace CodeAnalysis
             '''
             ''' <remarks>   Leroy, 27/05/2021. </remarks>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Lexer
 
@@ -108,24 +107,20 @@ Namespace CodeAnalysis
                 '''
                 ''' <param name="iScript">  [in,out] Zero-based index of the script. </param>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Sub New(ByRef iScript As String)
                     _Script = iScript
                     EoFCursor = _Script.Length
                 End Sub
 
 #Region "Char Scanner"
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Next character. </summary>
                 '''
                 ''' <remarks>   Leroy, 27/05/2021. </remarks>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Sub _NextChar()
                     CursorPosition += 1
                 End Sub
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Next token. </summary>
                 '''
@@ -133,7 +128,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxToken. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function _NextToken() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -159,8 +153,12 @@ Namespace CodeAnalysis
 
                     'Operators
                     Select Case CurrentChar
+                        Case ChrW(0)
+                            _start = CursorPosition
+                            Return New SyntaxToken(SyntaxType._EndOfFileToken, SyntaxType._EndOfFileToken.GetSyntaxTypeStr, "EOF", "EOF", _start, CursorPosition)
+                        'Linebreak
                         Case ChrW(10), ChrW(13)
-                            Return New SyntaxToken(SyntaxType._EndOfLineToken, SyntaxType._EndOfLineToken.GetSyntaxTypeStr, "EOL", "EOL", _start, CursorPosition)
+                            Return ReadLineBreak()
                         Case ","c
                             Return New SyntaxToken(SyntaxType._LIST_SEPERATOR, SyntaxType._LIST_SEPERATOR.GetSyntaxTypeStr, ",", ",", _start, CursorPosition)
                         Case ";"c
@@ -170,7 +168,6 @@ Namespace CodeAnalysis
                             _length = 1
                             CursorPosition += _length
                             Return New SyntaxToken(SyntaxType._CODE_BEGIN, SyntaxType._CODE_BEGIN.GetSyntaxTypeStr, "{", "{", _start, CursorPosition)
-
 
                         Case "}"
                             _start = CursorPosition
@@ -344,7 +341,23 @@ Namespace CodeAnalysis
                     Return x
                 End Function
 #End Region
+
+
 #Region "Mini Tokenizers"
+                Public Function ReadLineBreak()
+                    Dim _start = CursorPosition
+                    Dim _length = 1
+                    CursorPosition += 1
+                    If CurrentChar = ChrW(13) AndAlso Lookahead = ChrW(10) Then
+                        CursorPosition += 2
+                    Else
+                        CursorPosition += 1
+                    End If
+                    _length = CursorPosition - _start
+
+                    Dim x = New SyntaxToken(SyntaxType._EndOfLineToken, SyntaxType._EndOfLineToken.GetSyntaxTypeStr, "EOL", "EOL", _start, CursorPosition)
+                    Return x
+                End Function
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Reads white space. </summary>
@@ -353,7 +366,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The white space. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function ReadWhiteSpace() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -362,9 +374,18 @@ Namespace CodeAnalysis
                     'Capture StartPoint ForSlicer
                     _start = CursorPosition
                     'UseInternal Lexer PER (CHAR)
-                    While Char.IsWhiteSpace(CurrentChar)
-                        'Iterate Forwards until end of digits
-                        _NextChar()
+                    Dim done = False
+                    While Not done
+                        Select Case CurrentChar
+                            Case ChrW(0), ChrW(10), ChrW(13)
+                                done = True
+                            Case Else
+                                If Not Char.IsWhiteSpace(CurrentChar) Then
+                                    done = True
+                                Else
+                                    CursorPosition += 1
+                                End If
+                        End Select
                     End While
                     'get length 
                     _length = CursorPosition - _start
@@ -380,7 +401,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The identifier or keyword. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function ReadIdentifierOrKeyword() As SyntaxToken
                     '-Numerical
                     Dim _start As Integer = 0
@@ -414,7 +434,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The number token. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function ReadNumberToken()
                     '-Numerical
                     Dim _start As Integer = 0
@@ -455,7 +474,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The string. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function ReadString() As SyntaxToken
                     '-string
                     Dim _start As Integer = 0
@@ -502,7 +520,7 @@ Namespace CodeAnalysis
 
                 End Function
 #End Region
-#Region "ReGeX Tokenizer"
+#Region "Old ReGeX Tokenizer"
 
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   View next slice. </summary>
@@ -534,7 +552,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The identified token. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function GetIdentifiedToken(ByRef CurrentTok As String) As SyntaxToken
 
 
@@ -574,7 +591,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A SyntaxToken. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function CheckIdentifiedToken(ByRef CurrentTok As String) As SyntaxToken
 
                     For Each item In CurrentGrammar
@@ -613,7 +629,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The slice. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Shared Function GetSlice(ByRef Str As String, ByRef indx As Integer) As String
                     If indx <= Str.Length Then
                         Str.Substring(indx)
@@ -633,7 +648,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The slice. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function GetSlice(ByRef _start As Integer, ByRef _length As Integer) As String
                     Return _Script.Substring(_start, _length)
                 End Function
@@ -648,7 +662,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A List(Of String) </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Shared Function RegExSearch(ByRef Text As String, Pattern As String) As List(Of String)
                     Dim Searcher As New Regex(Pattern)
                     Dim iMatch As Match = Searcher.Match(Text)
@@ -670,7 +683,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   This  as a String. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
@@ -682,12 +694,10 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A string that represents the current object. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Overrides Function ToString() As String
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Format JSON output. </summary>
                 '''
@@ -697,7 +707,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The formatted JSON output. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False
@@ -745,7 +754,6 @@ Namespace CodeAnalysis
 
                     Return stringBuilder.ToString()
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets debugger display. </summary>
                 '''
@@ -753,7 +761,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The debugger display. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function GetDebuggerDisplay() As String
                     Return ToString()
                 End Function

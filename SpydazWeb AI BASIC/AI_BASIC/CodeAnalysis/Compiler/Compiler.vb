@@ -66,9 +66,9 @@ Namespace CodeAnalysis
             '''
             ''' <remarks>   Leroy, 27/05/2021. </remarks>
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
-            Public Sub PrintSyntaxTreeToConsole()
+            Public function PrintSyntaxTreeToConsole()
                 ConsoleWriter.WriteExpressionList(GetSyntaxTree)
-            End Sub
+            End function
 
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
             ''' <summary>   Gets token tree. </summary>

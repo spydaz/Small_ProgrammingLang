@@ -63,10 +63,7 @@ Public Class IDE
                 CompilerErrors.ForeColor = Drawing.Color.Red
                 CompilerErrors.Text = "Did not Compiled Successfully" & vbNewLine & MyCompiler.GetCompilerDiagnostics
 
-                For Each item In MyCompiler.ExpressionTrees
-                    '   AddCompiledTree(item)
 
-                Next
                 For Each tree In MyCompiler.TokenTrees
                     For Each item In tree
                         AstSyntaxJson.ForeColor = Drawing.Color.Red
@@ -74,10 +71,12 @@ Public Class IDE
                     Next
                 Next
             Else
+                Dim iList As New List(Of SyntaxNode)
                 For Each item In MyCompiler.ExpressionTrees
                     AddCompiledTree(item)
-
+                    iList.AddRange(item.Body)
                 Next
+                loadSyntaxViewer(iList)
                 For Each tree In MyCompiler.TokenTrees
                     For Each item In tree
                         AstSyntaxJson.ForeColor = Drawing.Color.Green
@@ -152,6 +151,7 @@ Public Class IDE
 
 
             For Each item In Prog.Body
+
                 If item IsNot Nothing Then
                     '_:::MainNodes:::_(0)
                     Dim MainNode As New TreeNode
@@ -280,23 +280,32 @@ Public Class IDE
     ''' <param name="Text"> [in,out] The text. </param>
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
     Public Sub DoRunText(ByRef Text As RichTextBox)
-        Dim ExpressionTree As SyntaxTree
-        Env = New EnvironmentalMemory
-        For Each line In Text.Lines
-            ExpressionTree = SyntaxTree.Parse(line)
-            ClearTree()
-            AddCompiledTree(ExpressionTree)
-            Dim Eval As New Evaluator(ExpressionTree)
-            Dim Result = Eval._Evaluate(Env)
-            DISPLAY_OUT.Text &= vbNewLine & "RESULTS RETUNED : " & Result & vbNewLine
-            Dim Str As String = ""
-            For Each item In Eval._Diagnostics
-                Str &= item & vbNewLine
+        Try
+
+
+            Dim ExpressionTree As SyntaxTree
+            Env = New EnvironmentalMemory
+            Dim lst As New List(Of SyntaxNode)
+            For Each line In Text.Lines
+                ExpressionTree = SyntaxTree.Parse(line)
+                ClearTree()
+                AddCompiledTree(ExpressionTree)
+                lst.AddRange(ExpressionTree.Body)
+                Dim Eval As New Evaluator(ExpressionTree)
+                Dim Result = Eval._Evaluate(Env)
+                DISPLAY_OUT.Text &= vbNewLine & "RESULTS RETUNED : " & Result & vbNewLine
+                Dim Str As String = ""
+                For Each item In Eval._Diagnostics
+                    Str &= item & vbNewLine
+                Next
+                CompilerErrors.Text = Str
+                TabControlOutput.SelectedTab = TabPage_IDE_RESULTS
             Next
-            CompilerErrors.Text = Str
-            TabControlOutput.SelectedTab = TabPage_IDE_RESULTS
-        Next
-        PrintMemory(Env)
+            loadSyntaxViewer(lst)
+            PrintMemory(Env)
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -623,7 +632,18 @@ Public Class IDE
 
 
 #End Region
+    Public SyntaxViewer As SyntaxViewer
 
+    Public Sub loadSyntaxViewer(ByRef Tree As List(Of SyntaxNode))
+        If SyntaxViewer IsNot Nothing Then
+            SyntaxViewer.DISPLAY_TREE.Nodes.Clear()
+            SyntaxViewer.display(Tree)
+        Else
+            SyntaxViewer = New SyntaxViewer(Tree)
+            SyntaxViewer.Show()
+        End If
+
+    End Sub
 
 
 

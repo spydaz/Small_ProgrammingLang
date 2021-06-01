@@ -53,7 +53,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <param name="tree"> The tree. </param>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Public Sub New(tree As SyntaxTree)
             m_syntaxTree = tree
             m_text = tree.Text
@@ -64,7 +63,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <value> The current. </value>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private ReadOnly Property Current As Char
             Get
                 Return Peek(0)
@@ -76,7 +74,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <value> The look ahead. </value>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private ReadOnly Property LookAhead As Char
             Get
                 Return Peek(1)
@@ -88,7 +85,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <value> The peek. </value>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private ReadOnly Property Peek(offset As Integer) As Char
             Get
                 Dim index = m_position + offset
@@ -106,7 +102,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   A SyntaxToken. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Public Function Lex() As SyntaxToken
 
             ReadTrivia(True)
@@ -140,7 +135,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <param name="leading">  True to leading. </param>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadTrivia(leading As Boolean)
 
             m_triviaBuilder.Clear()
@@ -191,7 +185,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadLineBreak()
 
             If Current = ChrW(13) AndAlso LookAhead = ChrW(10) Then
@@ -209,7 +202,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadWhiteSpace()
 
             Dim done = False
@@ -235,7 +227,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadSingleLineComment()
 
             m_position += 2
@@ -259,7 +250,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadMultiLineComment()
 
             m_position += 2
@@ -292,7 +282,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <remarks>   Leroy, 27/05/2021. </remarks>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Sub ReadToken()
 
             m_start = m_position
@@ -313,16 +302,16 @@ Namespace Global.Basic.CodeAnalysis.Syntax
                 Case "-"c : m_kind = SyntaxKind.MinusToken : m_position += 1
                 Case "*"c : m_kind = SyntaxKind.StarToken : m_position += 1
                 Case "/"c : m_kind = SyntaxKind.SlashToken : m_position += 1
-        'Case "\"c : m_kind = SyntaxKind.BackslashToken : m_position += 1
+        'Case "\"c : m_kind                                  = SyntaxKind.BackslashToken : m_position += 1
                 Case "("c : m_kind = SyntaxKind.OpenParenToken : m_position += 1
                 Case ")"c : m_kind = SyntaxKind.CloseParenToken : m_position += 1
                 Case "{"c : m_kind = SyntaxKind.OpenBraceToken : m_position += 1
                 Case "}"c : m_kind = SyntaxKind.CloseBraceToken : m_position += 1
                 Case ":"c : m_kind = SyntaxKind.ColonToken : m_position += 1
                 Case ","c : m_kind = SyntaxKind.CommaToken : m_position += 1
-        'Case ";"c : m_kind = SyntaxKind.SemicolonToken : m_position += 1
+        'Case ";"c : m_kind                                  = SyntaxKind.SemicolonToken : m_position += 1
                 Case "~"c : m_kind = SyntaxKind.TildeToken : m_position += 1
-        'Case "'"c : m_kind = SyntaxKind.ApostropheToken : m_position += 1
+        'Case "'"c : m_kind                                  = SyntaxKind.ApostropheToken : m_position += 1
                 Case "^"c : m_kind = SyntaxKind.HatToken : m_position += 1
                 Case "&"c
                     If LookAhead = "&"c Then
@@ -349,8 +338,8 @@ Namespace Global.Basic.CodeAnalysis.Syntax
                         m_kind = SyntaxKind.BangToken : m_position += 1
                     End If
                 Case "<"c
-                    'If LookAhead = ">"c Then
-                    '  Kind = SyntaxKind.LessThanGreaterThanToken : Position += 2
+                    'If LookAhead                            = ">"c Then
+                    '  Kind                                  = SyntaxKind.LessThanGreaterThanToken : Position += 2
                     If LookAhead = "="c Then
                         m_kind = SyntaxKind.LessThanEqualsToken : m_position += 2
                     Else
@@ -458,17 +447,17 @@ Namespace Global.Basic.CodeAnalysis.Syntax
 
         Private Sub ReadIdentifierOrKeyword()
 
-      While Char.IsLetter(Current) OrElse Current = "_"c OrElse Current = "$"c
-        m_position += 1
-      End While
+            While Char.IsLetter(Current) OrElse Current = "_"c OrElse Current = "$"c
+                m_position += 1
+            End While
 
-      Dim length = m_position - m_start
-      Dim text = m_text.ToString(m_start, length)
+            Dim length = m_position - m_start
+            Dim text = m_text.ToString(m_start, length)
 
-      m_kind = SyntaxFacts.GetKeywordKind(text)
+            m_kind = SyntaxFacts.GetKeywordKind(text)
 
-    End Sub
+        End Sub
 
-  End Class
+    End Class
 
 End Namespace

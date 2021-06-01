@@ -30,8 +30,6 @@ Namespace CodeAnalysis
                 ''' <summary>   List of results. </summary>
                 Private ResultsList As New List(Of Object)
 
-
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Evaluate program. </summary>
                 '''
@@ -343,7 +341,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function EvaluateVariableDeclaration(ByRef Expr As SyntaxNode)
                     If Expr._SyntaxType = SyntaxType._VariableDeclaration Then
                         Dim i As SyntaxNodes.VariableDeclarationExpression = Expr

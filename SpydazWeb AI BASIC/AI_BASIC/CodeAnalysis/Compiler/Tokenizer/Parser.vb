@@ -23,6 +23,13 @@ Namespace CodeAnalysis
 
             <DebuggerDisplay("{GetDebuggerDisplay(),nq}")>
             Friend Class Parser
+                Public Sub SetTreePosition(ByRef ID As Integer)
+                    If _Tree.Count <= ID Then
+                        CursorPosition = ID
+                    Else
+                        CursorPosition = _Tree.Count
+                    End If
+                End Sub
                 ''' <summary>   An enum constant representing the parser diagnostics option. </summary>
                 Public ParserDiagnostics = New List(Of DiagnosticsException)
 #Region "Propertys"
@@ -677,11 +684,15 @@ Namespace CodeAnalysis
                 Public Function _Expression()
 
                     Select Case CurrentToken._SyntaxType
+                        Case SyntaxType._Identifier
+                            Dim _Left As ExpressionSyntaxNode
+                            _Left = _IdentifierExpression()
+                            Return _LeftHandExpression(_Left)
+
                         Case SyntaxType.VarKeyword
                             Return _VariableDeclarationExpression()
                         Case SyntaxType.DimKeyword
                             Return _VariableDeclarationExpression()
-
                         Case SyntaxType.IfKeyword
                             Return _IfExpression()
                         Case SyntaxType._WhitespaceToken
@@ -760,9 +771,7 @@ Namespace CodeAnalysis
 
 'Left hand Literals; may have following arguments
 'Task Assignment
-                        Case SyntaxType._Identifier
-                            _Left = _IdentifierExpression()
-                            Return _LeftHandExpression(_Left)
+
 
 
 
@@ -811,7 +820,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _LeftHandExpression(ByRef _left As ExpressionSyntaxNode) As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
                      'Simple Assign
@@ -840,7 +848,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   . </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _AssignmentExpression(ByRef _left As ExpressionSyntaxNode)
                     'Simple Assign
 
@@ -1448,7 +1455,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _CodeBlockExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     Dim y = _MatchToken(SyntaxType._CODE_BEGIN)
@@ -1479,7 +1485,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _IdentifierAssignmentListExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     _MatchToken(SyntaxType._LIST_BEGIN)
@@ -1503,14 +1508,13 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function _LiteralListExpression() As ExpressionSyntaxNode
                     Dim Body As New List(Of ExpressionSyntaxNode)
                     _MatchToken(SyntaxType._LIST_BEGIN)
                     CursorPosition += 1
                     Do Until CurrentToken._SyntaxType = SyntaxType._LIST_END
 
-                        Body.Add(_PrimaryExpression)
+                        Body.Add(_Expression)
                     Loop
                     _MatchToken(SyntaxType._LIST_END)
                     CursorPosition += 1
@@ -1527,7 +1531,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function _ParenthesizedExpression() As ExpressionSyntaxNode
                     Dim Body As ExpressionSyntaxNode
                     Select Case CurrentToken._SyntaxType
@@ -1553,7 +1556,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   An ExpressionSyntaxNode. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function _IfExpression() As ExpressionSyntaxNode
                     Dim ThenExpression As CodeBlockExpression
                     Dim elseExpression As CodeBlockExpression
@@ -1597,7 +1599,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   A BinaryExpression. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function _IfCondition() As ExpressionSyntaxNode
                     Dim x = _MatchToken(SyntaxType.IfKeyword)
                     CursorPosition += 1

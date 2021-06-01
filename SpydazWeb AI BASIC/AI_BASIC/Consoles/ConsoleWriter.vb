@@ -92,12 +92,7 @@ Namespace Consoles
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         Private Shared Sub WriteExpressionSyntaxToken(ByRef Expression As ExpressionSyntaxNode)
             If Expression IsNot Nothing Then
-
-
-
                 Try
-
-
                     Select Case Expression._SyntaxType
                         Case SyntaxType._NumericLiteralExpression
                             WriteNumber(Expression.ToJson)

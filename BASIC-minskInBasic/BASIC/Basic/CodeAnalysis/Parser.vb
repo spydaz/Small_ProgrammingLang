@@ -103,6 +103,8 @@ Namespace Global.Basic.CodeAnalysis.Syntax
             Me.Tokens = tokens.ToImmutableArray
         End Sub
 
+#Region "TreeControl"
+
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Returns the top-of-stack object without removing it. </summary>
         '''
@@ -112,7 +114,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   The current top-of-stack object. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Function Peek(offset As Integer) As SyntaxToken
             Dim index = Position + offset
             If index >= Tokens.Length Then
@@ -120,7 +121,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
             End If
             Return Tokens(index)
         End Function
-
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Gets the current. </summary>
         '''
@@ -128,11 +128,12 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   A SyntaxToken. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Function Current() As SyntaxToken
             Return Peek(0)
         End Function
-
+        Private Function PeekAheadToken() As SyntaxToken
+            Return Peek(1)
+        End Function
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Next token. </summary>
         '''
@@ -140,13 +141,11 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   A SyntaxToken. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Function NextToken() As SyntaxToken
             Dim current = Me.Current
             Position += 1
             Return current
         End Function
-
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Match token. </summary>
         '''
@@ -156,7 +155,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   A SyntaxToken. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Private Function MatchToken(kind As SyntaxKind) As SyntaxToken
             If Current.Kind = kind Then
                 Return NextToken()
@@ -165,6 +163,15 @@ Namespace Global.Basic.CodeAnalysis.Syntax
                 Return New SyntaxToken(m_syntaxTree, kind, Current.Position, Nothing, Nothing, ImmutableArray(Of SyntaxTrivia).Empty, ImmutableArray(Of SyntaxTrivia).Empty)
             End If
         End Function
+        Public Sub SetTreePosition(ByRef ID As Integer)
+            If Tokens.Count <= ID Then
+                Position = ID
+            Else
+                Position = Tokens.Count
+            End If
+        End Sub
+
+#End Region
 
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
         ''' <summary>   Parse compilation unit. </summary>
@@ -173,7 +180,6 @@ Namespace Global.Basic.CodeAnalysis.Syntax
         '''
         ''' <returns>   A CompilationUnitSyntax. </returns>
         '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
         Public Function ParseCompilationUnit() As CompilationUnitSyntax
             Dim members = ParseMembers()
             Dim endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken)

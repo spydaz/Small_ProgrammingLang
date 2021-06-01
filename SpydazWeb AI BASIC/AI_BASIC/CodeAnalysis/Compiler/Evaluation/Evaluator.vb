@@ -111,7 +111,7 @@ Namespace CodeAnalysis
 
                     Else
                     End If
-                    Dim DiagExe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, iNode.ToJson, iNode._SyntaxType)
+                    Dim DiagExe As New DiagnosticsException("Unexpected Expression :", ExceptionType.EvaluationException, "", Nothing)
                     _Diagnostics.Add(DiagExe.ToJson)
                     Return "Unable to Evaluate"
                 End Function
@@ -283,15 +283,22 @@ Namespace CodeAnalysis
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function EvaluateAddativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
-                        Dim b As SyntaxNodes.BinaryExpression = Expr
-                        Dim _Left As Integer = b._Left.Evaluate(Env)
-                        Dim _Right As Integer = b._Right.Evaluate(Env)
-                        Select Case b._Operator._SyntaxType
-                            Case SyntaxType.Add_Operator
-                                Return _Left + _Right
-                            Case SyntaxType.Sub_Operator
-                                Return _Left - _Right
-                        End Select
+                        Try
+
+
+                            Dim b As SyntaxNodes.BinaryExpression = Expr
+                            Dim _Left As Integer = b._Left.Evaluate(Env)
+                            Dim _Right As Integer = b._Right.Evaluate(Env)
+                            Select Case b._Operator._SyntaxType
+                                Case SyntaxType.Add_Operator
+                                    Return _Left + _Right
+                                Case SyntaxType.Sub_Operator
+                                    Return _Left - _Right
+                            End Select
+                        Catch ex As Exception
+                            Dim ix As New DiagnosticsException("Unable to evaluate AddativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                            _Diagnostics.Add(ix.ToJson)
+                        End Try
                     Else
                     End If
                     Dim x As New DiagnosticsException("Unable to evaluate AddativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
@@ -309,15 +316,22 @@ Namespace CodeAnalysis
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function EvaluateMultiplicativeExpression(ByRef Expr As SyntaxNode) As Integer
                     If Expr._SyntaxType = SyntaxType.AddativeExpression Then
-                        Dim b As SyntaxNodes.BinaryExpression = Expr
-                        Dim _Left As Integer = b._Left.Evaluate(Env)
-                        Dim _Right As Integer = b._Right.Evaluate(Env)
-                        Select Case b._Operator._SyntaxType
-                            Case SyntaxType.Multiply_Operator
-                                Return _Left * _Right
-                            Case SyntaxType.Divide_Operator
-                                Return _Left / _Right
-                        End Select
+                        Try
+
+
+                            Dim b As SyntaxNodes.BinaryExpression = Expr
+                            Dim _Left As Integer = b._Left.Evaluate(Env)
+                            Dim _Right As Integer = b._Right.Evaluate(Env)
+                            Select Case b._Operator._SyntaxType
+                                Case SyntaxType.Multiply_Operator
+                                    Return _Left * _Right
+                                Case SyntaxType.Divide_Operator
+                                    Return _Left / _Right
+                            End Select
+                        Catch ex As Exception
+                            Dim ix As New DiagnosticsException("Unable to evaluate AddativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                            _Diagnostics.Add(ix.ToJson)
+                        End Try
                     Else
                     End If
                     Dim x As New DiagnosticsException("Unable to evaluate MultiplicativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
@@ -335,23 +349,31 @@ Namespace CodeAnalysis
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Function EvaluateConditionalExpression(ByRef Expr As SyntaxNode) As Boolean
                     If Expr._SyntaxType = SyntaxType.ConditionalExpression Then
-                        Dim b As SyntaxNodes.BinaryExpression = Expr
-                        Dim _Left As Boolean = b._Left.Evaluate(Env)
-                        Dim _Right As Boolean = b._Right.Evaluate(Env)
-                        Select Case b._Operator._SyntaxType
-                            Case SyntaxType.GreaterThan_Operator
-                                Return _Left > _Right
-                            Case SyntaxType.LessThanOperator
-                                Return _Left < _Right
-                            Case SyntaxType.NotEqual
-                                Return _Left <> _Right
-                            Case SyntaxType.EquivelentTo
-                                Return _Left = _Right
-                            Case SyntaxType.LessThanEquals
-                                Return _Left <= _Right
-                            Case SyntaxType.GreaterThanEquals
-                                Return _Left >= _Right
-                        End Select
+
+                        Try
+
+
+                            Dim b As SyntaxNodes.BinaryExpression = Expr
+                            Dim _Left As Boolean = b._Left.Evaluate(Env)
+                            Dim _Right As Boolean = b._Right.Evaluate(Env)
+                            Select Case b._Operator._SyntaxType
+                                Case SyntaxType.GreaterThan_Operator
+                                    Return _Left > _Right
+                                Case SyntaxType.LessThanOperator
+                                    Return _Left < _Right
+                                Case SyntaxType.NotEqual
+                                    Return _Left <> _Right
+                                Case SyntaxType.EquivelentTo
+                                    Return _Left = _Right
+                                Case SyntaxType.LessThanEquals
+                                    Return _Left <= _Right
+                                Case SyntaxType.GreaterThanEquals
+                                    Return _Left >= _Right
+                            End Select
+                        Catch ex As Exception
+                            Dim ix As New DiagnosticsException("Unable to evaluate AddativeExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
+                            _Diagnostics.Add(ix.ToJson)
+                        End Try
                     Else
                     End If
                     Dim x As New DiagnosticsException("Unable to evaluate ConditionalExpression", ExceptionType.EvaluationException, Expr.ToJson, Expr._SyntaxType)
