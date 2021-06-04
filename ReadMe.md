@@ -64,6 +64,7 @@ The parser may accept other complexed combinations Which may not be valid evalua
 	DIM/Var <identifier> as Integer/String/Date/Array/list/decimal
 	IF <conditionalExpression> then {<Codeblock>} else {<codeblock>}
 	IF <conditionalExpression> then {<Codeblock>} 
+	While <condition> <body>
 	
 ### Spydaz Virtual Machine Code Language ;
 ## Description :
