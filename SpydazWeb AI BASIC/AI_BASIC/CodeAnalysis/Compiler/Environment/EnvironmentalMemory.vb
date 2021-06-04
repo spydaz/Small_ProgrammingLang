@@ -21,21 +21,23 @@ Namespace CodeAnalysis
             '''////////////////////////////////////////////////////////////////////////////////////////////////////
 
             Public Class EnvironmentalMemory
-                ''' <summary>   The local memory. </summary>
-                Public LocalMemory As List(Of Variable)
 
+#Region "Symbol Object Types"
+                Public Interface MemorySymbol
+                    ''' <summary>   The name. </summary>
+                    Property name As String
+                    ''' <summary>   The type. </summary>
+                    Property Type As LiteralType
+                    Property TypeStr As String
+                End Interface
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   A variable. </summary>
                 '''
                 ''' <remarks>   Leroy, 27/05/2021. </remarks>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
+                Public Class Variable
+                    Implements MemorySymbol
 
-                Public Structure Variable
-                    ''' <summary>   The name. </summary>
-                    Public name As String
-                    ''' <summary>   The type. </summary>
-                    Public Type As LiteralType
-                    Public TypeStr As String
                     ''' <summary>   The ivalue. </summary>
                     Private ivalue As Object
 
@@ -49,6 +51,33 @@ Namespace CodeAnalysis
                         Get
                             Return ivalue
                         End Get
+                    End Property
+                    Private iname As String
+                    Public Property name As String Implements MemorySymbol.name
+                        Get
+                            Return iname
+                        End Get
+                        Set(value As String)
+                            iname = value
+                        End Set
+                    End Property
+                    Private itype As LiteralType
+                    Public Property Type As LiteralType Implements MemorySymbol.Type
+                        Get
+                            Return itype
+                        End Get
+                        Set(value As LiteralType)
+                            itype = value
+                        End Set
+                    End Property
+                    Private iTypeStr As String = ""
+                    Public Property TypeStr As String Implements MemorySymbol.TypeStr
+                        Get
+                            Return iTypeStr
+                        End Get
+                        Set(value As String)
+                            iTypeStr = value
+                        End Set
                     End Property
 
                     '''////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,7 +281,12 @@ Namespace CodeAnalysis
                         Return stringBuilder.ToString()
                     End Function
 
-                End Structure
+                End Class
+#End Region
+#Region "Propertys"
+
+                ''' <summary>   The local memory. </summary>
+                Public LocalMemory As List(Of MemorySymbol)
                 ''' <summary>   The global memory. </summary>
                 Private mGlobalMemory As EnvironmentalMemory
 
@@ -266,16 +300,16 @@ Namespace CodeAnalysis
                         Return mGlobalMemory
                     End Get
                 End Property
-
+#End Region
+#Region "Constructor"
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Initializes a new instance of the <see cref="T:System.Object" /> class. </summary>
                 '''
                 ''' <remarks>   Leroy, 27/05/2021. </remarks>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 Public Sub New()
-                    LocalMemory = New List(Of Variable)
+                    LocalMemory = New List(Of MemorySymbol)
                 End Sub
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Has no Global Memory. </summary>
                 '''
@@ -283,13 +317,13 @@ Namespace CodeAnalysis
                 '''
                 ''' <param name="GlobalMemory"> [in,out] Global memeory passed in from parent environment. </param>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Sub New(ByRef GlobalMemory As EnvironmentalMemory)
-                    LocalMemory = New List(Of Variable)
+                    LocalMemory = New List(Of MemorySymbol)
                     Me.mGlobalMemory = GlobalMemory
 
                 End Sub
-
+#End Region
+#Region "VARS"
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Assign value. </summary>
                 '''
@@ -300,7 +334,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function AssignValue(ByRef Name As String, ByRef Val As Object) As Boolean
                     Dim x As Variable
                     If CheckIfExists(Name) = True Then
@@ -311,7 +344,6 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets a variable. </summary>
                 '''
@@ -321,7 +353,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The variable. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function GetVar(ByRef Name As String) As Variable
                     For Each item In LocalMemory
                         If item.name = Name Then
@@ -331,7 +362,6 @@ Namespace CodeAnalysis
                     Next
                     Return Nothing
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Determine if exists. </summary>
                 '''
@@ -341,7 +371,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function CheckIfExists(ByRef Name As String) As Boolean
                     For Each item In LocalMemory
                         If item.name = Name Then
@@ -350,7 +379,6 @@ Namespace CodeAnalysis
                     Next
                     Return False
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Define value. </summary>
                 '''
@@ -362,7 +390,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function DefineValue(ByRef Name As String, ByRef Type As LiteralType, ByRef Val As Object) As Boolean
                     If CheckIfExists(Name) = False Then
                         LocalMemory.Add(New Variable(Name, Val, Type))
@@ -370,7 +397,6 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Define value. </summary>
                 '''
@@ -381,7 +407,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   True if it succeeds, false if it fails. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function DefineValue(ByRef Name As String, ByRef Type As LiteralType) As Boolean
                     Dim val As Object = Nothing
                     If CheckIfExists(Name) = False Then
@@ -408,7 +433,6 @@ Namespace CodeAnalysis
                     End If
                     Return False
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets variable type. </summary>
                 '''
@@ -418,7 +442,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The variable type. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function GetVarType(ByRef Name As String) As LiteralType
                     If CheckIfExists(Name) = True Then
                         Dim ivar = GetVar(Name)
@@ -434,7 +457,6 @@ Namespace CodeAnalysis
                     End If
                     Return LiteralType._NULL
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Gets variable value. </summary>
                 '''
@@ -444,7 +466,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The variable value. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function GetVarValue(ByRef Name As String) As Object
                     If CheckIfExists(Name) = True Then
                         Dim ivar = GetVar(Name)
@@ -460,7 +481,8 @@ Namespace CodeAnalysis
                     End If
                     Return "Unknown Variable? :"
                 End Function
-
+#End Region
+#Region "TOSTRING"
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Converts this  to a JSON. </summary>
                 '''
@@ -468,11 +490,9 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   This  as a String. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Public Function ToJson() As String
                     Return FormatJsonOutput(ToString)
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Returns a string that represents the current object. </summary>
                 '''
@@ -484,7 +504,6 @@ Namespace CodeAnalysis
                     Dim Converter As New JavaScriptSerializer
                     Return Converter.Serialize(Me)
                 End Function
-
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
                 ''' <summary>   Format JSON output. </summary>
                 '''
@@ -494,7 +513,6 @@ Namespace CodeAnalysis
                 '''
                 ''' <returns>   The formatted JSON output. </returns>
                 '''////////////////////////////////////////////////////////////////////////////////////////////////////
-
                 Private Function FormatJsonOutput(ByVal jsonString As String) As String
                     Dim stringBuilder = New StringBuilder()
                     Dim escaping As Boolean = False
@@ -542,7 +560,7 @@ Namespace CodeAnalysis
 
                     Return stringBuilder.ToString()
                 End Function
-
+#End Region
             End Class
         End Namespace
     End Namespace

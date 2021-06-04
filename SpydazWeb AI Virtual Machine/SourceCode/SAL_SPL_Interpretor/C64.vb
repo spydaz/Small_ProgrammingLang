@@ -43,6 +43,9 @@ Namespace Simple64
             Console.SetBufferSize(40, 26)
             Console.CursorSize = 100
 
+
+
+            'Temp
             'TestB();
             'return;
 

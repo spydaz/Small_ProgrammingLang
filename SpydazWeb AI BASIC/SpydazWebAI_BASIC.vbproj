@@ -152,7 +152,6 @@
     <Compile Include="AI_BASIC\MAIN\IO\FileHandler.vb" />
     <Compile Include="AI_BASIC\MAIN\Program.vb" />
     <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Compilation\CompilerRepl.vb" />
-    <Compile Include="AI_BASIC\CodeAnalysis\Compiler\Interpretor\iRepl.vb" />
     <Compile Include="AI_BASIC\Consoles\UserControls\linenum_rtf.vb">
       <SubType>Component</SubType>
     </Compile>
